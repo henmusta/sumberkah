@@ -17,7 +17,7 @@ use Yajra\DataTables\Facades\DataTables;
 use Throwable;
 
 
-class PaymentgajiController extends Controller
+class PaymentGajiController extends Controller
 {
     use ResponseStatus,NoUrutTrait;
     function __construct()

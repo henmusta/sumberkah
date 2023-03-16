@@ -90,10 +90,12 @@
                 </button>
                 <div class="dropdown-menu dropdown-menu-end pt-0">
                     <div class="p-3 border-bottom">
-                       <a href="{{ url('backend/users') }}/{{Auth::user()->id}}/edit"><h6 class="mb-0">{{Auth::user()->name}}</h6></a>
+                        <h6 class="mb-0">{{Auth::user()->name}}</h6>
                         <p class="mb-0 font-size-11 text-muted">{{Auth::user()->email}}</p>
                     </div>
                     <div class="dropdown-divider"></div>
+                    <a class="dropdown-item d-flex align-items-center" href="{{ url('backend/settings') }}"><i class="mdi mdi-cog-outline text-muted font-size-16 align-middle me-1"></i> <span class="align-middle">Profil</span></a>
+                    <a class="dropdown-item d-flex align-items-center" href="{{ url('backend/settings') }}"><i class="mdi mdi-cog-outline text-muted font-size-16 align-middle me-1"></i> <span class="align-middle">Ubah Password</span></a>
                     <a class="dropdown-item d-flex align-items-center" href="{{ url('backend/settings') }}"><i class="mdi mdi-cog-outline text-muted font-size-16 align-middle me-1"></i> <span class="align-middle">Settings</span></a>
                     <a class="dropdown-item" href="{{ route('logout') }}"><i class="mdi mdi-logout text-muted font-size-16 align-middle me-1"></i> <span class="align-middle">Logout</span></a>
                 </div>
