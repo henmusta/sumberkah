@@ -238,7 +238,7 @@ class MenuManagerController extends Controller
         <div class="dd3-content">' . (!$item->menu_permission_id ? $item->title : $item->menupermission->title) . '</div>
         <div class="dd3-actions">
           <div class="btn-group">
-            <a href="#" class="btn btn-sm font-weight-bold">' . ($item->menu_permission_id ? "F" : "S") . '</a>
+            <a href="#" class="btn btn-sm font-weight-bold">' . ($item->menu_permission_id ? "<p style='color:green; font-weight:bold'>Fixed</p>" : "<p style='color:red; font-weight:bold'>Statis</p>") . '</a>
             <a href="/backend/menu/' . $item->id . '/edit?role_id=' . $roleId . '" class="btn btn-sm btn-default"
               ><i class="fa fa-fw fa-edit"></i>
             </a>
