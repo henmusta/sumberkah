@@ -70,7 +70,7 @@
                                     </tr>
                                     <tr class="">
                                         <th class="text-left">Harga/Satuan</th>
-                                        <td class="text-left">{{number_format($data['rute']['harga'],0,',','.') ?? '' }}</td>
+                                        <td class="text-left">{{number_format($data['rute']['harga'],3,',','.') ?? '' }}</td>
                                     </tr>
                                     <tr class="">
                                         <th class="text-left">Gaji</th>

@@ -217,11 +217,23 @@ $(document).ready(function () {
             minimumValue: 0
     };
 
+    const currenciesOptionsDecimal = {
+            caretPositionOnFocus: "start",
+            currencySymbol: "Rp. ",
+            unformatOnSubmit: true,
+            allowDecimalPadding: true,
+            decimalCharacter : ',',
+            digitGroupSeparator : '.',
+            decimalPlaces: 3,
+            modifyValueOnWheel: false,
+            // minimumValue: 0
+    };
+
     const   biaya_lain = new AutoNumeric('#konfirmasi_biaya_lain',currenciesOptions),
-            biaya_harga = new AutoNumeric('#harga',currenciesOptions),
             total_harga = new AutoNumeric('#total_harga',currenciesOptions),
             total_uang_jalan = new AutoNumeric('#total_uang_jalan',currenciesOptions);
 
+    const biaya_harga = new AutoNumeric('#harga',currenciesOptionsDecimal);
 
 
     $('#tgl_muat, #tgl_bongkar').flatpickr({
