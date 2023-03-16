@@ -2101,7 +2101,7 @@ body[data-layout-mode="dark"] .topnav {
   border-color: #2b405a;
 }
 body[data-layout-mode="dark"] .topnav .navbar-nav .nav-link {
-  color: #727e8f;
+  color: #fff;
 }
 body[data-layout-mode="dark"] .topnav .navbar-nav .nav-link svg {
   fill: #727e8f;
@@ -2116,7 +2116,7 @@ body[data-layout-mode="dark"] .topnav .navbar-nav .nav-link:hover svg {
   fill: #b6c5d9;
 }
 body[data-layout-mode="dark"] .topnav .navbar-nav .dropdown-item {
-  color: #727e8f;
+  color: #fff;
   background-color: transparent;
 }
 body[data-layout-mode="dark"] .topnav .navbar-nav .dropdown-item.active,
