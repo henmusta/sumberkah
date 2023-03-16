@@ -385,10 +385,14 @@ class JoborderController extends Controller
       $page = $request->page;
       $resultCount = 10;
       $konfirmasi_jo = $request['konfirmasi_joborder'];
+      $status_joborder = $request['status_joborder'];
       $offset = ($page - 1) * $resultCount;
       $data = Joborder::where('kode_joborder', 'LIKE', '%' . $request->q . '%')
         ->when($konfirmasi_jo, function ($query, $konfirmasi_jo) {
             return $query->where('status_payment', '=', '0');
+         })
+         ->when($status_joborder, function ($query, $status_joborder) {
+            return $query->where('status_joborder', '!=', $status_joborder);
          })
         ->orderBy('kode_joborder')
         ->skip($offset)
@@ -400,6 +404,9 @@ class JoborderController extends Controller
         ->when($konfirmasi_jo, function ($query, $konfirmasi_jo) {
             return $query->where('status_payment', '=', '0');
         })
+        ->when($status_joborder, function ($query, $status_joborder) {
+            return $query->where('status_joborder', '!=', $status_joborder);
+         })
         ->get()
         ->count();
 

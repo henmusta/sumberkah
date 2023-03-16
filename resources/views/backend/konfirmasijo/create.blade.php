@@ -276,7 +276,7 @@ $(document).ready(function () {
           cache: true,
           data: function (e) {
             return {
-              konfirmasi_jo : 2,
+              status_joborder : 1,
               q: e.term || '',
               page: e.page || 1
             }
