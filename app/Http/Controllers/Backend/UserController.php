@@ -201,13 +201,13 @@ class UserController extends Controller
                 // }
 
 
-                  $menuPermission = MenuPermission::with('permissions')->find($menu_permisi);
-                  if(isset($menuPermission['id'])){
-                    collect($menuPermission->permissions)->map(function ($permission) use ($create_new_role, $menuManager) {
-                        $menuManager->permissions()->attach($permission->id, ['role_id' => $create_new_role['id']]);
-                      });
+                //   $menuPermission = MenuPermission::with('permissions')->find($menu_permisi);
+                //   if(isset($menuPermission['id'])){
+                //     collect($menuPermission->permissions)->map(function ($permission) use ($create_new_role, $menuManager) {
+                //         $menuManager->permissions()->attach($permission->id, ['role_id' => $create_new_role['id']]);
+                //       });
 
-                  }
+                //   }
             }
         //    dd($parent);
 
