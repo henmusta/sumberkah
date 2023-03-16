@@ -40,4 +40,4 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link href="https://cdn.jsdelivr.net/npm/flatpickr@latest/dist/plugins/monthSelect/style.css" rel="stylesheet" />
 
-    <link href="{{asset('assets/css/style.css')}}" rel="stylesheet" type="text/css" />
+
