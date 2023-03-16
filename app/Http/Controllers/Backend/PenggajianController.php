@@ -293,12 +293,12 @@ class PenggajianController extends Controller
     {
       $page = $request->page;
       $resultCount = 10;
-      $konfirmasi_invoice = $request['konfirmasi_gaji'];
+      $payment_gaji = $request['payment_gaji'];
       $offset = ($page - 1) * $resultCount;
       $data = Penggajian::where('kode_gaji', 'LIKE', '%' . $request->q . '%')
-        // ->when($konfirmasi_gaji, function ($query, $konfirmasi_gaji) {
-        //     return $query->where('status_payment', $konfirmasi_gaji);
-        //  })
+        ->when($payment_gaji, function ($query, $payment_gaji) {
+            return $query->where('status_payment', '!=', $payment_gaji);
+         })
         ->orderBy('kode_gaji')
         ->skip($offset)
         ->take($resultCount)
@@ -306,9 +306,9 @@ class PenggajianController extends Controller
         ->get();
 
       $count =  Penggajian::where('kode_gaji', 'LIKE', '%' . $request->q . '%')
-        // ->when($konfirmasi_invoice, function ($query, $konfirmasi_invoice) {
-        //     return $query->where('status_payment', $konfirmasi_invoice);
-        // })
+        ->when($payment_gaji, function ($query, $payment_gaji) {
+            return $query->where('status_payment', '!=', $payment_gaji);
+         })
         ->get()
         ->count();
 

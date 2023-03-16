@@ -229,6 +229,7 @@ if(cek_gaji_id != ''){
           cache: true,
           data: function (e) {
             return {
+              status_payment: 2,
               q: e.term || '',
               page: e.page || 1
             }

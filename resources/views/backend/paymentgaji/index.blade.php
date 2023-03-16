@@ -201,7 +201,7 @@ tr.group:hover {
                     })
                     console.log(rows.data()[0].penggajian.status_payment);
                     let url = (rows.data()[0].penggajian.status_payment < 2) ? '<a class="btn btn-primary" href="paymentgaji/' + rows.data()[0].penggajian_id+ '/edit">Tambah Pembayaran</a>' : '<span class="badge bg-pill  bg-success">Lunas</span>';
-                    let sisa_tagihan=  $.fn.dataTable.render.number('.', ',', 3, '').display(rows.data()[0].penggajian.sisa_gaji);
+                    let sisa_tagihan=  $.fn.dataTable.render.number('.', ',', 0, '').display(rows.data()[0].penggajian.sisa_gaji);
                     return $('<tr/>')
                     .append('<td colspan="5"><div class="float-start"> KODE GAJI : ' + group + ' TOTAL PAYMENT : (' + rows.count() + ') SISA GAJI : '+sisa_tagihan+' </div><div class="float-end">'+url+'</div></td>')
                     .attr('data-name', group)
