@@ -86,7 +86,7 @@
 
                                 <div class="col-6">
                                     <div class="mb-3">
-                                        <label>Sisa Tagihan<span class="text-danger">*</span></label>
+                                        <label>Sisa Gaji<span class="text-danger">*</span></label>
                                         <input type="text" id="sisa_tagihan" value="0" name="sisa_tagihan"  class="form-control text-end" style="font-size: 24px; color:black;" disabled/>
                                       </div>
                                 </div>
@@ -127,7 +127,7 @@
                                             </tr>
 
                                             <tr>
-                                                <th  class="text-end" colspan="2" class="text-right"><label>Total Sisa Tagihan<span class="text-danger"></span></label></th>
+                                                <th  class="text-end" colspan="2" class="text-right"><label>Total Sisa Gaji<span class="text-danger"></span></label></th>
                                                     <th>
                                                         <input id="total_sisa_gaji" name="total_sisa_gaji" style="font-size: 24px; color:black;" class="form-control text-end" readonly>
                                                     </th>
@@ -196,7 +196,7 @@ $(document).ready(function () {
             allowDecimalPadding: true,
             decimalCharacter : ',',
             digitGroupSeparator : '.',
-            decimalPlaces: 3,
+            decimalPlaces: 0,
             modifyValueOnWheel: false,
             minimumValue: 0
     };

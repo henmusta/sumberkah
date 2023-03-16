@@ -110,7 +110,7 @@
 
                                 <div class="col-6">
                                     <div class="mb-3">
-                                        <label>Sisa Tagihan Uang Jalan<span class="text-danger">*</span></label>
+                                        <label>Sisa Uang Jalan<span class="text-danger">*</span></label>
                                         <input type="text" id="sisa_uang_jalan" value="0" name="sisa_uang_jalan"  class="form-control text-end" style="font-size: 24px; color:black;" disabled/>
                                       </div>
                                 </div>
@@ -171,7 +171,7 @@
                                                 <th></th>
                                            </tr>
                                             <tr>
-                                                <th  class="text-end" colspan="4" class="text-right"><label>Total Sisa Tagihan<span class="text-danger"></span></label></th>
+                                                <th  class="text-end" colspan="4" class="text-right"><label>Total Sisa Uang Jalan<span class="text-danger"></span></label></th>
                                                     <th>
                                                         <input id="total_sisa_uang_jalan" value="{{ $data['joborder']['sisa_uang_jalan'] }}" name="total_sisa_uang_jalan" style="font-size: 24px; color:black;" class="form-control text-end" readonly>
                                                     </th>
