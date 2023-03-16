@@ -85,7 +85,7 @@
             <div class="dropdown d-inline-block">
                 <button type="button" class="btn header-item user text-start d-flex align-items-center" id="page-header-user-dropdown"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img class="rounded-circle header-profile-user"  src=" {{ isset(Auth::user()->image) ? asset("storage/images/thumbnail/".Auth::user()->image) : asset('assets/img/profile-photos/1.png') }}"
+                    <img class="rounded-circle header-profile-user"  src=" {{ isset(Auth::user()->image) ? asset("storage/images/thumbnail/".Auth::user()->image) : asset('assets/backend/images/users/avatar-1.jpg') }}"
                     alt="Header Avatar">
                 </button>
                 <div class="dropdown-menu dropdown-menu-end pt-0">
