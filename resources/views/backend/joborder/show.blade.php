@@ -91,7 +91,7 @@
                                         <td class="text-end">Rp. {{  number_format($data['joborder']['total_kasbon'],3,',','.') ?? '0' }}</td>
                                     </tr>
                                     <tr class="">
-                                        <th class="text-left">Sisa Tagihan Uang Jalan</th>
+                                        <th class="text-left">Sisa Uang Jalan</th>
                                         <td class="text-end">Rp. {{  number_format($data['joborder']['sisa_uang_jalan'],3,',','.') ?? '0' }}</td>
                                     </tr>
                                 </thead>
