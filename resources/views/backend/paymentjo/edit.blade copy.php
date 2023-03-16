@@ -1,0 +1,685 @@
+@extends('backend.layouts.master')
+
+@section('content')
+<div class="page-content">
+    <div class="container-fluid">
+      <div class="card">
+        <div class="row row-sm">
+            <div class="col-12">
+                <form id="formUpdate" action="{{ route('backend.paymentjo.update', Request::segment(3)) }}">
+                    <meta name="csrf-token" content="{{ csrf_token() }}">
+                    @method('PUT')
+                    <div class="card-header">
+                        <div>
+                            <h6 class="main-content-label mb-1">{{ $config['page_title'] ?? '' }}</h6>
+                        </div><br>
+                        <div id="errorEdit" class="mb-3" style="display:none;">
+                            <div class="alert alert-danger" role="alert">
+                              <div class="alert-text">
+                              </div>
+                            </div>
+                          </div>
+                    </div>
+                    <div class="card-body" style="border: 1px solid #fff; padding:20px;">
+                        <input id="cek_kode_joborder" name="cek_kode_joborder" type="hidden" value="{{$data['joborder']['kode_joborder'] ?? ''}}">
+                        <div class="row" >
+                            <div class="col-md-4">
+                                 <div class="mb-3">
+                                    <label>Id Joborder<span class="text-danger">*</span></label>
+                                    <select id="select2Joborder" style="width: 100% !important;" name="joborder_id">
+                                        <option value="{{ $data['joborder']['id'] }}"> {{$data['joborder']['kode_joborder'] }}</option>
+                                    </select>
+                                  </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                   <label>Tanggal Joborder<span class="text-danger">*</span></label>
+                                   <input type="text" id="tgl_joborder" value="" name="tgl_joborder"  class="form-control" disabled/>
+                                 </div>
+                           </div>
+                           <div class="col-md-4">
+                            <div class="mb-3">
+                               <label>Driver<span class="text-danger">*</span></label>
+                               <input type="text" id="driver_id" value="" name="driver_id"  class="form-control"  disabled/>
+                             </div>
+                           </div>
+
+                        </div>
+
+                        <div class="row" >
+                            <div class="col-md-4">
+                                 <div class="mb-3">
+                                    <label>Nomor Plat Polisi<span class="text-danger">*</span></label>
+                                    <input type="text" id="nomor_plat" value="" name="nomor_plat"  class="form-control"  disabled/>
+                                  </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                   <label>Customer<span class="text-danger">*</span></label>
+                                   <input type="text" id="customer_id" value="" name="customer_id"  class="form-control"  disabled/>
+                                 </div>
+                           </div>
+                           <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label>Muatan<span class="text-danger">*</span></label>
+                                    <input type="text" id="muatan_id" value="" name="muatan_id"  class="form-control"  disabled/>
+                                </div>
+                           </div>
+                        </div>
+
+                        <div class="row" >
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                   <label>Alamat Dari (Awal)<span class="text-danger">*</span></label>
+                                   <input type="text" id="first_rute_id" value="" name="tgl_joborder"  class="form-control" disabled/>
+                                 </div>
+                           </div>
+                           <div class="col-md-6">
+                            <div class="mb-3">
+                               <label>Alamat Akhir (Ke)<span class="text-danger">*</span></label>
+                               <input type="text" id="last_rute_id" value="" name="joborder_id"  class="form-control"  disabled/>
+                             </div>
+                           </div>
+
+                        </div>
+
+
+                        <div class="row" >
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                   <label>Total Uang Jalan<span class="text-danger">*</span></label>
+                                   <input type="text" value="{{ $data['joborder']['total_uang_jalan'] }}" id="total_uang_jalan" value="" name="tgl_joborder"  class="form-control" disabled/>
+                                 </div>
+                           </div>
+                        </div>
+
+                    </div>
+
+
+                    <div id="tgl_bayar" class="card-body" style="border: 1px solid #fff; padding:20px;" type="hidden">
+                        <div class="row" >
+
+                                <div class="col-6">
+                                    <div class="mb-3">
+                                        <label>Tanggal Pembayaran<span class="text-danger">*</span></label>
+                                        <input type="text" id="tgl_pembayaran" value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" name="tgl_pembayaran"  class="form-control" placeholder="Masukan Tanggal Joborder"/>
+                                      </div>
+                                </div>
+
+
+                                <div class="col-6">
+                                    <div class="mb-3">
+                                        <label>Sisa Tagihan Uang Jalan<span class="text-danger">*</span></label>
+                                        <input value="{{ $data['joborder']['sisa_uang_jalan'] }}" type="text" id="sisa_uang_jalan" value="0" name="sisa_uang_jalan"  class="form-control text-end" style="font-size: 24px; color:black;" disabled/>
+                                      </div>
+                                </div>
+
+                        </div>
+                    </div>
+
+                    <div id="table_bon" class="card-body" style=" padding:20px;">
+                        <div class="row" >
+                            <div class="col-12">
+                                <div class="row" >
+                                    <div class="col-4">
+                                        <div class="mb-3">
+                                            <label>Jumlah Bon Tersedia<span class="text-danger">*</span></label>
+                                            <input type="text" value="{{ $data['joborder']['driver']['kasbon'] }}" id="kasbon" name="kasbon"  class="form-control" style="font-size: 24px; color:black;" disabled/>
+                                          </div>
+                                    </div>
+                                    <div class="col-8">
+                                        <label> Tabel Potongan Bon<span class="text-danger">*</span></label>
+                                        <table id="DatatableBon" class="table " width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>Keterangan</th>
+                                                    <th>Nominal</th>
+                                                    <th width="2%"></th>
+                                                </tr>
+                                            </thead>
+                                            <tfoot>
+                                                <tr>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th>
+                                                        <div class="btn-group">
+                                                            <button id="plus_kasbon" disabled type="button" class="btn btn-sm btn-outline-secondary btn-add-row"><i class="fa fa-plus"></i></button>
+                                                        </div>
+                                                    </th>
+                                                </tr>
+                                            </tfoot><br>
+                                        </table>
+                                    </div>
+
+                             </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="table_pembayaran" class="card-body" style=" padding:20px;">
+                        <div class="row" >
+                            <div class="col-12">
+                                 <label> Tabel Pembayaran<span class="text-danger">*</span></label>
+                                    <table id="Datatable" class="table " width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Jenis Pembayaran</th>
+                                                <th>Keterangan</th>
+                                                <th>Nominal Pembayaran</th>
+                                                <th width="2%"></th>
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th>
+                                                    <div class="btn-group">
+                                                        <button disabled id="plus_payment" type="button" class="btn btn-sm btn-outline-secondary btn-add-row"><i class="fa fa-plus"></i></button>
+                                                    </div>
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                    <th  class="text-end" colspan="2" class="text-right"><label>Total Pembayaran<span class="text-danger"></span></label></th>
+                                                        <th>
+                                                            <input value="{{ $data['joborder']['total_payment'] }}" id="total_payment" name="total_payment" style="font-size: 24px; color:black;" class="form-control text-end" readonly>
+                                                        </th>
+                                                    <th></th>
+                                            </tr>
+                                            <tr>
+                                                <th  class="text-end" colspan="2" class="text-right"><label>Total Potongan Bon<span class="text-danger"></span></label></th>
+                                                    <th>
+                                                        <input value="{{ $data['joborder']['total_kasbon'] }}" id="total_kasbon" name="total_kasbon" style="font-size: 24px; color:black;" class="form-control text-end" readonly>
+                                                    </th>
+                                                <th></th>
+                                           </tr>
+                                            <tr>
+                                                <th  class="text-end" colspan="2" class="text-right"><label>Total Sisa Tagihan<span class="text-danger"></span></label></th>
+                                                    <th>
+                                                        <input value="{{ $data['joborder']['sisa_uang_jalan'] }}"  id="total_sisa_uang_jalan" name="total_sisa_uang_jalan" style="font-size: 24px; color:black;" class="form-control text-end" readonly>
+                                                    </th>
+                                                <th></th>
+                                            </tr>
+                                        </tfoot><br>
+                                    </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div  class="card-footer">
+                      <div class="d-flex justify-content-end">
+                        <button id="btn_simpan" type="button" class="btn btn-secondary me-2" onclick="window.history.back();">
+                          Cancel
+                        </button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                      </div>
+                    </div>
+                  </form>
+            </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  {{-- modal --}}
+
+
+
+
+@endsection
+
+@section('css')
+<style>
+input:disabled {
+  background: #ccc !important;
+
+}
+
+textarea:disabled {
+  background: #ccc !important;
+
+}
+
+input[type="text"][disabled] {
+   color: rgb(12, 11, 11) !important;
+}
+</style>
+@endsection
+@section('script')
+<script>
+
+// $('#rute_muatan').hide();
+// $('#number_jo').hide();
+// $('#btn_simpan').hide();
+// $('#id').show();
+var cek_potongan_tambahan, fix_total_uang_jalan;
+
+$(document).ready(function () {
+    get_jo({!!$data['joborder']['id']!!});
+    const currenciesOptions = {
+            caretPositionOnFocus: "start",
+            currencySymbol: "Rp. ",
+            unformatOnSubmit: true,
+            allowDecimalPadding: true,
+            decimalCharacter : ',',
+            digitGroupSeparator : '.',
+            decimalPlaces: 3,
+            modifyValueOnWheel: false,
+            // minimumValue: 0
+    };
+
+    const  sisa_uang_jalan 	= new AutoNumeric('#sisa_uang_jalan',currenciesOptions),
+           total_uang_jalan = new AutoNumeric('#total_uang_jalan',currenciesOptions),
+           total_sisa_uang_jalan 	= new AutoNumeric('#total_sisa_uang_jalan',currenciesOptions),
+           total_payment 	= new AutoNumeric('#total_payment',currenciesOptions),
+           kasbon 	= new AutoNumeric('#kasbon',currenciesOptions),
+           total_bon 	= new AutoNumeric('#total_kasbon',currenciesOptions);
+
+           let select2Joborder = $('#select2Joborder');
+    let select2jenisbayar = $('.select2paymetode');
+    select2jenisbayar.select2({});
+    select2Joborder.select2({
+        dropdownParent:  select2Joborder.parent(),
+        searchInputPlaceholder: 'Cari Job Order',
+        width: '100%',
+        placeholder: 'Pilih Job Order',
+        ajax: {
+          url: "{{ route('backend.joborder.select2') }}",
+          dataType: "json",
+          cache: true,
+          data: function (e) {
+            return {
+              q: e.term || '',
+              page: e.page || 1
+            }
+          },
+        },
+      }).on('select2:select', function (e) {
+            let data = e.params.data;
+            get_jo(data.id);
+            console.log(data);
+     });
+
+
+     function get_jo(id){
+         $.ajax({
+                url: "{{ route('backend.joborder.findjoborder') }}",
+                type: 'GET',
+                data: {id:  id},
+                dataType: 'json', // added data type
+                success: function(res) {
+                    let data = res;
+                    console.log(data);
+                    $('#tgl_joborder').val(data.joborder.tgl_joborder);
+                    $('#driver_id').val(data.driver.name);
+                    $('#nomor_plat').val(data.mobil.nomor_plat);
+                    $('#customer_id').val(data.customer.name);
+                    $('#muatan_id').val(data.muatan.name);
+                    $('#first_rute_id').val(data.firstrute.name);
+                    $('#last_rute_id').val(data.firstrute.name);
+                    // total_uang_jalan.set(data.joborder.total_uang_jalan);
+                    // sisa_uang_jalan.set(data.joborder.sisa_uang_jalan);
+                    // total_sisa_uang_jalan.set(data.joborder.sisa_uang_jalan);
+                    if(data.driver.kasbon > 0){
+                        $('#plus_kasbon').prop('disabled', false);
+                    }else{
+                        $('#plus_kasbon').prop('disabled', true);
+                    }
+
+
+                    if(data.joborder.sisa_uang_jalan > 0){
+                        $('#plus_payment').prop('disabled', false);
+                    }else{
+                        $('#plus_payment').prop('disabled', true);
+                    }
+
+                }
+         });
+     }
+
+
+
+        $('#DatatableBon').on('changeTotalItem',	function(){
+            let totalpotonganbon   = 0;
+            let for_sisa_uang_jalan = 0;
+            let for_totalpotonganbon = 0;
+            $(this).find('[id^="num_nominal"]').each(function(){
+                 totalpotonganbon += AutoNumeric.getNumber(this);
+            });
+            let get_total_uang_jalan =  total_uang_jalan.getNumber();
+            let get_total_payment = total_payment.getNumber();
+            let get_kasbon = kasbon.getNumber();
+            console.log(totalpotonganbon);
+            console.log(get_kasbon);
+            // if($('#kasbon').val() != ''){
+
+            // }
+            for_totalpotonganbon =  totalpotonganbon + get_kasbon;
+            if(totalpotonganbon > for_totalpotonganbon){
+                // toastr.error('Jumlah Potongan Bon Melebihi Bon Yang Tersedia', 'Gagal !');
+                total_bon.set(0);
+                for_sisa_uang_jalan = get_total_uang_jalan - get_total_payment;
+                $('#btn_simpan').prop('disabled', true);
+                }else{
+                    total_bon.set(totalpotonganbon);
+                    for_sisa_uang_jalan = get_total_uang_jalan - get_total_payment - totalpotonganbon;
+                    $('#btn_simpan').prop('disabled', false);
+
+                }
+            total_sisa_uang_jalan.set(for_sisa_uang_jalan);
+            // total paymanet
+
+
+            // tota sisa uang jalan
+
+
+        });
+
+           var dummybon = [
+          //  { keterangan : '', nominal: ''}
+           ]
+
+        const tableBon = $('#DatatableBon').DataTable({
+			paging		: false,
+			searching 	: false,
+			ordering 	: false,
+			info 		: false,
+			data 		: <?= isset($data['kasbon']) ? json_encode($data['kasbon']) : 'dummybon' ;?> ,
+			columns : [
+                {
+					data 		: 'keterangan',
+					className 	: 'text-right',
+					width 		: '150px',
+					render 		: function ( columnData, type, rowData, meta ) {
+                        return String(`
+                            <input name="kasbon[`+ meta.row +`][id]" type="hidden" value="`+ rowData.id +`" >
+							<input id="keterangan` + meta.row + `" class="form-control" value="`+ columnData +`" name="kasbon[`+ meta.row +`][keterangan]" required data-column="keterangan" >
+						`).trim();
+					}
+				},
+				{
+					data 		: 'nominal',
+					className 	: 'text-right',
+					width 		: '150px',
+					render 		: function ( columnData, type, rowData, meta ) {
+						return String(`
+							<input id="num_nominal` + meta.row + `" class="form-control text-end" value="`+ columnData +`" name="kasbon[`+ meta.row +`][nominal]" required data-column="nominal" >
+						`).trim();
+					}
+				},
+
+				{
+					data 		: 'id',
+					width 		: '10px',
+					className 	: 'text-center',
+					render 		: function ( columnData, type, rowData, meta ) {
+						return String(`
+							<button type="button" id="id_` + meta.row + `" class="btn btn-sm btn-outline-secondary btn-delete-row"><i class="fa fa-minus"></i></button>
+						`).trim();
+					}
+				}
+			],
+			initComplete : function(settings, json){
+				let api = this.api();
+				$(api.table().footer()).find('.btn-add-row').click(function(){
+                    let keterangan_bon = 'Pembayaran Bon Kode Joborder : '+ $('#cek_kode_joborder').val();
+					api.row.add({keterangan : keterangan_bon , nominal : 0}).draw();
+				});
+			},
+			createdRow : function( row, data, index ){
+                new AutoNumeric.multiple($(row).find('[id^="num"]').get(),currenciesOptions);
+			},
+			rowCallback : function( row, data, displayNum, displayIndex, index ){
+				let api = this.api();
+
+				$(row).find('#id_'+ index).click(function(){
+					api.row($(this).closest("tr").get(0)).remove().draw();
+				});
+
+
+                $(row).find('#num_nominal' + index).keyup(function(){
+                    let get_total_uang_jalan  = total_uang_jalan.getNumber() - total_payment.getNumber();
+                    let get_kasbon  = kasbon.getNumber();
+                    let get_nominal = AutoNumeric.getNumber('#num_nominal' + index);
+                    if(get_nominal > get_kasbon){
+                        $('#btn_simpan').prop('disabled', true);
+                        toastr.error('Jumlah Potongan Bon Melebihi Bon Yang Tersedia', 'Gagal !');
+                        AutoNumeric.getAutoNumericElement('#num_nominal' + index).set(0);
+                    }else if(get_nominal > get_total_uang_jalan){
+                        toastr.error('Jumlah Potongan Bon Melebihi Sisa Uang Jalan', 'Gagal !');
+                        AutoNumeric.getAutoNumericElement('#num_nominal' + index).set(0);
+                    }else{
+                        $('#btn_simpan').prop('disabled', false);
+
+                    }
+                    $('#DatatableBon').trigger('changeTotalItem');
+                });
+
+
+			},
+			drawCallback : function( settings ){
+                $('#DatatableBon').trigger('changeTotalItem');
+			}
+	});
+
+
+
+       var dummy = [
+            // {  jenis_pembayaran: '', keterangan : '', nominal : 0 }
+        ]
+
+        $('#Datatable').on('changeTotalItem',	function(){
+           let total_nominal_payment  = 0;
+           let for_sisa_uang_jalan = 0;
+            $(this).find('[id^="num_nominal_payment"]').each(function(){
+                total_nominal_payment += AutoNumeric.getNumber(this);
+            });
+            // total paymanet
+            let get_total_uang_jalan = total_uang_jalan.getNumber();
+            let get_total_bon = total_bon.getNumber();
+            if(total_nominal_payment > get_total_uang_jalan){
+                $('#btn_simpan').prop('disabled', true);
+             //   toastr.error('Jumlah Pembayaran Melebihi Sisa Uang Jalan', 'Gagal !');
+                for_sisa_uang_jalan = get_total_uang_jalan - get_total_bon;
+                total_payment.set(0);
+            }
+            else{
+                $('#btn_simpan').prop('disabled', false);
+                total_payment.set(total_nominal_payment);
+                for_sisa_uang_jalan = get_total_uang_jalan - get_total_bon - total_nominal_payment;
+            }
+
+
+             // tota sisa uang jalan
+
+            total_sisa_uang_jalan.set(for_sisa_uang_jalan);
+		});
+
+      const tablePembayaran = $('#Datatable').DataTable({
+			paging		: false,
+			searching 	: false,
+			ordering 	: false,
+			info 		: false,
+			data 		:  <?= isset($data['payment']) ? json_encode($data['payment']) : 'dummy' ;?> ,
+			columns : [
+
+				{
+					data 		: 'jenis_pembayarab',
+					className 	: 'text-left',
+					width 		: '150px',
+					render 		: function ( columnData, type, rowData, meta ) {
+                        return String(`
+                           <input name="payment[`+ meta.row +`][id]" type="hidden" value="`+ rowData.id +`" >
+                            <select class="form-control" data-name="jenis_pembayaran" required="required" name="payment[`+ meta.row +`][jenis_pembayaran]">
+                                <option value="Tunai" `+ ( columnData == '1' ? `selected="selected"` : ``) +`>Tunai</option>
+                                <option value="Transfer" `+ ( columnData == '0' ? `selected="selected"` : ``) +`>Transfer</option>
+                            </select>
+                          `).trim();
+						// return String(`
+                        //  <input id="nominal` + meta.row + `" class="form-control text-right" value="`+ columnData +`" name="payment[`+ meta.row +`][keterangan]" required data-column="keterangan" >
+						// `).trim();
+					}
+				},
+                {
+					data 		: 'keterangan',
+					className 	: 'text-right',
+					width 		: '150px',
+					render 		: function ( columnData, type, rowData, meta ) {
+                        return String(`
+							<input id="keterangan` + meta.row + `" class="form-control" value="`+ columnData +`" name="payment[`+ meta.row +`][keterangan]" required data-column="keterangan" >
+						`).trim();
+					}
+				},
+				{
+					data 		: 'nominal',
+					className 	: 'text-right',
+					width 		: '150px',
+					render 		: function ( columnData, type, rowData, meta ) {
+						return String(`
+							<input id="num_nominal_payment` + meta.row + `" class="form-control text-end" value="`+ columnData +`" name="payment[`+ meta.row +`][nominal]" required data-column="nominal" >
+						`).trim();
+					}
+				},
+
+				{
+					data 		: 'id',
+					width 		: '10px',
+					className 	: 'text-center',
+					render 		: function ( columnData, type, rowData, meta ) {
+						return String(`
+							<button type="button" id="id_` + meta.row + `" class="btn btn-sm btn-outline-secondary btn-delete-row"><i class="fa fa-minus"></i></button>
+						`).trim();
+					}
+				}
+			],
+			initComplete : function(settings, json){
+				let api = this.api();
+				$(api.table().footer()).find('.btn-add-row').click(function(){
+                    let keterangan_payment = 'Pembayaran Joborder : '+ $('#cek_kode_joborder').val();
+					api.row.add({ jenis_pembayaran: '', keterangan : keterangan_payment, nominal : 0 }).draw();
+				});
+			},
+			createdRow : function( row, data, index ){
+                new AutoNumeric.multiple($(row).find('[id^="num"]').get(),currenciesOptions);
+			},
+			rowCallback : function( row, data, displayNum, displayIndex, index ){
+				let api = this.api();
+
+				$(row).find('#id_'+ index).click(function(){
+					api.row($(this).closest("tr").get(0)).remove().draw();
+				});
+
+
+                $(row).find('#num_nominal_payment' + index).keyup(function(){
+                    let get_nominal = AutoNumeric.getNumber('#num_nominal_payment' + index);
+                    let get_total_uang_jalan  = total_uang_jalan.getNumber() - total_bon.getNumber();
+                    // console.log(get_nominal);
+                    // console.log(sisa_uang_jalan.getNumber());
+                    // console.log(total_bon.getNumber());
+
+                    if(get_nominal > get_total_uang_jalan){
+                        $('#btn_simpan').prop('disabled', true);
+                        AutoNumeric.getAutoNumericElement('#num_nominal_payment' + index).set(0);
+                        toastr.error('Jumlah Pembayaran Melebihi Sisa Uang Jalan', 'Gagal !');
+
+                    }else{
+                        $('#btn_simpan').prop('disabled', false);
+
+                    }
+                    $('#Datatable').trigger('changeTotalItem');
+                });
+			},
+			drawCallback : function( settings ){
+                $('#Datatable').trigger('changeTotalItem');
+			}
+	});
+
+
+//        $('#tahun').flatpickr({
+//             disableMobile: "true",
+//             plugins: [
+//                 new monthSelectPlugin({
+//                 shorthand: true,
+//                 dateFormat: "Y",
+//                 // altFormat: "Y",
+//                 theme: "dark"
+//                 })
+//             ]
+//          });
+
+//          $('#tgl_joborder').flatpickr({
+//             dateFormat: "Y-m-d"
+//          });
+
+
+//     let select2Firstrute = $('#select2Firstrute');
+//     let select2Lastrute = $('#select2Lastrute');
+//     let select2Muatan = $('#select2Muatan');
+//     let select2Jenis = $('#select2Jenis');
+//     let select2Customer = $('#select2Customer');
+//     let select2TambahanPotongan = $('#tambahan_potongan');
+//     let select2Driver = $('#select2Driver');
+//     let select2Mobil = $('#select2Mobil');
+
+
+
+
+    $("#formUpdate").submit(function (e) {
+        e.preventDefault();
+        let form = $(this);
+        let btnSubmit = form.find("[type='submit']");
+        let btnSubmitHtml = btnSubmit.html();
+        let url = form.attr("action");
+        let data = new FormData(this);
+        $.ajax({
+          beforeSend: function () {
+            btnSubmit.addClass("disabled").html("<span aria-hidden='true' class='spinner-border spinner-border-sm' role='status'></span> Loading ...").prop("disabled", "disabled");
+          },
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          },
+          cache: false,
+          processData: false,
+          contentType: false,
+          type: "POST",
+          url: url,
+          data: data,
+          success: function (response) {
+            let errorEdit = $('#errorEdit');
+            errorEdit.css('display', 'none');
+            errorEdit.find('.alert-text').html('');
+            btnSubmit.removeClass("disabled").html(btnSubmitHtml).removeAttr("disabled");
+            if (response.status === "success") {
+              toastr.success(response.message, 'Success !');
+              setTimeout(function () {
+                if (!response.redirect || response.redirect === "reload") {
+                  location.reload();
+                } else {
+                  location.href = response.redirect;
+                }
+              }, 1000);
+            } else {
+              toastr.error((response.message ? response.message : "Please complete your form"), 'Failed !');
+              if (response.error !== undefined) {
+                errorEdit.removeAttr('style');
+                $.each(response.error, function (key, value) {
+                  errorEdit.find('.alert-text').append('<span style="display: block">' + value + '</span>');
+                });
+              }
+            }
+          },
+          error: function (response) {
+            btnSubmit.removeClass("disabled").html(btnSubmitHtml).removeAttr("disabled");
+            toastr.error(response.responseJSON.message, 'Failed !');
+          }
+        });
+      });
+
+
+});
+
+</script>
+@endsection
