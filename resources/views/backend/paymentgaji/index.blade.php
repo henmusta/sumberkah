@@ -211,7 +211,7 @@ tr.group:hover {
         columnDefs: [
           {
             targets: [2],
-            render: $.fn.dataTable.render.number('.', ',', 3, '')
+            render: $.fn.dataTable.render.number('.', ',', 0, '')
           }
 
         ],

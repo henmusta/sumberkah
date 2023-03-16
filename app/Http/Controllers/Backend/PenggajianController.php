@@ -293,7 +293,7 @@ class PenggajianController extends Controller
     {
       $page = $request->page;
       $resultCount = 10;
-      $payment_gaji = $request['payment_gaji'];
+      $payment_gaji = $request['status_payment'];
       $offset = ($page - 1) * $resultCount;
       $data = Penggajian::where('kode_gaji', 'LIKE', '%' . $request->q . '%')
         ->when($payment_gaji, function ($query, $payment_gaji) {
