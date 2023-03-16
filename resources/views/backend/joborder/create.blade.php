@@ -107,7 +107,7 @@
                             <div class="col-md-12" >
                                   <div class="mb-3">
                                     <label>Uang Jalan<span class="text-danger">*</span></label>
-                                    <input type="text" id="uang_jalan" name="uang_jalan"  class="form-control" placeholder="Masukan Uang Jalan"/>
+                                    <input type="text" id="uang_jalan" name="uang_jalan"  class="form-control" placeholder="Masukan Uang Jalan" readonly/>
                                   </div>
                                   <div class="row">
                                     <div class="col-6">
