@@ -133,7 +133,7 @@
                                 <th>Alamat Awal (Dari)</th>
                                 <th>Alamat Akhir (Ke)</th>
                                 <th width="8%">Total Uj</th>
-                                <th width="8%">Pembayaran</th>
+                                <th>Pembayaran</th>
                                 <th width="8%">Sisa Uj</th>
                                 <th>Keterangan</th>
                                 <th width="8%">Aksi</th>
@@ -394,7 +394,7 @@
         //             return meta.row + meta.settings._iDisplayStart + 1;
         //         }
         //   },
-          {data: 'kode_joborder', name: 'kode_joborder'},
+          {data: 'kode_joborder', className:'text-center', name: 'kode_joborder'},
           {data: 'tgl_joborder', name: 'tgl_joborder'},
           {data: 'status_joborder', name: 'status_joborder'},
           {data: 'driver.name', name: 'driver.name'},
