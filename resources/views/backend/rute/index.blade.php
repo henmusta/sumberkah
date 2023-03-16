@@ -16,10 +16,12 @@
                         {{-- <h5 class="card-title mb-3">Transaction</h5> --}}
                     </div>
                     <div class="flex-shrink-0">
+                        @if(Auth::user()->can('backend-rute-create') == 'true')
                         <a class="btn btn-primary " href="{{ route('backend.rute.create') }}">
                             Tambah
                             <i class="fas fa-plus"></i>
                         </a>
+                        @endif
                     </div>
                 </div>
 

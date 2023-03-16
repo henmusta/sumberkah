@@ -30,6 +30,11 @@ class DriverController extends Controller
           return DataTables::of($data)
             ->addColumn('action', function ($row) {
                 $validasi = '<a href="#" data-bs-toggle="modal" data-bs-target="#modalValidasi" data-bs-id="' . $row->id . '"  data-bs-validasi="' . $row->validasi. '" class="edit dropdown-item">Validasi</a>';
+                $aktifasi = '<a href="#" data-bs-toggle="modal" data-bs-target="#modalAktif" data-bs-id="' . $row->id . '"
+                                                                                             data-bs-aktif="' . $row->status_aktif. '"
+                                                                                             data-bs-name="' . $row->name. '"
+                                                                                             data-bs-tgl_aktif="' . $row->tgl_aktif. '"
+                                                                                             class="edit dropdown-item">Aktifasi</a>';
                 $show = '<a href="' . route('backend.driver.show', $row->id) . '" class="dropdown-item">Detail</a>';
                 $edit = '<a class="dropdown-item" href="driver/' . $row->id . '/edit">Ubah</a>';
                 $delete = '  <a href="#" data-bs-toggle="modal" data-bs-target="#modalDelete" data-bs-id="' . $row->id . '" class="delete dropdown-item">Hapus</a>';
@@ -44,6 +49,7 @@ class DriverController extends Controller
                     '. $cek_edit.'
                     '. $cek_delete.'
                     '. $validasi.'
+                    '. $aktifasi .'
                 </div>
             </div>';
 
@@ -302,7 +308,37 @@ class DriverController extends Controller
           return $response;
     }
 
+    public function aktivasi(Request $request)
+    {
+        // dd( $request);
+          $validator = Validator::make($request->all(), [
+            'id' => 'required',
+            'status_aktif' => 'required',
+            'tgl_aktif' => 'required',
+          ]);
+        //   dd($request['id']);
+          if ($validator->passes()) {
+            $data = Driver::find($request['id']);
+            DB::beginTransaction();
+            try {
+                  $data->update([
+                    'status_aktif' => $request['status_aktif'],
+                    'tgl_aktif' => $request['tgl_aktif'],
+                  ]);
 
+                DB::commit();
+                $response = response()->json($this->responseStore(true));
+            } catch (Throwable $throw) {
+                dd($throw);
+                DB::rollBack();
+                $response = response()->json($this->responseStore(false));
+              }
+
+          } else {
+            $response = response()->json(['error' => $validator->errors()->all()]);
+          }
+          return $response;
+    }
 
 
 }

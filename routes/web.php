@@ -70,6 +70,7 @@ Route::middleware('auth:henmus')->group(function(){
             Route::resource('mobilrincian', Backend\MobilRincianController::class);
 
             //driver
+            Route::put('driver/aktivasi', [Backend\DriverController::class, 'aktivasi'])->name('driver.aktivasi');
             Route::put('driver/validasi', [Backend\DriverController::class, 'validasi'])->name('driver.validasi');
             Route::get('driver/select2', [Backend\DriverController::class, 'select2'])->name('driver.select2');
             Route::resource('driver', Backend\DriverController::class);

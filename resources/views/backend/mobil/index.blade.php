@@ -13,12 +13,14 @@
                     <div class="flex-grow-1">
                         {{-- <h5 class="card-title mb-3">Transaction</h5> --}}
                     </div>
+                    @if(Auth::user()->can('backend-mobil-create') == 'true')
                     <div class="flex-shrink-0">
                         <a class="btn btn-primary " href="{{ route('backend.mobil.create') }}">
                             Tambah
                             <i class="fas fa-plus"></i>
                         </a>
                     </div>
+                    @endif
                 </div>
 
             </div>
