@@ -196,6 +196,7 @@
   <script src="{{ asset('assets/backend/libs/nestable/nestable.js') }}" type="text/javascript"></script>
   <script>
     $(document).ready(function () {
+      $('#menuList').nestable('collapseAll');
       let modalDelete = document.getElementById('modalDelete');
       const bsDelete = new bootstrap.Modal(modalDelete);
       let select2Role = $('#select2Role');
@@ -212,7 +213,7 @@
         let json_values = window.JSON.stringify($(this).nestable('serialize'));
         $("#output").val(json_values);
         $("#changeHierarchy [type='submit']").fadeIn();
-      }).nestable('collapseAll');;
+      }).nestable('collapseAll');
       select2Role.select2({
         dropdownParent: select2Role.parent(),
         placeholder: "Cari Role",

@@ -113,7 +113,7 @@
                             <div class="col-md-12" >
                                   <div class="mb-3">
                                     <label>Uang Jalan<span class="text-danger">*</span></label>
-                                    <input type="text" id="uang_jalan" name="uang_jalan" value="{{ $data['joborder']['rute']['uang_jalan'] ?? '' }}"  class="form-control" placeholder="Masukan Uang Jalan"/>
+                                    <input type="text" id="uang_jalan" name="uang_jalan" value="{{ $data['joborder']['rute']['uang_jalan'] ?? '' }}"  readonly class="form-control" placeholder="Masukan Uang Jalan"/>
                                   </div>
                                   <div class="row">
                                     <div class="col-6">
