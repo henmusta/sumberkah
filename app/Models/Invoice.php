@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Invoice extends Model
 {
     public $timestamps = false;
-    protected $table = 'Invoice';
+    protected $table = 'invoice';
     protected $fillable = [
       'customer_id',
       'kode_invoice',
