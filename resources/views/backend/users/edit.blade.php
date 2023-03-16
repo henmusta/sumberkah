@@ -54,7 +54,7 @@
                             <option value="1" {{ $data['user']['active'] == 1 ? 'selected' : NULL }}>Active</option>
                           </select>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3" style=" display: none;">
                           <label for="select2Role">Role <span class="text-danger">*</span></label>
                           <select id="select2Role" style="width: 100% !important;" name="role_id">
                             <option value="{{ $data['userRole']['id'] }}">{{ $data['userRole']['name'] }}</option>

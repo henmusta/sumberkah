@@ -30,7 +30,8 @@ class RoleController extends Controller
     ];
 
     if ($request->ajax()) {
-      $data = Role::where('parent_id', '0');
+    //  $data = Role::where('parent', '0');
+      $data = Role::query();
       return DataTables::of($data)
         ->addColumn('action', function ($row) {
 

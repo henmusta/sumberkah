@@ -303,16 +303,34 @@ class UserController extends Controller
     return $response;
   }
 
-  public function destroy($id)
-  {
-    $data = User::find($id);
-    $response = response()->json($this->responseDelete(true));
-    if ($data->delete()) {
-        Fileupload::deleteFile($data->image, "images/thumbnail", "images/original");
-      $response = response()->json($this->responseDelete(true));
+//   public function destroy($id)
+//   {
+
+//     return $response;
+//   }
+
+
+ public function destroy($id)
+    {
+        DB::beginTransaction();
+        try {
+                $data = User::find($id);
+                $role = Role::find($data->roles()->first()->id);
+            if ($data->delete()) {
+                    $role->delete();
+                    Fileupload::deleteFile($data->image, "images/thumbnail", "images/original");
+                    $response = response()->json($this->responseDelete(true));
+              }
+        DB::commit();
+        $response = response()->json($this->responseDelete(true));
+      } catch (Throwable $throw) {
+        dd($throw);
+        DB::rollBack();
+        $response = response()->json($this->responseStore(false));
+      }
+
+      return $response;
     }
-    return $response;
-  }
 
   public function resetpassword(Request $request)
   {
