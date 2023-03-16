@@ -80,7 +80,7 @@
                                     </tr>
                                     <tr class="">
                                         <th class="text-left">Total Uang Jalan</th>
-                                        <td class="text-left">Rp. {{  number_format($data['joborder']['total_uang_jalan'],3,',','.') ?? '0' }}</td>
+                                        <td class="text-end">Rp. {{  number_format($data['joborder']['total_uang_jalan'],3,',','.') ?? '0' }}</td>
                                     </tr>
                                     <tr class="">
                                         <th class="text-left">Tanggal Payment</th>
