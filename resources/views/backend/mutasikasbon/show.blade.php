@@ -7,7 +7,7 @@
         <div class="card">
             <div class="card-header">
                 <div class="float-end">
-
+                    <a onclick="printDiv('printableArea')" class="btn btn-success me-1"><i class="fa fa-print"></i></a>
                     <a onclick="window.history.back();" class="btn btn-primary w-md">Kembali</a>
                     <div class="float-end" id="print">
                     </div>
