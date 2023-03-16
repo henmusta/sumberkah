@@ -200,7 +200,7 @@ tr.group:hover {
                         }
                     })
                     console.log(rows.data()[0].invoice.status_payment);
-                    let sisa_tagihan=  $.fn.dataTable.render.number('.', ',', 3, '').display(rows.data()[0].invoice.sisa_tagihan);
+                    let sisa_tagihan=  $.fn.dataTable.render.number('.', ',', 0, '').display(rows.data()[0].invoice.sisa_tagihan);
                     let url = (rows.data()[0].invoice.status_payment < 2) ? '<a class="btn btn-primary" href="paymentinvoice/' + rows.data()[0].invoice_id+ '/edit">Tambah Pembayaran</a>' : '<span class="badge bg-pill  bg-success">Lunas</span>';
 
                     return $('<tr/>')
@@ -212,7 +212,7 @@ tr.group:hover {
         columnDefs: [
           {
             targets: [2],
-            render: $.fn.dataTable.render.number('.', ',', 3, '')
+            render: $.fn.dataTable.render.number('.', ',', 0, '')
           }
 
         ],

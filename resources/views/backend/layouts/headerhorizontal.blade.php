@@ -90,7 +90,7 @@
                 </button>
                 <div class="dropdown-menu dropdown-menu-end pt-0">
                     <div class="p-3 border-bottom">
-                        <h6 class="mb-0">{{Auth::user()->name}}</h6>
+                       <a href="{{ url('backend/users') }}/{{Auth::user()->id}}/edit"><h6 class="mb-0">{{Auth::user()->name}}</h6></a>
                         <p class="mb-0 font-size-11 text-muted">{{Auth::user()->email}}</p>
                     </div>
                     <div class="dropdown-divider"></div>

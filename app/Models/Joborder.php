@@ -79,7 +79,7 @@ class Joborder extends Model
     }
     public function konfirmasijo()
     {
-      return $this->hasMany(Konfirmasijo::class, 'joborder_id')->with('createdby');
+      return $this->hasMany(KonfirmasiJo::class, 'joborder_id')->with('createdby');
     }
 
     public function gaji()

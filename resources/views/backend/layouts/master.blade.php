@@ -68,10 +68,6 @@
         </div>
         <!-- END layout-wrapper -->
 
-
-
-
-
         <!-- chat offcanvas -->
         <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasActivity" aria-labelledby="offcanvasActivityLabel">
             <div class="offcanvas-header border-bottom">
@@ -82,10 +78,146 @@
               ...
             </div>
         </div>
+        <div class="modal fade" id="modalChangePassword" tabindex="-1" role="dialog"
+        aria-labelledby="modalChangePasswordLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalResetLabel">Ubah Password</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div id="errorChangePassword" class="form-group m-4" style="display:none;">
+                    <div class="alert alert-danger" role="alert">
+                        <div class="alert-icon"><i class="flaticon-danger text-danger"></i></div>
+                        <div class="alert-text">
+                        </div>
+                    </div>
+                </div>
+                <form id="formChangePassword" method="POST" action="{{ route('backend.users.changepassword', Auth::id()) }}">
+                    <div class="modal-body">
+                        @csrf
+                        <div class="mb-3">
+                             <label>Password Lama <span class="text-danger">*</span></label>
+                            <div class="input-group auth-pass-inputgroup ">
+
+                                    <input type="password" id="old_password" name="old_password" class="form-control"
+                                        placeholder="Input password lama" />
+                                        <button class="btn btn-light shadow-none ms-0" type="button" onclick="myFunction()" id="password-addon"><i class="fa fa-eye"></i></button>
+                                </div>
+                            </div>
+                        <div class="mb-3">
+                            <label>Password Baru<span class="text-danger">*</span></label>
+                            <div class="input-group auth-pass-inputgroup ">
+                                <input type="password" id="password" name="password" class="form-control"
+                                    placeholder="Input password baru" />
+                                <button class="btn btn-light shadow-none ms-0" type="button" onclick="myFunctionnew()" id="password-addon"><i class="fa fa-eye"></i></button>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label>Retype Password Baru<span class="text-danger">*</span></label>
+                            <div class="input-group auth-pass-inputgroup ">
+                                 <input type="password" id="password_confirmation" name="password_confirmation" class="form-control"
+                                placeholder="Input password baru kembali" />
+                                <button class="btn btn-light shadow-none ms-0" type="button" onclick="myFunctionconfirm()" id="password-addon"><i class="fa fa-eye"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light-primary font-weight-bold" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary font-weight-bold">Submit</button>
+                      </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
         <!-- JAVASCRIPT -->
         @include('backend.layouts.footer')
     @include('backend.layouts.footerjs')
+    <script type="text/javascript">
+        $(document).ready(function () {
+                let modalChangePassword = document.getElementById('modalChangePassword');
+                const bsChangePassword = new bootstrap.Modal(modalChangePassword);
+
+                modalChangePassword.addEventListener('show.bs.modal', function (event) {
+
+                });
+
+                modalChangePassword.addEventListener('hidden.bs.modal', function (event) {
+
+                });
+
+                $("#formChangePassword").submit(function (e) {
+                e.preventDefault();
+                let form = $(this);
+                let btnSubmit = form.find("[type='submit']");
+                let btnSubmitHtml = btnSubmit.html();
+                let url = form.attr("action");
+                let data = new FormData(this);
+                $.ajax({
+                  beforeSend: function () {
+                    btnSubmit.addClass("disabled").html("<i class='fa fa-spinner fa-pulse fa-fw'></i> Loading ...").prop("disabled", "disabled");
+                  },
+                  cache: false,
+                  processData: false,
+                  contentType: false,
+                  type: "POST",
+                  url: url,
+                  data: data,
+                  success: function (response) {
+                    let errorChangePassword = $('#errorChangePassword');
+                    errorChangePassword.css('display', 'none');
+                    errorChangePassword.find('.alert-text').html('');
+                    btnSubmit.removeClass("disabled").html(btnSubmitHtml).removeAttr("disabled");
+                    if (response.status === "success") {
+                      toastr.success(response.message, 'Success !');
+                      bsChangePassword.hide();
+                    } else {
+                      toastr.error((response.message ? response.message : "Please complete your form"), 'Failed !');
+                      if (response.error !== undefined) {
+                        errorChangePassword.removeAttr('style');
+                        $.each(response.error, function (key, value) {
+                          errorChangePassword.find('.alert-text').append('<span style="display: block">' + value + '</span>');
+                        });
+                      }
+                    }
+                  },
+                  error: function (response) {
+                    btnSubmit.removeClass("disabled").html(btnSubmitHtml).removeAttr("disabled");
+                    toastr.error(response.responseJSON.message, 'Failed !');
+                  }
+                });
+              });
+
+              $('body').addClass('loaded');
+              $('h1').css('color', '#222222');
+
+        });
+       function myFunction() {
+          var x = document.getElementById("old_password");
+          if (x.type === "password") {
+            x.type = "text";
+          } else {
+            x.type = "password";
+          }
+       }
+       function myFunctionnew() {
+          var x = document.getElementById("password");
+          if (x.type === "password") {
+            x.type = "text";
+          } else {
+            x.type = "password";
+          }
+       }
+       function myFunctionconfirm() {
+          var x = document.getElementById("password_confirmation");
+          if (x.type === "password") {
+            x.type = "text";
+          } else {
+            x.type = "password";
+          }
+       }
+</script>
     </body>
 
 
