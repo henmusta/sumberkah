@@ -158,7 +158,7 @@ class DashboardController extends Controller
     {
       if ($request->ajax()) {
 
-        $data = Joborder::with('customer','ruteawal','ruteakhir','muatan','mobil', 'driver', 'rute', 'jenismobil','konfirmasijo')
+        $data = Joborder::with('customer','ruteawal','ruteakhir','muatan','mobil', 'driver', 'rute', 'jenismobil','konfirmasijo')->where('status_joborder', '1')
                             ->whereNull('invoice_id');
             // ->where('customer_id', $request['customer_id']);
         return DataTables::of($data)
