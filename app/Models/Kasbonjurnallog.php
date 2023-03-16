@@ -39,7 +39,7 @@ class Kasbonjurnallog extends Model
 
     public function gaji()
     {
-      return $this->belongsTo(penggajian::class, 'penggajian_id');
+      return $this->belongsTo(Penggajian::class, 'penggajian_id');
     }
 
 }
