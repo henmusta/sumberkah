@@ -312,7 +312,7 @@ class PaymentJoController extends Controller
 
 
 
-                        $payment = Paymentjo::updateOrCreate([
+                        $payment = PaymentJo::updateOrCreate([
                             'id' => $val['id']
                         ],[
                             'kasbon_id' =>   $kasbon['id'] ?? null,
@@ -369,7 +369,7 @@ class PaymentJoController extends Controller
                         ]);
                     }
                     // dd($payment_id );
-                    $cek_payment = Paymentjo::where([
+                    $cek_payment = PaymentJo::where([
                         ['joborder_id' , $joborder['id']],
                     ])->whereNotIn('id', $payment_id);
 
