@@ -19,7 +19,7 @@
                         </div>
                       </div>
                       <div class="d-flex flex-column">
-                        <div class="mb-3">
+                        {{-- <div class="mb-3">
                           <label class="mx-0 text-bold d-block">Photo</label>
                           <img id="avatar" src="{{ asset('assets/backend/images/users/avatar-1.jpg') }}"
                                style="object-fit: cover; border: 1px solid #d9d9d9" class="mb-2 border-2 mx-auto"
@@ -29,7 +29,7 @@
                           <p class="text-muted ms-75 mt-50"><small>Allowed JPG, JPEG or PNG. Max
                               size of
                               2000kB</small></p>
-                        </div>
+                        </div> --}}
                         <div class="mb-3">
                           <label>Nama Lengkap <span class="text-danger">*</span></label>
                           <input type="text" name="name" class="form-control" placeholder="Enter nama lengkap"/>

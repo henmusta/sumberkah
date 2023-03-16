@@ -28,7 +28,7 @@
                     <table id="Datatable" class="table table-bordered" style="width:100%">
                         <thead>
                             <tr>
-                                <th>Image</th>
+                                {{-- <th>Image</th> --}}
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Username</th>
@@ -147,12 +147,11 @@
           }
         },
         columns: [
-          {data: 'image', name: 'image'},
+        //   {data: 'image', name: 'image'},
           {data: 'name', name: 'name'},
           {data: 'email', name: 'email'},
           {data: 'username', name: 'username'},
           {data: 'active', name: 'active'},
-
           {data: 'roles.0.name', name: 'name', orderable: false, searchable: false},
           {data: 'cek_online', name: 'cek_online'},
           {data: 'action', name: 'action', orderable: false, searchable: false},
@@ -165,7 +164,7 @@
           },
           {
             className: 'dt-center',
-            targets: 4,
+            targets: 3,
             render: function (data, type, full, meta) {
               let status = {
                 0: {'title': 'Tidak Aktif', 'class': ' bg-danger'},
@@ -181,7 +180,7 @@
 
           {
             className: 'dt-center',
-            targets: 6,
+            targets: 5,
             render: function (data, type, full, meta) {
               let status = {
                 'false': {'title': 'OFFLINE', 'class': ' bg-danger'},

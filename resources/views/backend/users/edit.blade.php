@@ -20,7 +20,8 @@
                         </div>
                       </div>
                       <div class="d-flex flex-column">
-                        <div class="mb-3">
+
+                        {{-- <div class="mb-3">
                           <label class="mx-0 text-bold d-block">Photo</label>
                           <img id="avatar"
                                src="{{ $data['user']['image'] != NULL ? asset("/storage/images/thumbnail/".$data['user']['image']) : asset('assets/backend/images/users/avatar-1.jpg') }}"
@@ -31,7 +32,7 @@
                           <p class="text-muted ms-75 mt-50"><small>Allowed JPG, JPEG or PNG. Max
                               size of
                               2000kB</small></p>
-                        </div>
+                        </div> --}}
                         <div class="mb-3">
                           <label>Nama Lengkap <span class="text-danger">*</span></label>
                           <input type="text" name="name" class="form-control" placeholder="Enter nama lengkap"
