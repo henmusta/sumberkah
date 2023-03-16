@@ -238,13 +238,13 @@ class DriverController extends Controller
       $data = Driver::where('name', 'LIKE', '%' . $request->q . '%')
       ->when($status_jalan, function ($query, $status_jalan) {
         return $query->where('status_jalan', '!=', $status_jalan);
-     })
-     ->when($validasi, function ($query, $validasi) {
-        return $query->where('validasi', $validasi);
-     })
-     ->when($status_aktif, function ($query, $status_aktif) {
-        return $query->where('status_aktif', $status_aktif);
-     })
+        })
+        ->when($validasi, function ($query, $validasi) {
+            return $query->where('validasi', $validasi);
+        })
+        ->when($status_aktif, function ($query, $status_aktif) {
+            return $query->where('status_aktif', $status_aktif);
+        })
         ->orderBy('name')
         ->skip($offset)
         ->take($resultCount)
