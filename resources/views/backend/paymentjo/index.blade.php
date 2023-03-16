@@ -246,7 +246,7 @@ tr.group:hover {
                     let sisa_tagihan_uang_jalan =  $.fn.dataTable.render.number('.', ',', 0, '').display(rows.data()[0].joborder.sisa_uang_jalan);
                     let potongan_kasbon =  $.fn.dataTable.render.number('.', ',', 0, '').display(rows.data()[0].joborder.total_kasbon);
                     return $('<tr/>')
-                    .append('<td colspan="7"><div class="float-start"> KODE : ' + group + ' | JUMLAH BAYAR : (' + rows.count() + ') | POTONGAN UANG JALAN : ' + potongan_kasbon + ' | SISA TAGIHAN : ' + sisa_tagihan_uang_jalan +' </div><div class="float-end">'+url+'</div></td>')
+                    .append('<td colspan="7"><div class="float-start"> KODE : ' + group + ' | JUMLAH BAYAR : (' + rows.count() + ') | POTONGAN UANG JALAN : ' + potongan_kasbon + ' | SISA UANG JALAN : ' + sisa_tagihan_uang_jalan +' </div><div class="float-end">'+url+'</div></td>')
                     .attr('data-name', group)
                     .toggleClass('collapsed', collapsed);
                }

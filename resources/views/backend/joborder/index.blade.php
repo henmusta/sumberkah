@@ -122,7 +122,7 @@
                     <table id="Datatable" class="table table-bordered border-bottom w-100" style="width:100%">
                         <thead>
                             <tr>
-                                <th class="text-center">Id JO</th>
+                                <th width="10%" class="text-center">Id JO</th>
                                 <th>Tanggal</th>
                                 <th>Status</th>
                                 <th>Driver</th>
