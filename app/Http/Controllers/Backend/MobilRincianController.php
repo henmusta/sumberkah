@@ -16,6 +16,14 @@ use Throwable;
 class MobilRincianController extends Controller
 {
     use ResponseStatus;
+
+    function __construct()
+    {
+        $this->middleware('can:backend-mobilrincian-list', ['only' => ['index']]);
+        $this->middleware('can:backend-mobilrincian-create', ['only' => ['create', 'store']]);
+        $this->middleware('can:backend-mobilrincian-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('can:backend-mobilrincian-delete', ['only' => ['destroy']]);
+    }
     public function index(Request $request)
     {
         $config['page_title'] = "Data Tipe Kendaraan";
@@ -31,8 +39,18 @@ class MobilRincianController extends Controller
                 $edit = '<a class="dropdown-item" href="mobilrincian/' . $row->id . '/edit">Ubah</a>';
                 $delete = '  <a href="#" data-bs-toggle="modal" data-bs-target="#modalDelete" data-bs-id="' . $row->id . '" class="delete dropdown-item">Hapus</a>';
 
+                $perm = [
+                    'list' => Auth::user()->can('backend-customer-list'),
+                    'create' => Auth::user()->can('backend-customer-create'),
+                    'edit' => Auth::user()->can('backend-customer-edit'),
+                    'delete' => Auth::user()->can('backend-customer-delete'),
+                ];
+
                 $cek_edit =  $row->validasi == '0'  ? $edit : '';
                 $cek_delete =  $row->validasi == '0' ? $delete : '';
+
+                $cek_perm_edit = $perm['edit'] == 'true' ? $cek_edit : '';
+                $cek_perm_delete = $perm['delete'] == 'true' ? $cek_delete : '';
 
                 return '<div class="dropdown">
                 <a href="#" class="btn btn-secondary" data-bs-toggle="dropdown">
@@ -40,8 +58,8 @@ class MobilRincianController extends Controller
                 </a>
                 <div class="dropdown-menu" data-popper-placement="bottom-start" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(0px, 40px);">
                     '. $show.'
-                    '. $cek_edit.'
-                    '. $cek_delete.'
+                    '. $cek_perm_edit.'
+                    '. $cek_perm_delete.'
                     '. $validasi.'
                 </div>
             </div>';
