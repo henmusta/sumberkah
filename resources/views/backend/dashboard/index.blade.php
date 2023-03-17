@@ -14,30 +14,40 @@
             <button id="compress-button"><i class="fas fa-compress"></i></button>
             <div class="card-body">
             <!-- Nav tabs -->
+            <input type="hidden" id="cek_ijin" value="{{Auth::user()->can('backend-dashboard-ijin')}}">
+            <input type="hidden" id="cek_operasional" value="{{Auth::user()->can('backend-dashboard-operasional')}}">
+            <input type="hidden" id="cek_invoice" value="{{Auth::user()->can('backend-dashboard-invoice')}}">
                 <ul class="nav nav-pills nav-justified" role="tablist">
+                    @if(Auth::user()->can('backend-dashboard-ijin') == 'true')
                     <li class="nav-item waves-effect waves-light">
                         <a class="nav-link active" data-bs-toggle="tab" href="#home-1" role="tab" aria-selected="true">
                             <span class="d-block d-sm-none"><i class="fas fa-home"></i></span>
                             <span style="font-size: 24px" class="d-none d-sm-block">IJIN DAN DOKUMEN</span>
                         </a>
                     </li>
+                    @endif
+                    @if(Auth::user()->can('backend-dashboard-operasional') == 'true')
                     <li class="nav-item waves-effect waves-light">
                         <a class="nav-link" data-bs-toggle="tab" href="#profile-1" role="tab" aria-selected="false">
                             <span class="d-block d-sm-none"><i class="far fa-user"></i></span>
                             <span  style="font-size: 24px" class="d-none d-sm-block">OPERASIONAL</span>
                         </a>
                     </li>
+                    @endif
+                    @if(Auth::user()->can('backend-dashboard-invoice') == 'true')
                     <li class="nav-item waves-effect waves-light">
                         <a class="nav-link" data-bs-toggle="tab" href="#messages-1" role="tab" aria-selected="false">
                             <span class="d-block d-sm-none"><i class="far fa-envelope"></i></span>
                             <span  style="font-size: 24px" class="d-none d-sm-block">INVOICE</span>
                         </a>
                     </li>
+                    @endif
 
                 </ul>
 
                 <!-- Tab panes -->
                 <div class="tab-content p-3 text-muted">
+                    @if(Auth::user()->can('backend-dashboard-ijin') == 'true')
                     <div class="tab-pane active" id="home-1" role="tabpanel" style="padding-top:20px">
                         <p class="mb-0">
 
@@ -213,6 +223,8 @@
 
                         </p>
                     </div>
+                    @endif
+                    @if(Auth::user()->can('backend-dashboard-operasional') == 'true')
                     <div class="tab-pane" id="profile-1" role="tabpanel" style="padding-top:20px">
                         <p class="mb-0">
                             <div class="row">
@@ -271,6 +283,8 @@
                             </div>
                         </p>
                     </div>
+                    @endif
+                    @if(Auth::user()->can('backend-dashboard-invoice') == 'true')
                     <div class="tab-pane" id="messages-1" role="tabpanel" style="padding-top:20px">
                         <p class="mb-0">
                             <div class="row">
@@ -351,7 +365,7 @@
                             </div>
                         </p>
                     </div>
-
+                    @endif
                 </div>
 
             </div>
@@ -391,122 +405,96 @@
 <script>
 
     $(document).ready(function () {
-
-    let dataTablejo = $('#Datatablejo').DataTable({
-       responsive: true,
-       scrollX: false,
-       processing: true,
-       serverSide: true,
-       order: [[1, 'desc']],
-       lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
-       pageLength: 10,
-       ajax: {
-         url: "{{ route('backend.dashboard.dtjo') }}",
-         data: function (d) {
-           // d.status = $('#Select2Status').find(':selected').val();
-         }
-       },
-
-       columns: [
-         {
-               data: "id", name:'id',
-               render: function (data, type, row, meta) {
-                   return meta.row + meta.settings._iDisplayStart + 1;
-               }
-         },
-         {data: 'kode_joborder', name: 'kode_joborder'},
-         {data: 'driver.name', name: 'driver.name'},
-         {data: 'mobil.nomor_plat', name: 'mobil.nomor_plat'},
-         {data: 'jenismobil.name', name: 'jenismobil.name'},
-         {data: 'customer.name', name: 'customer.name'},
-         {data: 'muatan.name', name: 'muatan.name'},
-         {data: 'ruteawal.name', name: 'ruteawal.name'},
-         {data: 'ruteakhir.name', name: 'ruteakhir.name'},
-         {data: 'konfirmasijo.0.tgl_konfirmasi', name: 'konfirmasijo.0.tgl_konfirmasi'},
-         {data: 'action', name: 'action', orderable: false, searchable: false},
-       ],
-       columnDefs: [
+    let cek_ijin = $('#cek_ijin').val();
+    let cek_operasional = $('#cek_operasional').val();
+    let cek_invoice = $('#cek_invoice').val();
 
 
-       ],
-     });
+    //invoice
+    if(cek_invoice == '1'){
+        let dataTablejo = $('#Datatablejo').DataTable({
+        responsive: true,
+        scrollX: false,
+        processing: true,
+        serverSide: true,
+        order: [[1, 'desc']],
+        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        pageLength: 10,
+        ajax: {
+            url: "{{ route('backend.dashboard.dtjo') }}",
+            data: function (d) {
+            // d.status = $('#Select2Status').find(':selected').val();
+            }
+        },
 
-
-
-     let dataTableinvoice = $('#Datatableinvoice').DataTable({
-       responsive: true,
-       scrollX: false,
-       processing: true,
-       serverSide: true,
-       order: [[0, 'desc']],
-       lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
-       pageLength: 10,
-       ajax: {
-         url: "{{ route('backend.dashboard.dtinvoice') }}",
-         data: function (d) {
-           // d.status = $('#Select2Status').find(':selected').val();
-         }
-       },
-
-       columns: [
-         {
-               data: "id", name:'id',
-               render: function (data, type, row, meta) {
-                   return meta.row + meta.settings._iDisplayStart + 1;
-               }
-         },
-         {data: 'kode_invoice', name: 'kode_invoice'},
-         {data: 'customer.name', name: 'customer.name'},
-         {data: 'total_harga', name: 'total_harga'},
-         {data: 'tgl_jatuh_tempo', name: 'tgl_jatuh_tempo'},
-         {data: 'exp_due', className:'text-center', name: 'exp_due'},
-
-       ],
-       columnDefs: [
-          {
-            targets: [3],
-            render: $.fn.dataTable.render.number('.', ',', 0, '')
-          }
+        columns: [
+            {
+                data: "id", name:'id',
+                render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                }
+            },
+            {data: 'kode_joborder', name: 'kode_joborder'},
+            {data: 'driver.name', name: 'driver.name'},
+            {data: 'mobil.nomor_plat', name: 'mobil.nomor_plat'},
+            {data: 'jenismobil.name', name: 'jenismobil.name'},
+            {data: 'customer.name', name: 'customer.name'},
+            {data: 'muatan.name', name: 'muatan.name'},
+            {data: 'ruteawal.name', name: 'ruteawal.name'},
+            {data: 'ruteakhir.name', name: 'ruteakhir.name'},
+            {data: 'konfirmasijo.0.tgl_konfirmasi', name: 'konfirmasijo.0.tgl_konfirmasi'},
+            {data: 'action', name: 'action', orderable: false, searchable: false},
         ],
-     });
+        columnDefs: [
+
+
+        ],
+        });
 
 
 
-     let dataTablesim = $('#Datatablesim').DataTable({
-       responsive: true,
-       scrollX: false,
-       processing: true,
-       serverSide: true,
-       order: [[1, 'desc']],
-       lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
-       pageLength: 10,
-       ajax: {
-         url: "{{ route('backend.dashboard.dtdriver') }}",
-         data: function (d) {
-           // d.status = $('#Select2Status').find(':selected').val();
-         }
-       },
+        let dataTableinvoice = $('#Datatableinvoice').DataTable({
+        responsive: true,
+        scrollX: false,
+        processing: true,
+        serverSide: true,
+        order: [[0, 'desc']],
+        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        pageLength: 10,
+        ajax: {
+            url: "{{ route('backend.dashboard.dtinvoice') }}",
+            data: function (d) {
+            // d.status = $('#Select2Status').find(':selected').val();
+            }
+        },
 
-       columns: [
-         {
-               data: "id", name:'id',
-               render: function (data, type, row, meta) {
-                   return meta.row + meta.settings._iDisplayStart + 1;
-               }
-         },
-         {data: 'name', name: 'name'},
-         {data: 'telp', name: 'telp'},
-         {data: 'tgl_sim', name: 'tgl_sim'},
-         {data: 'exp_sim', className:'text-center', name: 'exp_sim'},
+        columns: [
+            {
+                data: "id", name:'id',
+                render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                }
+            },
+            {data: 'kode_invoice', name: 'kode_invoice'},
+            {data: 'customer.name', name: 'customer.name'},
+            {data: 'total_harga', name: 'total_harga'},
+            {data: 'tgl_jatuh_tempo', name: 'tgl_jatuh_tempo'},
+            {data: 'exp_due', className:'text-center', name: 'exp_due'},
 
-       ],
-       columnDefs: [
+        ],
+        columnDefs: [
+            {
+                targets: [3],
+                render: $.fn.dataTable.render.number('.', ',', 0, '')
+            }
+            ],
+        });
 
 
-       ],
-     });
-
-     let dataTablesupirtj = $('#Datatablesupirtj').DataTable({
+    }
+   //operasional
+    if(cek_operasional == '1'){
+        let dataTablesupirtj = $('#Datatablesupirtj').DataTable({
        responsive: true,
        scrollX: false,
        processing: true,
@@ -565,6 +553,44 @@
          {data: 'dump', className:'text-center', name: 'dump'},
        ],
      });
+    }
+   //ijin
+    if(cek_ijin ==  '1'){
+        let dataTablesim = $('#Datatablesim').DataTable({
+       responsive: true,
+       scrollX: false,
+       processing: true,
+       serverSide: true,
+       order: [[1, 'desc']],
+       lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+       pageLength: 10,
+       ajax: {
+         url: "{{ route('backend.dashboard.dtdriver') }}",
+         data: function (d) {
+           // d.status = $('#Select2Status').find(':selected').val();
+         }
+       },
+
+       columns: [
+         {
+               data: "id", name:'id',
+               render: function (data, type, row, meta) {
+                   return meta.row + meta.settings._iDisplayStart + 1;
+               }
+         },
+         {data: 'name', name: 'name'},
+         {data: 'telp', name: 'telp'},
+         {data: 'tgl_sim', name: 'tgl_sim'},
+         {data: 'exp_sim', className:'text-center', name: 'exp_sim'},
+
+       ],
+       columnDefs: [
+
+
+       ],
+     });
+
+
 
      let dataTablestnk = $('#Datatablestnk').DataTable({
        responsive: true,
@@ -731,6 +757,9 @@
 
        ],
      });
+
+    }
+
 
 
    });

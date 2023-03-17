@@ -70,6 +70,8 @@ class MenuManagerController extends Controller
               ])->max('sort') + 1
           ]);
 
+
+
           $menuPermission = MenuPermission::with('permissions')->find($request['menu_permission_id']);
           collect($menuPermission->permissions)->map(function ($permission) use ($request, $menuManager) {
             foreach ($request['permission'] ?? array() as $item):
@@ -145,6 +147,7 @@ class MenuManagerController extends Controller
       DB::beginTransaction();
       try {
         $roleId = $request['role_id'];
+        // dd($request['permission']);
         $menuManager = MenuManager::with(['menupermission', 'permissions'])->findOrFail($id);
         if ($request['type'] == 'database') {
           $menuManager->update([

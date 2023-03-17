@@ -126,23 +126,24 @@
                                              id="modalCreateList" {{ in_array("list", ($permissions ?? array())) ? 'checked' : '' }} >
                                       <label class="form-check-label" for="modalCreateList">List</label>
                                     </div>
+
                                     <div class="form-check mb-3">
-                                      <input class="form-check-input" name="permission[]" value="edit" type="checkbox"
-                                             id="modalCreateEdit" {{ in_array("edit", ($permissions ?? array())) ? 'checked' : '' }}>
-                                      <label class="form-check-label" for="modalCreateEdit">Edit</label>
+                                      <input class="form-check-input" name="permission[]" value="{{isset($data->id) ? $data->id == 1462 ? "invoice" : "edit" : "edit"}}" type="checkbox"
+                                             id="modalCreateEdit" {{ in_array(isset($data->id) ? $data->id == 1462 ? "invoice" : "edit" : "edit", ($permissions ?? array())) ? 'checked' : '' }}>
+                                      <label class="form-check-label" for="modalCreateEdit">{{isset($data->id) ? $data->id == 1462 ? "Invoice" : "Edit" : "Edit"}}</label>
                                     </div>
                                   </div>
                                   {{-- {{in_array("create", ($permissions ?? array()))}} --}}
                                   <div class="col-md-6">
                                     <div class="form-check mb-3">
-                                      <input class="form-check-input" name="permission[]" value="create" type="checkbox"
-                                             id="modalCreateCreate" {{ in_array("create", ($permissions ?? array())) ? 'checked' : '' }}>
-                                      <label class="form-check-label" for="modalCreateCreate">Create</label>
+                                      <input class="form-check-input" name="permission[]" value="{{ isset($data->id) ? $data->id == 1462 ? "operasional" : "create" : "create"}}" type="checkbox"
+                                             id="modalCreateCreate" {{ in_array( isset($data->id) ? $data->id == 1462 ? "operasional" : "create" : "create", ($permissions ?? array())) ? 'checked' : '' }}>
+                                      <label class="form-check-label" for="modalCreateCreate">{{isset($data->id) ? $data->id == 1462 ? "Operasional" : "Create" : "create"}}</label>
                                     </div>
                                     <div class="form-check mb-3">
-                                      <input class="form-check-input" name="permission[]" value="delete" type="checkbox"
-                                             id="modalCreateDelete" {{ in_array("delete", ($permissions ?? array())) ? 'checked' : '' }}>
-                                      <label class="form-check-label" for="modalCreateDelete">Delete</label>
+                                      <input class="form-check-input" name="permission[]" value="{{isset($data->id) ? $data->id == 1462 ? "ijin" : "delete" : "delete"}}" type="checkbox"
+                                             id="modalCreateDelete" {{ in_array(isset($data->id) ? $data->id == 1462 ? "ijin" : "delete" : "delete", ($permissions ?? array())) ? 'checked' : '' }}>
+                                      <label class="form-check-label" for="modalCreateDelete">{{ isset($data->id) ? $data->id == 1462 ? "Ijin Dan Document" : "Delete" : "delete"}}</label>
                                     </div>
                                   </div>
                                 </div>
