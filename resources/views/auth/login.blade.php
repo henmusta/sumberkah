@@ -27,7 +27,7 @@
     @php($bg = 'bg-white')
 @endif
    <body>
-        <section class="row d-flex justify-content-center align-items-center w-100 {{$bg}} g-0 p-4" style="min-height: 100vh">
+        <section class="row d-flex justify-content-center align-items-center w-100 {{$bg}} g-0 p-5" style="min-height: 100vh">
             <div class="col-lg-4">
                 <div class="card mb-0">
                     <div class="card-body">
@@ -54,7 +54,7 @@
                                             <input type="text" name="email" class="form-control" id="input-username" placeholder="Enter User Name" required>
                                             <label for="input-username">Username</label>
                                             <div class="form-floating-icon">
-                                                <i data-eva="people-outline"></i>
+                                                <i class="fa fa-id-badge"></i>
                                             </div>
 
                                         </div>
@@ -71,7 +71,7 @@
                                             </button>
                                             <label for="input-password">Password</label>
                                             <div class="form-floating-icon">
-                                                <i data-eva="lock-outline"></i>
+                                                <i class="fa fa-key"></i>
                                             </div>
                                         </div>
                                         <div class="mb-3">

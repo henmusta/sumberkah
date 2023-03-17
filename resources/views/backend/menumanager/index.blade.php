@@ -128,22 +128,22 @@
                                     </div>
 
                                     <div class="form-check mb-3">
-                                      <input class="form-check-input" name="permission[]" value="{{isset($data->id) ? $data->id == 1467 ? "invoice" : "edit" : "edit"}}" type="checkbox"
-                                             id="modalCreateEdit" {{ in_array(isset($data->id) ? $data->id == 1467 ? "invoice" : "edit" : "edit", ($permissions ?? array())) ? 'checked' : '' }}>
-                                      <label class="form-check-label" for="modalCreateEdit">{{isset($data->id) ? $data->id == 1467 ? "Invoice" : "Edit" : "Edit"}}</label>
+                                      <input class="form-check-input" name="permission[]" value="{{isset($data->menu_permission_id) ? $data->menu_permission_id == 1 ? "invoice" : "edit" : "edit"}}" type="checkbox"
+                                             id="modalCreateEdit" {{ in_array(isset($data->menu_permission_id) ? $data->menu_permission_id == 1 ? "invoice" : "edit" : "edit", ($permissions ?? array())) ? 'checked' : '' }}>
+                                      <label class="form-check-label" for="modalCreateEdit">{{isset($data->menu_permission_id) ? $data->menu_permission_id == 1 ? "Invoice" : "Edit" : "Edit"}}</label>
                                     </div>
                                   </div>
                                   {{-- {{in_array("create", ($permissions ?? array()))}} --}}
                                   <div class="col-md-6">
                                     <div class="form-check mb-3">
-                                      <input class="form-check-input" name="permission[]" value="{{ isset($data->id) ? $data->id == 1467 ? "operasional" : "create" : "create"}}" type="checkbox"
-                                             id="modalCreateCreate" {{ in_array( isset($data->id) ? $data->id == 1467 ? "operasional" : "create" : "create", ($permissions ?? array())) ? 'checked' : '' }}>
-                                      <label class="form-check-label" for="modalCreateCreate">{{isset($data->id) ? $data->id == 1467 ? "Operasional" : "Create" : "create"}}</label>
+                                      <input class="form-check-input" name="permission[]" value="{{ isset($data->menu_permission_id) ? $data->menu_permission_id == 1 ? "operasional" : "create" : "create"}}" type="checkbox"
+                                             _id="modalCreateCreate" {{ in_array( isset($data->menu_permission_id) ? $data->menu_permission_id == 1 ? "operasional" : "create" : "create", ($permissions ?? array())) ? 'checked' : '' }}>
+                                      <label class="form-check-label" for="modalCreateCreate">{{isset($data->menu_permission_id) ? $data->menu_permission_id == 1 ? "Operasional" : "Create" : "create"}}</label>
                                     </div>
                                     <div class="form-check mb-3">
-                                      <input class="form-check-input" name="permission[]" value="{{isset($data->id) ? $data->id == 1467 ? "ijin" : "delete" : "delete"}}" type="checkbox"
-                                             id="modalCreateDelete" {{ in_array(isset($data->id) ? $data->id == 1467 ? "ijin" : "delete" : "delete", ($permissions ?? array())) ? 'checked' : '' }}>
-                                      <label class="form-check-label" for="modalCreateDelete">{{ isset($data->id) ? $data->id == 1467 ? "Ijin Dan Document" : "Delete" : "delete"}}</label>
+                                      <input class="form-check-input" name="permission[]" value="{{isset($data->menu_permission_id) ? $data->menu_permission_id == 1 ? "ijin" : "delete" : "delete"}}" type="checkbox"
+                                             id="modalCreateDelete" {{ in_array(isset($data->menu_permission_id) ? $data->menu_permission_id == 1 ? "ijin" : "delete" : "delete", ($permissions ?? array())) ? 'checked' : '' }}>
+                                      <label class="form-check-label" for="modalCreateDelete">{{ isset($data->menu_permission_id) ? $data->menu_permission_id == 1 ? "Ijin Dan Document" : "Delete" : "delete"}}</label>
                                     </div>
                                   </div>
                                 </div>
