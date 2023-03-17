@@ -210,7 +210,7 @@
         });
         location.href = '{{ route('backend.menu.index') }}?' + params.toString();
       });
-      $('#menuList').nestable({maxDepth: 3}).on('change', function () {
+      $('#menuList').nestable({maxDepth: 2}).on('change', function () {
         let json_values = window.JSON.stringify($(this).nestable('serialize'));
         $("#output").val(json_values);
         $("#changeHierarchy [type='submit']").fadeIn();
