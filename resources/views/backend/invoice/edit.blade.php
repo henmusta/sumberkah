@@ -73,7 +73,7 @@
                                 <div class="col-md-6">
                                       <div class="mb-3">
                                         <label>Sub Total<span class="text-danger">*</span></label>
-                                        <input type="text" id="sub_total" value="{{ $data['invoice']['sub_total'] }}" name="sub_total"  class="form-control"/>
+                                        <input type="text" id="sub_total" value="{{ $data['invoice']['sub_total'] }}" name="sub_total" readonly  class="form-control"/>
                                       </div>
                                       <div class="mb-3">
                                         <label for="activeSelect">Pilih PPN<span class="text-danger">*</span></label>
@@ -116,7 +116,7 @@
                     </div>
 
                     <div class="card-body">
-                        <div class="table-responsove">
+                        <div class="table-responsive">
                             <table id="Datatable" class="table table-bordered border-bottom w-100" style="width:100%">
                                 <thead>
                                     <tr>

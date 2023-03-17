@@ -43,17 +43,38 @@ class PaymentInvoiceController extends Controller
 
           return DataTables::of($data)
             ->addColumn('action', function ($row) {
-                $show = '<a href="' . route('backend.driver.show', $row->id) . '" class="dropdown-item">Detail</a>';
-                $edit = '<a class="dropdown-item" href="driver/' . $row->id . '/edit">Ubah</a>';
+                $show = '<a href="' . route('backend.invoice.show', $row->invoice_id) . '" class="dropdown-item">Detail</a>';
+
+                $edit = '<a href="#" data-bs-toggle="modal" data-bs-target="#modalEdit"
+                    data-bs-id="' . $row->id . '"
+                    data-bs-nominal="' . $row->nominal . '"
+                    data-bs-keterangan="' . $row->keterangan . '"
+                    data-bs-jenis_payment="' . $row->jenis_payment . '"
+                    class="edit dropdown-item">Edit</a>';
+
                 $delete = '  <a href="#" data-bs-toggle="modal" data-bs-target="#modalDelete" data-bs-id="' . $row->id . '" class="delete dropdown-item">Hapus</a>';
+                $perm = [
+                    'list' => Auth::user()->can('backend-paymentinvoice-list'),
+                    'create' => Auth::user()->can('backend-paymentinvoice-create'),
+                    'edit' => Auth::user()->can('backend-paymentinvoice-edit'),
+                    'delete' => Auth::user()->can('backend-paymentinvoice-delete'),
+                ];
+
+                $cek_edit =  $row->invoice->status_payment != '2'  ? $edit : '';
+                $cek_delete =  $row->invoice->status_payment != '2' ? $delete : '';
+
+                $cek_perm_edit = $perm['edit'] == 'true' ? $cek_edit : '';
+                $cek_perm_delete = $perm['delete'] == 'true' ? $cek_delete : '';
+
+
                 return '<div class="dropdown">
                 <a href="#" class="btn btn-secondary" data-bs-toggle="dropdown">
                     Aksi <i class="mdi mdi-chevron-down"></i>
                 </a>
                 <div class="dropdown-menu" data-popper-placement="bottom-start" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(0px, 40px);">
                     '. $show.'
-                    '. $edit.'
-                    '. $delete.'
+                    '. $cek_perm_edit.'
+                    '. $cek_perm_delete.'
                 </div>
             </div>';
 
@@ -236,5 +257,104 @@ class PaymentInvoiceController extends Controller
           return $response;
     }
 
+    public function updatesingle(Request $request)
+    {
+          $validator = Validator::make($request->all(), [
+
+            'nominal' => "required",
+            'jenis_payment'  => "required"
+          ]);
+
+          DB::beginTransaction();
+          if ($validator->passes()) {
+            try {
+
+                 $paymentinvoice = PaymentInvoice::findOrFail($request['id']);
+                //  dd($paymentinvoice);
+                 $invoice = Invoice::findOrFail( $paymentinvoice['invoice_id']);
+
+                $old_pay = $invoice['total_payment'] - $paymentinvoice['nominal'];
+                $total_payment =   $old_pay + $request['nominal'];
+
+                //  dd($old_pay, $total_payment,  $request['nominal']);
+                    $paymentinvoice->update([
+                        'nominal' => $request['nominal'],
+                        'jenis_payment' => $request['jenis_payment'],
+                        'keterangan' => $request['keterangan']
+                    ]);
+
+                    // dd($total_payment);
+
+                $total_invoice = $invoice['total_harga'] - $total_payment;
+
+         //       dd( $total_invoice, $invoice['total_harga'], $total_payment);
+              //  dd($total_sisa_uang_jalan, $total_payment, $total_kasbon);
+                if( $total_invoice < 0 ){
+                    $response = response()->json([
+                        'status' => 'error',
+                        'message' => 'Nominal Melebihi Sisa Tagihan'
+                    ]);
+                }else{
+
+                    $status =  $total_invoice == $invoice['total_harga'] ? '0' : '1';
+                    $status =  $total_invoice <= 0 ? '2' : $status;
+                    // dd($total_sisa_uang_jalan);
+                    $invoice->update([
+                        'total_payment'=> $total_payment,
+                        'sisa_tagihan'=> $total_invoice,
+                        'status_payment'=> $status
+                    ]);
+
+                    DB::commit();
+                    $response = response()->json($this->responseStore(true));
+                }
+
+
+            }catch (Throwable $throw) {
+                dd($throw);
+                DB::rollBack();
+                $response = response()->json([
+                    'status' => 'error',
+                    'message' => 'Ada Kesalahan'
+                ]);
+            }
+          } else {
+            $response = response()->json(['error' => $validator->errors()->all()]);
+          }
+          return $response;
+    }
+
+    public function destroy($id)
+    {
+        DB::beginTransaction();
+        try {
+         $data = PaymentInvoice::findOrFail($id);
+            if ($data->delete()) {
+                $invoice = Invoice::where('id', $data['invoice_id'])->first();
+
+                $total_payment = $invoice['total_payment'] - $data['nominal'];
+
+                $total_sisa_invoice = $invoice['sisa_tagihan'] + $data['nominal'];
+                $status =  $total_sisa_invoice == $invoice['total_harga'] ? '0' : '1';
+
+
+
+                $invoice->update([
+                    'total_payment'=> $total_payment,
+                    'sisa_tagihan'=>  $total_sisa_invoice,
+                    'status_payment'=> $status
+                ]);
+
+            }
+        DB::commit();
+        $response = response()->json($this->responseDelete(true));
+      } catch (Throwable $throw) {
+        dd($throw);
+        DB::rollBack();
+        $response = response()->json($this->responseStore(false));
+      }
+
+      return $response;
+    }
 
 }

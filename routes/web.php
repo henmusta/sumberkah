@@ -129,6 +129,7 @@ Route::middleware('auth:henmus')->group(function(){
 
 
             //PaymentInvoice
+            Route::put('paymentinvoice/updatesingle', [Backend\PaymentInvoiceController::class, 'updatesingle'])->name('paymentinvoice.updatesingle');
             Route::resource('paymentinvoice', Backend\PaymentInvoiceController::class);
 
 
@@ -138,6 +139,7 @@ Route::middleware('auth:henmus')->group(function(){
             Route::resource('penggajian', Backend\PenggajianController::class);
 
             //PaymentGaji
+            Route::put('paymentgaji/updatesingle', [Backend\PaymentGajiController::class, 'updatesingle'])->name('paymentgaji.updatesingle');
             Route::resource('paymentgaji', Backend\PaymentGajiController::class);
 
 

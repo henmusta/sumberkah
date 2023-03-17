@@ -8,58 +8,60 @@
         <div class="card">
             <div class="card-header mb-3">
                 <h5 class="card-title mb-3">Table {{ $config['page_title'] }}</h5>
-                <div class="d-flex align-items-start">
-                    <div class="flex-grow-1">
-                        <div class="col-xl-12">
-                            <div class="mt-xl-0 mt-4">
+                <div class="col-md-xl-12">
+                    <div class="mt-xl-0 mt-4">
+                        <div class="d-flex align-items-start">
+                            <div class="flex-grow-1">
                                 <div class="d-flex gap-2 flex-wrap mb-3 text-center">
                                     <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample2" aria-expanded="true" aria-controls="multiCollapseExample2">Filter</button>
                                 </div>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="multi-collapse collapse show" id="multiCollapseExample2" style="">
-                                            <div class="card border shadow-none card-body text-muted mb-0">
-                                                <div class="row">
-                                                    <div class="col-8">
-                                                        <div class="mb-3">
-                                                            <label>Id Joborder<span class="text-danger">*</span></label>
-                                                            <select id="select2Joborder" style="width: 100% !important;" name="joborder_id">
+                            </div>
+                            <div class="flex-shrink-0">
+                                <a class="btn btn-primary " href="{{ route('backend.konfirmasijo.create') }}">
+                                    Tambah
+                                    <i class="fas fa-plus"></i>
+                                </a>
+                            </div>
+                        </div>
 
-                                                            </select>
-                                                          </div>
-                                                    </div>
-                                                    <div class="col-4 text-end" style="padding-top:30px;">
-                                                        <a id="terapkan_filter" class="btn btn-success">
-                                                            Terapkan Filter
-                                                            <i class="fas fa-align-justify"></i>
-                                                        </a>
-                                                    </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="multi-collapse collapse show" id="multiCollapseExample2" style="">
+                                    <div class="card border shadow-none card-body text-muted mb-0">
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <div class="mb-3">
+                                                    <label>Id Joborder<span class="text-danger">*</span></label>
+                                                    <select id="select2Joborder" style="width: 100% !important;" name="joborder_id">
 
-                                                </div>
-
-
-
-
-
-
+                                                    </select>
+                                                  </div>
                                             </div>
+                                            <div class="col-md-4 text-end" style="padding-top:30px;">
+                                                <a id="terapkan_filter" class="btn btn-success">
+                                                    Terapkan Filter
+                                                    <i class="fas fa-align-justify"></i>
+                                                </a>
+                                            </div>
+
                                         </div>
+
+
+
+
+
+
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="flex-shrink-0">
-                        <a class="btn btn-primary " href="{{ route('backend.konfirmasijo.create') }}">
-                            Tambah
-                            <i class="fas fa-plus"></i>
-                        </a>
-                    </div>
                 </div>
+
 
             </div>
             <div class="card-body">
-                <div class="table-responsove">
+                <div class="table-responsive">
                     <table id="Datatable" class="table table-bordered border-bottom w-100" style="width:100%">
                         <thead>
                             <tr>

@@ -80,19 +80,19 @@
                                     </tr>
                                     <tr class="">
                                         <th class="text-left">Total Uang Jalan</th>
-                                        <td class="text-end">Rp. {{  number_format($data['joborder']['total_uang_jalan'],3,',','.') ?? '0' }}</td>
+                                        <td class="text-end">Rp. {{  number_format($data['joborder']['total_uang_jalan'],0,',','.') ?? '0' }}</td>
                                     </tr>
                                     <tr class="">
                                         <th class="text-left">Tanggal Payment</th>
-                                        <td class="text-end">Rp. {{  number_format($data['joborder']['total_payment'],3,',','.') ?? '0' }}</td>
+                                        <td class="text-end">Rp. {{  number_format($data['joborder']['total_payment'],0,',','.') ?? '0' }}</td>
                                     </tr>
                                     <tr class="">
                                         <th class="text-left">Total Kasbon</th>
-                                        <td class="text-end">Rp. {{  number_format($data['joborder']['total_kasbon'],3,',','.') ?? '0' }}</td>
+                                        <td class="text-end">Rp. {{  number_format($data['joborder']['total_kasbon'],0,',','.') ?? '0' }}</td>
                                     </tr>
                                     <tr class="">
                                         <th class="text-left">Sisa Uang Jalan</th>
-                                        <td class="text-end">Rp. {{  number_format($data['joborder']['sisa_uang_jalan'],3,',','.') ?? '0' }}</td>
+                                        <td class="text-end">Rp. {{  number_format($data['joborder']['sisa_uang_jalan'],0,',','.') ?? '0' }}</td>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -155,7 +155,7 @@
                 <div class="row" style="padding-top:10px;">
                     <h6 class="main-content-label mb-1">Pembayaran</h6>
                     <div class="col-12">
-                        <div class="table-responsove">
+                        <div class="table-responsive">
                             <table id="Datatable" class="table table-bordered border-bottom w-100" style="width:100%">
                                 <thead>
                                     <tr>

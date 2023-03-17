@@ -100,7 +100,7 @@
                     <div id="tgl_bayar" class="card-body" style="border: 1px solid #fff; padding:20px;" type="hidden">
                         <div class="row" >
 
-                                <div class="col-6">
+                                <div class="col-md-6">
                                     <div class="mb-3">
                                         <label>Tanggal Pembayaran<span class="text-danger">*</span></label>
                                         <input type="text" id="tgl_pembayaran" value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" name="tgl_pembayaran"  class="form-control" placeholder="Masukan Tanggal Joborder"/>
@@ -108,7 +108,7 @@
                                 </div>
 
 
-                                <div class="col-6">
+                                <div class="col-md-6">
                                     <div class="mb-3">
                                         <label>Sisa Uang Jalan<span class="text-danger">*</span></label>
                                         <input type="text" id="sisa_uang_jalan" value="0" name="sisa_uang_jalan"  class="form-control text-end" style="font-size: 24px; color:black;" disabled/>
@@ -121,7 +121,7 @@
 
                     <div id="table_pembayaran" class="card-body" style=" padding:20px;">
                         <div class="row" >
-                            <div class="col-4">
+                            <div class="col-md-6">
                                 <div class="mb-3">
                                     <label>Jumlah Bon Tersedia<span class="text-danger">*</span></label>
                                     <input type="text" id="kasbon" value="0" name="kasbon"  class="form-control" style="font-size: 24px; color:black;" disabled/>
@@ -132,6 +132,7 @@
                         <div class="row" >
                             <div class="col-12">
                                  <label> Tabel Pembayaran<span class="text-danger">*</span></label>
+                                 <div class="table-responsive ">
                                     <table id="Datatable" class="table " width="100%">
                                         <thead>
                                             <tr>
@@ -179,6 +180,7 @@
                                             </tr>
                                         </tfoot><br>
                                     </table>
+                                 </div>
                             </div>
                         </div>
                     </div>
@@ -349,7 +351,7 @@ if(cek_joborder_id != ''){
 			columns : [
 
 				{
-					data 		: 'jenis_pembayarab',
+					data 		: 'jenis_pembayaran',
 					className 	: 'text-left',
 					width 		: '150px',
 					render 		: function ( columnData, type, rowData, meta ) {
@@ -371,7 +373,7 @@ if(cek_joborder_id != ''){
 					width 		: '150px',
 					render 		: function ( columnData, type, rowData, meta ) {
                         return String(`
-							<input id="keterangan` + meta.row + `" class="form-control" value="`+ columnData +`" name="payment[`+ meta.row +`][keterangan]" required data-column="keterangan" >
+							<input id="keterangan` + meta.row + `" class="form-control"  style="width: 250px;" value="`+ columnData +`" name="payment[`+ meta.row +`][keterangan]" required data-column="keterangan" >
 						`).trim();
 					}
 				},
@@ -382,7 +384,7 @@ if(cek_joborder_id != ''){
 					render 		: function ( columnData, type, rowData, meta ) {
                         return String(`
                             <input name="payment[`+ meta.row +`][kasbon_id]" type="hidden" value="`+ rowData.kasbon_id +`" >
-							<input id="keterangan_kasbon` + meta.row + `" class="form-control" value="`+ columnData +`" name="payment[`+ meta.row +`][keterangan_kasbon]" data-column="keterangan" >
+							<input id="keterangan_kasbon` + meta.row + `" class="form-control"  style="width: 250px;" value="`+ columnData +`" name="payment[`+ meta.row +`][keterangan_kasbon]" data-column="keterangan" >
 						`).trim();
 					}
 				},
@@ -392,7 +394,7 @@ if(cek_joborder_id != ''){
 					width 		: '150px',
 					render 		: function ( columnData, type, rowData, meta ) {
 						return String(`
-							<input id="num_nominal_payment` + meta.row + `" class="form-control text-end" value="`+ columnData +`" name="payment[`+ meta.row +`][nominal]" required data-column="nominal" >
+							<input id="num_nominal_payment` + meta.row + `" class="form-control text-end"  style="width: 250px;" value="`+ columnData +`" name="payment[`+ meta.row +`][nominal]" required data-column="nominal" >
 						`).trim();
 					}
 				},
@@ -402,7 +404,7 @@ if(cek_joborder_id != ''){
 					width 		: '150px',
 					render 		: function ( columnData, type, rowData, meta ) {
 						return String(`
-							<input id="num_nominal_kasbon` + meta.row + `" class="form-control text-end" value="`+ columnData +`" name="payment[`+ meta.row +`][nominal_kasbon]" required data-column="nominal" >
+							<input id="num_nominal_kasbon` + meta.row + `" class="form-control text-end"  style="width: 250px;" value="`+ columnData +`" name="payment[`+ meta.row +`][nominal_kasbon]" required data-column="nominal" >
 						`).trim();
 					}
 				},

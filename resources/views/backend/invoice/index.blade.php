@@ -8,127 +8,132 @@
         <div class="card">
             <div class="card-header mb-3">
                 <h5 class="card-title mb-3">Table {{ $config['page_title'] }}</h5>
-                <div class="d-flex align-items-start">
-                    <div class="flex-grow-1">
-                        <div class="col-xl-12">
-                            <div class="mt-xl-0 mt-4">
+                <div class="col-md-xl-12">
+                    <div class="mt-xl-0 mt-4">
+
+                        <div class="d-flex align-items-start">
+                            <div class="flex-grow-1">
                                 <div class="d-flex gap-2 flex-wrap mb-3 text-center">
                                     <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample2" aria-expanded="true" aria-controls="multiCollapseExample2">Filter</button>
                                 </div>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="multi-collapse collapse show" id="multiCollapseExample2" style="">
-                                            <div class="card border shadow-none card-body text-muted mb-0">
+                            </div>
+                            <div class="flex-shrink-0">
+                                <a class="btn btn-primary " href="{{ route('backend.invoice.create') }}">
+                                    Tambah
+                                    <i class="fas fa-plus"></i>
+                                </a>
+                            </div>
+                        </div>
 
-                                                <div class="row">
-                                                    <div class="col-4">
-                                                        <div class="mb-3">
-                                                            <label>Status Payment<span class="text-danger">*</span></label>
-                                                            <select id="select2StatusPayment" style="width: 100% !important;" name="status_Payment">
-                                                                <option value=""></option>
-                                                                <option value="0">Belum Bayar</option>
-                                                                <option value="1">Cicilan</option>
-                                                                <option value="2">Lunas</option>
-                                                            </select>
-                                                        </div>
 
-                                                    </div>
-                                                    <div class="col-4">
-                                                          <div class="mb-3">
-                                                            <label>Tanggal Jatuh Tempo<span class="text-danger">*</span></label>
-                                                            <input type="text" id="tgl_jatuh_tempo" class="form-control datePicker" name="tgl_invoice" placeholder="Tanggal Jatuh Tempo" value=""/>
-                                                          </div>
-                                                    </div>
-                                                    <div class="col-4">
-                                                        <div class="mb-3">
-                                                            <label>Nomor Invoice<span class="text-danger">*</span></label>
-                                                            <select id="select2Invoice" style="width: 100% !important;" name="invoice_id">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="multi-collapse collapse show" id="multiCollapseExample2" style="">
+                                    <div class="card border shadow-none card-body text-muted mb-0">
 
-                                                            </select>
-                                                          </div>
-                                                    </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="mb-3">
+                                                    <label>Status Payment<span class="text-danger">*</span></label>
+                                                    <select id="select2StatusPayment" style="width: 100% !important;" name="status_Payment">
+                                                        <option value=""></option>
+                                                        <option value="0">Belum Bayar</option>
+                                                        <option value="1">Cicilan</option>
+                                                        <option value="2">Lunas</option>
+                                                    </select>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="col-4">
-                                                        <div class="mb-3">
-                                                            <label>Customer<span class="text-danger">*</span></label>
-                                                            <select id="select2Customer" style="width: 100% !important;" name="customer_id">
-
-                                                            </select>
-                                                          </div>
-
-                                                    </div>
-                                                    <div class="col-4">
-                                                        <div class="mb-3">
-                                                            <label>PPN<span class="text-danger">*</span></label>
-                                                            <select id="select2Ppn" style="width: 100% !important;" name="ppn">
-                                                                <option value=""></option>
-                                                                <option value="Iya">Iya</option>
-                                                                <option value="Tidak">Tidak</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-4">
-                                                        <div class="mb-3">
-                                                            <label>Tanggal Invoice<span class="text-danger">*</span></label>
-                                                            <input type="text" id="tgl_invoice" class="form-control datePicker" name="tgl_invoice" placeholder="Tanggal Invoice" value=""/>
-                                                          </div>
-                                                    </div>
-
-
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-8">
-                                                        <div class="mb-3">
-                                                            <label>Filter Tanggal</label>
-                                                            <div class=" input-group mb-3">
-                                                                <input type="text" id="tgl_awal" class="form-control datePicker"
-                                                                        placeholder="Tanggal Awal" value=""
-                                                                       />
-                                                                <span class="input-group-text" id="basic-addon2">S/D</span>
-                                                                <input type="text" id="tgl_akhir" class="form-control datePicker"
-                                                                        placeholder="Tanggal Akhir" value=""
-                                                                        />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-2 text-end" style="padding-top:30px;">
-                                                        <a id="terapkan_filter" class="btn btn-success">
-                                                            Terapkan Filter
-                                                            <i class="fas fa-align-justify"></i>
-                                                        </a>
-                                                    </div>
-                                                    <div class="col-2 text-end" style="padding-top:30px;">
-                                                        <div id="print">
-                                                        </div>
-                                                    </div>
-
-
-                                                </div>
-
-
-
-
-
 
                                             </div>
+                                            <div class="col-md-4">
+                                                  <div class="mb-3">
+                                                    <label>Tanggal Jatuh Tempo<span class="text-danger">*</span></label>
+                                                    <input type="text" id="tgl_jatuh_tempo" class="form-control datePicker" name="tgl_invoice" placeholder="Tanggal Jatuh Tempo" value=""/>
+                                                  </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="mb-3">
+                                                    <label>Nomor Invoice<span class="text-danger">*</span></label>
+                                                    <select id="select2Invoice" style="width: 100% !important;" name="invoice_id">
+
+                                                    </select>
+                                                  </div>
+                                            </div>
                                         </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="mb-3">
+                                                    <label>Customer<span class="text-danger">*</span></label>
+                                                    <select id="select2Customer" style="width: 100% !important;" name="customer_id">
+
+                                                    </select>
+                                                  </div>
+
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="mb-3">
+                                                    <label>PPN<span class="text-danger">*</span></label>
+                                                    <select id="select2Ppn" style="width: 100% !important;" name="ppn">
+                                                        <option value=""></option>
+                                                        <option value="Iya">Iya</option>
+                                                        <option value="Tidak">Tidak</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="mb-3">
+                                                    <label>Tanggal Invoice<span class="text-danger">*</span></label>
+                                                    <input type="text" id="tgl_invoice" class="form-control datePicker" name="tgl_invoice" placeholder="Tanggal Invoice" value=""/>
+                                                  </div>
+                                            </div>
+
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <div class="mb-3">
+                                                    <label>Filter Tanggal</label>
+                                                    <div class=" input-group mb-3">
+                                                        <input type="text" id="tgl_awal" class="form-control datePicker"
+                                                                placeholder="Tanggal Awal" value=""
+                                                               />
+                                                        <span class="input-group-text" id="basic-addon2">S/D</span>
+                                                        <input type="text" id="tgl_akhir" class="form-control datePicker"
+                                                                placeholder="Tanggal Akhir" value=""
+                                                                />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 text-end" style="padding-top:30px;">
+                                                <a id="terapkan_filter" class="btn btn-success">
+                                                    Terapkan Filter
+                                                    <i class="fas fa-align-justify"></i>
+                                                </a>
+                                            </div>
+                                            <div class="col-md-2 text-end" style="padding-top:30px;">
+                                                <div id="print">
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+
+
+
+
+
+
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="flex-shrink-0">
-                        <a class="btn btn-primary " href="{{ route('backend.invoice.create') }}">
-                            Tambah
-                            <i class="fas fa-plus"></i>
-                        </a>
-                    </div>
                 </div>
+
+
 
             </div>
             <div class="card-body">
-                <div class="table-responsove">
+                <div class="table-responsive">
                     <table id="Datatable" class="table table-bordered border-bottom w-100" style="width:100%">
                         <thead>
                             <tr>

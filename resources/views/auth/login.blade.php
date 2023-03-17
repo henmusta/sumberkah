@@ -30,7 +30,7 @@
         <div class="auth-page">
             <div class="container-fluid p-0">
                 <div class="row g-0 align-items-center {{$bg}}">
-                    <div class="col-xxl-4 col-lg-4 col-md-6">
+                    <div class="col-xxl-4 col-lg-4 col-6">
                         <div id="errorCreate" class="mb-3" style="display:none;">
                             <div class="alert alert-danger" role="alert">
                               <div class="alert-text">
@@ -112,7 +112,7 @@
                         <!-- end auth full page content -->
                     </div>
                     <!-- end col -->
-                    <div class="col-xxl-8 col-lg-8 col-md-6">
+                    <div class="col-xxl-8 col-lg-8 col-6">
                         <div class="auth-bg {{$bg}} py-md-5 p-4 d-flex">
                             <div class="bg-overlay bg-white"></div>
                             <!-- end bubble effect -->
@@ -181,9 +181,7 @@
         <!-- JAVASCRIPT -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="{{asset('assets/backend/libs/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
-        <script src="{{asset('assets/backend/libs/metismenujs/metismenujs.min.js')}}"></script>
-        <script src="{{asset('assets/backend/libs/simplebar/simplebar.min.js')}}"></script>
-        <script src="{{asset('assets/backend/libs/eva-icons/eva.min.js')}}"></script>
+
 
         <script src="{{asset('assets/backend/js/pages/pass-addon.init.js')}}"></script>
 

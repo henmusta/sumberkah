@@ -6,23 +6,35 @@
     <div class="container-fluid">
         <div class="card">
             <div class="card-header">
-                <div class="float-end">
-                    <a onclick="printDiv('printableArea')" class="btn btn-success me-1"><i class="fa fa-print"></i></a>
-                    <a onclick="window.history.back();" class="btn btn-primary w-md">Kembali</a>
-                    <div class="float-end" id="print">
-                    </div>
-                </div>
+
                 <div class="col-xl-12">
                     <div class="mt-xl-0 mt-4">
-                        <div class="d-flex gap-2 flex-wrap mb-3 text-center">
-                            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample2" aria-expanded="true" aria-controls="multiCollapseExample2">Filter</button>
+                        <div class="d-flex align-items-start">
+
+
+                            <div class="flex-grow-1">
+                                <div class="col-xl-12">
+                                    <div class="d-flex gap-2 flex-wrap mb-3 text-center">
+                                        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample2" aria-expanded="true" aria-controls="multiCollapseExample2">Filter</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex-shrink-0">
+                                <div class="float-end">
+                                    <a onclick="printDiv('printableArea')" class="btn btn-success me-1"><i class="fa fa-print"></i></a>
+                                    <a onclick="window.history.back();" class="btn btn-primary w-md">Kembali</a>
+                                    <div class="float-end" id="print">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
                         <div class="row">
                             <div class="col-12">
                                 <div class="multi-collapse collapse show" id="multiCollapseExample2" style="">
                                     <div class="card border shadow-none card-body text-muted mb-0">
                                         <div class="row">
-                                            <div class="col-6">
+                                            <div class="col-md-6">
                                                 <div class="mb-3">
                                                     <label>Filter Tanggal</label>
                                                     <div class=" input-group mb-3">
@@ -36,7 +48,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-4">
+                                            <div class="col-md-4">
                                                 <div class="mb-3">
                                                     <label>Driver<span class="text-danger">*</span></label>
                                                     <select id="select2Driver" style="width: 100% !important;" name="driver_id">
@@ -44,7 +56,7 @@
                                                     </select>
                                                   </div>
                                             </div>
-                                            <div class="col-2 text-end" style="padding-top:30px;">
+                                            <div class="col-md-2 text-end" style="padding-top:30px;">
                                                 <a id="terapkan_filter" class="btn btn-success">
                                                     Terapkan Filter
                                                     <i class="fas fa-align-justify"></i>
@@ -59,6 +71,9 @@
                         </div>
                     </div>
                 </div>
+
+
+
             </div>
             <div class="card-body" id="printableArea">
                 <div class="invoice-title">
@@ -74,7 +89,7 @@
 
 
                 <div class="row" style="padding-top:10px;">
-                    <div class="table-responsove">
+                    <div class="table-responsive">
                         <table id="Datatable" class="table table-bordered border-bottom w-100" style="width:100%">
                             <thead>
 
@@ -183,38 +198,37 @@ function printDiv(divName) {
         placeholder: 'Pilih Driver'
     });
     let dataTable = $('#Datatable').DataTable({
-        dom: 'lfBrtip',
-        buttons: [
-            {
-                extend: 'excel',
-                footer: true,
-                text: 'Excel',
-                title: 'Laporan Kasbon',
-                exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4, 5, 6, 7]
-                }
-            },
-            {
-                extend: 'pdfHtml5',
-                footer: true,
-                text: 'PDF',
-                title: 'Laporan Kasbon',
-                pageSize: 'A4',
-                exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4, 5, 6 , 7]
-                },
-                // customize : function(doc) {
-                //     doc.styles['td:nth-child(2)'] = {
-                //     width: '200px',
-                //     'max-width': '200px'
-                //     }
-                // }
-            },
+        // dom: 'lfBrtip',
+        // buttons: [
+        //     {
+        //         extend: 'excel',
+        //         footer: true,
+        //         text: 'Excel',
+        //         title: 'Laporan Kasbon',
+        //         exportOptions: {
+        //             columns: [ 0, 1, 2, 3, 4, 5, 6, 7]
+        //         }
+        //     },
+        //     {
+        //         extend: 'pdfHtml5',
+        //         footer: true,
+        //         text: 'PDF',
+        //         title: 'Laporan Kasbon',
+        //         pageSize: 'A4',
+        //         exportOptions: {
+        //             columns: [ 0, 1, 2, 3, 4, 5, 6 , 7]
+        //         },
+        //         // customize : function(doc) {
+        //         //     doc.styles['td:nth-child(2)'] = {
+        //         //     width: '200px',
+        //         //     'max-width': '200px'
+        //         //     }
+        //         // }
+        //     },
 
 
-        ],
+        // ],
         searching: false, paging: false, info: false,
-        responsive: true,
         scrollX: false,
         processing: true,
         serverSide: true,

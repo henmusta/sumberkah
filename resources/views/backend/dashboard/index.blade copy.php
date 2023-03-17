@@ -52,7 +52,7 @@
                                             <div class="text-center"  style="padding: 20px">
                                                 <h4 class="main-content-label mb-1">Berlaku Sim</h4>
                                             </div>
-                                            <div class="table-responsive">
+                                            <div class="table-responsove">
                                                 <table id="Datatablesim" class="table table-bordered border-bottom w-100" style="width:100%">
                                                     <thead>
                                                         <tr>
@@ -74,6 +74,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
                             <div class="card">
                                 <div class="card-header text-center">
 
@@ -81,13 +82,13 @@
                                         <h3 class="text-black">INFORMASI KENDARAAN</h3>
                                     </div>
                                 </div>
-                               <div class="row">
-                                    <div class="col-md-6">
+
+                                    <div class="col-6">
                                         <div class="card-body">
                                             <div class="text-center"  style="padding: 20px">
                                                 <h4 class="main-content-label mb-1">Pajak 1 Tahun Kendaraan</h4>
                                             </div>
-                                            <div class="table-responsive">
+                                            <div class="table-responsove">
                                                 <table id="Datatablestnk" class="table table-bordered border-bottom w-100" style="width:100%">
                                                     <thead>
                                                         <tr>
@@ -109,7 +110,7 @@
                                             <div class="text-center"  style="padding: 20px">
                                                 <h4 class="main-content-label mb-1">KIR Kendaraan</h4>
                                             </div>
-                                            <div class="table-responsive">
+                                            <div class="table-responsove">
                                                 <table id="Datatablekir" class="table table-bordered border-bottom w-100" style="width:100%">
                                                     <thead>
                                                         <tr>
@@ -128,12 +129,12 @@
 
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-6">
                                         <div class="card-body">
                                             <div class="text-center"  style="padding: 20px">
                                                 <h4 class="main-content-label mb-1">Pajak 5 Tahun Kendaraan</h4>
                                             </div>
-                                            <div class="table-responsive">
+                                            <div class="table-responsove">
                                                 <table id="Datatablepajak" class="table table-bordered border-bottom w-100" style="width:100%">
                                                     <thead>
                                                         <tr>
@@ -155,7 +156,7 @@
                                             <div class="text-center"  style="padding: 20px">
                                                 <h4 class="main-content-label mb-1">Ijin Bongkar Muat (BM) Kendaraan</h4>
                                             </div>
-                                            <div class="table-responsive">
+                                            <div class="table-responsove">
                                                 <table id="Datatablebm" class="table table-bordered border-bottom w-100" style="width:100%">
                                                     <thead>
                                                         <tr>
@@ -177,12 +178,12 @@
                                     <div class="row">
                                         <div class="col-3">
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-6">
                                             <div class="card-body">
                                                 <div class="text-center"  style="padding: 20px">
                                                     <h4 class="main-content-label mb-1">Ijin Usaha</h4>
                                                 </div>
-                                                <div class="table-responsive">
+                                                <div class="table-responsove">
                                                     <table id="Datatableijinusaha" class="table table-bordered border-bottom w-100" style="width:100%">
                                                         <thead>
                                                             <tr>
@@ -204,11 +205,11 @@
                                         <div class="col-3">
                                         </div>
                                     </div>
-                                </div>
+
 
 
                             </div>
-
+                        </div>
                         </p>
                     </div>
                     <div class="tab-pane" id="profile-1" role="tabpanel" style="padding-top:20px">
@@ -225,7 +226,7 @@
                                             <div class="text-center"  style="padding: 20px">
                                                 <h4 class="main-content-label mb-1">Supir</h4>
                                             </div>
-                                            <div class="table-responsive">
+                                            <div class="table-responsove">
                                                 <table id="Datatablesupirtj" class="table table-bordered border-bottom" style="width:100%">
                                                     <thead>
                                                         <tr>
@@ -246,8 +247,8 @@
                                             <div class="text-center"  style="padding: 20px">
                                                 <h4 class="main-content-label mb-1">Kendaraan</h4>
                                             </div>
-                                            <div class="table-responsive">
-                                                <table id="Datatablemobiltj" class="table table-bordered border-bottom" style="width:100%">
+                                            <div class="table-responsove">
+                                                <table id="Datatablemobiltj" class="table table-bordered border-bottom w-100" style="width:100%">
                                                     <thead>
                                                         <tr>
                                                             <th width="1%">No</th>
@@ -283,8 +284,8 @@
                                             <div class="text-center"  style="padding: 20px">
                                                 {{-- <h4 class="main-content-label mb-1">Berlaku Sim</h4> --}}
                                             </div>
-                                            <div class="table-responsive">
-                                                <table id="Datatablejo" class="table table-bordered border-bottom" style="width:100%">
+                                            <div class="table-responsove">
+                                                <table id="Datatablejo" class="table table-bordered border-bottom w-100" style="width:100%">
                                                     <thead>
                                                         <tr>
                                                             <th width="5%">No</th>
@@ -324,8 +325,8 @@
                                             <div class="text-center"  style="padding: 20px">
                                                 <h4 class="main-content-label mb-1">Berlaku Sim</h4>
                                             </div>
-                                            <div class="table-responsive">
-                                                <table id="Datatableinvoice" class="table table-bordered border-bottom" style="width:100%">
+                                            <div class="table-responsove">
+                                                <table id="Datatableinvoice" class="table table-bordered border-bottom w-100" style="width:100%">
                                                     <thead>
                                                         <tr>
                                                             <th width="5%">No</th>

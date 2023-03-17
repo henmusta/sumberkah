@@ -46,7 +46,7 @@
                 <div class="tab-content p-3 text-muted">
                     <div class="tab-pane active" id="home-1" role="tabpanel">
                         <p class="mb-0">
-                            <div class="table-responsove">
+                            <div class="table-responsive">
                                 <table id="Datatable" class="table table-bordered border-bottom w-100" style="width:100%">
                                     <thead>
                                         <tr>
@@ -72,7 +72,7 @@
                     </div>
                     <div class="tab-pane" id="profile-1" role="tabpanel">
                         <p class="mb-0">
-                            <div class="table-responsove">
+                            <div class="table-responsive">
                                 <table id="DatatableTemp" class="table table-bordered border-bottom w-100" style="width:100%">
                                     <thead>
                                         <tr>

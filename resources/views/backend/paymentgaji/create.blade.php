@@ -75,7 +75,7 @@
                     <div id="tgl_bayar" class="card-body" style="border: 1px solid #fff; padding:20px;" type="hidden">
                         <div class="row" >
 
-                                <div class="col-6">
+                                <div class="col-md-6">
                                     <div class="mb-3">
                                         <label>Tanggal Pembayaran<span class="text-danger">*</span></label>
                                         <input type="text" id="tgl_pembayaran" value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" name="tgl_pembayaran"  class="form-control" placeholder="Masukan Tanggal Joborder"/>
@@ -83,7 +83,7 @@
                                 </div>
 
 
-                                <div class="col-6">
+                                <div class="col-md-6">
                                     <div class="mb-3">
                                         <label>Sisa Gaji<span class="text-danger">*</span></label>
                                         <input type="text" id="sisa_tagihan" value="0" name="sisa_tagihan"  class="form-control text-end" style="font-size: 24px; color:black;" disabled/>
@@ -97,6 +97,7 @@
                         <div class="row" >
                             <div class="col-12">
                                  <label> Tabel Pembayaran<span class="text-danger">*</span></label>
+                                 <div class="table-responsive ">
                                     <table id="Datatable" class="table " width="100%">
                                         <thead>
                                             <tr>
@@ -134,6 +135,7 @@
                                             </tr>
                                         </tfoot><br>
                                     </table>
+                                 </div>
                             </div>
                         </div>
                     </div>
@@ -342,7 +344,7 @@ if(cek_gaji_id != ''){
 					width 		: '150px',
 					render 		: function ( columnData, type, rowData, meta ) {
                         return String(`
-                            <select class="form-control" data-name="jenis_pembayaran" required="required" name="payment[`+ meta.row +`][jenis_pembayaran]">
+                            <select class="form-control select2jenis" data-name="jenis_pembayaran" required="required" name="payment[`+ meta.row +`][jenis_pembayaran]">
                                 <option value="Tunai" `+ ( columnData == '1' ? `selected="selected"` : ``) +`>Tunai</option>
                                 <option value="Transfer" `+ ( columnData == '0' ? `selected="selected"` : ``) +`>Transfer</option>
                             </select>
@@ -358,7 +360,7 @@ if(cek_gaji_id != ''){
 					width 		: '150px',
 					render 		: function ( columnData, type, rowData, meta ) {
                         return String(`
-							<input id="keterangan` + meta.row + `" class="form-control" value="`+ columnData +`" name="payment[`+ meta.row +`][keterangan]" required data-column="keterangan" >
+							<input id="keterangan` + meta.row + `"  style="width: 400px;" class="form-control" value="`+ columnData +`" name="payment[`+ meta.row +`][keterangan]" required data-column="keterangan" >
 						`).trim();
 					}
 				},
@@ -368,7 +370,7 @@ if(cek_gaji_id != ''){
 					width 		: '150px',
 					render 		: function ( columnData, type, rowData, meta ) {
 						return String(`
-							<input id="num_nominal_payment` + meta.row + `" class="form-control text-end" value="`+ columnData +`" name="payment[`+ meta.row +`][nominal]" required data-column="nominal" >
+							<input  style="width: 400px;" id="num_nominal_payment` + meta.row + `" class="form-control text-end" value="`+ columnData +`" name="payment[`+ meta.row +`][nominal]" required data-column="nominal" >
 						`).trim();
 					}
 				},
@@ -425,7 +427,7 @@ if(cek_gaji_id != ''){
                 $('#Datatable').trigger('changeTotalItem');
 			}
 	});
-
+    $(".select2jenis").select2({ width: '200px' });
 
       $("#formStore").submit(function (e) {
         e.preventDefault();

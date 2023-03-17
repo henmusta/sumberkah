@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\PaymentGaji;
 use App\Models\Penggajian;
 use App\Traits\NoUrutTrait;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Traits\ResponseStatus;
 use Illuminate\Http\Request;
@@ -41,17 +42,38 @@ class PaymentGajiController extends Controller
           }
           return DataTables::of($data)
             ->addColumn('action', function ($row) {
-                $show = '<a href="' . route('backend.driver.show', $row->id) . '" class="dropdown-item">Detail</a>';
-                $edit = '<a class="dropdown-item" href="driver/' . $row->id . '/edit">Ubah</a>';
+                $show = '<a href="' . route('backend.penggajian.show', $row->penggajian_id) . '" class="dropdown-item">Detail</a>';
+
+                $edit = '<a href="#" data-bs-toggle="modal" data-bs-target="#modalEdit"
+                    data-bs-id="' . $row->id . '"
+                    data-bs-nominal="' . $row->nominal . '"
+                    data-bs-keterangan="' . $row->keterangan . '"
+                    data-bs-jenis_payment="' . $row->jenis_payment . '"
+                    class="edit dropdown-item">Edit</a>';
+
                 $delete = '  <a href="#" data-bs-toggle="modal" data-bs-target="#modalDelete" data-bs-id="' . $row->id . '" class="delete dropdown-item">Hapus</a>';
+                $perm = [
+                    'list' => Auth::user()->can('backend-paymentgaji-list'),
+                    'create' => Auth::user()->can('backend-paymentgaji-create'),
+                    'edit' => Auth::user()->can('backend-paymentgaji-edit'),
+                    'delete' => Auth::user()->can('backend-paymentgaji-delete'),
+                ];
+
+                $cek_edit =  $row->penggajian->status_payment != '2'  ? $edit : '';
+                $cek_delete =  $row->penggajian->status_payment != '2' ? $delete : '';
+
+                $cek_perm_edit = $perm['edit'] == 'true' ? $cek_edit : '';
+                $cek_perm_delete = $perm['delete'] == 'true' ? $cek_delete : '';
+
+
                 return '<div class="dropdown">
                 <a href="#" class="btn btn-secondary" data-bs-toggle="dropdown">
                     Aksi <i class="mdi mdi-chevron-down"></i>
                 </a>
                 <div class="dropdown-menu" data-popper-placement="bottom-start" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(0px, 40px);">
                     '. $show.'
-                    '. $edit.'
-                    '. $delete.'
+                    '. $cek_perm_edit .'
+                    '. $cek_perm_delete .'
                 </div>
             </div>';
 
@@ -230,8 +252,103 @@ class PaymentGajiController extends Controller
           return $response;
     }
 
+    public function updatesingle(Request $request)
+    {
+          $validator = Validator::make($request->all(), [
+            // 'total_kasbon' => "required",
+            // 'total_payment' => "required",
+            // 'joborder_id' => "required",
+            // 'tgl_pembayaran'  => "required",
+            // 'payment'  => "required"
+          ]);
+
+          DB::beginTransaction();
+          if ($validator->passes()) {
+            try {
+
+                 $paymentgaji = PaymentGaji::findOrFail($request['id']);
+                 $penggajian = Penggajian::findOrFail( $paymentgaji['penggajian_id']);
 
 
+                    $total_payment =  ($penggajian['total_payment'] - $paymentgaji['nominal']) + $request['nominal'];
+
+
+                    $paymentgaji->update([
+                        'nominal' => $request['nominal'],
+                        'jenis_payment' => $request['jenis_payment'],
+                        'keterangan' => $request['keterangan']
+                    ]);
+
+
+                $total_gaji = $penggajian['total_gaji'] - $total_payment;
+              //  dd($total_sisa_uang_jalan, $total_payment, $total_kasbon);
+                if( $total_gaji < 0 ){
+                    $response = response()->json([
+                        'status' => 'error',
+                        'message' => 'Nominal Melebihi Sisa Tagihan'
+                    ]);
+                }else{
+
+                    $status =  $total_gaji == $penggajian['total_gaji'] ? '0' : '1';
+                    $status =  $total_gaji <= 0 ? '2' : $status;
+                    // dd($total_sisa_uang_jalan);
+                    $penggajian->update([
+                        'total_payment'=> $total_payment,
+                        'sisa_gaji'=> $total_gaji,
+                        'status_payment'=> $status
+                    ]);
+
+                    DB::commit();
+                    $response = response()->json($this->responseStore(true));
+                }
+
+
+            }catch (Throwable $throw) {
+                dd($throw);
+                DB::rollBack();
+                $response = response()->json([
+                    'status' => 'error',
+                    'message' => 'Ada Kesalahan'
+                ]);
+            }
+          } else {
+            $response = response()->json(['error' => $validator->errors()->all()]);
+          }
+          return $response;
+    }
+
+    public function destroy($id)
+    {
+        DB::beginTransaction();
+        try {
+         $data = PaymentGaji::findOrFail($id);
+            if ($data->delete()) {
+                $penggajian = Penggajian::where('id', $data['penggajian_id'])->first();
+
+                $total_payment = $penggajian['total_payment'] - $data['nominal'];
+
+                $total_sisa_gaji = $penggajian['sisa_gaji'] + $data['nominal'];
+                $status =  $total_sisa_gaji == $penggajian['total_gaji'] ? '0' : '1';
+
+
+
+                $penggajian->update([
+                    'total_payment'=> $total_payment,
+                    'sisa_gaji'=>  $total_sisa_gaji,
+                    'status_payment'=> $status
+                ]);
+
+            }
+        DB::commit();
+        $response = response()->json($this->responseDelete(true));
+      } catch (Throwable $throw) {
+        dd($throw);
+        DB::rollBack();
+        $response = response()->json($this->responseStore(false));
+      }
+
+      return $response;
+    }
 
 
 }

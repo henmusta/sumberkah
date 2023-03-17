@@ -517,7 +517,7 @@ class PaymentJoController extends Controller
 
 
                     $status = $total_sisa_uang_jalan == $joborder['total_uang_jalan'] ? '0' : '1';
-                    // dd($total_sisa_uang_jalan);
+                    $status = $total_sisa_uang_jalan <= 0 ? '2' : $status;
                     $joborder->update([
                         'total_kasbon'=> $total_kasbon,
                         'total_payment'=> $total_payment,

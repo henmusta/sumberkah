@@ -297,7 +297,7 @@ class PenggajianController extends Controller
       $offset = ($page - 1) * $resultCount;
       $data = Penggajian::where('kode_gaji', 'LIKE', '%' . $request->q . '%')
         ->when($payment_gaji, function ($query, $payment_gaji) {
-            return $query->where('status_payment', '!=', $payment_gaji);
+            return $query->where('status_payment', '0');
          })
         ->orderBy('kode_gaji')
         ->skip($offset)
@@ -307,7 +307,7 @@ class PenggajianController extends Controller
 
       $count =  Penggajian::where('kode_gaji', 'LIKE', '%' . $request->q . '%')
         ->when($payment_gaji, function ($query, $payment_gaji) {
-            return $query->where('status_payment', '!=', $payment_gaji);
+            return $query->where('status_payment', '0');
          })
         ->get()
         ->count();

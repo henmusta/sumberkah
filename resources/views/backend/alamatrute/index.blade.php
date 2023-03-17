@@ -1,4 +1,4 @@
-@extends('backend.layouts.master')
+s@extends('backend.layouts.master')
 
 @section('title') {{ $config['page_title'] }} @endsection
 
@@ -24,7 +24,7 @@
 
             </div>
             <div class="card-body">
-                <div class="table-responsove">
+                <div class="table-responsive">
                     <table id="Datatable" class="table table-bordered border-bottom w-100" style="width:100%">
                         <thead>
                             <tr>

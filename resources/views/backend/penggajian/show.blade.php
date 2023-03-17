@@ -69,7 +69,7 @@
                 <div class="row" style="padding-top:50px;">
                     <h6 class="main-content-label mb-1">Pembayaran</h6>
                     <div class="col-12">
-                        <div class="table-responsove">
+                        <div class="table-responsive">
                             <table id="Datatable" class="table table-bordered border-bottom w-100" style="width:100%">
                                 <thead>
                                     <tr>

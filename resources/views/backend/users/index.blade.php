@@ -24,7 +24,7 @@
             </div>
 
             <div class="card-body">
-                <div class="table-responsove">
+                <div class="table-responsive">
                     <table id="Datatable" class="table table-bordered" style="width:100%">
                         <thead>
                             <tr>

@@ -21,7 +21,7 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-6"  style="border: 1px solid #fff; padding:20px;" >
+                            <div class="col-md-6"  style="border: 1px solid #fff; padding:20px;" >
                                 <input id="cek_joborder_id" name="cek_joborder_id" type="hidden" value="{{$data['joborder']['id'] ?? ''}}">
                                <input id="cek_kode_joborder" name="cek_kode_joborder" type="hidden" value="{{$data['joborder']['kode_joborder'] ?? ''}}">
                                 <div class="col-md-12">
@@ -82,7 +82,7 @@
                                </div>
                               {{-- end --}}
                             </div>
-                            <div class="col-6"  style="border: 1px solid #fff; padding:20px;" >
+                            <div class="col-md-6"  style="border: 1px solid #fff; padding:20px;" >
                                 <div class="col-md-12">
                                     <div class="mb-3">
                                       <label>Harga<span class="text-danger">*</span></label>

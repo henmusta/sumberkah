@@ -97,6 +97,7 @@
                     <div id="table_pembayaran" class="card-body" style=" padding:20px;">
                         <div class="row" >
                             <div class="col-12">
+                                <div class="table-responsive ">
                                  <label> Tabel Pembayaran<span class="text-danger">*</span></label>
                                     <table id="Datatable" class="table " width="100%">
                                         <thead>
@@ -135,6 +136,7 @@
                                             </tr>
                                         </tfoot><br>
                                     </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -324,8 +326,8 @@ $(document).ready(function () {
 					width 		: '150px',
 					render 		: function ( columnData, type, rowData, meta ) {
                         return String(`
-                        <input name="payment[`+ meta.row +`][id]" type="hidden" value="`+ rowData.id +`" >
-                            <select class="form-control" data-name="jenis_pembayaran" required="required" name="payment[`+ meta.row +`][jenis_pembayaran]">
+                        <input  name="payment[`+ meta.row +`][id]" type="hidden" value="`+ rowData.id +`" >
+                            <select class="form-control selectjenis" data-name="jenis_pembayaran" required="required" name="payment[`+ meta.row +`][jenis_pembayaran]">
                                 <option value="Tunai" `+ ( columnData == '1' ? `selected="selected"` : ``) +`>Tunai</option>
                                 <option value="Transfer" `+ ( columnData == '0' ? `selected="selected"` : ``) +`>Transfer</option>
                             </select>
@@ -338,20 +340,20 @@ $(document).ready(function () {
                 {
 					data 		: 'keterangan',
 					className 	: 'text-right',
-					width 		: '150px',
+					width 		: '400px',
 					render 		: function ( columnData, type, rowData, meta ) {
                         return String(`
-							<input id="keterangan` + meta.row + `" class="form-control" value="`+ columnData +`" name="payment[`+ meta.row +`][keterangan]" required data-column="keterangan" >
+							<input id="keterangan` + meta.row + `" style="width: 400px;" class="form-control" value="`+ columnData +`" name="payment[`+ meta.row +`][keterangan]" required data-column="keterangan" >
 						`).trim();
 					}
 				},
 				{
 					data 		: 'nominal',
 					className 	: 'text-right',
-					width 		: '150px',
+					width 		: '400px',
 					render 		: function ( columnData, type, rowData, meta ) {
 						return String(`
-							<input id="num_nominal_payment` + meta.row + `" class="form-control text-end" value="`+ columnData +`" name="payment[`+ meta.row +`][nominal]" required data-column="nominal" >
+							<input style="width: 400px;" id="num_nominal_payment` + meta.row + `" class="form-control text-end" value="`+ columnData +`" name="payment[`+ meta.row +`][nominal]" required data-column="nominal" >
 						`).trim();
 					}
 				},
@@ -408,7 +410,7 @@ $(document).ready(function () {
                 $('#Datatable').trigger('changeTotalItem');
 			}
 	});
-
+    $(".selectjenis").select2({ width: '400px' });
 
 
 

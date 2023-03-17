@@ -77,7 +77,7 @@
                                                     <hr><hr>
                                                     <div class="col-12">
                                                         <label for="activeSelect">Tabel Tipe Kendaraan<span class="text-danger">*</span></label>
-                                                        <div class="table-responsove">
+                                                        <div class="table-responsive">
                                                             <table id="Datatable" class="table table-bordered border-bottom w-100" style="width:100%">
                                                                 <thead>
                                                                       <tr>

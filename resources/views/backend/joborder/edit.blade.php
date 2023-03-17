@@ -5,7 +5,7 @@
     <div class="container-fluid">
       <div class="card">
         <div class="row row-sm">
-            <div class="col-12">
+            <div class="col-md-12">
                 <form id="formUpdate" action="{{ route('backend.joborder.update', Request::segment(3)) }}" autocomplete="off">
                     <meta name="csrf-token" content="{{ csrf_token() }}">
                     @method('PUT')
@@ -22,13 +22,13 @@
                     </div>
                     <div class="card-body" style="border: 1px solid #fff; padding:20px;">
                         <div class="row" >
-                            <div class="col-md-6">
+                            <div class="col-md-md-6">
                                  <div class="mb-3">
                                     <label>Tanggal<span class="text-danger">*</span></label>
                                     <input type="text" id="tgl_joborder" value="{{$data['joborder']['tgl_joborder'] ?? ''}}" name="tgl_joborder"  class="form-control" placeholder="Masukan Tanggal Joborder"/>
                                   </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-md-6">
                                 <div class="mb-3">
                                    <label>Driver<span class="text-danger">*</span></label>
                                    <select id="select2Driver" style="width: 100% !important;" name="driver_id">
@@ -38,7 +38,7 @@
                            </div>
                         </div>
                         <div class="row" >
-                            <div class="col-md-6">
+                            <div class="col-md-md-6">
                                  <div class="mb-3">
                                     <label>Jenis Mobil<span class="text-danger">*</span></label>
                                     <select id="select2Jenis" style="width: 100% !important;" name="jenismobil_id" readonly>
@@ -46,7 +46,7 @@
                                     </select>
                                   </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-md-6">
                                 <div class="mb-3">
                                    <label>Nomor Plat Polisi<span class="text-danger">*</span></label>
                                    <select id="select2Mobil" style="width: 100% !important;" name="mobil_id">
@@ -56,7 +56,7 @@
                            </div>
                         </div>
                         <div class="row" >
-                            <div class="col-md-12">
+                            <div class="col-md-md-12">
                                   <div class="mb-3">
                                     <label>Customer<span class="text-danger">*</span></label>
                                     <select id="select2Customer" style="width: 100% !important;" name="customer_id" readonly>
@@ -70,9 +70,9 @@
 
                     <div id="rute_muatan" class="card-body" style="border: 1px solid #fff; padding:20px;">
                         <div class="row" >
-                            <div class="col-md-12" >
+                            <div class="col-md-md-12" >
                                 <div class="row">
-                                    <div class="col-4">
+                                    <div class="col-md-4">
                                         <div class="mb-3">
                                             <label>Muatan<span class="text-danger">*</span></label>
                                             <select id="select2Muatan" style="width: 100% !important;" name="muatan_id">
@@ -80,7 +80,7 @@
                                             </select>
                                           </div>
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-md-4">
                                         <div class="mb-3">
                                             <label>Alamat Awal (Dari)<span class="text-danger">*</span></label>
                                             <select id="select2Firstrute" style="width: 100% !important;" name="first_rute_id">
@@ -88,7 +88,7 @@
                                             </select>
                                           </div>
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-md-4">
                                         <div class="mb-3">
                                             <label>Alamat Akhir (Ke)<span class="text-danger">*</span></label>
                                             <select id="select2Lastrute" style="width: 100% !important;" name="last_rute_id">
@@ -110,13 +110,13 @@
 
                     <div id="number_jo" class="card-body" style="border: 1px solid #fff; padding:20px;">
                         <div class="row" >
-                            <div class="col-md-12" >
+                            <div class="col-md-md-12" >
                                   <div class="mb-3">
                                     <label>Uang Jalan<span class="text-danger">*</span></label>
                                     <input type="text" id="uang_jalan" name="uang_jalan" value="{{ $data['joborder']['rute']['uang_jalan'] ?? '' }}"  readonly class="form-control" placeholder="Masukan Uang Jalan"/>
                                   </div>
                                   <div class="row">
-                                    <div class="col-6">
+                                    <div class="col-md-6">
                                         <div class="mb-3">
                                             <label>Tambahan Potongan UJ<span class="text-danger">*</span></label>
                                             <select id="tambahan_potongan" style="width: 100% !important;" name="tambahan_potongan">
@@ -126,7 +126,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-md-6">
                                         <div class="mb-3">
                                             <label>Biaya Lain<span class="text-danger">*</span></label>
                                             <input required type="text" id="biaya_lain"  value="{{ $data['joborder']['biaya_lain'] ?? '' }}" name="biaya_lain"  class="form-control" placeholder="Total Biaya Lain" readonly/>

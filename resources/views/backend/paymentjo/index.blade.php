@@ -8,58 +8,62 @@
         <div class="card">
             <div class="card-header mb-3">
                 <h5 class="card-title mb-3">Table {{ $config['page_title'] }}</h5>
-                <div class="d-flex align-items-start">
-                    <div class="flex-grow-1">
-                        <div class="col-xl-12">
-                            <div class="mt-xl-0 mt-4">
+                <div class="mt-xl-0 mt-4">
+                    <div class="d-flex align-items-start">
+
+
+                        <div class="flex-grow-1">
+                            <div class="col-xl-12">
                                 <div class="d-flex gap-2 flex-wrap mb-3 text-center">
                                     <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample2" aria-expanded="true" aria-controls="multiCollapseExample2">Filter</button>
                                 </div>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="multi-collapse collapse show" id="multiCollapseExample2" style="">
-                                            <div class="card border shadow-none card-body text-muted mb-0">
-                                                <div class="row">
-                                                    <div class="col-8">
-                                                        <div class="mb-3">
-                                                            <label>Id Joborder<span class="text-danger">*</span></label>
-                                                            <select id="select2Joborder" style="width: 100% !important;" name="joborder_id">
+                            </div>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <a class="btn btn-primary " href="{{ route('backend.paymentjo.create') }}">
+                                Tambah
+                                <i class="fas fa-plus"></i>
+                            </a>
+                        </div>
+                    </div>
 
-                                                            </select>
-                                                          </div>
-                                                    </div>
-                                                    <div class="col-4 text-end" style="padding-top:30px;">
-                                                        <a id="terapkan_filter" class="btn btn-success">
-                                                            Terapkan Filter
-                                                            <i class="fas fa-align-justify"></i>
-                                                        </a>
-                                                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="multi-collapse collapse show" id="multiCollapseExample2" style="">
+                                <div class="card border shadow-none card-body text-muted mb-0">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="mb-3">
+                                                <label>Id Joborder<span class="text-danger">*</span></label>
+                                                <select id="select2Joborder" style="width: 100% !important;" name="joborder_id">
 
-                                                </div>
-
-
-
-
-
-
-                                            </div>
+                                                </select>
+                                              </div>
                                         </div>
+                                        <div class="col-md-4 text-end" style="padding-top:30px;">
+                                            <a id="terapkan_filter" class="btn btn-success">
+                                                Terapkan Filter
+                                                <i class="fas fa-align-justify"></i>
+                                            </a>
+                                        </div>
+
                                     </div>
+
+
+
+
+
+
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="flex-shrink-0">
-                        <a class="btn btn-primary " href="{{ route('backend.paymentjo.create') }}">
-                            Tambah
-                            <i class="fas fa-plus"></i>
-                        </a>
-                    </div>
                 </div>
+
 
             </div>
             <div class="card-body">
-                <div class="table-responsove">
+                <div class="table-responsive">
                     <table id="Datatable" class="table table-bordered border-bottom w-100" style="width:100%">
                         <thead>
                             <tr>
@@ -130,31 +134,33 @@
                 <div class="col-12">
                      <label> Tabel Pembayaran<span class="text-danger">*</span></label>
                      <input type="hidden" id="id" name="id"  class="form-control text-end" />
-                        <table id="DatatableSingle" class="table " width="100%">
-                            <thead>
-                                <tr>
-                                    <th>Jenis Pembayaran</th>
-                                    <th>Keterangan Pembayaran</th>
-                                    <th>Keterangan Kasbon</th>
-                                    <th>Nominal Pembayaran</th>
-                                    <th>Nominal Kasbon</th>
+                        <div class="table-responsive">
+                            <table id="DatatableSingle" class="table " width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Jenis Pembayaran</th>
+                                        <th>Keterangan Pembayaran</th>
+                                        <th>Keterangan Kasbon</th>
+                                        <th>Nominal Pembayaran</th>
+                                        <th>Nominal Kasbon</th>
 
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th><select class="form-select" id="select2JenisPayment" name="jenis_payment">
-                                        <option value="Tunai">Tunai</option>
-                                        <option value="Transfer">Transfer</option>
-                                      </select></th>
-                                    <th> <input type="text" id="keterangan" name="keterangan"  class="form-control text-end" /></th>
-                                    <th><input type="text" id="keterangan_kasbon" name="keterangan_kasbon"  class="form-control text-end" /></th>
-                                    <th><input type="text" id="nominal" name="nominal"  class="form-control text-end" /></th>
-                                    <th><input type="text" id="nominal_kasbon" name="nominal_kasbon"  class="form-control text-end" /></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th><select class="form-select" id="select2JenisPayment" name="jenis_payment">
+                                            <option value="Tunai">Tunai</option>
+                                            <option value="Transfer">Transfer</option>
+                                        </select></th>
+                                        <th> <input  style="width: 200px;" type="text" id="keterangan" name="keterangan"  class="form-control text-end" /></th>
+                                        <th><input  style="width: 200px;" type="text" id="keterangan_kasbon" name="keterangan_kasbon"  class="form-control text-end" /></th>
+                                        <th><input  style="width: 250px;" type="text" id="nominal" name="nominal"  class="form-control text-end" /></th>
+                                        <th><input  style="width: 250px;" type="text" id="nominal_kasbon" name="nominal_kasbon"  class="form-control text-end" /></th>
 
-                                </tr>
-                            </tbody>
-                        </table>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                 </div>
             </div>
           </div>
@@ -260,7 +266,7 @@ tr.group:hover {
         ],
       });
       let single = $('#DatatableSingle').DataTable({
-        responsive: true,
+        // responsive: true,
         scrollX: false,
         processing: true,
         serverSide: false,
@@ -279,12 +285,12 @@ tr.group:hover {
       });
 
 
-      selectJenisPayment.select2({
-        dropdownParent: selectJenisPayment.parent(),
-        searchInputPlaceholder: 'Cari Jenis Payment',
-        width: '100%',
-        placeholder: 'Pilih Jenis Payment',
-    });
+    //   selectJenisPayment.select2({
+    //     dropdownParent: selectJenisPayment.parent(),
+    //     searchInputPlaceholder: 'Cari Jenis Payment',
+    //     width: '100%',
+    //     placeholder: 'Pilih Jenis Payment',
+    // });
 
       modalDelete.addEventListener('show.bs.modal', function (event) {
         let button = event.relatedTarget;
@@ -309,16 +315,16 @@ tr.group:hover {
         this.querySelector('input[name=keterangan_kasbon]').value = keterangan_kasbon;
         nominal.set(num_nominal);
         nominal_kasbon.set(num_nominal_kasbon);
-        selectJenisPayment.val(jenis_payment).trigger('change');;
+        selectJenisPayment.val(jenis_payment).trigger('change');
         this.querySelector('#formUpdate').setAttribute('action', '{{ route("backend.paymentjo.updatesingle") }}');
       });
       modalEdit.addEventListener('hidden.bs.modal', function (event) {
-        // this.querySelector('input[name=name]').value = '';
-        // this.querySelector('input[name=alamat]').value = '';
-        // this.querySelector('input[name=kontak]').value = '';
-        // this.querySelector('input[name=telp]').value = '';
-        // this.querySelector('input[name=keterangan]').value = '';
-        // this.querySelector('#formUpdate').setAttribute('href', '');
+        this.querySelector('input[name=id]').value = '';
+        this.querySelector('input[name=keterangan]').value = '';
+        this.querySelector('input[name=keterangan_kasbon]').value = '';
+        nominal.set(0);
+        nominal_kasbon.set(0);
+        selectJenisPayment.val('').trigger('change');
       });
 
       select2Joborder.select2({

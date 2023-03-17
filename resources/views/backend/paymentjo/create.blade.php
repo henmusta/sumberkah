@@ -99,7 +99,7 @@
                     <div id="tgl_bayar" class="card-body" style="border: 1px solid #fff; padding:20px;" type="hidden">
                         <div class="row" >
 
-                                <div class="col-6">
+                                <div class="col-md-6">
                                     <div class="mb-3">
                                         <label>Tanggal Pembayaran<span class="text-danger">*</span></label>
                                         <input type="text" id="tgl_pembayaran" value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" name="tgl_pembayaran"  class="form-control" placeholder="Masukan Tanggal Joborder"/>
@@ -107,7 +107,7 @@
                                 </div>
 
 
-                                <div class="col-6">
+                                <div class="col-md-6">
                                     <div class="mb-3">
                                         <label>Sisa Uang Jalan<span class="text-danger">*</span></label>
                                         <input type="text" id="sisa_uang_jalan" value="0" name="sisa_uang_jalan"  class="form-control text-end" style="font-size: 24px; color:black;" disabled/>
@@ -120,7 +120,7 @@
 
                     <div id="table_pembayaran" class="card-body" style=" padding:20px;">
                         <div class="row" >
-                            <div class="col-4">
+                            <div class="col-md-6">
                                 <div class="mb-3">
                                     <label>Jumlah Bon Tersedia<span class="text-danger">*</span></label>
                                     <input type="text" id="kasbon" value="0" name="kasbon"  class="form-control" style="font-size: 24px; color:black;" disabled/>
@@ -129,8 +129,9 @@
                         </div>
 
                         <div class="row" >
-                            <div class="col-12">
+                            <div class="col-md-12">
                                  <label> Tabel Pembayaran<span class="text-danger">*</span></label>
+                                 <div class="table-responsive ">
                                     <table id="Datatable" class="table " width="100%">
                                         <thead>
                                             <tr>
@@ -157,7 +158,7 @@
                                             </tr>
                                             <tr>
                                                     <th  class="text-end" colspan="4" class="text-right"><label>Total Pembayaran<span class="text-danger"></span></label></th>
-                                                        <th>
+                                                        <th style="width:250px">
                                                             <input id="total_payment" name="total_payment" style="font-size: 24px; color:black;" class="form-control text-end" readonly>
                                                         </th>
                                                     <th></th>
@@ -172,12 +173,13 @@
                                             <tr>
                                                 <th  class="text-end" colspan="4" class="text-right"><label>Total Sisa Uang Jalan<span class="text-danger"></span></label></th>
                                                     <th>
-                                                        <input id="total_sisa_uang_jalan" name="total_sisa_uang_jalan" style="font-size: 24px; color:black;" class="form-control text-end" readonly>
+                                                        <input id="total_sisa_uang_jalan"  name="total_sisa_uang_jalan" style="font-size: 24px; color:black;" class="form-control text-end" readonly>
                                                     </th>
                                                 <th></th>
                                             </tr>
                                         </tfoot><br>
                                     </table>
+                                 </div>
                             </div>
                         </div>
                     </div>
@@ -219,6 +221,17 @@ textarea:disabled {
 input[type="text"][disabled] {
    color: rgb(12, 11, 11) !important;
 }
+
+
+.horizontal-scrollable > .row {
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .horizontal-scrollable > .row > .col-xs-4 {
+            display: inline-block;
+            float: none;
+        }
 </style>
 @endsection
 @section('script')
@@ -254,7 +267,7 @@ $(document).ready(function () {
 
 
        var dummy = [
-            // {  jenis_pembayaran: '', keterangan : '', nominal : 0 }
+            // {  jenis_pembayaran: '', keterangan : '', keterangan_kasbon : '', nominal : 0, nominal_kasbon : 0, id:'' }
         ]
 
 
@@ -294,6 +307,7 @@ $(document).ready(function () {
 
 
       const tablePembayaran = $('#Datatable').DataTable({
+            // responsive: true,
 			paging		: false,
 			searching 	: false,
 			ordering 	: false,
@@ -302,7 +316,7 @@ $(document).ready(function () {
 			columns : [
 
 				{
-					data 		: 'jenis_pembayarab',
+					data 		: 'jenis_pembayaran',
 					className 	: 'text-left',
 					width 		: '150px',
 					render 		: function ( columnData, type, rowData, meta ) {
@@ -323,7 +337,7 @@ $(document).ready(function () {
 					width 		: '150px',
 					render 		: function ( columnData, type, rowData, meta ) {
                         return String(`
-							<input id="keterangan` + meta.row + `" class="form-control" value="`+ columnData +`" name="payment[`+ meta.row +`][keterangan]" required data-column="keterangan" >
+							<input id="keterangan` + meta.row + `" class="form-control" style="width: 250px;" value="`+ columnData +`" name="payment[`+ meta.row +`][keterangan]" required data-column="keterangan" >
 						`).trim();
 					}
 				},
@@ -333,7 +347,7 @@ $(document).ready(function () {
 					width 		: '150px',
 					render 		: function ( columnData, type, rowData, meta ) {
                         return String(`
-							<input id="keterangan_kasbon` + meta.row + `" class="form-control" value="`+ columnData +`" name="payment[`+ meta.row +`][keterangan_kasbon]" data-column="keterangan" >
+							<input id="keterangan_kasbon` + meta.row + `" class="form-control" style="width: 250px;" value="`+ columnData +`" name="payment[`+ meta.row +`][keterangan_kasbon]" data-column="keterangan" >
 						`).trim();
 					}
 				},
@@ -343,7 +357,7 @@ $(document).ready(function () {
 					width 		: '150px',
 					render 		: function ( columnData, type, rowData, meta ) {
 						return String(`
-							<input id="num_nominal_payment` + meta.row + `" class="form-control text-end" value="`+ columnData +`" name="payment[`+ meta.row +`][nominal]" required data-column="nominal" >
+							<input id="num_nominal_payment` + meta.row + `" class="form-control text-end" style="width: 250px;" value="`+ columnData +`" name="payment[`+ meta.row +`][nominal]" required data-column="nominal" >
 						`).trim();
 					}
 				},
@@ -353,7 +367,7 @@ $(document).ready(function () {
 					width 		: '150px',
 					render 		: function ( columnData, type, rowData, meta ) {
 						return String(`
-							<input id="num_nominal_kasbon` + meta.row + `" class="form-control text-end" value="`+ columnData +`" name="payment[`+ meta.row +`][nominal_kasbon]" required data-column="nominal" >
+							<input id="num_nominal_kasbon` + meta.row + `" class="form-control text-end" style="width: 250px;" value="`+ columnData +`" name="payment[`+ meta.row +`][nominal_kasbon]" required data-column="nominal" >
 						`).trim();
 					}
 				},

@@ -255,7 +255,6 @@ $(document).ready(function () {
     };
 
     const 	uang_jalan 		= new AutoNumeric('#uang_jalan',currenciesOptions),
-          //  harga           = new AutoNumeric('#harga',currenciesOptions),
             gaji 		    = new AutoNumeric('#gaji',currenciesOptions);
 
     const   harga           = new AutoNumeric('#harga',currenciesOptionsDecimal);

@@ -76,7 +76,7 @@
                     <div id="tgl_bayar" class="card-body" style="border: 1px solid #fff; padding:20px;" type="hidden">
                         <div class="row" >
 
-                                <div class="col-6">
+                                <div class="col-md-6">
                                     <div class="mb-3">
                                         <label>Tanggal Pembayaran<span class="text-danger">*</span></label>
                                         <input type="text" id="tgl_pembayaran" value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" name="tgl_pembayaran"  class="form-control" placeholder="Masukan Tanggal Joborder"/>
@@ -84,7 +84,7 @@
                                 </div>
 
 
-                                <div class="col-6">
+                                <div class="col-md-6">
                                     <div class="mb-3">
                                         <label>Sisa Tagihan<span class="text-danger">*</span></label>
                                         <input type="text" id="sisa_tagihan" value="0" name="sisa_tagihan"  class="form-control text-end" style="font-size: 24px; color:black;" disabled/>
@@ -98,6 +98,7 @@
                         <div class="row" >
                             <div class="col-12">
                                  <label> Tabel Pembayaran<span class="text-danger">*</span></label>
+                                 <div class="table-responsive">
                                     <table id="Datatable" class="table " width="100%">
                                         <thead>
                                             <tr>
@@ -135,16 +136,17 @@
                                             </tr>
                                         </tfoot><br>
                                     </table>
+                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <div  class="card-footer">
                       <div class="d-flex justify-content-end">
-                        <button id="btn_simpan" type="button" class="btn btn-secondary me-2" onclick="window.history.back();">
+                        <button type="button" class="btn btn-secondary me-2" onclick="window.history.back();">
                           Cancel
                         </button>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button id="btn_simpan" type="submit" class="btn btn-primary">Submit</button>
                       </div>
                     </div>
                   </form>
@@ -264,7 +266,7 @@ $(document).ready(function () {
             // total_sisa_tagihan.set(for_sisa_tagihan);
             // total_sisa_tagihan.set(for_sisa_tagihan);
             if(total_nominal_payment > get_total_tagihan){
-                $('#btn_simpan').prop('disabled', true);
+           //     $('#btn_simpan').prop('disabled', true);
              //   toastr.error('Jumlah Pembayaran Melebihi Sisa Uang Jalan', 'Gagal !');
                 for_sisa_tagihan = get_total_tagihan;
                total_payment.set(0);
@@ -296,7 +298,7 @@ $(document).ready(function () {
 					render 		: function ( columnData, type, rowData, meta ) {
                         return String(`
                         <input name="payment[`+ meta.row +`][id]" type="hidden" value="`+ rowData.id +`" >
-                            <select class="form-control" data-name="jenis_pembayaran" required="required" name="payment[`+ meta.row +`][jenis_pembayaran]">
+                            <select class="form-control selectjenis" data-name="jenis_pembayaran" required="required" name="payment[`+ meta.row +`][jenis_pembayaran]">
                                 <option value="Tunai" `+ ( columnData == '1' ? `selected="selected"` : ``) +`>Tunai</option>
                                 <option value="Transfer" `+ ( columnData == '0' ? `selected="selected"` : ``) +`>Transfer</option>
                             </select>
@@ -312,7 +314,7 @@ $(document).ready(function () {
 					width 		: '150px',
 					render 		: function ( columnData, type, rowData, meta ) {
                         return String(`
-							<input id="keterangan` + meta.row + `" class="form-control" value="`+ columnData +`" name="payment[`+ meta.row +`][keterangan]" required data-column="keterangan" >
+							<input style="width: 400px;" id="keterangan` + meta.row + `" class="form-control" value="`+ columnData +`" name="payment[`+ meta.row +`][keterangan]" required data-column="keterangan" >
 						`).trim();
 					}
 				},
@@ -322,7 +324,7 @@ $(document).ready(function () {
 					width 		: '150px',
 					render 		: function ( columnData, type, rowData, meta ) {
 						return String(`
-							<input id="num_nominal_payment` + meta.row + `" class="form-control text-end" value="`+ columnData +`" name="payment[`+ meta.row +`][nominal]" required data-column="nominal" >
+							<input style="width: 400px;" id="num_nominal_payment` + meta.row + `" class="form-control text-end" value="`+ columnData +`" name="payment[`+ meta.row +`][nominal]" required data-column="nominal" >
 						`).trim();
 					}
 				},
@@ -380,7 +382,7 @@ $(document).ready(function () {
 			}
 	});
 
-
+    $(".selectjenis").select2({ width: '400px' });
 
     $("#formUpdate").submit(function (e) {
         e.preventDefault();

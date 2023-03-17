@@ -59,7 +59,7 @@
 
             </div>
             <div class="card-body">
-                <div class="table-responsove">
+                <div class="table-responsive">
                     <table id="Datatable" class="table table-bordered border-bottom w-100" style="width:100%">
                         <thead>
                             <tr>
@@ -68,7 +68,7 @@
                                 <th>Nominal</th>
                                 <th>Jenis Pembayaran</th>
                                 <th>Keterangan</th>
-                                {{-- <th width="8%">Aksi</th> --}}
+                                <th width="8%">Aksi</th>
                               </tr>
                         </thead>
                         <tbody>
@@ -106,15 +106,14 @@
       </div>
     </div>
   </div>
-
-  <div class="modal fade" id="modalValidasi" tabindex="-1" aria-labelledby="modalmodalValidasi" aria-hidden="true">
-    <div class="modal-dialog modal-md" role="document">
+  <div class="modal fade" id="modalEdit" tabindex="-1" aria-labelledby="modalmodalEdit" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Edit {{ $config['page_title'] }}</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <form id="formUpdateValidasi" action="#">
+        <form id="formUpdate" action="#" autocomplete="off">
           @method('PUT')
           <meta name="csrf-token" content="{{ csrf_token() }}">
           <div class="modal-body">
@@ -125,13 +124,32 @@
                 </div>
               </div>
             </div>
-            <div class="mb-3">
-              <label>Validasi<span class="text-danger">*</span></label>
-              <input type="hidden" name="id">
-              <select class="form-select" id="select2Validasi" name="validasi">
-                <option value="1">Aktif</option>
-                <option value="0">NonAktif</option>
-              </select>
+            <div class="row" >
+                <div class="col-12">
+                     <label> Tabel Pembayaran<span class="text-danger">*</span></label>
+                     <input type="hidden" id="id" name="id"  class="form-control text-end" />
+                        <div class="table-responsive">
+                            <table id="DatatableSingle" class="table " width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Jenis Pembayaran</th>
+                                        <th>Keterangan Pembayaran</th>
+                                        <th>Nominal Pembayaran</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th><select style="width: 200px;" class="form-select" id="select2JenisPayment" name="jenis_payment">
+                                            <option value="Tunai">Tunai</option>
+                                            <option value="Transfer">Transfer</option>
+                                        </select></th>
+                                        <th> <input  style="width: 400px;" type="text" id="keterangan" name="keterangan"  class="form-control text-end" /></th>
+                                        <th><input  style="width: 400px;" type="text" id="nominal" name="nominal"  class="form-control text-end" /></th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                </div>
             </div>
           </div>
           <div class="modal-footer">
@@ -161,11 +179,28 @@ tr.group:hover {
 
      $(document).ready(function () {
         let select2Invoice = $('#select2Invoice');
-      let select2Validasi = $('#select2Validasi');
+
+        let selectJenisPayment = $('#select2JenisPayment');
+
+        const currenciesOptions = {
+            caretPositionOnFocus: "start",
+            currencySymbol: "Rp. ",
+            unformatOnSubmit: true,
+            allowDecimalPadding: true,
+            decimalCharacter : ',',
+            digitGroupSeparator : '.',
+            decimalPlaces: 0,
+            modifyValueOnWheel: false,
+            minimumValue: 0
+        };
+
+        const  nominal 	= new AutoNumeric('#nominal',currenciesOptions);
+
+
       let modalDelete = document.getElementById('modalDelete');
       const bsDelete = new bootstrap.Modal(modalDelete);
-      let modalValidasi = document.getElementById('modalValidasi');
-      const bsValidasi = new bootstrap.Modal(modalValidasi);
+      let modalEdit = document.getElementById('modalEdit');
+      const bsEdit = new bootstrap.Modal(modalEdit);
       var collapsedGroups = {};
       let dataTable = $('#Datatable').DataTable({
         responsive: true,
@@ -188,6 +223,7 @@ tr.group:hover {
           {data: 'nominal', className: 'text-end', name: 'nominal'},
           {data: 'jenis_payment', name: 'jenis_payment'},
           {data: 'keterangan', name: 'keterangan'},
+          {data: 'action', className:'text-center', name: 'action', orderable: false, searchable: false},
         ],
         rowGroup: {
             dataSrc: 'kode_invoice',
@@ -204,7 +240,7 @@ tr.group:hover {
                     let url = (rows.data()[0].invoice.status_payment < 2) ? '<a class="btn btn-primary" href="paymentinvoice/' + rows.data()[0].invoice_id+ '/edit">Tambah Pembayaran</a>' : '<span class="badge bg-pill  bg-success">Lunas</span>';
 
                     return $('<tr/>')
-                    .append('<td colspan="5"><div class="float-start">KODE INVOICE : ' + group + ' TOTAL PAYMENT : (' + rows.count() + ') SISA TAGIHAN : '+ sisa_tagihan +'</div><div class="float-end">'+url+'</div></td>')
+                    .append('<td colspan="6"><div class="float-start">KODE INVOICE : ' + group + ' TOTAL PAYMENT : (' + rows.count() + ') SISA TAGIHAN : '+ sisa_tagihan +'</div><div class="float-end">'+url+'</div></td>')
                     .attr('data-name', group)
                     .toggleClass('collapsed', collapsed);
                }
@@ -248,13 +284,25 @@ tr.group:hover {
 
 
 
-    select2Validasi.select2({
-        dropdownParent: select2Validasi.parent(),
-        searchInputPlaceholder: 'Cari Validasi',
-        width: '100%',
-        placeholder: 'Pilih Validasi',
-    });
 
+      modalEdit.addEventListener('show.bs.modal', function (event) {
+        let id = event.relatedTarget.getAttribute('data-bs-id');
+        let keterangan = event.relatedTarget.getAttribute('data-bs-keterangan');
+        let num_nominal = event.relatedTarget.getAttribute('data-bs-nominal');
+        let jenis_payment = event.relatedTarget.getAttribute('data-bs-jenis_payment');
+
+        this.querySelector('input[name=id]').value = id;
+        this.querySelector('input[name=keterangan]').value = keterangan;
+        nominal.set(num_nominal);
+        selectJenisPayment.val(jenis_payment).trigger('change');
+        this.querySelector('#formUpdate').setAttribute('action', '{{ route("backend.paymentinvoice.updatesingle") }}');
+      });
+      modalEdit.addEventListener('hidden.bs.modal', function (event) {
+        this.querySelector('input[name=id]').value = '';
+        this.querySelector('input[name=keterangan]').value = '';
+        nominal.set(0);
+        selectJenisPayment.val('').trigger('change');
+      });
 
     $("#terapkan_filter").click(function() {
         dataTable.draw();
@@ -263,24 +311,58 @@ tr.group:hover {
       modalDelete.addEventListener('show.bs.modal', function (event) {
         let button = event.relatedTarget;
         let id = button.getAttribute('data-bs-id');
-        this.querySelector('.urlDelete').setAttribute('href', '{{ route("backend.mobil.index") }}/' + id);
+        this.querySelector('.urlDelete').setAttribute('href', '{{ route("backend.paymentinvoice.index") }}/' + id);
       });
       modalDelete.addEventListener('hidden.bs.modal', function (event) {
         this.querySelector('.urlDelete').setAttribute('href', '');
       });
 
-      modalValidasi.addEventListener('show.bs.modal', function (event) {
-        let id = event.relatedTarget.getAttribute('data-bs-id');
-        let validasi = event.relatedTarget.getAttribute('data-bs-validasi');
-        $(this).find('#select2Validasi').val(validasi).trigger('change');
-        this.querySelector('input[name=id]').value = id;
-        this.querySelector('#formUpdateValidasi').setAttribute('action', '{{ route("backend.rute.validasi") }}');
+      $("#formUpdate").submit(function(e){
+        e.preventDefault();
+        let form 	= $(this);
+        let btnSubmit = form.find("[type='submit']");
+        let btnSubmitHtml = btnSubmit.html();
+        let url 	= form.attr("action");
+        let data 	= new FormData(this);
+        $.ajax({
+          beforeSend:function() {
+            btnSubmit.addClass("disabled").html("<span aria-hidden='true' class='spinner-border spinner-border-sm' role='status'></span> Loading ...").prop("disabled", "disabled");
+          },
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          },
+          cache: false,
+          processData: false,
+          contentType: false,
+          type: "POST",
+          url : url,
+          data : data,
+          success: function (response) {
+            let errorEdit = $('#errorEdit');
+            errorEdit.css('display', 'none');
+            errorEdit.find('.alert-text').html('');
+            btnSubmit.removeClass("disabled").html(btnSubmitHtml).removeAttr("disabled");
+            if (response.status === "success") {
+              toastr.success(response.message, 'Success !');
+              dataTable.draw();
+              bsEdit.hide();
+            } else {
+              toastr.error((response.message ? response.message : "Please complete your form"), 'Failed !');
+              if (response.error !== undefined) {
+                errorEdit.removeAttr('style');
+                $.each(response.error, function (key, value) {
+                  errorEdit.find('.alert-text').append('<span style="display: block">' + value + '</span>');
+                });
+              }
+            }
+          },
+          error: function (response) {
+            btnSubmit.removeClass("disabled").html(btnSubmitHtml).removeAttr("disabled");
+            toastr.error(response.responseJSON.message, 'Failed !');
+          }
+        });
       });
-      modalValidasi.addEventListener('hidden.bs.modal', function (event) {
-        $(this).find('#select2Validasi').val('').trigger('change');
-        this.querySelector('input[name=id]').value = '';
-        this.querySelector('#formUpdateValidasi').setAttribute('href', '');
-      });
+
 
 
       $("#formDelete").click(function (e) {
@@ -311,51 +393,6 @@ tr.group:hover {
         });
       });
 
-      $("#formUpdateValidasi").submit(function(e){
-        e.preventDefault();
-        let form 	= $(this);
-        let btnSubmit = form.find("[type='submit']");
-        let btnSubmitHtml = btnSubmit.html();
-        let url 	= form.attr("action");
-        let data 	= new FormData(this);
-        $.ajax({
-          beforeSend:function() {
-            btnSubmit.addClass("disabled").html("<span aria-hidden='true' class='spinner-border spinner-border-sm' role='status'></span> Loading ...").prop("disabled", "disabled");
-          },
-          headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-          },
-          cache: false,
-          processData: false,
-          contentType: false,
-          type: "POST",
-          url : url,
-          data : data,
-          success: function (response) {
-            let errorEdit = $('#errorEdit');
-            errorEdit.css('display', 'none');
-            errorEdit.find('.alert-text').html('');
-            btnSubmit.removeClass("disabled").html(btnSubmitHtml).removeAttr("disabled");
-            if (response.status === "success") {
-              toastr.success(response.message, 'Success !');
-              dataTable.draw();
-              bsValidasi.hide();
-            } else {
-              toastr.error((response.message ? response.message : "Please complete your form"), 'Failed !');
-              if (response.error !== undefined) {
-                errorEdit.removeAttr('style');
-                $.each(response.error, function (key, value) {
-                  errorEdit.find('.alert-text').append('<span style="display: block">' + value + '</span>');
-                });
-              }
-            }
-          },
-          error: function (response) {
-            btnSubmit.removeClass("disabled").html(btnSubmitHtml).removeAttr("disabled");
-            toastr.error(response.responseJSON.message, 'Failed !');
-          }
-        });
-      });
 
     });
   </script>
