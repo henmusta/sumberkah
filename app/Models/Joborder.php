@@ -75,7 +75,7 @@ class Joborder extends Model
 
     public function payment()
     {
-      return $this->hasMany(PaymentJo::class, 'joborder_id');
+      return $this->hasMany(PaymentJo::class, 'joborder_id')->with('kasbon');
     }
     public function konfirmasijo()
     {

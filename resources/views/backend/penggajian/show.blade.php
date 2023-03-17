@@ -45,7 +45,7 @@
                                 <td style="width: 300px; ">Tanggal Slip Gaji</td>
                                 <td style="width: 2px; padding-right: 10px">:</td>
                                 {{-- <td style="font-weight:bold"> {{ \Carbon\Carbon::parse($data['penggajian']['tgl_gaji'])->isoFormat('dddd, D MMMM Y')}}</td> --}}
-                                <td  style="font-weight:bold">{{$data['penggajian']['tgl_gaji'] ?? ''}}</td>
+                                <td  style="font-weight:bold"> {{ \Carbon\Carbon::parse($data['penggajian']['tgl_gaji'])->format('d-m-Y')}}</td>
                             </tr>
                             <tr>
                                 <td style="width: 300px; ">Supir</td>
@@ -89,7 +89,11 @@
                                 </thead>
                                 <tbody>
                                     @php($no=1);
+                                    @php($uang_jalan = $biaya_lain = $gaji = 0)
                                     @foreach ($data['konfirmasijo'] as $val)
+                                        @php($uang_jalan += $val->joborder['rute']['uang_jalan'])
+                                        @php($biaya_lain += $val->joborder['biaya_lain'])
+                                        @php($gaji += $val->joborder['rute']['gaji'])
                                         <tr>
                                             <td width="2%" class="text-center">{{$no++}}</td>
                                             <td>{{$val->kode_joborder}}</td>
@@ -107,7 +111,32 @@
                                     @endforeach
                                 </tbody>
                                 <tfoot>
+                                    <tfoot>
+                                        {{-- {{DD($data['konfirmasijo']->collect('joborder')->collect('rute')->collect(uang_jalan))}} --}}
+                                        <tr>
+                                            <th class="text-end" colspan="8">Total</th>
+                                            <th class="text-end"> Rp. {{ number_format($uang_jalan,0,',','.')}}</th>
+                                            <th class="text-end"> {{ $data['konfirmasijo']->sum('berat_muatan')}}</th>
+                                            <th class="text-end"> Rp. {{ number_format($biaya_lain,0,',','.')}}</th>
+                                            <th class="text-end"> Rp. {{ number_format($gaji,0,',','.')}}</th>
+                                        </tr>
 
+                                        <tr>
+                                            <th class="text-end" colspan="11">Potong Kasbon</th>
+                                            <th class="text-end"> Rp. {{ number_format($data['penggajian']['nominal_kasbon'],0,',','.')}}</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-end" colspan="11">Bonus</th>
+                                            <th class="text-end"> Rp. {{ number_format($data['penggajian']['bonus'],0,',','.')}}</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-end" colspan="11">Total</th>
+                                            <th class="text-end"> Rp. {{ number_format($data['penggajian']['total_gaji'],0,',','.')}}</th>
+                                        </tr>
+
+
+
+                                    </tfoot>
                                 </tfoot>
                             </table>
                         </div>

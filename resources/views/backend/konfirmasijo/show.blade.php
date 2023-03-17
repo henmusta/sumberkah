@@ -17,7 +17,7 @@
                            <img  src="{{URL::to('storage/images/logo/'.Setting::get_setting()->icon)}}" alt="logo" height="50">
                     </div>
                     <div class="text-muted">
-                        {{ \Carbon\Carbon::parse($data['rute']['created_at'])->isoFormat('dddd, D MMMM Y')}}
+                        {{ \Carbon\Carbon::parse($data['mobil']['created_at'])->isoFormat('dddd, D MMMM Y')}}
                         {{-- {{ $data['legislasi']['created_at'] ?? '' }} --}}
                     </div>
                 </div>
@@ -30,25 +30,10 @@
                             <table class="table table-bordered">
                                 <thead>
                                     <tr class="">
-                                        <th class="text-left">Customer</th>
-                                        <td class="text-left">{{ $data['rute']['customer']['name'] ?? '' }}</td>
+                                        <th class="text-left">Merek mobil</th>
+                                        <td class="text-left">{{ $data['mobil']['merkmobil']['name'] ?? '' }}</td>
                                     </tr>
-                                    <tr class="">
-                                        <th class="text-left">Alamat Awal (Dari)</th>
-                                        <td class="text-left">{{ $data['rute']['ruteawal']['name'] ?? '' }}</td>
-                                    </tr>
-                                    <tr class="">
-                                        <th class="text-left">Alamat Akhir</th>
-                                        <td class="text-left">{{ $data['rute']['ruteakhir']['name'] ?? '' }}</td>
-                                    </tr>
-                                    <tr class="">
-                                        <th class="text-left">Muatan</th>
-                                        <td class="text-left">{{ $data['rute']['muatan']['name'] ?? '' }}</td>
-                                    </tr>
-                                    <tr class="">
-                                        <th class="text-left">Jneis Mobil</th>
-                                        <td class="text-left">{{ $data['rute']['jenismobil']['name'] ?? '' }}</td>
-                                    </tr>
+
                                 </thead>
                                 <tbody>
 
@@ -61,22 +46,9 @@
                             <table class="table table-bordered">
                                 <thead>
                                     <tr class="">
-                                        <th class="text-left">Uang Jalan</th>
-                                        <td class="text-left">{{number_format($data['rute']['uang_jalan'],0,',','.') ?? '' }}</td>
+                                        <th class="text-left">No Stnk</th>
+                                        <td class="text-left">{{ $data['mobil']['nomor_stnk'] ?? '' }}</td>
                                     </tr>
-                                    <tr class="">
-                                        <th class="text-left">Jenis Muatan</th>
-                                        <td class="text-left">{{$data['rute']['ritase_tonase'] ?? '' }}</td>
-                                    </tr>
-                                    <tr class="">
-                                        <th class="text-left">Harga/Satuan</th>
-                                        <td class="text-left">{{number_format($data['rute']['harga'],3,',','.') ?? '' }}</td>
-                                    </tr>
-                                    <tr class="">
-                                        <th class="text-left">Gaji</th>
-                                        <td class="text-left">{{number_format($data['rute']['gaji'],0,',','.') ?? '' }}</td>
-                                    </tr>
-
 
                                 </thead>
                                 <tbody>
@@ -89,7 +61,7 @@
                 <div class="row" style="padding-top:10px;">
                     <div class="col-12">
                         <label for="select2Merk">Keterangan<span class="text-danger">*</span></label>
-                        <textarea class="form-control">{{ $data['rute']['keterangan'] ?? '' }}</textarea>
+                        <textarea class="form-control">{{ $data['joborder']['keterangan_joborder'] ?? '' }}</textarea>
                     </div>
 
                 </div>

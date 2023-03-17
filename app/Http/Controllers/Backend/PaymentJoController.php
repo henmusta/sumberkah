@@ -547,7 +547,7 @@ class PaymentJoController extends Controller
     {
         // dd($id);
         $paymentjo = PaymentJo::findOrFail($id);
-        $joborder = Joborder::with('customer','ruteawal','ruteakhir','muatan','mobil', 'driver', 'rute', 'jenismobil')->findOrFail( $paymentjo['joborder_id']);
+        $joborder = Joborder::with('customer','ruteawal','ruteakhir','muatan','mobil', 'driver', 'rute', 'jenismobil', 'kasbon')->findOrFail($paymentjo['joborder_id']);
 
       $data = [
             'payment' => $paymentjo,

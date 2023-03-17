@@ -136,6 +136,20 @@
     @include('backend.layouts.footerjs')
     <script type="text/javascript">
         $(document).ready(function () {
+                   // <i class="fas fa-compress"></i>
+            $("#fullscreen-button").click(function() {
+                $( "#fullscreen-button" ).prop('hidden', true);
+                $( "#compress-button" ).prop('hidden', false);
+                $("#dashboard").addClass( 'full');
+            });
+
+            $("#compress-button").click(function() {
+                $( "#fullscreen-button" ).prop('hidden', false);
+                $("#compress-button" ).prop('hidden', true);
+                $("#dashboard").removeClass( 'full');
+            });
+
+
                 let modalChangePassword = document.getElementById('modalChangePassword');
                 const bsChangePassword = new bootstrap.Modal(modalChangePassword);
 

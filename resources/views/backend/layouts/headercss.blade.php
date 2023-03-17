@@ -1,25 +1,57 @@
 @yield('css')
 <style>
     input[readonly] {
-       background: #ccc !important;
+       background: #eaecf4 !important;
     }
 
     textarea:disabled {
-      background: #ccc !important;
+      background: #eaecf4 !important;
 
     }
 
 
 
     input:disabled {
-      background: #ccc !important;
+      background: #eaecf4 !important;
 
     }
 
     textarea:disabled {
-      background: #ccc !important;
+      background: #eaecf4 !important;
 
     }
+
+
+/* Fullscreen Button
+------------------------------*/
+
+.full{
+    min-width: 100% !important;
+}
+#fullscreen-button {
+  position: absolute;
+  top:  15px;
+  right:  15px;
+  border:  0;
+  width:  40px;
+  height:  40px;
+  border-radius: 50%;
+  box-sizing: border-box;
+  font-size: 18px;
+}
+
+#compress-button {
+  position: absolute;
+  top:  15px;
+  right:  15px;
+  border:  0;
+  width:  40px;
+  height:  40px;
+  border-radius: 50%;
+  box-sizing: border-box;
+  font-size: 18px;
+}
+
 
 
 </style>

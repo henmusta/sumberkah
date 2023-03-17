@@ -21,7 +21,7 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-6"  style="border: 1px solid #fff; padding:20px;" >
+                            <div class="col-md-4"  style="border: 1px solid #fff; padding:20px;" >
                                 <input id="cek_joborder_id" name="cek_joborder_id" type="hidden" value="{{$data['joborder']['id'] ?? ''}}">
                                <input id="cek_kode_joborder" name="cek_kode_joborder" type="hidden" value="{{$data['joborder']['kode_joborder'] ?? ''}}">
                                 <div class="col-md-12">
@@ -33,56 +33,62 @@
                                      </div>
                                 </div>
                                <div class="col-md-12">
-                                   <div class="mb-3">
+                                   <div class="">
                                       <label>Tanggal Joborder<span class="text-danger">*</span></label>
                                       <input type="text" id="tgl_joborder" value="" name="tgl_joborder"  class="form-control" disabled/>
                                     </div>
                               </div>
                               <div class="col-md-12">
-                               <div class="mb-3">
+                               <div class="">
                                   <label>Driver<span class="text-danger">*</span></label>
                                   <input type="text" id="driver_id" value="" name="driver_id"  class="form-control"  disabled/>
                                 </div>
                               </div>
                               <div class="col-md-12">
-                                <div class="mb-3">
+                                <div class="">
                                    <label>Nomor Plat Polisi<span class="text-danger">*</span></label>
                                    <input type="text" id="nomor_plat" value="" name="nomor_plat"  class="form-control"  disabled/>
                                  </div>
                               </div>
                                 <div class="col-md-12">
-                                    <div class="mb-3">
+                                    <div class="">
                                         <label>Customer<span class="text-danger">*</span></label>
                                         <input type="text" id="customer_id" value="" name="customer_id"  class="form-control"  disabled/>
                                         </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <div class="mb-3">
+                                    <div class="">
                                         <label>Muatan<span class="text-danger">*</span></label>
                                         <input type="text" id="muatan_id" value="" name="muatan_id"  class="form-control"  disabled/>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <div class="mb-3">
+                                    <div class="">
                                        <label>Alamat Dari (Awal)<span class="text-danger">*</span></label>
                                        <input type="text" id="first_rute_id" value="" name="tgl_joborder"  class="form-control" disabled/>
                                      </div>
                                </div>
                                <div class="col-md-12">
-                                <div class="mb-3">
+                                <div class="">
                                    <label>Alamat Akhir (Ke)<span class="text-danger">*</span></label>
                                    <input type="text" id="last_rute_id" value="" name="joborder_id"  class="form-control"  disabled/>
                                  </div>
                                </div>
                                <div class="col-md-12">
-                                 <div class="mb-3">
+                                 <div class="">
                                    <label>Total Uang Jalan<span class="text-danger">*</span></label>
                                    <input type="text" id="total_uang_jalan" value="" name="total_uang_jalan"  class="form-control" disabled/>
                                  </div>
                                </div>
+                               <div class="col-md-12">
+                                <div class="">
+                                  <label>Jenis Muatan<span class="text-danger">*</span></label>
+                                  <input type="text" id="jenis_muatan" value="" name="jenis_muatan"  class="form-control" disabled/>
+                                </div>
+                              </div>
                               {{-- end --}}
                             </div>
-                            <div class="col-md-6"  style="border: 1px solid #fff; padding:20px;" >
+                            <div class="col-md-8"  style="border: 1px solid #fff; padding:20px;" >
                                 <div class="col-md-12">
                                     <div class="mb-3">
                                       <label>Harga<span class="text-danger">*</span></label>
@@ -117,14 +123,14 @@
                               </div>
                               <div class="col-md-12">
                                 <div class="mb-3">
-                                   <label>Biaya Lain<span class="text-danger">*</span></label>
+                                   <label>Biaya Lain<span class="text-danger"></span></label>
                                    <input type="text" id="konfirmasi_biaya_lain" value="0" name="konfirmasi_biaya_lain"  class="form-control"  autocomplete="off"/>
                                  </div>
                               </div>
-                              <div class="col-md-12">
+                              <div class="col-md-12" style="display: none">
                                 <div class="mb-3">
                                    <label>Total Harga<span class="text-danger">*</span></label>
-                                   <input id="total_harga" name="total_harga" style="font-size: 24px; color:black;" class="form-control text-end" readonly>
+                                   <input type="hidden" id="total_harga" name="total_harga" style="font-size: 24px; color:black;" class="form-control text-end" readonly>
                                  </div>
                               </div>
 
@@ -264,6 +270,7 @@ $(document).ready(function () {
     let optionListJoborder = new Option(cek_kode_joborder, cek_joborder_id, false, false);
     select2Joborder.append(optionListJoborder).trigger('change');
     get_jo(cek_joborder_id);
+
 }else{
     select2Joborder.select2({
         dropdownParent:  select2Joborder.parent(),
@@ -300,41 +307,56 @@ $(document).ready(function () {
                 success: function(res) {
                     let data = res;
                     console.log(data);
+                    let jenis_muatan = data.rute.ritase_tonase;
                     $('#tgl_joborder').val(data.joborder.tgl_joborder);
                     $('#driver_id').val(data.driver.name);
                     $('#nomor_plat').val(data.mobil.nomor_plat);
+                    $('#jenis_muatan').val(jenis_muatan);
                     biaya_harga.set(data.rute.harga);
                     $('#customer_id').val(data.customer.name);
                     $('#muatan_id').val(data.muatan.name);
                     $('#first_rute_id').val(data.firstrute.name);
-                    $('#last_rute_id').val(data.firstrute.name);
+                    $('#last_rute_id').val(data.lastrute.name);
                     total_uang_jalan.set(data.joborder.total_uang_jalan);
+
+                    if(jenis_muatan == 'Ritase'){
+                        $('#berat_muatan').val(1);
+                        $('#berat_muatan').prop('readonly', true);
+                        count();
+                    }else{
+                        $('#berat_muatan').prop('readonly', false);
+                    }
 
                 }
          });
      }
 
 $('#berat_muatan').on('keyup', function () {
-        let muatan = $(this).val();
+    count();
+});
+
+
+function count(){
+        let muatan =$('#berat_muatan').val();
         let get_harga =  biaya_harga.getNumber();
-        let get_biaya_lain = biaya_lain.getNumber();
-        let hasil_total_harga = (get_harga + get_biaya_lain) * muatan;
+        // let get_biaya_lain = biaya_lain.getNumber();
+        let hasil_total_harga = get_harga * muatan;
         total_harga.set(hasil_total_harga);
 
-});
+}
 
 $('#select2Customer').on('change', function (e) {
         dataTable.draw();
  });
 
 $('#konfirmasi_biaya_lain').on('keyup', function () {
-        let get_muatan = $('#beban_muatan').val();
-        let muatan = (get_muatan > 0) ?  get_muatan : 1;
-        let get_harga =  biaya_harga.getNumber();
-        let get_biaya_lain = biaya_lain.getNumber();
+        // let get_muatan = $('#beban_muatan').val();
+        // let muatan = (get_muatan > 0) ?  get_muatan : 1;
+        // let get_harga =  biaya_harga.getNumber();
+        // let get_biaya_lain = biaya_lain.getNumber();
 
-        let hasil_total_harga = (get_harga + get_biaya_lain) * muatan;
-        total_harga.set(hasil_total_harga);
+        // let hasil_total_harga = (get_harga + get_biaya_lain) * muatan;
+        // total_harga.set(hasil_total_harga);
 
 });
 $("#formStore").submit(function (e) {

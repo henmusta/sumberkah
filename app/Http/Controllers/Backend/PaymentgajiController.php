@@ -30,9 +30,9 @@ class PaymentGajiController extends Controller
     }
     public function index(Request $request)
     {
-        $config['page_title'] = "Data Payment Invoice";
+        $config['page_title'] = "Data Payment Gaji";
         $page_breadcrumbs = [
-          ['url' => '#', 'title' => "Data Payment Invoice"],
+          ['url' => '#', 'title' => "Data Payment Gaji"],
         ];
         if ($request->ajax()) {
           $data = PaymentGaji::selectRaw('payment_gaji.*')->with('penggajian');
@@ -88,10 +88,10 @@ class PaymentGajiController extends Controller
     public function create(Request $request)
     {
 
-      $config['page_title'] = "Tambah Payment Invoice";
+      $config['page_title'] = "Tambah Payment Gaji";
       $page_breadcrumbs = [
-        ['url' => route('backend.paymentgaji.index'), 'title' => "Daftar Invoice"],
-        ['url' => '#', 'title' => "Tambah Invoice"],
+        ['url' => route('backend.paymentgaji.index'), 'title' => "Daftar Gaji"],
+        ['url' => '#', 'title' => "Tambah Gaji"],
       ];
 
       $gaji = Penggajian::find($request['penggajian_id']);

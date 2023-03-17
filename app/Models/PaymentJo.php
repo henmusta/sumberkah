@@ -25,4 +25,9 @@ class PaymentJo extends Model
     {
       return $this->belongsTo(Joborder::class, 'joborder_id');
     }
+
+    public function kasbon()
+    {
+      return $this->belongsTo(Kasbon::class, 'kasbon_id');
+    }
 }

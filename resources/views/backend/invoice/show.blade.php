@@ -38,12 +38,12 @@
                             <tr>
                                 <td style="width: 300px; ">Tanggal Invoice</td>
                                 <td style="width: 2px; padding-right: 10px">:</td>
-                                <td  style="font-weight:bold">{{$data['invoice']['tgl_invoice']?? ''}}</td>
+                                <td  style="font-weight:bold">    {{ \Carbon\Carbon::parse($data['invoice']['tgl_invoice'])->format('d-m-Y')}}</td>
                             </tr>
                             <tr>
                                 <td style="width: 300px; ">Batas Pembayaran</td>
                                 <td style="width: 2px; padding-right: 10px">:</td>
-                                <td  style="font-weight:bold">{{$data['invoice']['payment_hari'] ?? ''}} Hari ({{$data['invoice']['tgl_jatuh_tempo']?? ''}})</td>
+                                <td  style="font-weight:bold">{{$data['invoice']['payment_hari'] ?? ''}} Hari ({{\Carbon\Carbon::parse($data['invoice']['tgl_jatuh_tempo'])->format('d-m-Y')}})</td>
                             </tr>
                             <tr>
                                 <td style="width: 300px; ">Muatan</td>
@@ -130,15 +130,16 @@
                                         <th class="text-end">Rp. {{number_format($data['konfirmasijo']->SUM('total_harga'),0,',','.')}}</th>
                                     </tr>
                                     <tr>
-                                        <th class="text-end" colspan="{{$colspan_1}}">Ppn 11%</th>
+                                        <th class="text-end" colspan="{{$colspan_1}}">PPN 11%</th>
                                         <th class="text-end">Rp. {{number_format($data['invoice']['nominal_ppn'],0,',','.')}}</th>
                                     </tr>
                                     <tr>
                                         <th class="text-end" colspan="{{$colspan_1}}">Grand Total</th>
                                         <th class="text-end">Rp. {{number_format($data['invoice']['total_harga'],0,',','.')}}</th>
-                                    </tr>
+                                    </tr>ucfirst
+                                    @php($terbilang = Riskihajar\Terbilang\Facades\Terbilang::make($data['invoice']['total_harga'], ' rupiah')  ?? '' )
                                     <tr>
-                                        <th class="text-left" colspan="{{$colspan_2}}">Terbilang = #   {{Riskihajar\Terbilang\Facades\Terbilang::make($data['invoice']['total_harga'], ' rupiah')  ?? '' }} #</th>
+                                        <th class="text-left" colspan="{{$colspan_2}}">Terbilang = #   {{ucwords($terbilang)}} #</th>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -161,7 +162,7 @@
                             <tr>
                                 <td style="width: 300px; ">A/N</td>
                                 <td style="width: 2px; padding-right: 10px">:</td>
-                                <td  style="font-weight:bold">PT.Sumber Karya Berka</td>
+                                <td  style="font-weight:bold">PT.Sumber Karya Berkah</td>
                             </tr>
                             <tr>
                                 <td style="width: 300px; ">No. Rek</td>

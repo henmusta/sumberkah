@@ -4,12 +4,14 @@
 
 @section('content')
 <div class="page-content">
-    <div class="container-fluid">
+    <div id="dashboard" class="container-fluid full">
         {{-- <h5 class="card-title mb-3">{{ $config['page_title'] }}</h5> --}}
         <div class="card">
             <div class="card-header text-center">
                 <h2 class="">{{ $config['page_title'] }}</h2>
             </div>
+            <button id="fullscreen-button" hidden="true"><i class="fas fa-expand"></i></button>
+            <button id="compress-button"><i class="fas fa-compress"></i></button>
             <div class="card-body">
             <!-- Nav tabs -->
                 <ul class="nav nav-pills nav-justified" role="tablist">
@@ -321,9 +323,9 @@
                                             </div>
                                         </div>
                                         <div class="card-body">
-                                            <div class="text-center"  style="padding: 20px">
+                                            {{-- <div class="text-center"  style="padding: 20px">
                                                 <h4 class="main-content-label mb-1">Berlaku Sim</h4>
-                                            </div>
+                                            </div> --}}
                                             <div class="table-responsive">
                                                 <table id="Datatableinvoice" class="table table-bordered border-bottom" style="width:100%">
                                                     <thead>
@@ -461,9 +463,11 @@
 
        ],
        columnDefs: [
-
-
-       ],
+          {
+            targets: [3],
+            render: $.fn.dataTable.render.number('.', ',', 0, '')
+          }
+        ],
      });
 
 
@@ -573,7 +577,7 @@
        ajax: {
         url: "{{ route('backend.dashboard.dtmobil') }}",
          data: function (d) {
-           // d.status = $('#Select2Status').find(':selected').val();
+            d.berlaku_stnk = 1;
          }
        },
 
@@ -603,7 +607,7 @@
        ajax: {
          url: "{{ route('backend.dashboard.dtmobil') }}",
          data: function (d) {
-           // d.status = $('#Select2Status').find(':selected').val();
+            d.berlaku_pajak = 1;
          }
        },
 
@@ -639,7 +643,7 @@
        ajax: {
          url: "{{ route('backend.dashboard.dtmobil') }}",
          data: function (d) {
-           // d.status = $('#Select2Status').find(':selected').val();
+            d.berlaku_kir = 1;
          }
        },
 
@@ -672,7 +676,7 @@
        ajax: {
          url: "{{ route('backend.dashboard.dtmobil') }}",
          data: function (d) {
-           // d.status = $('#Select2Status').find(':selected').val();
+            d.berlaku_ijin_bongkar = 1;
          }
        },
 
@@ -706,7 +710,7 @@
        ajax: {
          url: "{{ route('backend.dashboard.dtmobil') }}",
          data: function (d) {
-           // d.status = $('#Select2Status').find(':selected').val();
+            d.berlaku_ijin_usaha = 1;
          }
        },
 

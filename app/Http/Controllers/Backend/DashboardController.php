@@ -26,7 +26,7 @@ class DashboardController extends Controller
     public function dtdriver(Request $request)
     {
       if ($request->ajax()) {
-        $data = Driver::query();
+        $data = Driver::whereRaw('DATEDIFF(NOW(),tgl_sim) > -45');
         if ($request->filled('status_jalan')) {
             $data->where('status_jalan', '!=', $request['status_jalan']);
         }
@@ -61,6 +61,31 @@ class DashboardController extends Controller
         if ($request->filled('status_jalan')) {
             $data->where('status_jalan', '!=', $request['status_jalan']);
         }
+
+        if ($request->filled('berlaku_stnk')) {
+            $data->whereRaw('DATEDIFF(NOW(),berlaku_stnk) > -45');
+        }
+
+        if ($request->filled('berlaku_pajak')) {
+            $data->whereRaw('DATEDIFF(NOW(),berlaku_pajak) > -45');
+        }
+
+
+        if ($request->filled('berlaku_kir')) {
+            $data->whereRaw('DATEDIFF(NOW(),berlaku_kir) > -45');
+        }
+
+
+
+        if ($request->filled('berlaku_ijin_bongkar')) {
+            $data->whereRaw('DATEDIFF(NOW(),berlaku_ijin_bongkar) > -45');
+        }
+
+
+        if ($request->filled('berlaku_ijin_usaha')) {
+            $data->whereRaw('DATEDIFF(NOW(),berlaku_ijin_usaha) > -45');
+        }
+
 
         return DataTables::of($data)
         ->addColumn('exp_stnk', function ($row) {

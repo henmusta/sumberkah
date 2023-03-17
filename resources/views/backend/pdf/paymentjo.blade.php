@@ -4,7 +4,7 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 0 30px;
+      margin: 0 5px;
     }
 
     .header {
@@ -33,7 +33,7 @@
 
     .dataPayment td {
         border:none;
-      font-size: 10px;
+      font-size: 14px;
       padding-top: 8px;
       padding-bottom: 8px;
     }
@@ -96,12 +96,12 @@
   <tr>
     <td>Tanggal Joborder</td>
     <td style="width: 2px; padding-right: 10px">:</td>
-    <td style="font-weight: normal">{{ $payment['tgl_payment'] }}</td>
+    <td style="font-weight: normal">    {{ \Carbon\Carbon::parse( $payment['tgl_payment'])->format('d-m-Y')}} </td>
   </tr>
   <tr>
     <td>Tanggal Penyerahan Uang Jalan</td>
     <td style="width: 2px; padding-right: 10px">:</td>
-    <td style="font-weight: normal">{{ \Carbon\Carbon::now()->format('Y-m-d') }}</td>
+    <td style="font-weight: normal">{{ \Carbon\Carbon::now()->format('d-m-Y') }}</td>
   </tr>
   <tr>
     <td>Supir</td>
@@ -157,11 +157,11 @@
     <td>Total Uang Jalan</td>
     <td style="width: 2px; padding-right: 10px">:</td>
     <td style="font-weight: normal;">
-        Rp. {{ number_format($joborder['total_uang_jalan'],2,',','.') }}
+        Rp. {{ number_format($joborder['total_uang_jalan'],0,',','.') }}
     </td>
   </tr>
   <tr>
-    <td>Total Potongan Bon (Lainnya)</td>
+    <td>Total Potongan Bon Sebelumnya</td>
     <td style="width: 2px; padding-right: 10px">:</td>
     <td style="font-weight: normal;">
         @php($kasbon_sebelumnya = $joborder['total_kasbon'] - $payment['nominal_kasbon'])
@@ -170,11 +170,11 @@
   </tr>
 
   <tr>
-    <td>Total Pembayaran  (Lainnya)</td>
+    <td>Total Pembayaran  Sebelumnya</td>
     <td style="width: 2px; padding-right: 10px">:</td>
     <td style="font-weight: normal;">
         @php($pembayaran_sebelumnya = $joborder['total_payment'] - $payment['nominal'])
-        Rp. {{ number_format($pembayaran_sebelumnya,2,',','.') }}
+        Rp. {{ number_format($pembayaran_sebelumnya,0,',','.') }}
     </td>
   </tr>
 
@@ -183,7 +183,7 @@
     <td>Potongan Bon  (Saat Ini)</td>
     <td style="width: 2px; padding-right: 10px">:</td>
     <td style="font-weight: normal;">
-        Rp. {{  number_format($payment['nominal_kasbon'],2,',','.') }}
+        Rp. {{  number_format($payment['nominal_kasbon'],0,',','.') }}
     </td>
   </tr>
 
@@ -195,13 +195,13 @@
     <td style="width: 2px; padding-right: 10px">:</td>
     <td style="font-weight: normal;">
         @php($grandtotal = $joborder['total_uang_jalan'] - $kasbon_sebelumnya - $pembayaran_sebelumnya)
-        Rp. {{  number_format($grandtotal,2,',','.') ?? '' }}
+        Rp. {{  number_format($grandtotal,0,',','.') ?? '' }}
     </td>
   </tr>
   <tr>
     <td>Uang Jalan yang diserahkan</td>
     <td style="width: 2px; padding-right: 10px">:</td>
-    <td style="font-weight: normal;">Rp. {{ number_format($payment['nominal'] ,2,',','.')}}</td>
+    <td style="font-weight: normal;">Rp. {{ number_format($payment['nominal'] ,0,',','.')}}</td>
   </tr>
 
   <tr>
@@ -217,7 +217,7 @@
     <td style="width: 2px; padding-right: 10px">:</td>
     <td style="font-weight: normal;">
 
-        Rp. {{  number_format($joborder['sisa_uang_jalan'],2,',','.') ?? '' }}
+        Rp. {{  number_format($joborder['sisa_uang_jalan'],0,',','.') ?? '' }}
     </td>
   </tr>
 
@@ -243,7 +243,7 @@
     <td>Keterangan Potongan Bon</td>
     <td style="width: 2px; padding-right: 10px">:</td>
     <td style="font-weight: normal; text-transform: uppercase">
-        {{ $payment['keterangan_kasbon'] ?? '' }}
+         {{ isset($payment['kasbon']['kode_kasbon']) ? 'Potongan Kasbon Kode Bon : '. $payment['kasbon']['kode_kasbon'] : '' }}
     </td>
   </tr>
 

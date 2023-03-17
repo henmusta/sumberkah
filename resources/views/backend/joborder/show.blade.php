@@ -54,7 +54,7 @@
                                     </tr>
 
                                     <tr class="">
-                                        <th class="text-left">Kode JobOrder</th>
+                                        <th class="text-left">Muatan</th>
                                         <td class="text-left">{{ $data['joborder']['muatan']['name'] ?? '' }}</td>
                                     </tr>
 
@@ -83,7 +83,7 @@
                                         <td class="text-end">Rp. {{  number_format($data['joborder']['total_uang_jalan'],0,',','.') ?? '0' }}</td>
                                     </tr>
                                     <tr class="">
-                                        <th class="text-left">Tanggal Payment</th>
+                                        <th class="text-left">Total Payment</th>
                                         <td class="text-end">Rp. {{  number_format($data['joborder']['total_payment'],0,',','.') ?? '0' }}</td>
                                     </tr>
                                     <tr class="">

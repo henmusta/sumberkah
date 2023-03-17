@@ -148,7 +148,7 @@ tr.group:hover {
         columns: [
           {data: 'kode_joborder', name: 'kode_joborder'},
           {data: 'tgl_konfirmasi', name: 'tgl_payment'},
-          {data: 'tgl_muat', className: 'text-end', name: 'nominal'},
+          {data: 'tgl_muat', name: 'tgl_muat'},
           {data: 'tgl_bongkar', name: 'jenis_payment'},
           {data: 'konfirmasi_biaya_lain', name: 'konfirmasi_biaya_lain'},
           {data: 'keterangan_konfirmasi', name: 'keterangan_konfirmasi'},
@@ -156,8 +156,8 @@ tr.group:hover {
 
         columnDefs: [
           {
-            targets: [2],
-            render: $.fn.dataTable.render.number('.', ',', 3, '')
+            targets: [4],
+            render: $.fn.dataTable.render.number('.', ',', 0, '')
           }
         ],
       });

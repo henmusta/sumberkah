@@ -248,7 +248,10 @@ class DriverController extends Controller
         ->orderBy('name')
         ->skip($offset)
         ->take($resultCount)
-        ->selectRaw('id, CONCAT(name,"-", IFNULL(panggilan,"")) as text, kasbon as kasbon')
+        ->selectRaw('id,  CASE
+            WHEN panggilan is null THEN name
+            ELSE CONCAT(name," (", IFNULL(panggilan,""),")" )
+            END as text, kasbon as kasbon')
         ->get();
 
       $count = Driver::where('name', 'LIKE', '%' . $request->q . '%')

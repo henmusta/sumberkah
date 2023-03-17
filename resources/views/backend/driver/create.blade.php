@@ -117,7 +117,7 @@
                                 <div class="col-md-12">
                                     <div class="mb-3">
                                       <label>Referensi<span class="text-danger"></span></label>
-                                      <input type="text" id="darurat_ref" name="darurat_ref"  class="form-control" placeholder="Masukan Referensi Kontak Darurat"/>
+                                      <input type="text" id="darurat_ref" name="darurat_ref"  class="form-control" placeholder="Masukan Referensi"/>
                                     </div>
                                 </div>
 

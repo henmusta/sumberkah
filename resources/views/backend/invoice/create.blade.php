@@ -82,7 +82,7 @@
                                         </select>
                                       </div>
                                       <div class="mb-3">
-                                        <label>Ppn<span class="text-danger">*</span></label>
+                                        <label>PPN 11%<span class="text-danger">*</span></label>
                                         <input type="text" id="nominal_ppn" value="" name="nominal_ppn"  class="form-control" disabled/>
                                       </div>
                                       <div class="mb-3">
