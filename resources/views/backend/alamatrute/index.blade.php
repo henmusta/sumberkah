@@ -1,4 +1,4 @@
-s@extends('backend.layouts.master')
+@extends('backend.layouts.master')
 
 @section('title') {{ $config['page_title'] }} @endsection
 
