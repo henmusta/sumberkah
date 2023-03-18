@@ -190,6 +190,8 @@
 
 
 
+
+
   <tr>
     <td>Grand Total (Saat Ini)</td>
     <td style="width: 2px; padding-right: 10px">:</td>
@@ -239,13 +241,16 @@
     <td style="width: 2px; padding-right: 10px">:</td>
     <td style="font-weight: normal; text-transform: uppercase"></td>
   </tr>
+  @if(isset($payment['kasbon_id']))
   <tr>
-    <td>Keterangan Potongan Bon</td>
+    <td>Keterangan Potongan Bon (Kode Kasbon)</td>
     <td style="width: 2px; padding-right: 10px">:</td>
     <td style="font-weight: normal; text-transform: uppercase">
-         {{ isset($payment['kasbon']['kode_kasbon']) ? 'Potongan Kasbon Kode Bon : '. $payment['kasbon']['kode_kasbon'] : '' }}
+         {{ isset($payment['kasbon']['kode_kasbon']) ? $payment['keterangan_kasbon']. ' ('. $payment['kasbon']['kode_kasbon'].')' : '' }}
     </td>
   </tr>
+
+  @endif
 
 
 </table>

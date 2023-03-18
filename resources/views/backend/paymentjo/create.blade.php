@@ -415,7 +415,7 @@ $(document).ready(function () {
                         AutoNumeric.getAutoNumericElement('#num_nominal_kasbon' + index).set(0);
                         $(row).find('#keterangan_kasbon' + index).val('');
                     }else{
-                        let keterangan_kasbon = 'Potongan Kasbon Joborder : '+ $('#cek_kode_joborder').val();
+                        let keterangan_kasbon = '-';
                         $(row).find('#keterangan_kasbon' + index).val(keterangan_kasbon);
                     }
 

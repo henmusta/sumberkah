@@ -459,7 +459,7 @@ if(cek_joborder_id != ''){
                         $(row).find('#keterangan_kasbon' + index).val('');
                     }
                     else{
-                        let keterangan_kasbon = 'Potongan Kasbon Joborder : '+ $('#cek_kode_joborder').val();
+                        let keterangan_kasbon = '-';
                         $(row).find('#keterangan_kasbon' + index).val(keterangan_kasbon);
                     }
 
