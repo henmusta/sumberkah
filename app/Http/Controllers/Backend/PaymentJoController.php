@@ -37,6 +37,11 @@ class PaymentJoController extends Controller
         $page_breadcrumbs = [
           ['url' => '#', 'title' => "Data Payment Joborder"],
         ];
+
+        $joborder = Joborder::find($request['joborder_id']);
+        $data = [
+          'joborder' => $joborder,
+        ];
         if ($request->ajax()) {
           $data = PaymentJo::with('joborder');
           if ($request->filled('id')) {
@@ -47,7 +52,7 @@ class PaymentJoController extends Controller
           ->addColumn('action', function ($row) {
             $print = '<a href="'. route('backend.paymentjo.pdf', $row->id) . '" class="edit dropdown-item">Cetak</a>';
             $show = '<a href="' . route('backend.joborder.show', $row->joborder_id) . '" class="dropdown-item">Detail</a>';
-
+            $validasi = '<a href="#" data-bs-toggle="modal" data-bs-target="#modalValidasi" data-bs-id="' . $row->id . '"  data-bs-validasi="' . $row->validasi. '" class="edit dropdown-item">Validasi</a>';
             $edit = '<a href="#" data-bs-toggle="modal" data-bs-target="#modalEdit"
                 data-bs-id="' . $row->id . '"
                 data-bs-nominal="' . $row->nominal . '"
@@ -67,11 +72,15 @@ class PaymentJoController extends Controller
             ];
 
 
+
             $cek_edit =  $row->joborder->status_payment != '2'  ? $edit : '';
             $cek_delete =  $row->joborder->status_payment != '2' ? $delete : '';
 
             $cek_perm_edit = $perm['edit'] == 'true' ? $cek_edit : '';
             $cek_perm_delete = $perm['delete'] == 'true' ? $cek_delete : '';
+
+            $cek_level_edit = Auth::user()->roles()->first()->level == '1'  && $row->joborder->status_joborder == '0' ? $edit : $cek_perm_edit;
+            $cek_level_delete = Auth::user()->roles()->first()->level == '1' && $row->joborder->status_joborder == '0' ? $delete : $cek_perm_delete;
 
             return '<div class="dropdown">
             <a href="#" class="btn btn-secondary" data-bs-toggle="dropdown">
@@ -79,8 +88,8 @@ class PaymentJoController extends Controller
             </a>
             <div class="dropdown-menu" data-popper-placement="bottom-start" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(0px, 40px);">
                 '. $show.'
-                '. $cek_perm_edit .'
-                '. $cek_perm_delete .'
+                '. $cek_level_edit .'
+                '.  $cek_level_delete .'
                 '.  $print .'
             </div>
         </div>';
@@ -95,7 +104,7 @@ class PaymentJoController extends Controller
             ->make(true);
         }
 
-        return view('backend.paymentjo.index', compact('config', 'page_breadcrumbs'));
+        return view('backend.paymentjo.index', compact('config', 'page_breadcrumbs', 'data'));
     }
 
 
@@ -190,15 +199,16 @@ class PaymentJoController extends Controller
                     'keterangan_kasbon' => $val_payment['keterangan_kasbon'],
                     'keterangan' => $val_payment['keterangan']
                   ]);
-
+                  $Driverlogkasbon = Driverlogkasbon::create([
+                    'joborder_id' =>  $request['joborder_id'],
+                    'driver_id' =>  $joborder['driver_id'],
+                    'nominal' =>  $val_payment['nominal_kasbon'],
+                    'payment_joborder_id' => $payment['id']
+                  ]);
 
                   //end cek nominal kasbon
                 }
-                $Driverlogkasbon = Driverlogkasbon::create([
-                    'joborder_id' =>  $request['joborder_id'],
-                    'driver_id' =>  $joborder['driver_id'],
-                    'nominal' =>  $total_kasbon
-                ]);
+
 
             }
 
@@ -265,8 +275,9 @@ class PaymentJoController extends Controller
                 DB::beginTransaction();
                   $joborder = Joborder::findOrFail($id);
                 //kasbon
-                    $total_payment = 0;
-                    $total_kasbon = 0;
+                  $total_payment = 0;
+                  $total_kasbon = 0;
+                  $first_kasbon =  $joborder['total_kasbon'];
                   if(isset($request['payment'])){
                     $payment_id = array();
                     $kasbon_id = array();
@@ -292,7 +303,7 @@ class PaymentJoController extends Controller
                             ]);
                             $kasbon_id[] = $kasbon['id'];
 
-                            if(isset($kasbon['id'])){
+                             if(isset($kasbon['id'])){
                                 $kasbonjurnallog = Kasbonjurnallog::updateOrCreate([
                                      'kasbon_id' => $kasbon['id']
                                 ],[
@@ -335,32 +346,30 @@ class PaymentJoController extends Controller
                             $cek_kasbon->delete();
                         }
 
-
+                        $Driverlogkasbon = Driverlogkasbon::updateOrCreate([
+                            'payment_joborder_id' => $payment['id']
+                        ],[
+                            'joborder_id' =>  $joborder['id'],
+                            'driver_id' => $joborder['driver_id'],
+                            'nominal' =>  $val['nominal_kasbon']
+                        ]);
                     }
 
                     $driver = Driver::findOrFail($joborder['driver_id']);
-                    $Driverlogkasbon = Driverlogkasbon::where('joborder_id', $id)->first();
-                    $NominalDriverlogkasbon =  $Driverlogkasbon['nominal'] ?? 0;
+                  //  $Driverlogkasbon = Driverlogkasbon::selectRaw('sum(nominal) as nominal')->where('joborder_id', $id)->first();
+                    // dd( $Driverlogkasbon);
+                  //  $NominalDriverlogkasbon =  $Driverlogkasbon['nominal'] ?? 0;
 
-                    $ck_dk = $driver['kasbon'] + $Driverlogkasbon['nominal'];
+                    $ck_dk = $driver['kasbon'] + $first_kasbon;
 
-                    // dd($total_kasbon, $ck_dk);
+                //    dd($driver['kasbon'], $first_kasbon);
                     if($total_kasbon <=  $ck_dk){
-                        $total_kasbon_driver = ($driver['kasbon'] + $Driverlogkasbon['nominal']) - $total_kasbon;
-
+                        $total_kasbon_driver = $ck_dk - $total_kasbon;
+                        // dd($total_kasbon, $ck_dk, $total_kasbon_driver);
                         // dd($total_kasbon_driver);
                         $driver->update([
                             'kasbon'=>  $total_kasbon_driver,
                         ]);
-                        $Driverlogkasboncreate = Driverlogkasbon::updateOrCreate([
-                              'id' =>  $Driverlogkasbon['id'] ?? 0
-                            ],[
-                                'joborder_id' =>  $request['joborder_id'],
-                                'driver_id' =>  $joborder['driver_id'],
-                                'nominal' =>  $total_kasbon
-                            ]);
-
-
 
                     }else{
                         $response = response()->json([
@@ -442,42 +451,75 @@ class PaymentJoController extends Controller
                 $kasbon = Kasbon::find($paymentjo['kasbon_id']);
                 $kasbonjurnallog = Kasbonjurnallog::where('kasbon_id', $paymentjo['kasbon_id']);
                 if($request['nominal_kasbon'] > 0){
-                    // dd($cek_kasbon, $request['nominal_kasbon']);
-                    // if($request['nominal_kasbon'] < $cek_kasbon){
-
-
-
-                    // }else{
-
-                    //   // dd($request['nominal_kasbon']);
-                    //   $response = response()->json([
-                    //     'status' => 'error',
-                    //     'message' => 'Nominal kasbon Melebihi Kasbon Tersedia Tersedia'
-                    //   ]);
-                    //   DB::rollBack();
-                    // }
-                    $kasbon->update([
+                    $kode =  $this->KodeKasbon(Carbon::now()->format('d M Y'));
+                 //   $kasbon = Kasbon::find($paymentjo['kasbon_id']);
+                    $kasbon = Kasbon::updateOrCreate([
+                        'id' => $paymentjo['kasbon_id']
+                    ],[
+                        'joborder_id' =>  $joborder['id'],
+                        'kode_kasbon'=>  $kasbon['kode_kasbon'] ?? $kode,
+                        'driver_id' => $joborder['driver_id'],
+                        'tgl_kasbon'=>  $paymentjo['tgl_payment'],
+                        'jenis'=> 'Potong Joborder',
+                        'keterangan'=> $request['keterangan_kasbon'],
                         'nominal'=> $request['nominal_kasbon'],
+                        'validasi' =>  '1'
+                    ]);
+                    // $kasbon_id[] = $kasbon['id'];
+
+                     if(isset($kasbon['id'])){
+                        $kasbonjurnallog = Kasbonjurnallog::updateOrCreate([
+                             'kasbon_id' => $kasbon['id']
+                        ],[
+                            'kasbon_id' =>   $kasbon['id'],
+                            'joborder_id' =>  $kasbon['joborder_id'],
+                            'driver_id' =>  $kasbon['driver_id'],
+                            'kode_kasbon'=>  $kasbon['kode_kasbon'],
+                            'jenis'=>  $kasbon['jenis'],
+                            'tgl_kasbon'=>  $kasbon['tgl_kasbon'],
+                            'keterangan'=> $kasbon['keterangan'],
+                            'debit'=> $kasbon['nominal'],
+                            'kredit'=> '0'
+                        ]);
+                     }
+
+
+
+                    $Driverlogkasbon = Driverlogkasbon::updateOrCreate([
+                        'payment_joborder_id' => $paymentjo['id']
+                    ],[
+                        'payment_joborder_id' =>   $paymentjo['id'],
+                        'joborder_id' =>   $joborder['id'],
+                        'driver_id' => $joborder['driver_id'],
+                        'nominal' =>  $request['nominal_kasbon']
                     ]);
 
-                    $kasbonjurnallog->update([
-                        'debit'=> $request['nominal_kasbon'],
-                    ]);
+                    // $kasbon->update([
+                    //     'nominal'=> $request['nominal_kasbon'],
+                    // ]);
+
+                    // $kasbonjurnallog->update([
+                    //     'debit'=> $request['nominal_kasbon'],
+                    // ]);
 
                 }else{
-                    $kasbon->delete();
+                    if($kasbon->first()){
+                        $kasbon->delete();
+                    }
+
                 }
 
                 $driver = Driver::findOrFail($joborder['driver_id']);
-                $Driverlogkasbon = Driverlogkasbon::where('joborder_id', $joborder['id']);
-                $cek_kasbon = $driver['kasbon'] + $paymentjo['nominal_kasbon'];
-
+                $Driverlogkasbon = Driverlogkasbon::where('payment_joborder_id', $paymentjo['id']);
+                $Driverlogkasbon->update([
+                    'nominal' =>  $request['nominal_kasbon']
+                ]);
+                $cek_kasbon = $driver['kasbon'] + $joborder['total_kasbon'];
                 $total_kasbon_driver = $cek_kasbon - $request['nominal_kasbon'];
-
-
 
                 $paymentjo->update([
                     'nominal' => $request['nominal'],
+                    'kasbon_id' =>  $kasbon['id'],
                     'nominal_kasbon' => $request['nominal_kasbon'],
                     'jenis_payment' => $request['jenis_payment'],
                     'keterangan_kasbon' => $request['keterangan_kasbon'],
@@ -504,15 +546,12 @@ class PaymentJoController extends Controller
 
 
                     // dd($total_kasbon);
-
+                    // dd($total_kasbon_driver);
                     $driver->update([
                         'kasbon'=>  $total_kasbon_driver,
                     ]);
 
 
-                    $Driverlogkasboncreate = $Driverlogkasbon->update([
-                        'nominal' =>  $total_kasbon
-                    ]);
 
 
 
@@ -573,24 +612,16 @@ class PaymentJoController extends Controller
                 // $total_kasbon = 0;
                 if($data['nominal_kasbon'] > 0){
                         $driver = Driver::findOrFail($joborder['driver_id']);
-                        $Driverlogkasbon = Driverlogkasbon::where('joborder_id',  $joborder['id'])->first();
-                        $NominalDriverlogkasbon =  $Driverlogkasbon['nominal'] ?? 0;
+                    //    $Driverlogkasbon = Driverlogkasbon::where('joborder_id',  $joborder['id'])->first();
+                    //    $NominalDriverlogkasbon =  $Driverlogkasbon['nominal'] ?? 0;
 
                         $total_kasbon_driver = ($driver['kasbon'] + $data['nominal_kasbon']);
-
 
                         $driver->update([
                                 'kasbon'=>  $total_kasbon_driver,
                         ]);
-                        $Driverlogkasbonupdate =   Driverlogkasbon::where('joborder_id', $joborder['id']);
 
-                        $cek_updatedriverlog = $Driverlogkasbonupdate->update([
-                            'nominal' =>   $Driverlogkasbon['nominal'] - $data['nominal_kasbon']
-                        ]);
-                        // dd( $Driverlogkasbonupdate);
-
-
-                    $kasbon = Kasbon::findOrFail($data['kasbon_id']);
+                     $kasbon = Kasbon::findOrFail($data['kasbon_id']);
                      if(isset($data['kasbon_id'])){
                         $cek_kasbon = Kasbon::where([
                             ['joborder_id' , $joborder['id']],
@@ -599,7 +630,7 @@ class PaymentJoController extends Controller
                         $cek_kasbon->delete();
                      }
 
-                     $total_kasbon =   $Driverlogkasbon['nominal'] - $data['nominal_kasbon'];
+                     $total_kasbon =    $joborder['total_kasbon'] - $data['nominal_kasbon'];
 
                 }else{
                     $total_kasbon = $joborder['total_kasbon'];

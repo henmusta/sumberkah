@@ -17,6 +17,7 @@ class Role extends Model
       'slug',
       'urut',
       'parent',
+      'level',
     ];
 
     protected static function boot()

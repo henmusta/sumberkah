@@ -33,7 +33,7 @@
                                                 <div class="mb-3">
                                                     <label>Nomor Slip Gaji<span class="text-danger">*</span></label>
                                                     <select id="select2Gaji" style="width: 100% !important;" name="penggajian_id">
-
+                                                        <option value="{{ $data['gaji']['id'] ?? '' }}"> {{$data['gaji']['kode_gaji'] ?? '' }}</option>
                                                     </select>
                                                   </div>
                                             </div>
@@ -61,7 +61,7 @@
 
             </div>
             <div class="card-body">
-                <div class="table-responsive">
+                <div class="table">
                     <table id="Datatable" class="table table-bordered border-bottom w-100" style="width:100%">
                         <thead>
                             <tr>
@@ -240,11 +240,11 @@ tr.group:hover {
                             r.style.display = '';
                         }
                     })
-                    console.log(rows.data()[0].penggajian.status_payment);
+                    let kode = '<a class="btn-sm btn-info" href="{{ route('backend.penggajian.index') }}?penggajian_id='+rows.data()[0].penggajian_id+'">'+group+'</a>';
                     let url = (rows.data()[0].penggajian.status_payment < 2) ? '<a class="btn btn-primary" href="paymentgaji/' + rows.data()[0].penggajian_id+ '/edit">Tambah Pembayaran</a>' : '<span class="badge bg-pill  bg-success">Lunas</span>';
                     let sisa_tagihan=  $.fn.dataTable.render.number('.', ',', 0, '').display(rows.data()[0].penggajian.sisa_gaji);
                     return $('<tr/>')
-                    .append('<td colspan="6"><div class="float-start"> KODE GAJI : ' + group + ' TOTAL PAYMENT : (' + rows.count() + ') SISA GAJI : '+sisa_tagihan+' </div><div class="float-end">'+url+'</div></td>')
+                    .append('<td colspan="6"><div class="float-start">' + kode + ' TOTAL PAYMENT : (' + rows.count() + ') SISA GAJI : '+sisa_tagihan+' </div><div class="float-end">'+url+'</div></td>')
                     .attr('data-name', group)
                     .toggleClass('collapsed', collapsed);
                }

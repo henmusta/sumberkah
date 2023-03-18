@@ -40,7 +40,7 @@ class RoleController extends Controller
             Aksi <i class="mdi mdi-chevron-down"></i>
           </button>
           <ul class="dropdown-menu">
-            <li> <a href="#" data-bs-toggle="modal" data-bs-target="#modalEdit" data-bs-id="' . $row->id . '" data-bs-name="' . $row->name . '" class="edit dropdown-item">Ubah</a></li>
+
             <li> <a href="#" data-bs-toggle="modal" data-bs-target="#modalDelete" data-bs-id="' . $row->id . '" class="delete dropdown-item">Hapus</a></li>
           </ul>
         </div>';

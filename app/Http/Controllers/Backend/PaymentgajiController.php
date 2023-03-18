@@ -34,6 +34,11 @@ class PaymentGajiController extends Controller
         $page_breadcrumbs = [
           ['url' => '#', 'title' => "Data Payment Gaji"],
         ];
+
+        $penggajian = Penggajian::find($request['penggajian_id']);
+        $data = [
+          'gaji' => $penggajian
+        ];
         if ($request->ajax()) {
           $data = PaymentGaji::selectRaw('payment_gaji.*')->with('penggajian');
 
@@ -66,14 +71,17 @@ class PaymentGajiController extends Controller
                 $cek_perm_delete = $perm['delete'] == 'true' ? $cek_delete : '';
 
 
+                $cek_level_edit = Auth::user()->roles()->first()->level == '1' ? $edit : $cek_perm_edit;
+                $cek_level_delete = Auth::user()->roles()->first()->level == '1' ? $delete : $cek_perm_delete;
+
                 return '<div class="dropdown">
                 <a href="#" class="btn btn-secondary" data-bs-toggle="dropdown">
                     Aksi <i class="mdi mdi-chevron-down"></i>
                 </a>
                 <div class="dropdown-menu" data-popper-placement="bottom-start" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(0px, 40px);">
                     '. $show.'
-                    '. $cek_perm_edit .'
-                    '. $cek_perm_delete .'
+                    '.  $cek_level_edit .'
+                    '.  $cek_level_delete .'
                 </div>
             </div>';
 
@@ -81,7 +89,7 @@ class PaymentGajiController extends Controller
             ->make(true);
         }
 
-        return view('backend.paymentgaji.index', compact('config', 'page_breadcrumbs'));
+        return view('backend.paymentgaji.index', compact('config', 'page_breadcrumbs', 'data'));
     }
 
 

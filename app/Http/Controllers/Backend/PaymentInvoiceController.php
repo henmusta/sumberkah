@@ -35,6 +35,10 @@ class PaymentInvoiceController extends Controller
         $page_breadcrumbs = [
           ['url' => '#', 'title' => "Data Payment Invoice"],
         ];
+        $invoice = Invoice::with('customer')->find($request['invoice_id']);
+        $data = [
+          'invoice' => $invoice,
+        ];
         if ($request->ajax()) {
           $data = PaymentInvoice::with('invoice');
           if ($request->filled('id')) {
@@ -66,6 +70,8 @@ class PaymentInvoiceController extends Controller
                 $cek_perm_edit = $perm['edit'] == 'true' ? $cek_edit : '';
                 $cek_perm_delete = $perm['delete'] == 'true' ? $cek_delete : '';
 
+                $cek_level_edit = Auth::user()->roles()->first()->level == '1' ? $edit : $cek_perm_edit;
+                $cek_level_delete = Auth::user()->roles()->first()->level == '1' ? $delete : $cek_perm_delete;
 
                 return '<div class="dropdown">
                 <a href="#" class="btn btn-secondary" data-bs-toggle="dropdown">
@@ -73,8 +79,8 @@ class PaymentInvoiceController extends Controller
                 </a>
                 <div class="dropdown-menu" data-popper-placement="bottom-start" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(0px, 40px);">
                     '. $show.'
-                    '. $cek_perm_edit.'
-                    '. $cek_perm_delete.'
+                    '. $cek_level_edit .'
+                    '. $cek_level_delete .'
                 </div>
             </div>';
 
@@ -82,7 +88,7 @@ class PaymentInvoiceController extends Controller
             ->make(true);
         }
 
-        return view('backend.paymentinvoice.index', compact('config', 'page_breadcrumbs'));
+        return view('backend.paymentinvoice.index', compact('config', 'page_breadcrumbs', 'data'));
     }
 
 

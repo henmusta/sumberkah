@@ -89,7 +89,7 @@
                               {{-- end --}}
                             </div>
                             <div class="col-md-8"  style="border: 1px solid #fff; padding:20px;" >
-                                <div class="col-md-12">
+                                <div class="col-md-12" style="display:none">
                                     <div class="mb-3">
                                       <label>Harga<span class="text-danger">*</span></label>
                                       <input type="text" id="harga" value="" name="harga"  class="form-control" disabled/>

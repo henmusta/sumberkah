@@ -71,7 +71,7 @@
                                                 <div class="mb-3">
                                                     <label>Id Joborder<span class="text-danger">*</span></label>
                                                     <select id="select2Joborder" style="width: 100% !important;" name="joborder_id">
-
+                                                        <option value="{{ $data['joborder']['id'] ?? '' }}"> {{$data['joborder']['kode_joborder'] ?? '' }}</option>
                                                     </select>
                                                   </div>
                                             </div>
@@ -123,7 +123,7 @@
 
             </div>
             <div class="card-body">
-                <div class="table-responsive">
+                <div class="table">
                     <table id="Datatable" class="table table-bordered border-bottom w-100" style="width:100%">
                         <thead>
                             <tr>
@@ -157,7 +157,39 @@
 </div>
  {{--Modal--}}
 
-
+ <div class="modal fade" id="modalValidasi" tabindex="-1" aria-labelledby="modalmodalValidasi" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Pembatalan Konfirmasi {{ $config['page_title'] }}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="formUpdateValidasi" action="#">
+          @method('PUT')
+          <meta name="csrf-token" content="{{ csrf_token() }}">
+          <div class="modal-body">
+            <div id="errorEdit" class="mb-3" style="display:none;">
+              <div class="alert alert-danger" role="alert">
+                <div class="alert-icon"><i class="flaticon-danger text-danger"></i></div>
+                <div class="alert-text">
+                </div>
+              </div>
+            </div>
+            <div class="mb-3">
+                <div class="modal-body">
+                    <input type="hidden" name="id">
+                   <p id="text_jo"></p>
+                  </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 
  <div class="modal fade" id="modalDelete" tabindex="-1" aria-labelledby="modalDeleteLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -199,7 +231,9 @@
             allowInput: true
          });
 
-      let select2Validasi = $('#select2Validasi');
+      let modalValidasi = document.getElementById('modalValidasi');
+      const bsValidasi = new bootstrap.Modal(modalValidasi);
+
       let select2StatusJo = $('#select2StatusJo');
       let select2Driver = $('#select2Driver');
       let select2Jenis = $('#select2Jenis');
@@ -510,6 +544,89 @@
             toastr.error(response.responseJSON.message, 'Failed !');
             form.text('Submit').html(btnHtml).removeAttr('disabled');
             bsDelete.hide();
+          }
+        });
+      });
+
+
+      modalValidasi.addEventListener('show.bs.modal', function (event) {
+        let id = event.relatedTarget.getAttribute('data-bs-id');
+        let kode = event.relatedTarget.getAttribute('data-bs-kode');
+        let invoice = event.relatedTarget.getAttribute('data-bs-invoice');
+        let gaji = event.relatedTarget.getAttribute('data-bs-gaji');
+        if(gaji != '' && invoice == ''){
+            $('#text_jo').text('Peringatan Joborder Sudah Terkoneksi Dengan Penggajian Kode :'+gaji+'');
+            $('#text_jo').addClass('text-danger');
+        }else if(invoice != '' && gaji == ''){
+            $('#text_jo').text('Peringatan Joborder Sudah Terkoneksi Dengan Invoice Kode : '+invoice+'');
+            $('#text_jo').addClass('text-danger');
+        }else if(invoice != '' && gaji != ''){
+            $('#text_jo').text('Peringatan Joborder Sudah Terkoneksi Dengan Invoice Dan Penggajian Kode : '+invoice+' Dan '+ gaji +'');
+            $('#text_jo').addClass('text-danger');
+        }else{
+            $('#text_jo').text('Apa Anda Yakin ingin Membatalkan Konfirmasi Joborder - Kode :'+kode+'');
+            $('#text_jo').addClass('text-warning');
+        }
+
+
+        // $(this).find('#select2Validasi').val(validasi).trigger('change');
+        this.querySelector('input[name=id]').value = id;
+        this.querySelector('#formUpdateValidasi').setAttribute('action', '{{ route("backend.joborder.validasi") }}');
+      });
+      modalValidasi.addEventListener('hidden.bs.modal', function (event) {
+        // $(this).find('#select2Validasi').val('').trigger('change');
+        this.querySelector('input[name=id]').value = '';
+        $('#text_jo').text('');
+        $('#text_jo').removeClass();
+        this.querySelector('#formUpdateValidasi').setAttribute('href', '');
+      });
+
+
+      $("#formUpdateValidasi").submit(function(e){
+        e.preventDefault();
+        let form 	= $(this);
+        let btnSubmit = form.find("[type='submit']");
+        let btnSubmitHtml = btnSubmit.html();
+        let url 	= form.attr("action");
+        let data 	= new FormData(this);
+        $.ajax({
+          beforeSend:function() {
+            btnSubmit.addClass("disabled").html("<span aria-hidden='true' class='spinner-border spinner-border-sm' role='status'></span> Loading ...").prop("disabled", "disabled");
+          },
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          },
+          cache: false,
+          processData: false,
+          contentType: false,
+          type: "POST",
+          url : url,
+          data : data,
+          success: function (response) {
+            let errorEdit = $('#errorEdit');
+            errorEdit.css('display', 'none');
+            errorEdit.find('.alert-text').html('');
+            btnSubmit.removeClass("disabled").html(btnSubmitHtml).removeAttr("disabled");
+            if (response.status === "success") {
+              toastr.success(response.message, 'Success !');
+              dataTable.draw();
+              bsValidasi.hide();
+            } else {
+              toastr.error((response.message ? response.message : "Please complete your form"), 'Failed !');
+              if (response.error !== undefined) {
+                errorEdit.removeAttr('style');
+                $.each(response.error, function (key, value) {
+                  errorEdit.find('.alert-text').append('<span style="display: block">' + value + '</span>');
+                });
+              }
+              bsValidasi.hide();
+            }
+          },
+          error: function (response) {
+            bsValidasi.hide();
+            btnSubmit.removeClass("disabled").html(btnSubmitHtml).removeAttr("disabled");
+            toastr.error(response.responseJSON.message, 'Gagal !');
+
           }
         });
       });

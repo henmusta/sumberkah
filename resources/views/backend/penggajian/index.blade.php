@@ -72,7 +72,7 @@
                                                 <div class="mb-3">
                                                     <label>Nomor Slip Gaji<span class="text-danger"></span></label>
                                                     <select id="select2Gaji" style="width: 100% !important;" name="penggajian_id">
-
+                                                        <option value="{{ $data['gaji']['id'] ?? '' }}"> {{$data['gaji']['kode_gaji'] ?? '' }}</option>
                                                     </select>
                                                   </div>
                                             </div>
@@ -122,7 +122,7 @@
 
             </div>
             <div class="card-body">
-                <div class="table-responsive">
+                <div class="table">
                     <table id="Datatable" class="table table-bordered border-bottom w-100" style="width:100%">
                         <thead>
                             <tr>

@@ -54,7 +54,7 @@
                                                 <div class="mb-3">
                                                     <label>Nomor Invoice<span class="text-danger">*</span></label>
                                                     <select id="select2Invoice" style="width: 100% !important;" name="invoice_id">
-
+                                                        <option value="{{ $data['invoice']['id'] ?? '' }}"> {{$data['invoice']['kode_invoice'] ?? '' }}</option>
                                                     </select>
                                                   </div>
                                             </div>
@@ -133,7 +133,7 @@
 
             </div>
             <div class="card-body">
-                <div class="table-responsive">
+                <div class="table">
                     <table id="Datatable" class="table table-bordered border-bottom w-100" style="width:100%">
                         <thead>
                             <tr>

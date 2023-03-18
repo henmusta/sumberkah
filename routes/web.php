@@ -99,10 +99,12 @@ Route::middleware('auth:henmus')->group(function(){
             Route::resource('rute', Backend\RuteController::class);
 
             //Joborder
+
             Route::get('joborder/findkonfirmasijoborder', [Backend\JoborderController::class, 'findkonfirmasijoborder'])->name('joborder.findkonfirmasijoborder');
             Route::get('joborder/findjoborder', [Backend\JoborderController::class, 'findjoborder'])->name('joborder.findjoborder');
             Route::get('Joborder/datatablecekjoborder', [Backend\JoborderController::class, 'datatablecekjoborder'])->name('joborder.datatablecekjoborder');
             Route::get('joborder/select2', [Backend\JoborderController::class, 'select2'])->name('joborder.select2');
+            Route::put('joborder/validasi', [Backend\JoborderController::class, 'validasi'])->name('joborder.validasi');
             Route::resource('joborder', Backend\JoborderController::class);
 
             //PaymentJo

@@ -24,7 +24,7 @@
                                                         <div class="mb-3">
                                                             <label>Nomor Invoice<span class="text-danger">*</span></label>
                                                             <select id="select2Invoice" style="width: 100% !important;" name="invoice_id">
-
+                                                                <option value="{{ $data['invoice']['id'] ?? '' }}"> {{$data['invoice']['kode_invoice'] ?? '' }}</option>
                                                             </select>
                                                           </div>
                                                     </div>
@@ -235,12 +235,13 @@ tr.group:hover {
                             r.style.display = '';
                         }
                     })
-                    console.log(rows.data()[0].invoice.status_payment);
+                    // console.log(rows.data()[0].invoice.status_payment);
+                    let kode = '<a class="btn-sm btn-info" href="{{ route('backend.invoice.index') }}?invoice_id='+rows.data()[0].invoice_id+'">'+group+'</a>';
                     let sisa_tagihan=  $.fn.dataTable.render.number('.', ',', 0, '').display(rows.data()[0].invoice.sisa_tagihan);
                     let url = (rows.data()[0].invoice.status_payment < 2) ? '<a class="btn btn-primary" href="paymentinvoice/' + rows.data()[0].invoice_id+ '/edit">Tambah Pembayaran</a>' : '<span class="badge bg-pill  bg-success">Lunas</span>';
 
                     return $('<tr/>')
-                    .append('<td colspan="6"><div class="float-start">KODE INVOICE : ' + group + ' TOTAL PAYMENT : (' + rows.count() + ') SISA TAGIHAN : '+ sisa_tagihan +'</div><div class="float-end">'+url+'</div></td>')
+                    .append('<td colspan="6"><div class="float-start">' + kode + ' TOTAL PAYMENT : (' + rows.count() + ') SISA TAGIHAN : '+ sisa_tagihan +'</div><div class="float-end">'+url+'</div></td>')
                     .attr('data-name', group)
                     .toggleClass('collapsed', collapsed);
                }

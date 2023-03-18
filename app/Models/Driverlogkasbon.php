@@ -12,6 +12,7 @@ class Driverlogkasbon extends Model
     protected $fillable = [
       'driver_id',
       'penggajian_id',
+      'payment_joborder_id',
       'joborder_id',
       'nominal',
     ];

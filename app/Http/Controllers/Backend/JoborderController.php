@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Helpers\FileUpload;
 use App\Http\Controllers\Controller;
 use App\Models\Joborder;
+use App\Models\KonfirmasiJo;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Rute;
 use App\Models\Jenismobil;
@@ -43,22 +44,10 @@ class JoborderController extends Controller
         $page_breadcrumbs = [
           ['url' => '#', 'title' => "Data Joborder"],
         ];
-        // // $this->middleware('can:backend-users-list', ['only' => ['index', 'show']]);
-
-    //     $roleId = auth()->user()->roles()->first()->id;
-    //     $menuManager = MenuManager::with(['menupermission', 'permissions'])->findOrFail($id);
-    //   //  $role_permisions = Role::with('permissions')->find(auth()->user()->roles()->first()->id);
-    //     dd($menuManager);
-
-    //    $data = MenuManager::with(['menupermission', 'permissions'])->where('role_id', auth()->user()->roles()->first()->id)->get();
-        // $sortable = NULL;
-        // if ($role) {
-        //   $sortable = self::getByRole($request['role_id']);
-        // } elseif ($request['role_id'] != NULL) {
-        //   abort(401, "Halaman tidak diizinkan");
-        // }
-
-        // dd( $data);
+        $joborder = Joborder::find($request['joborder_id']);
+        $data = [
+          'joborder' => $joborder,
+        ];
 
 
         if ($request->ajax()) {
@@ -104,7 +93,14 @@ class JoborderController extends Controller
                 ];
 
 
+                $validasi = '<a href="#" data-bs-toggle="modal" data-bs-target="#modalValidasi" data-bs-id="' . $row->id . '"   data-bs-kode="' . $row->kode_joborder . '" data-bs-invoice="' . $row->kode_invoice . '" data-bs-gaji="' . $row->kode_gaji . '" class="edit dropdown-item">Pembatalan Konfirmasi</a>';
+
+
+
+
+
                 $show = '<a href="' . route('backend.joborder.show', $row->id) . '" class="dropdown-item">Detail</a>';
+                $list_payment = '<a href="' . route('backend.paymentjo.index', ['joborder_id'=> $row->id]) . '" class="dropdown-item">List Payment</a>';
                 $edit = '<a class="dropdown-item" href="joborder/' . $row->id . '/edit">Ubah</a>';
                 $payment = '<a href="' . route('backend.paymentjo.create',  ['joborder_id'=> $row->id]) . '" class="dropdown-item">Pembayaran</a>';
                 $cicilan = '<a class="dropdown-item" href="paymentjo/' . $row->id . '/edit">Pelunasan</a>';
@@ -113,14 +109,19 @@ class JoborderController extends Controller
 
                 $cek_konfirmasi_jo =  $row->status_payment == '2' && $row->status_joborder == '0' ? $konfirmasi_jo : '';
                 $cek_payment = $row->status_payment == '0'  ? $payment : ($row->status_payment == '1'  ? $cicilan : '');
-                $cek_edit =  $row->status_payment == '0' ? $edit : '';
-                $cek_delete =  $row->status_payment == '0' ? $delete : '';
+                $cek_validasi = $row->status_joborder == '1' ? $validasi : '';
+                $cek_list_payment = $row->status_payment > '0' ? $list_payment : '';
+                $cek_edit =  $row->status_payment == '0' && $row->status_joborder == '0' ? $edit : '';
+                $cek_delete =  $row->status_payment == '0' && $row->status_joborder == '0' ? $delete : '';
 
+                $cek_perm_validasi = $perm['edit'] == 'true' ? $cek_validasi : '';
                 $cek_perm_konfirmasi_jo = $perm['edit'] == 'true' ? $cek_konfirmasi_jo : '';
                 $cek_perm_edit = $perm['edit'] == 'true' ? $cek_edit : '';
                 $cek_perm_delete = $perm['delete'] == 'true' ? $cek_delete : '';
 
-
+                $cek_level_validasi = Auth::user()->roles()->first()->level == '1' && $row->penggajian_id == null && $row->invoice_id == null ? $cek_validasi : $cek_perm_validasi;
+                $cek_level_edit = Auth::user()->roles()->first()->level == '1' && $row->penggajian_id == null && $row->invoice_id == null ? $edit : $cek_perm_edit;
+                $cek_level_delete = Auth::user()->roles()->first()->level == '1' &&  $row->penggajian_id == null && $row->invoice_id == null ? $delete : $cek_perm_delete;
 
                 return '<div class="dropdown">
                 <a href="#" class="btn btn-secondary" data-bs-toggle="dropdown">
@@ -130,8 +131,10 @@ class JoborderController extends Controller
                     '. $cek_perm_edit .'
                     '. $cek_payment.'
                     '. $cek_perm_delete .'
+                    '. $cek_level_validasi.'
                     '. $cek_perm_konfirmasi_jo .'
                     '. $show .'
+                    '.$cek_list_payment.'
                 </div>
             </div>';
 
@@ -139,7 +142,7 @@ class JoborderController extends Controller
             ->make(true);
         }
 
-        return view('backend.joborder.index', compact('config', 'page_breadcrumbs'));
+        return view('backend.joborder.index', compact('config', 'page_breadcrumbs', 'data'));
     }
 
 
@@ -337,19 +340,38 @@ class JoborderController extends Controller
         // dd( $request);
           $validator = Validator::make($request->all(), [
             'id' => 'required',
-            'validasi' => 'required',
           ]);
-        //   dd($request['file']);
+        //   dd($request['id']);
           if ($validator->passes()) {
-            $data = Rute::find($request['id']);
+            $data = Joborder::find($request['id']);
+            $konfirmasi = KonfirmasiJo::where('joborder_id', $data['id']);
             DB::beginTransaction();
             try {
-                  $data->update([
-                    'validasi' => $request['validasi'],
-                  ]);
 
+                if(isset($data['invoice_id'])){
+                    $response = response()->json([
+                        'status' => 'error',
+                        'message' => 'Sudah Terkoneksi Dengan Invoice'
+                    ]);
+                }elseif(isset($data['penggajian_id'])){
+                    $response = response()->json([
+                        'status' => 'error',
+                        'message' => 'Sudah Terkoneksi Dengan Penggajian'
+                    ]);
+                }elseif(isset($data['invoice_id']) && isset($data['gaji_id'])){
+                    $response = response()->json([
+                        'status' => 'error',
+                        'message' => 'Sudah Terkoneksi Dengan Penggajian Dan Invoice'
+                    ]);
+                }else{
+                    $data->update([
+                        'status_joborder' => '0',
+                      ]);
+                    $konfirmasi->delete();
+                    $response = response()->json($this->responseStore(true));
+                }
                 DB::commit();
-                $response = response()->json($this->responseStore(true));
+
             } catch (Throwable $throw) {
                 dd($throw);
                 DB::rollBack();

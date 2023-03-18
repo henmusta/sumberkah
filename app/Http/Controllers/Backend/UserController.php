@@ -154,6 +154,7 @@ class UserController extends Controller
                 'name' => ucwords($new_role),
                 'slug' => $new_role,
                 'parent' =>  $role['id'],
+                'level' =>  $role['level']
             ]);
             $data->markEmailAsVerified();
             $data->roles()->attach($create_new_role);

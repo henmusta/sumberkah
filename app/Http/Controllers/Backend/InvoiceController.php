@@ -34,6 +34,10 @@ class InvoiceController extends Controller
         $page_breadcrumbs = [
           ['url' => '#', 'title' => "Data Invoice"],
         ];
+        $invoice = Invoice::with('customer')->find($request['invoice_id']);
+        $data = [
+          'invoice' => $invoice,
+        ];
         if ($request->ajax()) {
           $data = Invoice::selectRaw('invoice.*')->with('customer');
 
@@ -81,6 +85,7 @@ class InvoiceController extends Controller
 
                 // dd( $diff);
                 $show = '<a href="' . route('backend.invoice.show', $row->id) . '" class="dropdown-item">Detail</a>';
+                $list_payment = '<a href="' . route('backend.paymentinvoice.index', ['invoice_id'=> $row->id]) . '" class="dropdown-item">List Payment</a>';
                 $edit = '<a class="dropdown-item" href="invoice/' . $row->id . '/edit">Ubah</a>';
                 $delete = '  <a href="#" data-bs-toggle="modal" data-bs-target="#modalDelete" data-bs-id="' . $row->id . '" class="delete dropdown-item">Hapus</a>';
                 $payment = '<a href="' . route('backend.paymentinvoice.create',  ['invoice_id'=> $row->id]) . '" class="dropdown-item">Pembayaran</a>';
@@ -89,6 +94,7 @@ class InvoiceController extends Controller
                 $cek_payment = $row->status_payment == '0'  ? $payment : ($row->status_payment == '1'  ? $cicilan : '');
                 $cek_edit =  $row->status_payment == '0' ? $edit : '';
                 $cek_delete =  $row->status_payment == '0' ? $delete : '';
+                $cek_list_payment = $row->status_payment > '0' ? $list_payment : '';
 
                 $cek_perm_edit = $perm['edit'] == 'true' ? $cek_edit : '';
                 $cek_perm_delete = $perm['delete'] == 'true' ? $cek_delete : '';
@@ -102,6 +108,7 @@ class InvoiceController extends Controller
                     '.$cek_payment .'
                     '.$cek_perm_edit .'
                     '.$cek_perm_delete .'
+                    '.$cek_list_payment.'
                 </div>
             </div>';
 
@@ -110,7 +117,7 @@ class InvoiceController extends Controller
             ->make(true);
         }
 
-        return view('backend.invoice.index', compact('config', 'page_breadcrumbs'));
+        return view('backend.invoice.index', compact('config', 'page_breadcrumbs', 'data'));
     }
 
     public function create(Request $request)

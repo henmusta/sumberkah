@@ -38,6 +38,10 @@ class PenggajianController extends Controller
         $page_breadcrumbs = [
           ['url' => '#', 'title' => "Data Gaji"],
         ];
+        $penggajian = Penggajian::find($request['penggajian_id']);
+        $data = [
+          'gaji' => $penggajian
+        ];
         if ($request->ajax()) {
             $month = date("m",strtotime($request['bulan_kerja']));
             $year = date("Y",strtotime($request['bulan_kerja']));
@@ -82,11 +86,12 @@ class PenggajianController extends Controller
                 $delete = '  <a href="#" data-bs-toggle="modal" data-bs-target="#modalDelete" data-bs-id="' . $row->id . '" class="delete dropdown-item">Hapus</a>';
                 $payment = '<a href="' . route('backend.paymentgaji.create',  ['penggajian_id'=> $row->id]) . '" class="dropdown-item">Pembayaran</a>';
                 $cicilan = '<a class="dropdown-item" href="paymentgaji/' . $row->id . '/edit">Pelunasan</a>';
-
+                $list_payment = '<a href="' . route('backend.paymentgaji.index', ['penggajian_id'=> $row->id]) . '" class="dropdown-item">List Payment</a>';
 
                 $cek_payment = $row->status_payment == '0'  ? $payment : ($row->status_payment == '1'  ? $cicilan : '');
                 $cek_edit =  $row->status_payment == '0' ? $edit : '';
                 $cek_delete =  $row->status_payment == '0' ? $delete : '';
+                $cek_list_payment = $row->status_payment > '0' ? $list_payment : '';
 
 
                 return '<div class="dropdown">
@@ -95,6 +100,7 @@ class PenggajianController extends Controller
                 </a>
                 <div class="dropdown-menu" data-popper-placement="bottom-start" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(0px, 40px);">
                     '. $show.'
+                    '. $cek_list_payment.'
                     '. $cek_payment.'
                     '. $cek_edit.'
                     '. $cek_delete.'
@@ -106,7 +112,7 @@ class PenggajianController extends Controller
             ->make(true);
         }
 
-        return view('backend.penggajian.index', compact('config', 'page_breadcrumbs'));
+        return view('backend.penggajian.index', compact('config', 'page_breadcrumbs', 'data'));
     }
 
     public function create(Request $request)
