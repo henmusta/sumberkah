@@ -263,14 +263,15 @@ class InvoiceController extends Controller
 
                 $joborder_id = [];
                 foreach($request['konfirmasijoid'] as $val){
-                    $joborder_id[] = $val;
+                    $konjoborder = KonfirmasiJo::find($val);
+                    $joborder_id[] = $konjoborder['joborder_id'];
                 }
 
                 $cek_konfirmasijo = KonfirmasiJo::where([
                     ['invoice_id' , $data['id']],
                 ])->whereNotIn('joborder_id', $joborder_id);
 
-
+                // dd($cek_konfirmasijo->get());
                 if($cek_konfirmasijo->get()){
                     $kjo = $cek_konfirmasijo->update([
                         'status' =>  '0',
@@ -281,6 +282,8 @@ class InvoiceController extends Controller
                 $cek_jo = Joborder::where([
                     ['invoice_id' , $data['id']],
                 ])->whereNotIn('id', $joborder_id);
+
+
                 if($cek_jo->get()){
                     $jo = $cek_jo->update([
                         'invoice_id' =>  null,

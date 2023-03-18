@@ -318,6 +318,7 @@ $(document).ready(function () {
         var rowcollection =  oTable.$(".editor-active:checked", {"page": "all"});
         var row_id = [];
         var form = this;
+        $("input[name^=konfirmasijoid]").remove();
         rowcollection.each(function(index, elem){
 
             console.log(elem);
