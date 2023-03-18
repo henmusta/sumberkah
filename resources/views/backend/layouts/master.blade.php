@@ -135,8 +135,13 @@
         @include('backend.layouts.footer')
     @include('backend.layouts.footerjs')
     <script type="text/javascript">
+            $(document).ajaxError(function (event, jqxhr, settings, thrownError) {
+                if (jqxhr.status === 302) {
+                    location.reload();
+                }
+                });
         $(document).ready(function () {
-                   // <i class="fas fa-compress"></i>
+
             $("#fullscreen-button").click(function() {
                 $( "#fullscreen-button" ).prop('hidden', true);
                 $( "#compress-button" ).prop('hidden', false);

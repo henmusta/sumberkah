@@ -14,7 +14,7 @@
                 <div class="invoice-title">
                     <h6 class="main-content-label mb-1">{{ $config['page_title'] ?? '' }}</h6>
                     <div class="mb-4">
-                           <img  src="{{URL::to('storage/images/logo/'.Setting::get_setting()->icon)}}" alt="logo" height="50">
+                           {{-- <img  src="{{URL::to('storage/images/logo/'.Setting::get_setting()->icon)}}" alt="logo" height="50"> --}}
                     </div>
                     <div class="text-muted">
                         {{ \Carbon\Carbon::parse($data['joborder']['tgl_joborder'])->isoFormat('dddd, D MMMM Y')}}
@@ -81,6 +81,10 @@
                                     <tr class="">
                                         <th class="text-left">Total Uang Jalan</th>
                                         <td class="text-end">Rp. {{  number_format($data['joborder']['total_uang_jalan'],0,',','.') ?? '0' }}</td>
+                                    </tr>
+                                    <tr class="">
+                                        <th class="text-left">Tambahan/Potongan</th>
+                                        <td class="text-end">Rp. {{  number_format($data['joborder']['biaya_lain'],0,',','.') ?? '0' }} {{ isset($data['joborder']['tambahan_potongan']) ? $data['joborder']['tambahan_potongan'] != 'None' ? '('. $data['joborder']['tambahan_potongan'] . ')' : '' : ''  }}</td>
                                     </tr>
                                     <tr class="">
                                         <th class="text-left">Total Payment</th>
