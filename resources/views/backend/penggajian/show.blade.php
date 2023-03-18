@@ -30,7 +30,7 @@
                             @php($text =  'Lunas')
                         @elseif ( $data['penggajian']['status_payment'] == '1')
                             @php($class =  'bg-warning')
-                            @php($text =  'Progress Payment')
+                            @php($text =  'Belum Lunas')
                         @else
                             @php($class = 'bg-danger')
                             @php($text =  'Belum Bayar')

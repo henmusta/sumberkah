@@ -356,7 +356,7 @@ tr.group:hover {
             render: function (data, type, full, meta) {
               let status = {
                 0: {'title': 'Belum Bayar', 'class': ' bg-danger'},
-                1: {'title': 'Progress Payment', 'class': ' bg-warning'},
+                1: {'title': 'Belum Lunas', 'class': ' bg-warning'},
                 2: {'title': 'Lunas', 'class': ' bg-success'},
               };
               if (typeof status[data] === 'undefined') {
