@@ -22,13 +22,13 @@
                     </div>
                     <div class="card-body" style="border: 1px solid #fff; padding:20px;">
                         <div class="row" >
-                            <div class="col-md-md-6">
+                            <div class="col-md-6">
                                  <div class="mb-3">
                                     <label>Tanggal<span class="text-danger">*</span></label>
                                     <input type="text" id="tgl_joborder" value="{{$data['joborder']['tgl_joborder'] ?? ''}}" name="tgl_joborder"  class="form-control" placeholder="Masukan Tanggal Joborder"/>
                                   </div>
                             </div>
-                            <div class="col-md-md-6">
+                            <div class="col-md-6">
                                 <div class="mb-3">
                                    <label>Driver<span class="text-danger">*</span></label>
                                    <select id="select2Driver" style="width: 100% !important;" name="driver_id">
