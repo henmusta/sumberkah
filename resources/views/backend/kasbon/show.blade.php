@@ -11,68 +11,79 @@
                 </div>
             </div>
             <div class="card-body" id="printableArea">
-                <div class="invoice-title">
-                    <h6 class="main-content-label mb-1">{{ $config['page_title'] ?? '' }}</h6>
+                <div class="invoice-title text-center">
+                    <h2 class="main-content-label mb-1">NOTA KAS KASBON</h2>
                     <div class="mb-4">
                            {{-- <img  src="{{URL::to('storage/images/logo/'.Setting::get_setting()->icon)}}" alt="logo" height="50"> --}}
                     </div>
                     <div class="text-muted">
-                        {{ \Carbon\Carbon::parse($data['kasbon']['created_at'])->isoFormat('dddd, D MMMM Y')}}
-                        {{-- {{ $data['legislasi']['created_at'] ?? '' }} --}}
                     </div>
                 </div>
 
 
 
                 <div class="row" style="padding-top:10px;">
-                    <div class="col-6">
-                        <div class="table-responsive mt-4">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr class="">
-                                        <th class="text-left">Tanggal Transaksi</th>
-                                        <td class="text-left">{{ $data['kasbon']['tgl_kasbon']?? '' }}</td>
-                                    </tr>
-                                    <tr class="">
-                                        <th class="text-left">Driver</th>
-                                        <td class="text-left">{{ $data['kasbon']['driver']['name']?? '' }}</td>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                    <div class="col-12">
+                        <table>
+                            <tr>
+                                <td style="width: 300px; ">Tanggal</td>
+                                <td style="width: 2px; padding-right: 10px">:</td>
+                                <td  style="font-weight:bold">    {{ \Carbon\Carbon::parse($data['kasbon']['tgl_kasbon'])->format('d-m-Y')}}</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 300px; ">Nomor Nota Kasbon</td>
+                                <td style="width: 2px; padding-right: 10px">:</td>
+                                <td style="font-weight:bold">{{$data['kasbon']['kode_kasbon'] ?? ''}}</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 300px; ">Driver</td>
+                                <td style="width: 2px; padding-right: 10px">:</td>
+                                <td  style="font-weight:bold">{{$data['kasbon']['driver']['name'] ?? ''}}</td>
+                            </tr>
 
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="table-responsive mt-4">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr class="">
-                                        <th class="text-left">Jenis</th>
-                                        <td class="text-left">{{ $data['kasbon']['jenis']?? '' }}</td>
-                                    </tr>
-                                    <tr class="">
-                                        <th class="text-left">Nominal</th>
-                                        <td class="text-left">{{number_format($data['kasbon']['nominal'],0,',','.')  ?? '' }}</td>
-                                    </tr>
+                            <tr>
+                                <td style="width: 300px; ">Jenis Transaksi</td>
+                                <td style="width: 2px; padding-right: 10px">:</td>
+                                <td  style="font-weight:bold">{{$data['kasbon']['jenis'] ?? ''}}</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 300px; ">Nominal</td>
+                                <td style="width: 2px; padding-right: 10px">:</td>
+                                <td  style="font-weight:bold">{{number_format($data['kasbon']['nominal'],0,',','.') ?? ''}}</td>
+                            </tr>
+                            <tr>
+                                @php($terbilang = Riskihajar\Terbilang\Facades\Terbilang::make($data['kasbon']['nominal'], ' rupiah')  ?? '' )
+                                <td style="width: 300px; ">Terbilang</td>
+                                <td style="width: 2px; padding-right: 10px">:</td>
+                                <td  style="font-weight:bold">{{ ucwords($terbilang) ?? ''}}</td>
+                            </tr>
+                            <tr>
 
-                                </thead>
-                                <tbody>
-
-                                </tbody>
-                            </table>
-                        </div>
+                                <td style="width: 300px; ">Keterangan</td>
+                                <td style="width: 2px; padding-right: 10px">:</td>
+                                <td  style="font-weight:bold">{{$data['kasbon']['keterangan'] ?? ''}}</td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
                 <div class="row" style="padding-top:10px;">
                     <div class="col-12">
-                        <label for="select2Merk">Keterangan<span class="text-danger">*</span></label>
-                        <textarea class="form-control">{{ $data['kasbon']['keterangan'] ?? '' }}</textarea>
+                        <table id="ttd" style="margin-top: 20px; margin-left: 15px;" width="100%">
+                            <tr>
+                                 <th style="min-width: 33%; font-weight: normal; text-align: center">Dibuat Oleh</th>
+                                 <th style="min-width: 33%; font-weight: normal; text-align: center">Disetujui Oleh</th>
+                                 <th style="min-width: 33%; font-weight: normal; text-align: center">Diserahkan Oleh</th>
+                                 <th style="min-width: 33%; font-weight: normal; text-align: center">Diterima Oleh</th>
+                            </tr>
+                            <tr>
+                                 <td style="padding-top: 100px; max-width: 33%; text-align: center; text-transform: uppercase">( _ _ _ _ _ _ _ _ _ _ )</td>
+                                 <td style="padding-top: 100px; max-width: 33%; text-align: center; text-transform: uppercase">( _ _ _ _ _ _ _ _ _ _ )</td>
+                                 <td style="padding-top: 100px; max-width: 33%; text-align: center; text-transform: uppercase">( _ _ _ _ _ _ _ _ _ _ )</td>
+                                 <td style="padding-top: 100px; max-width: 33%; text-align: center; text-transform: uppercase">( _ _ _ _ _ _ _ _ _ _ )</td>
+                            </tr>
+                      </table>
                     </div>
-
                 </div>
-                <!-- end row -->
 
 
 
@@ -89,13 +100,12 @@
 {
     @page {
       size: A4; /* DIN A4 standard, Europe */
-      margin: 27mm 16mm 27mm 16mm;
+      margin: 27mm 10mm 27mm 10mm;
     }
     html, body {
         width: 210mm;
-        /* height: 297mm; */
-        height: 282mm;
-        font-size: 16px;
+        /* height: 282mm; */
+        font-size: 18px;
         color: #000;
         background: #FFF;
         overflow:visible;
@@ -103,13 +113,11 @@
     body {
         padding-top:15mm;
     }
-    table {
+
+
+    #Datatable {
         border: solid #000 !important;
         border-width: 1px 0 0 1px !important;
-    }
-    th, td {
-        border: solid #000 !important;
-        border-width: 0 1px 1px 0 !important;
     }
 }
 </style>
