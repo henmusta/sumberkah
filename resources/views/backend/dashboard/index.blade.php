@@ -347,9 +347,10 @@
                                                             <th width="5%">No</th>
                                                             <th>Kode Invoice</th>
                                                             <th>Customer</th>
+                                                            <th>Tanggal Invoice</th>
                                                             <th>Nominal Invoice</th>
                                                             <th>Due Date</th>
-                                                            <th>Status</th>
+
                                                           </tr>
                                                     </thead>
                                                     <tbody>
@@ -476,11 +477,10 @@
                 }
             },
             {data: 'kode_invoice', name: 'kode_invoice'},
+            {data: 'tgl_invoice', name: 'tgl_invoice'},
             {data: 'customer.name', name: 'customer.name'},
             {data: 'total_harga', name: 'total_harga'},
             {data: 'tgl_jatuh_tempo', name: 'tgl_jatuh_tempo'},
-            {data: 'exp_due', className:'text-center', name: 'exp_due'},
-
         ],
         columnDefs: [
             {

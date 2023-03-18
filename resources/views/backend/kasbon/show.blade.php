@@ -14,7 +14,7 @@
                 <div class="invoice-title">
                     <h6 class="main-content-label mb-1">{{ $config['page_title'] ?? '' }}</h6>
                     <div class="mb-4">
-                           <img  src="{{URL::to('storage/images/logo/'.Setting::get_setting()->icon)}}" alt="logo" height="50">
+                           {{-- <img  src="{{URL::to('storage/images/logo/'.Setting::get_setting()->icon)}}" alt="logo" height="50"> --}}
                     </div>
                     <div class="text-muted">
                         {{ \Carbon\Carbon::parse($data['kasbon']['created_at'])->isoFormat('dddd, D MMMM Y')}}

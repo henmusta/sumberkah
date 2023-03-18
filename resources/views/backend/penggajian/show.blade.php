@@ -14,7 +14,7 @@
                 <div class="invoice-title text-center">
                     <h2 class="main-content-label mb-1">Penggajian</h2>
                     <div class="mb-4">
-                           <img  src="{{URL::to('storage/images/logo/'.Setting::get_setting()->icon)}}" alt="logo" height="50">
+                           {{-- <img  src="{{URL::to('storage/images/logo/'.Setting::get_setting()->icon)}}" alt="logo" height="50"> --}}
                     </div>
                     <div class="text-muted">
                     </div>
@@ -46,6 +46,11 @@
                                 <td style="width: 2px; padding-right: 10px">:</td>
                                 {{-- <td style="font-weight:bold"> {{ \Carbon\Carbon::parse($data['penggajian']['tgl_gaji'])->isoFormat('dddd, D MMMM Y')}}</td> --}}
                                 <td  style="font-weight:bold"> {{ \Carbon\Carbon::parse($data['penggajian']['tgl_gaji'])->format('d-m-Y')}}</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 300px; ">Kode Slip Gaji</td>
+                                <td style="width: 2px; padding-right: 10px">:</td>
+                                <td  style="font-weight:bold">{{$data['penggajian']['kode_gaji'] ?? ''}}</td>
                             </tr>
                             <tr>
                                 <td style="width: 300px; ">Supir</td>
@@ -148,10 +153,10 @@
                     <div class="col-12">
                         <table id="ttd" style="margin-top: 20px; margin-left: 15px;" width="100%">
                             <tr>
-                                 <th style="min-width: 33%; font-weight: normal; text-align: center">Hormat Kami</th>
-                                 <th style="min-width: 33%; font-weight: normal; text-align: center">Hormat Kami</th>
-                                 <th style="min-width: 33%; font-weight: normal; text-align: center">Hormat Kami</th>
-                                 <th style="min-width: 33%; font-weight: normal; text-align: center">Hormat Kami</th>
+                                 <th style="min-width: 33%; font-weight: normal; text-align: center">Dibuat Oleh</th>
+                                 <th style="min-width: 33%; font-weight: normal; text-align: center">Disetujui Oleh</th>
+                                 <th style="min-width: 33%; font-weight: normal; text-align: center">Diserahkan Oleh</th>
+                                 <th style="min-width: 33%; font-weight: normal; text-align: center">Diterima Oleh</th>
                             </tr>
                             <tr>
                                  <td style="padding-top: 100px; max-width: 33%; text-align: center; text-transform: uppercase">( _ _ _ _ _ _ _ _ _ _ _ _ _ _ _)</td>

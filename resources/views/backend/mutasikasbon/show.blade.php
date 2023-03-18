@@ -21,14 +21,20 @@
                             </div>
                             <div class="flex-shrink-0">
                                 <div class="float-end">
-                                    <a onclick="printDiv('printableArea')" class="btn btn-success me-1"><i class="fa fa-print"></i></a>
+                                    {{-- <a onclick="printDiv('printableArea')" class="btn btn-success me-1"><i class="fa fa-print"></i></a> --}}
                                     <a onclick="window.history.back();" class="btn btn-primary w-md">Kembali</a>
                                     <div class="float-end" id="print">
+                                    </div>
+                                    <div class="dt-buttons btn-group flex-wrap">
+                                         <button id="excel" class="btn btn-secondary buttons-excel buttons-html5"  tabindex="0" aria-controls="Datatable" type="button"><span>Excel</span></button>
+                                        <button class="btn btn-secondary buttons-pdf buttons-html5" onclick="printDiv('printableArea')" tabindex="0" aria-controls="Datatable" type="button"><span>PDF</span></button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
+                        {{-- <input id="cek_driver_id" name="cek_gaji_id" type="hidden" value="{{$data['gaji']['id'] ?? ''}}"> --}}
+                        <input id="cek_name" name="cek_name" type="hidden" value="{{$data['driver']['name'] ?? ''}}">
+                        {{-- {{dd($data['mutasi'])}} --}}
                         <div class="row">
                             <div class="col-12">
                                 <div class="multi-collapse collapse show" id="multiCollapseExample2" style="">
@@ -52,7 +58,7 @@
                                                 <div class="mb-3">
                                                     <label>Driver<span class="text-danger">*</span></label>
                                                     <select id="select2Driver" style="width: 100% !important;" name="driver_id">
-                                                        <option value="{{ $data['mutasi']['driver']['id'] ?? '' }}"> {{$data['mutasi']['driver']['name'] ?? '' }}</option>
+                                                        <option value="{{ $data['driver']['id'] ?? '' }}"> {{$data['driver']['name'] ?? '' }}</option>
                                                     </select>
                                                   </div>
                                             </div>
@@ -79,10 +85,10 @@
                 <div class="invoice-title">
                     <h6 class="main-content-label mb-1">{{ $config['page_title'] ?? '' }}</h6>
                     <div class="mb-4">
-                           <img  src="{{URL::to('storage/images/logo/'.Setting::get_setting()->icon)}}" alt="logo" height="50">
+                           {{-- <img  src="{{URL::to('storage/images/logo/'.Setting::get_setting()->icon)}}" alt="logo" height="50"> --}}
                     </div>
                     <div class="text-muted">
-                        <h5 class="text-center">Nama Driver : {{$data['mutasi']['driver']['name'] ?? '' }}</h5>
+                        <h5 class="text-center" id="driver_name">Nama Driver : {{$data['driver']['name'] ?? '' }}</h5>
                     </div>
                 </div>
 
@@ -186,7 +192,7 @@ function printDiv(divName) {
 
 
     $(document).ready(function () {
-        // $('#tanggal_lahir').datepicker({ dateFormat: "yy-mm-dd" });
+
         $('#tgl_awal, #tgl_akhir').flatpickr({
             dateFormat: "Y-m-d"
          });
@@ -195,8 +201,33 @@ function printDiv(divName) {
         dropdownParent:  select2Driver.parent(),
         searchInputPlaceholder: 'Cari Driver',
         width: '100%',
-        placeholder: 'Pilih Driver'
+        allowClear: true,
+        placeholder: 'Pilih Driver',
+        ajax: {
+          url: "{{ route('backend.driver.select2') }}",
+          dataType: "json",
+          cache: true,
+          data: function (e) {
+            return {
+              q: e.term || '',
+              page: e.page || 1
+            }
+          },
+        },
+      }).on('select2:select', function (e) {
+            let data = e.params.data;
+            $('#cek_name').val(data.text)
+            console.log(data.id);
     });
+    $("#excel").click(function() {
+                    let params = new URLSearchParams({
+                        driver_id :  select2Driver.find(':selected').val(),
+                        tgl_awal : $('#tgl_awal').val(),
+                        tgl_akhir : $('#tgl_akhir').val()
+                    });
+
+                    window.location.href = "{{ route('backend.mutasikasbon.excel') }}?" +params.toString()
+        });
     let dataTable = $('#Datatable').DataTable({
         // dom: 'lfBrtip',
         // buttons: [
@@ -319,6 +350,7 @@ function printDiv(divName) {
      // dataTable.buttons().container().appendTo($('#print'));
       $("#terapkan_filter").click(function() {
         dataTable.draw();
+        $('#driver_name').text($('#cek_name').val());
         get_saldo();
       });
       get_saldo();
@@ -342,7 +374,7 @@ function printDiv(divName) {
          });
      }
 
-
+     //Will take you to Google.
     });
   </script>
 @endsection
