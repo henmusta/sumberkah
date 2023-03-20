@@ -111,10 +111,10 @@ class PaymentJoController extends Controller
     public function create(Request $request)
     {
 
-      $config['page_title'] = "Tambah Agenda";
+      $config['page_title'] = "Tambah Payment";
       $page_breadcrumbs = [
-        ['url' => route('backend.paymentjo.index'), 'title' => "Daftar Agenda"],
-        ['url' => '#', 'title' => "Tambah Agenda"],
+        ['url' => route('backend.paymentjo.index'), 'title' => "Daftar Payment"],
+        ['url' => '#', 'title' => "Tambah Payment"],
       ];
 
       $joborder = Joborder::find($request['joborder_id']);
