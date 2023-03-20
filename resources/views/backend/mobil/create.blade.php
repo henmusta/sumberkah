@@ -141,7 +141,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="mb-3">
-                                    <label>Tahun<span class="text-danger"></span></label>
+                                    <label>Tahun<span class="text-danger">*</span></label>
                                     <input type="text" id="tahun" name="tahun"  class="form-control" placeholder="Masukan Tahun"/>
                                   </div>
                             </div>

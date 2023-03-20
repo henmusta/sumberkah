@@ -60,12 +60,12 @@ class RuteController extends Controller
 
                 $cek_edit =  $row->validasi == '0' &&  count($joborder) <= 0 ? $edit : '';
                 $cek_delete =  $row->validasi == '0' && $row->validasi_delete == '0' ? $delete : '';
+                $cek_validasi =   $row->validasi_delete == '1' ?$validasi : '';
+
+                $cek_validasidelete =  $row->validasi == '0' || $row->validasi_delete == '0' ? $validasi_delete : '';
 
 
-                $cek_validasidelete =  $row->validasi == '0' && $row->validasi_delete == '1' ? $validasi_delete : '';
-
-
-                $cek_level_validasi = Auth::user()->roles()->first()->level == '1' ? $validasi : '';
+                $cek_level_validasi = Auth::user()->roles()->first()->level == '1' ?   $cek_validasi : '';
                 $cek_level_validasidelete = Auth::user()->roles()->first()->level == '1' ? $cek_validasidelete : '';
 
                 $cek_perm_edit = $perm['edit'] == 'true' ? $cek_edit : '';
@@ -310,11 +310,12 @@ class RuteController extends Controller
               ]);
 
             // dd( $data);
-                DB::commit();
                 $response = response()->json([
-                    'error' => true,
+                    'status' => 'error',
                     'message' => 'Data Rute Sudah Terpakai Di Joborder'
                 ]);
+                DB::commit();
+
          }else{
             if ($data->delete()) {
                 DB::commit();

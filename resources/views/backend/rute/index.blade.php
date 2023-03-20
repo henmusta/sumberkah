@@ -46,7 +46,7 @@
                 <div class="tab-content p-3 text-muted">
                     <div class="tab-pane active" id="home-1" role="tabpanel">
                         <p class="mb-0">
-                            <div class="table-responsive">
+                            <div class="table">
                                 <table id="Datatable" class="table table-bordered border-bottom w-100" style="width:100%">
                                     <thead>
                                         <tr>
@@ -72,7 +72,7 @@
                     </div>
                     <div class="tab-pane" id="profile-1" role="tabpanel">
                         <p class="mb-0">
-                            <div class="table-responsive">
+                            <div class="table">
                                 <table id="DatatableTemp" class="table table-bordered border-bottom w-100" style="width:100%">
                                     <thead>
                                         <tr>
@@ -443,7 +443,12 @@
           dataType: 'json',
           headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
           success: function (response) {
-            toastr.success(response.message, 'Success !');
+            if(response.status == 'success'){
+                toastr.success(response.message, 'Success !');
+            }else{
+                toastr.error(response.message, 'Peringatan !');
+            }
+
             form.text('Submit').html(btnHtml).removeAttr('disabled');
             dataTable.draw();
             dataTabletemp.draw();
