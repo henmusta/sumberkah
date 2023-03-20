@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Mobil;
 use App\Traits\ResponseStatus;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
@@ -16,6 +17,14 @@ use Throwable;
 class MobilController extends Controller
 {
     use ResponseStatus;
+
+    function __construct()
+    {
+        $this->middleware('can:backend-mobil-list', ['only' => ['index']]);
+        $this->middleware('can:backend-mobil-create', ['only' => ['create', 'store']]);
+        $this->middleware('can:backend-mobil-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('can:backend-mobil-delete', ['only' => ['destroy']]);
+    }
     public function index(Request $request)
     {
         $config['page_title'] = "Data Mobil";
@@ -28,13 +37,26 @@ class MobilController extends Controller
 
           return DataTables::of($data)
             ->addColumn('action', function ($row) {
+                $perm = [
+                    'list' => Auth::user()->can('backend-mobil-list'),
+                    'create' => Auth::user()->can('backend-mobil-create'),
+                    'edit' => Auth::user()->can('backend-mobil-edit'),
+                    'delete' => Auth::user()->can('backend-mobil-delete'),
+                ];
+
+
+
                 $validasi = '<a href="#" data-bs-toggle="modal" data-bs-target="#modalValidasi" data-bs-id="' . $row->id . '"  data-bs-validasi="' . $row->validasi. '" class="edit dropdown-item">Validasi</a>';
-                $show = '<a href="' . route('backend.mobil.show', $row->id) . '" class="dropdown-item">Detail</a>';
+                $show = '<a href="' . route('backend.mobil.show', $row->id) . '" class="dropdown-item" target="_blank">Detail</a>';
                 $edit = '<a class="dropdown-item" href="mobil/' . $row->id . '/edit">Ubah</a>';
                 $delete = '  <a href="#" data-bs-toggle="modal" data-bs-target="#modalDelete" data-bs-id="' . $row->id . '" class="delete dropdown-item">Hapus</a>';
 
                 $cek_edit =  $row->validasi == '0'  ? $edit : '';
                 $cek_delete =  $row->validasi == '0' ? $delete : '';
+                $cek_level_validasi = Auth::user()->roles()->first()->level == '1' ? $validasi : '';
+          //      $cek_perm_validasi = $perm['edit'] == 'true' ? $cek_edit : '';
+                $cek_perm_edit = $perm['edit'] == 'true' ? $cek_edit : '';
+                $cek_perm_delete = $perm['delete'] == 'true' ? $cek_delete : '';
 
                 return '<div class="dropdown">
                 <a href="#" class="btn btn-secondary" data-bs-toggle="dropdown">
@@ -42,9 +64,9 @@ class MobilController extends Controller
                 </a>
                 <div class="dropdown-menu" data-popper-placement="bottom-start" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(0px, 40px);">
                     '. $show.'
-                    '. $cek_edit.'
-                    '. $cek_delete.'
-                    '. $validasi.'
+                    '.  $cek_perm_edit .'
+                    '.  $cek_perm_delete .'
+                    '. $cek_level_validasi .'
                 </div>
             </div>';
 

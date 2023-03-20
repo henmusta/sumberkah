@@ -5,7 +5,7 @@
     <div class="container-fluid">
       <div class="card">
         <div class="row row-sm">
-            <input id="role_id" type="hidden" value="{{Auth::user()->roles()->first()->id }}">
+            <input id="role_id" type="hidden" value="{{Auth::user()->roles()->first()->level }}">
             <div class="col-md-12">
                 <form id="formStore" action="{{ route('backend.joborder.store') }}" autocomplete="off">
                     @csrf
@@ -224,7 +224,7 @@ $(document).ready(function () {
 
     let role_id =  $('#role_id').val();
     // console.log(role_id);
-        if(role_id == 3){
+        if(role_id == 1){
             $('#tgl_joborder').flatpickr({
                 dateFormat: "Y-m-d"
             });

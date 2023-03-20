@@ -27,16 +27,18 @@
                     </li>
                     @endif
                     @if(Auth::user()->can('backend-dashboard-operasional') == 'true')
+                    @php($cek_ijin = Auth::user()->can('backend-dashboard-ijin') == 'true' ? '' : 'active')
                     <li class="nav-item waves-effect waves-light">
-                        <a class="nav-link" data-bs-toggle="tab" href="#profile-1" role="tab" aria-selected="false">
+                        <a class="nav-link {{$cek_ijin}}" data-bs-toggle="tab" href="#profile-1" role="tab" aria-selected="false">
                             <span class="d-block d-sm-none"><i class="far fa-user"></i></span>
                             <span  style="font-size: 24px" class="d-none d-sm-block">OPERASIONAL</span>
                         </a>
                     </li>
                     @endif
                     @if(Auth::user()->can('backend-dashboard-invoice') == 'true')
+                    @php($cek_ijin = Auth::user()->can('backend-dashboard-ijin') == 'true' || Auth::user()->can('backend-dashboard-operasional') == 'true' ? '' : 'active')
                     <li class="nav-item waves-effect waves-light">
-                        <a class="nav-link" data-bs-toggle="tab" href="#messages-1" role="tab" aria-selected="false">
+                        <a class="nav-link {{$cek_ijin}}" data-bs-toggle="tab" href="#messages-1" role="tab" aria-selected="false">
                             <span class="d-block d-sm-none"><i class="far fa-envelope"></i></span>
                             <span  style="font-size: 24px" class="d-none d-sm-block">INVOICE</span>
                         </a>
@@ -48,154 +50,81 @@
                 <!-- Tab panes -->
                 <div class="tab-content p-3 text-muted">
                     @if(Auth::user()->can('backend-dashboard-ijin') == 'true')
-                    <div class="tab-pane active" id="home-1" role="tabpanel" style="padding-top:20px">
-                        <p class="mb-0">
+                        <div class="tab-pane active" id="home-1" role="tabpanel" style="padding-top:20px">
+                            <p class="mb-0">
 
 
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="card">
-                                        <div class="card-header text-center">
-                                            <div class="alert alert-primary alert-dismissible fade show px-3 mb-0" role="alert">
-                                                <h3 class="text-black">INFORMASI DRIVER</h3>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-header text-center">
+                                                <div class="alert alert-primary alert-dismissible fade show px-3 mb-0" role="alert">
+                                                    <h3 class="text-black">INFORMASI DRIVER</h3>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="text-center"  style="padding: 20px">
-                                                <h4 class="main-content-label mb-1">Berlaku Sim</h4>
+                                            <div class="card-body">
+                                                <div class="text-center"  style="padding: 20px">
+                                                    <h4 class="main-content-label mb-1">Berlaku Sim</h4>
+                                                </div>
+                                                <div class="table-responsive">
+                                                    <table id="Datatablesim" class="table table-bordered border-bottom w-100" style="width:100%">
+                                                        <thead>
+                                                            <tr>
+                                                                <th width="5%">No</th>
+                                                                <th>Nama Lengkap</th>
+                                                                <th>No hp</th>
+                                                                <th>Tanggal Expired SIM</th>
+                                                                <th>Masa  Berlaku</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+
                                             </div>
-                                            <div class="table-responsive">
-                                                <table id="Datatablesim" class="table table-bordered border-bottom w-100" style="width:100%">
-                                                    <thead>
-                                                        <tr>
-                                                            <th width="5%">No</th>
-                                                            <th>Nama Lengkap</th>
-                                                            <th>No hp</th>
-                                                            <th>Tanggal Expired SIM</th>
-                                                            <th>Masa  Berlaku</th>
-                                                          </tr>
-                                                    </thead>
-                                                    <tbody>
-
-                                                    </tbody>
-                                                </table>
-                                            </div>
-
-
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-header text-center">
+                                <div class="card">
+                                    <div class="card-header text-center">
 
-                                    <div class="alert alert-warning alert-dismissible fade show px-3 mb-0" role="alert">
-                                        <h3 class="text-black">INFORMASI KENDARAAN</h3>
-                                    </div>
-                                </div>
-                               <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="card-body">
-                                            <div class="text-center"  style="padding: 20px">
-                                                <h4 class="main-content-label mb-1">Pajak 1 Tahun Kendaraan</h4>
-                                            </div>
-                                            <div class="table-responsive">
-                                                <table id="Datatablestnk" class="table table-bordered border-bottom w-100" style="width:100%">
-                                                    <thead>
-                                                        <tr>
-                                                            <th width="5%">No</th>
-                                                            <th>No Polisi</th>
-                                                            <th>Tanggal Expired</th>
-                                                            <th>Masa  Berlaku</th>
-                                                          </tr>
-                                                    </thead>
-                                                    <tbody>
-
-                                                    </tbody>
-                                                </table>
-                                            </div>
-
-
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="text-center"  style="padding: 20px">
-                                                <h4 class="main-content-label mb-1">KIR Kendaraan</h4>
-                                            </div>
-                                            <div class="table-responsive">
-                                                <table id="Datatablekir" class="table table-bordered border-bottom w-100" style="width:100%">
-                                                    <thead>
-                                                        <tr>
-                                                            <th width="5%">No</th>
-                                                            <th>No Polisi</th>
-                                                            <th>Tanggal Expired</th>
-                                                            <th>Masa  Berlaku</th>
-                                                          </tr>
-                                                    </thead>
-                                                    <tbody>
-
-                                                    </tbody>
-                                                </table>
-                                            </div>
-
-
+                                        <div class="alert alert-warning alert-dismissible fade show px-3 mb-0" role="alert">
+                                            <h3 class="text-black">INFORMASI KENDARAAN</h3>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="card-body">
-                                            <div class="text-center"  style="padding: 20px">
-                                                <h4 class="main-content-label mb-1">Pajak 5 Tahun Kendaraan</h4>
-                                            </div>
-                                            <div class="table-responsive">
-                                                <table id="Datatablepajak" class="table table-bordered border-bottom w-100" style="width:100%">
-                                                    <thead>
-                                                        <tr>
-                                                            <th width="5%">No</th>
-                                                            <th>No Polisi</th>
-                                                            <th>Tanggal Expired</th>
-                                                            <th>Masa  Berlaku</th>
-                                                          </tr>
-                                                    </thead>
-                                                    <tbody>
-
-                                                    </tbody>
-                                                </table>
-                                            </div>
-
-
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="text-center"  style="padding: 20px">
-                                                <h4 class="main-content-label mb-1">Ijin Bongkar Muat (BM) Kendaraan</h4>
-                                            </div>
-                                            <div class="table-responsive">
-                                                <table id="Datatablebm" class="table table-bordered border-bottom w-100" style="width:100%">
-                                                    <thead>
-                                                        <tr>
-                                                            <th width="5%">No</th>
-                                                            <th>No Polisi</th>
-                                                            <th>Tanggal Expired</th>
-                                                            <th>Masa  Berlaku</th>
-                                                          </tr>
-                                                    </thead>
-                                                    <tbody>
-
-                                                    </tbody>
-                                                </table>
-                                            </div>
-
-
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-3">
-                                        </div>
+                                <div class="row">
                                         <div class="col-md-6">
                                             <div class="card-body">
                                                 <div class="text-center"  style="padding: 20px">
-                                                    <h4 class="main-content-label mb-1">Ijin Usaha</h4>
+                                                    <h4 class="main-content-label mb-1">Pajak 1 Tahun Kendaraan</h4>
                                                 </div>
                                                 <div class="table-responsive">
-                                                    <table id="Datatableijinusaha" class="table table-bordered border-bottom w-100" style="width:100%">
+                                                    <table id="Datatablestnk" class="table table-bordered border-bottom w-100" style="width:100%">
+                                                        <thead>
+                                                            <tr>
+                                                                <th width="5%">No</th>
+                                                                <th>No Polisi</th>
+                                                                <th>Tanggal Expired</th>
+                                                                <th>Masa  Berlaku</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="text-center"  style="padding: 20px">
+                                                    <h4 class="main-content-label mb-1">KIR Kendaraan</h4>
+                                                </div>
+                                                <div class="table-responsive">
+                                                    <table id="Datatablekir" class="table table-bordered border-bottom w-100" style="width:100%">
                                                         <thead>
                                                             <tr>
                                                                 <th width="5%">No</th>
@@ -213,159 +142,234 @@
 
                                             </div>
                                         </div>
-                                        <div class="col-3">
+                                        <div class="col-md-6">
+                                            <div class="card-body">
+                                                <div class="text-center"  style="padding: 20px">
+                                                    <h4 class="main-content-label mb-1">Pajak 5 Tahun Kendaraan</h4>
+                                                </div>
+                                                <div class="table-responsive">
+                                                    <table id="Datatablepajak" class="table table-bordered border-bottom w-100" style="width:100%">
+                                                        <thead>
+                                                            <tr>
+                                                                <th width="5%">No</th>
+                                                                <th>No Polisi</th>
+                                                                <th>Tanggal Expired</th>
+                                                                <th>Masa  Berlaku</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="text-center"  style="padding: 20px">
+                                                    <h4 class="main-content-label mb-1">Ijin Bongkar Muat (BM) Kendaraan</h4>
+                                                </div>
+                                                <div class="table-responsive">
+                                                    <table id="Datatablebm" class="table table-bordered border-bottom w-100" style="width:100%">
+                                                        <thead>
+                                                            <tr>
+                                                                <th width="5%">No</th>
+                                                                <th>No Polisi</th>
+                                                                <th>Tanggal Expired</th>
+                                                                <th>Masa  Berlaku</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="card-body">
+                                                    <div class="text-center"  style="padding: 20px">
+                                                        <h4 class="main-content-label mb-1">Ijin Usaha</h4>
+                                                    </div>
+                                                    <div class="table-responsive">
+                                                        <table id="Datatableijinusaha" class="table table-bordered border-bottom w-100" style="width:100%">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th width="5%">No</th>
+                                                                    <th>No Polisi</th>
+                                                                    <th>Tanggal Expired</th>
+                                                                    <th>Masa  Berlaku</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                            </div>
                                         </div>
                                     </div>
+
+
                                 </div>
 
-
-                            </div>
-
-                        </p>
-                    </div>
+                            </p>
+                        </div>
                     @endif
                     @if(Auth::user()->can('backend-dashboard-operasional') == 'true')
-                    <div class="tab-pane" id="profile-1" role="tabpanel" style="padding-top:20px">
-                        <p class="mb-0">
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="card">
-                                        <div class="card-header text-center">
-                                            <div class="alert alert-secondary alert-dismissible fade show px-3 mb-0" role="alert">
-                                                <h3 class="text-black">SUPIR DAN KENDARAAN TIDAK JALAN</h3>
+                        @php($cek_ijin = Auth::user()->can('backend-dashboard-ijin') == 'true' ? '' : 'active')
+                        <div class="tab-pane {{$cek_ijin}}" id="profile-1" role="tabpanel" style="padding-top:20px">
+                            <p class="mb-0">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-header text-center">
+                                                <div class="alert alert-secondary alert-dismissible fade show px-3 mb-0" role="alert">
+                                                    <h3 class="text-black">SUPIR DAN KENDARAAN TIDAK JALAN</h3>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="text-center"  style="padding: 20px">
-                                                <h4 class="main-content-label mb-1">Supir</h4>
+                                            <div class="card-body">
+                                                <div class="text-center"  style="padding: 20px">
+                                                    <h4 class="main-content-label mb-1">Supir</h4>
+                                                </div>
+                                                <div class="table-responsive">
+                                                    <table id="Datatablesupirtj" class="table table-bordered border-bottom" style="width:100%">
+                                                        <thead>
+                                                            <tr>
+                                                                <th width="1%">No</th>
+                                                                <th>Nama Lengkap</th>
+                                                                <th>No hp</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+
                                             </div>
-                                            <div class="table-responsive">
-                                                <table id="Datatablesupirtj" class="table table-bordered border-bottom" style="width:100%">
-                                                    <thead>
-                                                        <tr>
-                                                            <th width="1%">No</th>
-                                                            <th>Nama Lengkap</th>
-                                                            <th>No hp</th>
-                                                          </tr>
-                                                    </thead>
-                                                    <tbody>
+                                            <div class="card-body">
+                                                <div class="text-center"  style="padding: 20px">
+                                                    <h4 class="main-content-label mb-1">Kendaraan</h4>
+                                                </div>
+                                                <div class="table-responsive">
+                                                    <table id="Datatablemobiltj" class="table table-bordered border-bottom" style="width:100%">
+                                                        <thead>
+                                                            <tr>
+                                                                <th width="1%">No</th>
+                                                                <th>Merek</th>
+                                                                <th>Jenis</th>
+                                                                <th>Dump</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
 
-                                                    </tbody>
-                                                </table>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+
                                             </div>
-
-
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="text-center"  style="padding: 20px">
-                                                <h4 class="main-content-label mb-1">Kendaraan</h4>
-                                            </div>
-                                            <div class="table-responsive">
-                                                <table id="Datatablemobiltj" class="table table-bordered border-bottom" style="width:100%">
-                                                    <thead>
-                                                        <tr>
-                                                            <th width="1%">No</th>
-                                                            <th>Merek</th>
-                                                            <th>Jenis</th>
-                                                            <th>Dump</th>
-                                                          </tr>
-                                                    </thead>
-                                                    <tbody>
-
-                                                    </tbody>
-                                                </table>
-                                            </div>
-
-
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </p>
-                    </div>
+                            </p>
+                        </div>
                     @endif
                     @if(Auth::user()->can('backend-dashboard-invoice') == 'true')
-                    <div class="tab-pane" id="messages-1" role="tabpanel" style="padding-top:20px">
-                        <p class="mb-0">
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="card">
-                                        <div class="card-header text-center">
-                                            <div class="alert alert-danger alert-dismissible fade show px-3 mb-0" role="alert">
-                                                <h3 class="text-black">JOBORDER BELUM ADA INVOICE</h3>
+                            @php($cek_ijin = Auth::user()->can('backend-dashboard-ijin') == 'true' || Auth::user()->can('backend-dashboard-operasional') == 'true' ? '' : 'active')
+                        <div class="tab-pane {{$cek_ijin}}" id="messages-1" role="tabpanel" style="padding-top:20px">
+                            <p class="mb-0">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-header text-center">
+                                                <div class="alert alert-danger alert-dismissible fade show px-3 mb-0" role="alert">
+                                                    <h3 class="text-black">JOBORDER BELUM ADA INVOICE</h3>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="text-center"  style="padding: 20px">
-                                                {{-- <h4 class="main-content-label mb-1">Berlaku Sim</h4> --}}
+                                            <div class="card-body">
+                                                <div class="text-center"  style="padding: 20px">
+                                                    {{-- <h4 class="main-content-label mb-1">Berlaku Sim</h4> --}}
+                                                </div>
+                                                <div class="table-responsive">
+                                                    <table id="Datatablejo" class="table table-bordered border-bottom" style="width:100%">
+                                                        <thead>
+                                                            <tr>
+                                                                <th width="5%">No</th>
+                                                                <th>Kode Joborder</th>
+                                                                <th>Driver</th>
+                                                                <th>Nomor Polisi</th>
+                                                                <th>Jenis Mobil</th>
+                                                                <th>Customer</th>
+                                                                <th>Muatan</th>
+                                                                <th>Alamat Awal (Dari)</th>
+                                                                <th>Alamat Akhir (Ke)</th>
+                                                                <th>Tanggal Closing</th>
+                                                                <th>Aksi</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+
                                             </div>
-                                            <div class="table-responsive">
-                                                <table id="Datatablejo" class="table table-bordered border-bottom" style="width:100%">
-                                                    <thead>
-                                                        <tr>
-                                                            <th width="5%">No</th>
-                                                            <th>Kode Joborder</th>
-                                                            <th>Driver</th>
-                                                            <th>Nomor Polisi</th>
-                                                            <th>Jenis Mobil</th>
-                                                            <th>Customer</th>
-                                                            <th>Muatan</th>
-                                                            <th>Alamat Awal (Dari)</th>
-                                                            <th>Alamat Akhir (Ke)</th>
-                                                            <th>Tanggal Closing</th>
-                                                            <th>Aksi</th>
-                                                          </tr>
-                                                    </thead>
-                                                    <tbody>
-
-                                                    </tbody>
-                                                </table>
-                                            </div>
-
-
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="card">
-                                        <div class="card-header text-center">
-                                            <div class="alert alert-success alert-dismissible fade show px-3 mb-0" role="alert">
-                                                <h3 class="text-black">INVOICE JATUH TEMPO</h3>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-header text-center">
+                                                <div class="alert alert-success alert-dismissible fade show px-3 mb-0" role="alert">
+                                                    <h3 class="text-black">INVOICE JATUH TEMPO</h3>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="card-body">
-                                            {{-- <div class="text-center"  style="padding: 20px">
-                                                <h4 class="main-content-label mb-1">Berlaku Sim</h4>
-                                            </div> --}}
-                                            <div class="table-responsive">
-                                                <table id="Datatableinvoice" class="table table-bordered border-bottom" style="width:100%">
-                                                    <thead>
-                                                        <tr>
-                                                            <th width="5%">No</th>
-                                                            <th>Kode Invoice</th>
-                                                            <th>Customer</th>
-                                                            <th>Tanggal Invoice</th>
-                                                            <th>Nominal Invoice</th>
-                                                            <th>Due Date</th>
+                                            <div class="card-body">
+                                                {{-- <div class="text-center"  style="padding: 20px">
+                                                    <h4 class="main-content-label mb-1">Berlaku Sim</h4>
+                                                </div> --}}
+                                                <div class="table-responsive">
+                                                    <table id="Datatableinvoice" class="table table-bordered border-bottom" style="width:100%">
+                                                        <thead>
+                                                            <tr>
+                                                                <th width="5%">No</th>
+                                                                <th>Kode Invoice</th>
+                                                                <th>Customer</th>
+                                                                <th>Tanggal Invoice</th>
+                                                                <th>Nominal Invoice</th>
+                                                                <th>Due Date</th>
 
-                                                          </tr>
-                                                    </thead>
-                                                    <tbody>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
 
-                                                    </tbody>
-                                                </table>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+
                                             </div>
-
-
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </p>
-                    </div>
+                            </p>
+                        </div>
                     @endif
                 </div>
 

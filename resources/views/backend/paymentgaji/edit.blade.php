@@ -240,7 +240,7 @@ $(document).ready(function () {
                 dataType: 'json', // added data type
                 success: function(res) {
                     let data = res;
-                    console.log(data);
+                    // console.log(data);
                     $('#tgl_gaji').val(data.gaji.tgl_invoice);
                     $('#driver_id').val(data.driver.name);
                     $('#tgl_gaji').val(data.gaji.tgl_gaji);

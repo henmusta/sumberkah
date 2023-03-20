@@ -84,7 +84,7 @@ class InvoiceController extends Controller
                 ];
 
                 // dd( $diff);
-                $show = '<a href="' . route('backend.invoice.show', $row->id) . '" class="dropdown-item">Detail</a>';
+                $show = '<a href="' . route('backend.invoice.show', $row->id) . '" class="dropdown-item" target="_blank">Detail</a>';
                 $list_payment = '<a href="' . route('backend.paymentinvoice.index', ['invoice_id'=> $row->id]) . '" class="dropdown-item">List Payment</a>';
                 $edit = '<a class="dropdown-item" href="invoice/' . $row->id . '/edit">Ubah</a>';
                 $delete = '  <a href="#" data-bs-toggle="modal" data-bs-target="#modalDelete" data-bs-id="' . $row->id . '" class="delete dropdown-item">Hapus</a>';
@@ -174,7 +174,7 @@ class InvoiceController extends Controller
             try {
                   $tgl_jatuh_tempo = Carbon::createFromFormat('Y-m-d',  $request['tgl_invoice'])->addDays($request['payment_hari'])->format('Y-m-d');
                 // dd($tgl_jatuh_tempo);
-                  $kode =  $this->KodeInvoice(Carbon::now()->format('d M Y'));
+                  $kode =  $this->KodeInvoice(Carbon::parse($request['tgl_invoice'])->format('d M Y'));
                   $data = Invoice::create([
                     'tgl_invoice'  => $request['tgl_invoice'],
                     'tgl_jatuh_tempo' =>  $tgl_jatuh_tempo,
@@ -248,10 +248,12 @@ class InvoiceController extends Controller
         try {
             $data = Invoice::find($id);
             $tgl_jatuh_tempo = Carbon::createFromFormat('Y-m-d',  $request['tgl_invoice'])->addDays($request['payment_hari'])->format('Y-m-d');
+            $kode =  $this->KodeInvoice(Carbon::parse($request['tgl_invoice'])->format('d M Y'));
+            $kode_update =  $data['tgl_invoice'] != $request['tgl_invoice'] ? $kode : $data['kode_invoice'];
             $data->update([
                 'tgl_invoice'  => $request['tgl_invoice'],
                 'tgl_jatuh_tempo' =>  $tgl_jatuh_tempo,
-                'kode_invoice' =>  $data['kode_invoice'],
+                'kode_invoice' =>  $kode_update,
                 'customer_id'  => $request['customer_id'],
                 'total_tonase'  => $request['total_tonase'],
                 'payment_hari'  => $request['payment_hari'],

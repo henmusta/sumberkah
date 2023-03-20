@@ -318,7 +318,7 @@ tr.group:hover {
         scrollX: false,
         processing: true,
         serverSide: true,
-        order: [[0, 'desc']],
+        order: [[1, 'desc']],
         lengthMenu: [[50, -1], [50, "All"]],
         pageLength: 50,
         ajax: {

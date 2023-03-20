@@ -50,7 +50,7 @@ class PaymentJoController extends Controller
 
           return DataTables::of($data)
           ->addColumn('action', function ($row) {
-            $print = '<a href="'. route('backend.paymentjo.pdf', $row->id) . '" class="edit dropdown-item">Cetak</a>';
+            $print = '<a href="'. route('backend.paymentjo.pdf', $row->id) . '" class="edit dropdown-item" target="_blank">Cetak</a>';
             $show = '<a href="' . route('backend.joborder.show', $row->joborder_id) . '" class="dropdown-item">Detail</a>';
             $validasi = '<a href="#" data-bs-toggle="modal" data-bs-target="#modalValidasi" data-bs-id="' . $row->id . '"  data-bs-validasi="' . $row->validasi. '" class="edit dropdown-item">Validasi</a>';
             $edit = '<a href="#" data-bs-toggle="modal" data-bs-target="#modalEdit"
@@ -148,7 +148,7 @@ class PaymentJoController extends Controller
                    $total_payment += $val_payment['nominal'];
                    $total_kasbon += $val_payment['nominal_kasbon'];
                    if($val_payment['nominal_kasbon'] > 0){
-                    $kode =  $this->KodeKasbon(Carbon::now()->format('d M Y'));
+                    $kode =  $this->KodeKasbon(Carbon::parse($request['tgl_pembayaran'])->format('d M Y'));
                     $kasbon = Kasbon::create([
                       'joborder_id' =>  $joborder['id'],
                       'driver_id' => $joborder['driver_id'],
@@ -174,7 +174,7 @@ class PaymentJoController extends Controller
 
                       $driver_total_kasbon = 0;
                       $driver = Driver::findOrFail($joborder['driver_id']);
-                      if($driver['kasbon'] > $kasbon['nominal']){
+                      if($driver['kasbon'] >= $kasbon['nominal']){
                           $driver_total_kasbon = $driver['kasbon'] - $kasbon['nominal'];
                         //   dd($driver_total_kasbon);
                           $driver->update([
@@ -287,7 +287,7 @@ class PaymentJoController extends Controller
 
                         $total_kasbon += $val['nominal_kasbon'];
                         if($val['nominal_kasbon'] > 0){
-                            $kode =  $this->KodeKasbon(Carbon::now()->format('d M Y'));
+                            $kode =  $this->KodeKasbon(Carbon::parse($request['tgl_pembayaran'])->format('d M Y'));
                             $kasbon = Kasbon::find($val['kasbon_id']);
                             $kasbon = Kasbon::updateOrCreate([
                                 'id' => $val['kasbon_id']
@@ -514,8 +514,10 @@ class PaymentJoController extends Controller
                 $Driverlogkasbon->update([
                     'nominal' =>  $request['nominal_kasbon']
                 ]);
-                $cek_kasbon = $driver['kasbon'] + $joborder['total_kasbon'];
-                $total_kasbon_driver = $cek_kasbon - $request['nominal_kasbon'];
+                $cek_kasbon = $paymentjo['nominal_kasbon'] +  $request['nominal_kasbon'];
+
+                // dd();
+                $total_kasbon_driver = $joborder['total_kasbon'] - $cek_kasbon;
 
                 $paymentjo->update([
                     'nominal' => $request['nominal'],
@@ -531,13 +533,16 @@ class PaymentJoController extends Controller
 
 
                 $total_sisa_uang_jalan = $joborder['total_uang_jalan'] - $total_payment - $total_kasbon;
+
+                // dd($total_kasbon, $cek_old_kasbon);
+                // $cek_old_kasbon = $driver['kasbon'] + $paymentjo['nominal_kasbon'];
               //  dd($total_sisa_uang_jalan, $total_payment, $total_kasbon);
                 if( $total_sisa_uang_jalan < 0 ){
                     $response = response()->json([
                         'status' => 'error',
                         'message' => 'Nominal Melebihi Sisa Tagihan'
                     ]);
-                }elseif($total_kasbon > $driver['kasbon']){
+                }elseif($total_kasbon_driver < 0){
                     $response = response()->json([
                         'status' => 'error',
                         'message' => 'Nominal kasbon Melebihi Kasbon Tersedia Tersedia'
@@ -546,7 +551,7 @@ class PaymentJoController extends Controller
 
 
                     // dd($total_kasbon);
-                    // dd($total_kasbon_driver);
+               //     dd($total_kasbon_driver);
                     $driver->update([
                         'kasbon'=>  $total_kasbon_driver,
                     ]);
@@ -616,6 +621,7 @@ class PaymentJoController extends Controller
                     //    $NominalDriverlogkasbon =  $Driverlogkasbon['nominal'] ?? 0;
 
                         $total_kasbon_driver = ($driver['kasbon'] + $data['nominal_kasbon']);
+
 
                         $driver->update([
                                 'kasbon'=>  $total_kasbon_driver,

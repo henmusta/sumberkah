@@ -99,7 +99,7 @@ class JoborderController extends Controller
 
 
 
-                $show = '<a href="' . route('backend.joborder.show', $row->id) . '" class="dropdown-item">Detail</a>';
+                $show = '<a href="' . route('backend.joborder.show', $row->id) . '" class="dropdown-item" target="_blank">Detail</a>';
                 $list_payment = '<a href="' . route('backend.paymentjo.index', ['joborder_id'=> $row->id]) . '" class="dropdown-item">List Payment</a>';
                 $edit = '<a class="dropdown-item" href="joborder/' . $row->id . '/edit">Ubah</a>';
                 $payment = '<a href="' . route('backend.paymentjo.create',  ['joborder_id'=> $row->id]) . '" class="dropdown-item">Pembayaran</a>';
@@ -189,7 +189,7 @@ class JoborderController extends Controller
           if ($validator->passes()) {
             DB::beginTransaction();
             try {
-                $kode =  $this->KodeJoborder(Carbon::now()->format('d M Y'));
+                $kode =  $this->KodeJoborder(Carbon::parse($request['tgl_joborder'])->format('d M Y'));
                   $data = Joborder::create([
                     'kode_joborder' => $kode,
                     'kode_rute'  => $request['kode_rute'],
@@ -297,11 +297,18 @@ class JoborderController extends Controller
                     'status_jalan'  => '0',
                 ]);
             }
+            // $kode =  $this->KodeJoborder(Carbon::now()->format('d M Y'));
+            // $kode =  $data['tgl_joborder'] != $request['tgl_joborder'] ?
 
+            // if( $data['tgl_joborder'] != $request['tgl_joborder']){
 
+            // }
+            $kode =  $this->KodeJoborder(Carbon::parse($request['tgl_joborder'])->format('d M Y'));
+            $kode_update = $data['tgl_joborder'] != $request['tgl_joborder'] ? $kode : $data['kode_joborder'];
 
             $data->update([
                 'driver_id'  => $request['driver_id'],
+                'kode_joborder'  =>  $kode_update,
                 'mobil_id'  => $request['mobil_id'],
                 'tgl_joborder'  => $request['tgl_joborder'],
                 'tambahan_potongan'  => $request['tambahan_potongan'],
@@ -390,6 +397,14 @@ class JoborderController extends Controller
         try {
          $data = Joborder::findOrFail($id);
             if ($data->delete()) {
+                $mobil = Mobil::findOrFail( $data['mobil_id']);
+                $driver = Driver::findOrFail( $data['driver_id']);
+                $mobil->update([
+                    'status_jalan'  => '0',
+                ]);
+                $driver->update([
+                    'status_jalan'  => '0',
+                ]);
             }
         DB::commit();
         $response = response()->json($this->responseDelete(true));

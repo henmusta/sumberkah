@@ -6,6 +6,7 @@ use App\Helpers\FileUpload;
 use App\Http\Controllers\Controller;
 use App\Models\Mobil;
 use App\Models\Driver;
+use Illuminate\Support\Facades\Auth;
 use App\Traits\ResponseStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -17,6 +18,14 @@ use Throwable;
 class DriverController extends Controller
 {
     use ResponseStatus;
+
+    function __construct()
+    {
+        $this->middleware('can:backend-driver-list', ['only' => ['index']]);
+        $this->middleware('can:backend-driver-create', ['only' => ['create', 'store']]);
+        $this->middleware('can:backend-driver-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('can:backend-driver-delete', ['only' => ['destroy']]);
+    }
     public function index(Request $request)
     {
         $config['page_title'] = "Data Driver";
@@ -29,27 +38,40 @@ class DriverController extends Controller
 
           return DataTables::of($data)
             ->addColumn('action', function ($row) {
+                $perm = [
+                    'list' => Auth::user()->can('backend-driver-list'),
+                    'create' => Auth::user()->can('backend-driver-create'),
+                    'edit' => Auth::user()->can('backend-driver-edit'),
+                    'delete' => Auth::user()->can('backend-driver-delete'),
+                ];
+
                 $validasi = '<a href="#" data-bs-toggle="modal" data-bs-target="#modalValidasi" data-bs-id="' . $row->id . '"  data-bs-validasi="' . $row->validasi. '" class="edit dropdown-item">Validasi</a>';
                 $aktifasi = '<a href="#" data-bs-toggle="modal" data-bs-target="#modalAktif" data-bs-id="' . $row->id . '"
                                                                                              data-bs-aktif="' . $row->status_aktif. '"
                                                                                              data-bs-name="' . $row->name. '"
                                                                                              data-bs-tgl_aktif="' . $row->tgl_aktif. '"
                                                                                              class="edit dropdown-item">Aktifasi</a>';
-                $show = '<a href="' . route('backend.driver.show', $row->id) . '" class="dropdown-item">Detail</a>';
+                $show = '<a href="' . route('backend.driver.show', $row->id) . '" class="dropdown-item" target="_blank">Detail</a>';
                 $edit = '<a class="dropdown-item" href="driver/' . $row->id . '/edit">Ubah</a>';
                 $delete = '  <a href="#" data-bs-toggle="modal" data-bs-target="#modalDelete" data-bs-id="' . $row->id . '" class="delete dropdown-item">Hapus</a>';
                 $cek_edit =  $row->validasi == '0'  ? $edit : '';
                 $cek_delete =  $row->validasi == '0' ? $delete : '';
+
+                $cek_level_validasi = Auth::user()->roles()->first()->level == '1' ? $validasi : '';
+                $cek_level_aktifasi = Auth::user()->roles()->first()->level == '1' ? $aktifasi : '';
+                $cek_perm_edit = $perm['edit'] == 'true' ? $cek_edit : '';
+                $cek_perm_delete = $perm['delete'] == 'true' ? $cek_delete : '';
+
                 return '<div class="dropdown">
                 <a href="#" class="btn btn-secondary" data-bs-toggle="dropdown">
                     Aksi <i class="mdi mdi-chevron-down"></i>
                 </a>
                 <div class="dropdown-menu" data-popper-placement="bottom-start" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(0px, 40px);">
                     '. $show.'
-                    '. $cek_edit.'
-                    '. $cek_delete.'
-                    '. $validasi.'
-                    '. $aktifasi .'
+                    '.  $cek_perm_edit. '
+                    '.  $cek_perm_delete .'
+                    '.  $cek_level_validasi.'
+                    '.   $cek_level_aktifasi .'
                 </div>
             </div>';
 

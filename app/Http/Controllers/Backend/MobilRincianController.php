@@ -46,7 +46,7 @@ class MobilRincianController extends Controller
                     'edit' => Auth::user()->can('backend-customer-edit'),
                     'delete' => Auth::user()->can('backend-customer-delete'),
                 ];
-
+                $cek_level_validasi = Auth::user()->roles()->first()->level == '1' ? $validasi : '';
                 $cek_edit =  $row->validasi == '0'  ? $edit : '';
                 $cek_delete =  $row->validasi == '0' ? $delete : '';
 
@@ -61,7 +61,7 @@ class MobilRincianController extends Controller
                     '. $show.'
                     '. $cek_perm_edit.'
                     '. $cek_perm_delete.'
-                    '. $validasi.'
+                    '. $cek_level_validasi.'
                 </div>
             </div>';
 

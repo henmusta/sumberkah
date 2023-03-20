@@ -156,7 +156,7 @@ class PenggajianController extends Controller
           if ($validator->passes()) {
             DB::beginTransaction();
             try {
-                $kode =  $this->KodeGaji(Carbon::now()->format('d M Y'));
+                $kode =  $this->KodeGaji(Carbon::parse($request['tgl_gaji'])->format('d M Y'));
 
                 // dd($kode);
                   $total_gaji = $request['sub_total'] + $request['bonus'] - $request['nominal_kasbon'];
@@ -198,7 +198,7 @@ class PenggajianController extends Controller
                         // dd($request['nominal_kasbon']);
                         if($request['nominal_kasbon'] > 0){
 
-                            $kode_gaji =  $this->KodeKasbon(Carbon::now()->format('d M Y'));
+                            $kode_gaji =  $this->KodeKasbon(Carbon::parse($request['tgl_gaji'])->format('d M Y'));
                             $kasbon = Kasbon::create([
                                 'driver_id' => $request['driver_id'],
                                 'penggajian_id' =>  $data['id'],
@@ -333,16 +333,15 @@ class PenggajianController extends Controller
 
     public function findpenggajian(Request $request)
     {
-      $gaji = Penggajian::with('driver','mobil')->findOrFail($request['id']);
-      $driver = Driver::findOrFail($gaji['driver_id'])->first();
-      $mobil = Mobil::findOrFail($gaji['mobil_id'])->first();
+      $gaji = Penggajian::findOrFail($request['id']);
+      $driver = Driver::findOrFail($gaji['driver_id']);
+      $mobil = Mobil::findOrFail($gaji['mobil_id']);
       $data = [
         'gaji' => $gaji,
         'driver' => $driver,
         'bulan_kerja' =>   date('Y-m', strtotime($gaji['bulan_kerja'])),
         'mobil' => $mobil
       ];
-
       return response()->json($data);
     }
 
@@ -426,7 +425,7 @@ class PenggajianController extends Controller
                 $driver = Driver::findOrFail($request['driver_id']);
                 if($request['nominal_kasbon'] > 0){
                     $cek_kasbon_id = $kasbon->first();
-                    $kode_gaji =  $this->KodeKasbon(Carbon::now()->format('d M Y'));
+                    $kode_gaji =  $this->KodeKasbon(Carbon::parse($request['tgl_gaji'])->format('d M Y'));
                     $kasbon = Kasbon::updateOrCreate([
                         'id' => $cek_kasbon_id['id'] ?? null
                     ],[
@@ -521,9 +520,10 @@ class PenggajianController extends Controller
                         'nominal'=> $request['nominal_kasbon']
                     ]);
                 }
-
+                $kode =  $this->KodeGaji(Carbon::parse($request['tgl_gaji'])->format('d M Y'));
+                $kode_update =  $data['tgl_gaji'] != $request['tgl_gaji'] ? $kode : $data['kode_gaji'];
                 $data->update([
-                    'kode_gaji'  => $data['kode_gaji'],
+                    'kode_gaji'  =>   $kode_update,
                     'tgl_gaji'  => $request['tgl_gaji'],
                     'driver_id'  => $request['driver_id'],
                     'mobil_id'  => $request['mobil_id'],

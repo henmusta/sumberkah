@@ -2,9 +2,16 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
   <style>
+
+    @page {
+        /* size: 21cm 15cm; */
+        margin: 0;
+        margin: 10mm 10mm 150mm 10mm;
+    }
     body {
       font-family: Arial, sans-serif;
       margin: 0 5px;
+      /* height: 50% !important; */
     }
 
     .header {
@@ -28,14 +35,14 @@
     .dataPayment {
       width: 100%;
       border:none;
-      margin-top: 30px;
+      margin-top: 10px;
     }
 
     .dataPayment td {
         border:none;
-      font-size: 14px;
-      padding-top: 8px;
-      padding-bottom: 8px;
+      font-size: 10px;
+      /* padding-top: 8px;
+      padding-bottom: 8px; */
     }
 
     .dataPayment td:nth-child(1) {
@@ -49,7 +56,7 @@
     }
 
     #keterangan {
-      margin-top: 30px;
+      margin-top: 15px;
     }
 
     #keterangan, tr {
@@ -60,17 +67,17 @@
     }
 
     #keterangan td {
-      padding: 4px;
+      /* padding: 4px; */
     }
 
     #keterangan td {
-      font-size: 14px;
+      font-size: 10px;
     }
 
     #ttd {
       width: 100%;
-      margin-top: 10px;
-      font-size: 12px;
+      margin-top: 5px;
+      font-size: 10px;
       font-weight: normal;
     }
   </style>
@@ -80,8 +87,9 @@
 
 
 </div>
-<h2 style="margin-top: 50px;margin-bottom: 0">BUKTI TITIPAN UANG JALAN</h2>
+<h5 style=" text-align: center; margin-top:25px;margin-bottom: 0">BUKTI TITIPAN UANG JALAN</h5>
 
+<div style="  height: 50%; !important">
 
 <hr>
 <hr>
@@ -270,11 +278,15 @@
     <td style="min-width: 33%; font-weight: normal; text-align: center">Yang Menerima</td>
   </tr>
   <tr>
-    <td style="padding-top: 100px; max-width: 33%; text-align: center; text-transform: uppercase">( _ _ _ _ _ _ _ _ _ _ _ _ _ _ _)</td>
-    <td style="padding-top: 100px; max-width: 33%; text-align: center">( _ _ _ _ _ _ _ _ _ _ _ _ _ _ _)</td>
-    <td style="padding-top: 100px; max-width: 33%; text-align: center">( _ _ _ _ _ _ _ _ _ _ _ _ _ _ _)</td>
+    <td style="padding-top: 50px; max-width: 33%; text-align: center; text-transform: uppercase">( _ _ _ _ _ _ _ _ _ _ _ _ _ _ _)</td>
+    <td style="padding-top: 50px; max-width: 33%; text-align: center">( _ _ _ _ _ _ _ _ _ _ _ _ _ _ _)</td>
+    <td style="padding-top: 50px; max-width: 33%; text-align: center">( _ _ _ _ _ _ _ _ _ _ _ _ _ _ _)</td>
   </tr>
 </table>
+
+</div>
+
+
 
 </body>
 </html>

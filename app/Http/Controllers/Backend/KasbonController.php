@@ -56,7 +56,7 @@ class KasbonController extends Controller
             }
           return DataTables::of($data)
             ->addColumn('action', function ($row) {
-                $show = '<a href="' . route('backend.kasbon.show', $row->id) . '" class="dropdown-item">Detail</a>';
+                $show = '<a href="' . route('backend.kasbon.show', $row->id) . '" class="dropdown-item" target="_blank">Detail</a>';
                 $edit = '<a class="dropdown-item" href="kasbon/' . $row->id . '/edit">Ubah</a>';
                 $validasi = '<a href="#" data-bs-toggle="modal" data-bs-target="#modalValidasi" data-bs-id="' . $row->id . '"  data-bs-validasi="' . $row->validasi . '"  data-bs-nominal="' . $row->nominal. '" class="edit dropdown-item">Validasi</a>';
                 $delete = '  <a href="#" data-bs-toggle="modal" data-bs-target="#modalDelete" data-bs-id="' . $row->id . '" class="delete dropdown-item">Hapus</a>';
@@ -109,7 +109,7 @@ class KasbonController extends Controller
           if ($validator->passes()) {
             DB::beginTransaction();
             try {
-                  $kode =  $this->KodeKasbon(Carbon::now()->format('d M Y'));
+                  $kode =  $this->KodeKasbon(Carbon::parse($request['tgl_kasbon'])->format('d M Y'));
                   $status = $request['jenis'] == 'Pembayaran' ? '1' : '0';
                   $data = Kasbon::create([
                     'driver_id' => $request['driver_id'],

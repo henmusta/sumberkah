@@ -61,7 +61,7 @@ class CustomerController extends Controller
                 class="edit dropdown-item">Ubah</a>';
                 $delete = '  <a href="#" data-bs-toggle="modal" data-bs-target="#modalDelete" data-bs-id="' . $row->id . '" class="delete dropdown-item">Delete</a>';
 
-
+                $cek_level_validasi = Auth::user()->roles()->first()->level == '1' ? $validasi : '';
                 $cek_edit =  $row->validasi == '0' ? $edit : '';
                 $cek_delete =  $row->validasi == '0' ? $delete : '';
 
@@ -76,7 +76,7 @@ class CustomerController extends Controller
                 <div class="dropdown-menu" data-popper-placement="bottom-start" >
                     '. $cek_perm_edit .'
                     '. $cek_perm_delete .'
-                    '. $validasi. '
+                    '. $cek_level_validasi . '
                 </div>
             </div>';
               })

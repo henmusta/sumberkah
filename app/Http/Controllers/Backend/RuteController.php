@@ -9,6 +9,7 @@ use App\Models\Joborder;
 use App\Models\Rute;
 use Carbon\Carbon;
 use App\Traits\ResponseStatus;
+use Illuminate\Support\Facades\Auth;
 use App\Traits\NoUrutTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -20,6 +21,14 @@ use Throwable;
 class RuteController extends Controller
 {
     use ResponseStatus,NoUrutTrait;
+
+    function __construct()
+    {
+        $this->middleware('can:backend-rute-list', ['only' => ['index']]);
+        $this->middleware('can:backend-rute-create', ['only' => ['create', 'store']]);
+        $this->middleware('can:backend-rute-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('can:backend-rute-delete', ['only' => ['destroy']]);
+    }
     public function index(Request $request)
     {
         $config['page_title'] = "Data Rute";
@@ -34,6 +43,13 @@ class RuteController extends Controller
           return DataTables::of($data)
             ->addColumn('action', function ($row) {
 
+                $perm = [
+                    'list' => Auth::user()->can('backend-rute-list'),
+                    'create' => Auth::user()->can('backend-rute-create'),
+                    'edit' => Auth::user()->can('backend-rute-edit'),
+                    'delete' => Auth::user()->can('backend-rute-delete'),
+                ];
+
                 $joborder = Joborder::where('rute_id', $row->id)->get();
 
                 $show = '<a href="' . route('backend.rute.show', $row->id) . '" class="dropdown-item">Detail</a>';
@@ -44,7 +60,16 @@ class RuteController extends Controller
 
                 $cek_edit =  $row->validasi == '0' &&  count($joborder) <= 0 ? $edit : '';
                 $cek_delete =  $row->validasi == '0' && $row->validasi_delete == '0' ? $delete : '';
+
+
                 $cek_validasidelete =  $row->validasi == '0' && $row->validasi_delete == '1' ? $validasi_delete : '';
+
+
+                $cek_level_validasi = Auth::user()->roles()->first()->level == '1' ? $validasi : '';
+                $cek_level_validasidelete = Auth::user()->roles()->first()->level == '1' ? $cek_validasidelete : '';
+
+                $cek_perm_edit = $perm['edit'] == 'true' ? $cek_edit : '';
+                $cek_perm_delete = $perm['delete'] == 'true' ? $cek_delete : '';
 
                 return '<div class="dropdown">
                 <a href="#" class="btn btn-secondary" data-bs-toggle="dropdown">
@@ -52,10 +77,10 @@ class RuteController extends Controller
                 </a>
                 <div class="dropdown-menu" data-popper-placement="bottom-start" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(0px, 40px);">
                     '. $show.'
-                    '. $cek_edit.'
-                    '. $cek_delete.'
-                    '. $validasi.'
-                    '.$cek_validasidelete.'
+                    '. $cek_perm_edit.'
+                    '. $cek_perm_delete.'
+                    '. $cek_level_validasi.'
+                    '. $cek_level_validasidelete.'
                 </div>
             </div>';
 
