@@ -355,12 +355,12 @@ class JoborderController extends Controller
             DB::beginTransaction();
             try {
 
-                if(isset($data['invoice_id'])){
+                if(isset($data['invoice_id']) && $data['penggajian_id'] == null  ){
                     $response = response()->json([
                         'status' => 'error',
                         'message' => 'Sudah Terkoneksi Dengan Invoice'
                     ]);
-                }elseif(isset($data['penggajian_id'])){
+                }elseif(isset($data['penggajian_id']) && $data['invoice_id'] == null){
                     $response = response()->json([
                         'status' => 'error',
                         'message' => 'Sudah Terkoneksi Dengan Penggajian'
