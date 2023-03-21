@@ -75,7 +75,7 @@
                     </div>
                 </div>
                 <div class="row" style="padding-top:50px;">
-                    <h6 class="main-content-label mb-1">Pembayaran</h6>
+
                     <div class="col-12">
                         <div class="table-responsive">
                             <table id="Datatable" class="table table-bordered border-bottom w-100" style="width:100%">
@@ -136,7 +136,7 @@
                                     <tr>
                                         <th class="text-end" colspan="{{$colspan_1}}">Grand Total</th>
                                         <th class="text-end">Rp. {{number_format($data['invoice']['total_harga'],0,',','.')}}</th>
-                                    </tr>ucfirst
+                                    </tr>
                                     @php($terbilang = Riskihajar\Terbilang\Facades\Terbilang::make($data['invoice']['total_harga'], ' rupiah')  ?? '' )
                                     <tr>
                                         <th class="text-left" colspan="{{$colspan_2}}">Terbilang = #   {{ucwords($terbilang)}} #</th>
