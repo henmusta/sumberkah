@@ -355,22 +355,23 @@ class JoborderController extends Controller
             DB::beginTransaction();
             try {
 
-                if(isset($data['invoice_id']) && $data['penggajian_id'] == 'null'  ){
+                //dd($data['invoice_id'] , $data['penggajian_id']);
+                if(isset($data['invoice_id']) && is_null($data['penggajian_id'])){
                     $response = response()->json([
                         'status' => 'error',
                         'message' => 'Sudah Terkoneksi Dengan Invoice'
                     ]);
-                }elseif(isset($data['penggajian_id']) && $data['invoice_id'] == 'null' ){
+                }elseif(isset($data['penggajian_id']) && is_null($data['invoice_id'])){
                     $response = response()->json([
                         'status' => 'error',
                         'message' => 'Sudah Terkoneksi Dengan Penggajian'
                     ]);
-                }elseif(isset($data['invoice_id']) && isset($data['gaji_id'])){
+                }elseif(isset($data['invoice_id']) && isset($data['penggajian_id'])){
                     $response = response()->json([
                         'status' => 'error',
                         'message' => 'Sudah Terkoneksi Dengan Penggajian Dan Invoice'
                     ]);
-                }else{
+                }elseif(is_null($data['penggajian_id']) && is_null($data['invoice_id'])){
                     $data->update([
                         'status_joborder' => '0',
                       ]);
