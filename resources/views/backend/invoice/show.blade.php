@@ -100,7 +100,7 @@
                                       </tr>
                                 </thead>
                                 <tbody>
-                                    @php($no=1);
+                                    @php($no=1)
                                     @foreach ($data['konfirmasijo'] as $val)
                                         <tr>
                                             <td width="2%" class="text-center">{{$no++}}</td>
