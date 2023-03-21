@@ -300,6 +300,7 @@ tr.group:hover {
     });
 
       let dataTable = $('#Datatable').DataTable({
+        dom: 'lfBrtip',
         buttons: [
             {
                 extend: 'excel',
@@ -396,7 +397,9 @@ tr.group:hover {
           },
         ],
       });
+
       dataTable.buttons().container().appendTo($('#print'));
+
       $("#terapkan_filter").click(function() {
         dataTable.draw();
       });
