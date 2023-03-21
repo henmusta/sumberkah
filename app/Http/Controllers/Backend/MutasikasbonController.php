@@ -47,7 +47,7 @@ class MutasikasbonController extends Controller
 
             $total_debit_awal = $total_kredit_awal =   $total_debit = $total_kredit = $saldo_awal = $saldo_akhir = 0;
             $data = array();
-            $get_saldo_awal =  Kasbonjurnallog::whereDate('tgl_kasbon', '<',  $tgl_awal)->get();
+            $get_saldo_awal =  Kasbonjurnallog::whereDate('tgl_kasbon', '<',  $tgl_awal)->where('driver_id', $driver_id)->get();
             foreach($get_saldo_awal as $key => $i){
                 $total_debit_awal += $i['debit'];
                 $total_kredit_awal += $i['kredit'];
