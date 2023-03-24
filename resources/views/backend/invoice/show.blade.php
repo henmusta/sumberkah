@@ -111,7 +111,7 @@
                                             <td>{{$val->joborder['ruteawal']['name']}}</td>
                                             <td>{{$val->joborder['ruteakhir']['name']}}</td>
                                             @if($val->joborder['rute']['ritase_tonase'] != 'Ritase')
-                                                 <td>{{$val->berat_muatan}}</td>
+                                                 <td>{{number_format($val->berat_muatan,0,',','.')}}</td>
                                             @endif
                                             <td class="text-end"> Rp. {{ number_format($val->joborder['rute']['harga'],0,',','.')}}</td>
                                             <td class="text-end"> Rp. {{ number_format($val->total_harga,0,',','.')}}</td>

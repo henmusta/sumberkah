@@ -12,7 +12,7 @@
             </div>
             <div class="card-body" id="printableArea">
                 <div class="invoice-title text-center">
-                    <h2 class="main-content-label mb-1">NOTA KAS KASBON</h2>
+                    <h2 class="main-content-label mb-1">NOTA KASBON</h2>
                     <div class="mb-4">
                            {{-- <img  src="{{URL::to('storage/images/logo/'.Setting::get_setting()->icon)}}" alt="logo" height="50"> --}}
                     </div>
