@@ -88,7 +88,7 @@
                                     </tr>
                                     <tr class="">
                                         <th class="text-left">Referensi</th>
-                                        <td class="text-left">{{ $data['driver']['darurat_telp'] ?? '' }}</td>
+                                        <td class="text-left">{{ $data['driver']['darurat_ref'] ?? '' }}</td>
                                     </tr>
                                 </thead>
                                 <tbody>

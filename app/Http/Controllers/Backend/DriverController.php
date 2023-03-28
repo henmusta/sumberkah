@@ -51,7 +51,7 @@ class DriverController extends Controller
                                                                                              data-bs-name="' . $row->name. '"
                                                                                              data-bs-tgl_aktif="' . $row->tgl_aktif. '"
                                                                                              class="edit dropdown-item">Aktifasi</a>';
-                $show = '<a href="' . route('backend.driver.show', $row->id) . '" class="dropdown-item" target="_blank">Detail</a>';
+                $show = '<a href="' . route('backend.driver.show', $row->id) . '" class="dropdown-item">Detail</a>';
                 $edit = '<a class="dropdown-item" href="driver/' . $row->id . '/edit">Ubah</a>';
                 $delete = '  <a href="#" data-bs-toggle="modal" data-bs-target="#modalDelete" data-bs-id="' . $row->id . '" class="delete dropdown-item">Hapus</a>';
                 $cek_edit =  $row->validasi == '0'  ? $edit : '';
