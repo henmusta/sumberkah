@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Backend as Backend;
+use App\Http\Controllers\Api as Api;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,6 +23,12 @@ Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 Route::prefix('backend')->name('backend.')->group(function () {
     Route::get('/', [LoginController::class, 'showLoginForm']);
     Route::post('/', [LoginController::class, 'login'])->name('login');
+});
+
+Route::prefix('api')->name('api.')->group(function(){
+    Route::resource('api_users', Api\Api_UsersController::class);
+    Route::get('api_login/login', [Api\Api_LoginController::class, 'login'])->name('api_login.login');
+    Route::resource('api_login', Api\Api_LoginController::class);
 });
 
 Route::middleware('auth:henmus')->group(function(){
