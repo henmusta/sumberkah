@@ -191,6 +191,11 @@ input[type="text"][disabled] {
 var cek_potongan_tambahan, fix_total_uang_jalan;
 
 $(document).ready(function () {
+    $('#tgl_pembayaran').flatpickr({
+            dateFormat: "Y-m-d",
+            allowInput: true
+         });
+
     get_invoice({!!$data['invoice']['id']!!});
     const currenciesOptions = {
             caretPositionOnFocus: "start",
