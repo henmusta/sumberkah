@@ -241,6 +241,7 @@
                                             <div class="card-body">
                                                 <div class="text-center"  style="padding: 20px">
                                                     <h4 class="main-content-label mb-1">Supir</h4>
+
                                                 </div>
                                                 <div class="table-responsive">
                                                     <table id="Datatablesupirtj" class="table table-bordered border-bottom" style="width:100%">
@@ -262,12 +263,14 @@
                                             <div class="card-body">
                                                 <div class="text-center"  style="padding: 20px">
                                                     <h4 class="main-content-label mb-1">Kendaraan</h4>
+
                                                 </div>
                                                 <div class="table-responsive">
                                                     <table id="Datatablemobiltj" class="table table-bordered border-bottom" style="width:100%">
                                                         <thead>
                                                             <tr>
                                                                 <th width="1%">No</th>
+                                                                <th>Nomor Plat Polisi</th>
                                                                 <th>Merek</th>
                                                                 <th>Jenis</th>
                                                                 <th>Dump</th>
@@ -390,7 +393,20 @@
 @endsection
 
 @section('css')
+<style>
+div.dt-top-container {
+  display: grid;
+  grid-template-columns: auto auto auto;
+}
 
+div.dt-center-in-div {
+  margin: 0 auto;
+}
+
+div.dt-btn-container {
+  margin: 0 0 0 auto;
+}
+</style>
 @endsection
 @section('script')
 <script src="https://cdn.jsdelivr.net/npm/jspdf@1.5.3/dist/jspdf.min.js"></script>
@@ -417,12 +433,21 @@
 
     //invoice
     if(cek_invoice == '1'){
-        let dataTablejo = $('#Datatablejo').DataTable({
+     let dataTablejo = $('#Datatablejo').DataTable({
+        dom: '<"dt-top-container"<l><"dt-center-in-div"f><"dt-btn-container"B>r>tip',
+        buttons: [
+            {
+                text: 'Refresh',
+                action: function ( e, dt, node, config ) {
+                    dataTablejo.draw();
+                }
+            }
+        ],
         responsive: true,
         scrollX: false,
         processing: true,
         serverSide: true,
-        order: [[1, 'desc']],
+        order: [[0, 'desc']],
         lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
         pageLength: 10,
         ajax: {
@@ -459,6 +484,15 @@
 
 
         let dataTableinvoice = $('#Datatableinvoice').DataTable({
+            dom: '<"dt-top-container"<l><"dt-center-in-div"f><"dt-btn-container"B>r>tip',
+        buttons: [
+            {
+                text: 'Refresh',
+                action: function ( e, dt, node, config ) {
+                    dataTableinvoice.draw();
+                }
+            }
+        ],
         responsive: true,
         scrollX: false,
         processing: true,
@@ -498,12 +532,21 @@
     }
    //operasional
     if(cek_operasional == '1'){
-        let dataTablesupirtj = $('#Datatablesupirtj').DataTable({
+     let dataTablesupirtj = $('#Datatablesupirtj').DataTable({
+        dom: '<"dt-top-container"<l><"dt-center-in-div"f><"dt-btn-container"B>r>tip',
+        buttons: [
+            {
+                text: 'Refresh',
+                action: function ( e, dt, node, config ) {
+                    dataTablesupirtj.draw();
+                }
+            }
+        ],
        responsive: true,
        scrollX: false,
        processing: true,
        serverSide: true,
-       order: [[1, 'desc']],
+       order: [[0, 'desc']],
        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
        pageLength: 10,
        ajax: {
@@ -530,12 +573,22 @@
      });
 
 
+
      let dataTablemobiltj = $('#Datatablemobiltj').DataTable({
+        dom: '<"dt-top-container"<l><"dt-center-in-div"f><"dt-btn-container"B>r>tip',
+        buttons: [
+            {
+                text: 'Refresh',
+                action: function ( e, dt, node, config ) {
+                    dataTablemobiltj.draw();
+                }
+            }
+        ],
        responsive: true,
        scrollX: false,
        processing: true,
        serverSide: true,
-       order: [[1, 'desc']],
+       order: [[0, 'desc']],
        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
        pageLength: 10,
        ajax: {
@@ -552,20 +605,31 @@
                    return meta.row + meta.settings._iDisplayStart + 1;
                }
          },
+         {data: 'nomor_plat', name: 'nomor_plat'},
          {data: 'merkmobil.name', name: 'merkmobil.name'},
          {data: 'jenismobil.name', name: 'jenismobil.name'},
          {data: 'dump', className:'text-center', name: 'dump'},
        ],
      });
+
     }
    //ijin
     if(cek_ijin ==  '1'){
-        let dataTablesim = $('#Datatablesim').DataTable({
+     let dataTablesim = $('#Datatablesim').DataTable({
+        dom: '<"dt-top-container"<l><"dt-center-in-div"f><"dt-btn-container"B>r>tip',
+        buttons: [
+            {
+                text: 'Refresh',
+                action: function ( e, dt, node, config ) {
+                    dataTablesim.draw();
+                }
+            }
+        ],
        responsive: true,
        scrollX: false,
        processing: true,
        serverSide: true,
-       order: [[1, 'desc']],
+       order: [[0, 'desc']],
        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
        pageLength: 10,
        ajax: {
@@ -597,11 +661,20 @@
 
 
      let dataTablestnk = $('#Datatablestnk').DataTable({
+        dom: '<"dt-top-container"<l><"dt-center-in-div"f><"dt-btn-container"B>r>tip',
+        buttons: [
+            {
+                text: 'Refresh',
+                action: function ( e, dt, node, config ) {
+                    dataTablestnk.draw();
+                }
+            }
+        ],
        responsive: true,
        scrollX: false,
        processing: true,
        serverSide: true,
-       order: [[1, 'desc']],
+       order: [[0, 'desc']],
        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
        pageLength: 10,
        ajax: {
@@ -627,11 +700,20 @@
 
 
      let dataTablepajak = $('#Datatablepajak').DataTable({
-       responsive: true,
+        dom: '<"dt-top-container"<l><"dt-center-in-div"f><"dt-btn-container"B>r>tip',
+        buttons: [
+            {
+                text: 'Refresh',
+                action: function ( e, dt, node, config ) {
+                    dataTablepajak.draw();
+                }
+            }
+        ],
+        responsive: true,
        scrollX: false,
        processing: true,
-       serverSide: false,
-       order: [[1, 'desc']],
+       serverSide: true,
+       order: [[0, 'desc']],
        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
        pageLength: 10,
        ajax: {
@@ -663,11 +745,20 @@
 
 
      let dataTablekir = $('#Datatablekir').DataTable({
-       responsive: true,
+        dom: '<"dt-top-container"<l><"dt-center-in-div"f><"dt-btn-container"B>r>tip',
+        buttons: [
+            {
+                text: 'Refresh',
+                action: function ( e, dt, node, config ) {
+                    dataTablekir.draw();
+                }
+            }
+        ],
+        responsive: true,
        scrollX: false,
        processing: true,
        serverSide: true,
-       order: [[1, 'desc']],
+       order: [[0, 'desc']],
        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
        pageLength: 10,
        ajax: {
@@ -696,11 +787,20 @@
      });
 
      let dataTablebm = $('#Datatablebm').DataTable({
-       responsive: true,
+        dom: '<"dt-top-container"<l><"dt-center-in-div"f><"dt-btn-container"B>r>tip',
+        buttons: [
+            {
+                text: 'Refresh',
+                action: function ( e, dt, node, config ) {
+                    dataTablebm.draw();
+                }
+            }
+        ],
+        responsive: true,
        scrollX: false,
        processing: true,
-       serverSide: false,
-       order: [[1, 'desc']],
+       serverSide: true,
+       order: [[0, 'desc']],
        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
        pageLength: 10,
        ajax: {
@@ -730,11 +830,20 @@
 
 
      let dataTableijinusaha = $('#Datatableijinusaha').DataTable({
-       responsive: true,
+        dom: '<"dt-top-container"<l><"dt-center-in-div"f><"dt-btn-container"B>r>tip',
+        buttons: [
+            {
+                text: 'Refresh',
+                action: function ( e, dt, node, config ) {
+                    dataTableijinusaha.draw();
+                }
+            }
+        ],
+        responsive: true,
        scrollX: false,
        processing: true,
-       serverSide: false,
-       order: [[1, 'desc']],
+       serverSide: true,
+       order: [[0]],
        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
        pageLength: 10,
        ajax: {

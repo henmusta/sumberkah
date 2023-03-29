@@ -26,7 +26,7 @@ class DashboardController extends Controller
     public function dtdriver(Request $request)
     {
       if ($request->ajax()) {
-        $data = Driver::whereRaw('DATEDIFF(NOW(),tgl_sim) > -45');
+        $data = Driver::query();
         if ($request->filled('status_jalan')) {
             $data->where('status_jalan', '!=', $request['status_jalan']);
         }
