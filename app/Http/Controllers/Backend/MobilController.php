@@ -47,7 +47,7 @@ class MobilController extends Controller
 
 
                 $validasi = '<a href="#" data-bs-toggle="modal" data-bs-target="#modalValidasi" data-bs-id="' . $row->id . '"  data-bs-validasi="' . $row->validasi. '" class="edit dropdown-item">Validasi</a>';
-                $show = '<a href="' . route('backend.mobil.show', $row->id) . '" class="dropdown-item" target="_blank">Detail</a>';
+                $show = '<a href="' . route('backend.mobil.show', $row->id) . '" class="dropdown-item" >Detail</a>';
                 $edit = '<a class="dropdown-item" href="mobil/' . $row->id . '/edit">Ubah</a>';
                 $delete = '  <a href="#" data-bs-toggle="modal" data-bs-target="#modalDelete" data-bs-id="' . $row->id . '" class="delete dropdown-item">Hapus</a>';
 
