@@ -143,12 +143,13 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6">
+
                                             <div class="card-body">
                                                 <div class="text-center"  style="padding: 20px">
-                                                    <h4 class="main-content-label mb-1">Pajak 5 Tahun Kendaraan</h4>
+                                                    <h4 class="main-content-label mb-1">Ijin Usaha</h4>
                                                 </div>
                                                 <div class="table-responsive">
-                                                    <table id="Datatablepajak" class="table table-bordered border-bottom w-100" style="width:100%">
+                                                    <table id="Datatableijinusaha" class="table table-bordered border-bottom w-100" style="width:100%">
                                                         <thead>
                                                             <tr>
                                                                 <th width="5%">No</th>
@@ -194,10 +195,10 @@
                                             <div class="col-md-6">
                                                 <div class="card-body">
                                                     <div class="text-center"  style="padding: 20px">
-                                                        <h4 class="main-content-label mb-1">Ijin Usaha</h4>
+                                                        <h4 class="main-content-label mb-1">Pajak 5 Tahun Kendaraan</h4>
                                                     </div>
                                                     <div class="table-responsive">
-                                                        <table id="Datatableijinusaha" class="table table-bordered border-bottom w-100" style="width:100%">
+                                                        <table id="Datatablepajak" class="table table-bordered border-bottom w-100" style="width:100%">
                                                             <thead>
                                                                 <tr>
                                                                     <th width="5%">No</th>
@@ -214,6 +215,7 @@
 
 
                                                 </div>
+
                                             </div>
                                             <div class="col-3">
                                             </div>
