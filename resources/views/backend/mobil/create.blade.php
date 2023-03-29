@@ -410,6 +410,11 @@ $(document).ready(function () {
       });
 
 
+      $('#select2Merk, #select2Tipe, #select2Jenis, #select2Dump').on('change', function(e) {
+           mobilrincian.empty().trigger('change');
+      });
+
+
       let dataTable = $('#Datatable').DataTable({
         select: {
             style: 'single'

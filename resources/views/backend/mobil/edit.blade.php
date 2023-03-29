@@ -307,7 +307,6 @@ $(document).ready(function () {
     select2Merk.select2({
         dropdownParent: select2Merk.parent(),
         searchInputPlaceholder: 'Cari Merek Mobil',
-        allowClear: true,
         width: '100%',
         placeholder: 'select Merek Mobil',
         ajax: {
@@ -329,7 +328,6 @@ $(document).ready(function () {
       select2Tipe.select2({
         dropdownParent: select2Tipe.parent(),
         searchInputPlaceholder: 'Cari Tipe Mobil',
-        allowClear: true,
         width: '100%',
         placeholder: 'select Tipe Mobil',
         ajax: {
@@ -353,7 +351,6 @@ $(document).ready(function () {
       select2Jenis.select2({
         dropdownParent: select2Jenis.parent(),
         searchInputPlaceholder: 'Cari Jenis Mobil',
-        allowClear: true,
         width: '100%',
         placeholder: 'select Jenis Mobil',
         ajax: {
@@ -371,6 +368,11 @@ $(document).ready(function () {
             let data = e.params.data;
             console.log(data.id);
       });
+
+      $('#select2Merk, #select2Tipe, #select2Jenis, #select2Dump').on('change', function(e) {
+           mobilrincian.empty().trigger('change');
+      });
+
 
       $("#formUpdate").submit(function (e) {
         e.preventDefault();
