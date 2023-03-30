@@ -637,7 +637,7 @@ div.dt-btn-container {
        ajax: {
          url: "{{ route('backend.dashboard.dtdriver') }}",
          data: function (d) {
-           // d.status = $('#Select2Status').find(':selected').val();
+            d.berlaku_sim = 1;
          }
        },
 

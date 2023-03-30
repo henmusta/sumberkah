@@ -63,10 +63,10 @@
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
-                                        <div class="form-floating form-floating-custom mb-4 auth-pass-inputgroup">
-                                            <input type="password"  name="password" class="form-control pe-5" id="password-input" placeholder="Enter Password">
+                                        <div class="form-floating form-floating-custom mb-4">
+                                            <input type="password"  name="password" class="form-control" id="password" placeholder="Enter Password">
 
-                                            <button type="button" class="btn btn-link position-absolute h-100 end-0 top-0" id="password-addon">
+                                            <button type="button" class="btn btn-link position-absolute h-100 end-0 top-0" onclick="myFunction()">
                                                 <i class="mdi mdi-eye-outline font-size-18 text-muted"></i>
                                             </button>
                                             <label for="input-password">Password</label>
@@ -92,9 +92,21 @@
        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
        <script>
+        function myFunction() {
+          var x = document.getElementById("password");
+          if (x.type === "password") {
+            x.type = "text";
+          } else {
+            x.type = "password";
+          }
+       }
+
         $(document).ready(function () {
     $("#formStore").submit(function (e) {
         e.preventDefault();
+
+
+
         let form = $(this);
         let btnSubmit = form.find("[type='submit']");
         let btnSubmitHtml = btnSubmit.html();

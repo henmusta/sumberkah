@@ -30,6 +30,9 @@ class DashboardController extends Controller
         if ($request->filled('status_jalan')) {
             $data->where('status_jalan', '!=', $request['status_jalan']);
         }
+        if ($request->filled('berlaku_sim')) {
+            $data->whereRaw('DATEDIFF(NOW(),tgl_sim) > -45');
+        }
         return DataTables::of($data)
         ->addColumn('exp_sim', function ($row) {
             $tgl_now = Carbon::now()->format('Y-m-d');
