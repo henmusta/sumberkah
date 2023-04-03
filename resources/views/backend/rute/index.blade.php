@@ -236,7 +236,7 @@
         scrollX: false,
         processing: true,
         serverSide: true,
-        order: [[1, 'desc']],
+        order: [[8, 'asc']],
         lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
         pageLength: 10,
         ajax: {
@@ -308,7 +308,7 @@
         scrollX: false,
         processing: true,
         serverSide: true,
-        order: [[1, 'desc']],
+        order: [[8, 'asc']],
         lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
         pageLength: 10,
         ajax: {

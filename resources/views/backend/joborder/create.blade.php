@@ -257,7 +257,7 @@ $(document).ready(function () {
             return {
               validasi: 1,
               status_aktif: 1,
-              status_jalan: 1,
+            //   status_jalan: 1,
               q: e.term || '',
               page: e.page || 1
             }
@@ -303,7 +303,7 @@ $(document).ready(function () {
           cache: true,
           data: function (e) {
             return {
-              status_jalan: 1,
+            //   status_jalan: 1,
               jenismobil_id:  select2Jenis.find(":selected").val() || '00',
               q: e.term || '',
               page: e.page || 1

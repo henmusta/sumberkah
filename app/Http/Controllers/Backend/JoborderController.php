@@ -115,7 +115,7 @@ class JoborderController extends Controller
                 $cek_delete =  $row->status_payment == '0' && $row->status_joborder == '0' ? $delete : '';
 
                 $cek_perm_validasi = $perm['edit'] == 'true' ? $cek_validasi : '';
-                $cek_perm_konfirmasi_jo = $perm['edit'] == 'true' ? $cek_konfirmasi_jo : '';
+                // $cek_perm_konfirmasi_jo = $perm['edit'] == 'true' ? $cek_konfirmasi_jo : '';
                 $cek_perm_edit = $perm['edit'] == 'true' ? $cek_edit : '';
                 $cek_perm_delete = $perm['delete'] == 'true' ? $cek_delete : '';
 
@@ -132,7 +132,7 @@ class JoborderController extends Controller
                     '. $cek_payment.'
                     '. $cek_perm_delete .'
                     '. $cek_level_validasi.'
-                    '. $cek_perm_konfirmasi_jo .'
+                    '. $cek_konfirmasi_jo .'
                     '. $show .'
                     '.$cek_list_payment.'
                 </div>
@@ -541,6 +541,23 @@ class JoborderController extends Controller
       ];
 
       return response()->json($data);
+    }
+
+    public function excel(Request $request)
+    {
+
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $data = Joborder::with('customer','ruteawal','ruteakhir','muatan','mobil', 'driver', 'rute', 'jenismobil');
+
+      $writer = new Xlsx($spreadsheet);
+      $filename = 'Mutasi Kasbon';
+      header('Content-Type: application/vnd.ms-excel');
+      header('Content-Disposition: attachment;filename="' . $filename . '.xlsx"');
+      header('Cache-Control: max-age=0');
+      $writer->save('php://output');
+
     }
 
 }

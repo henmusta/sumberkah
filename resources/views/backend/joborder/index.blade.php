@@ -581,6 +581,21 @@
         this.querySelector('#formUpdateValidasi').setAttribute('href', '');
       });
 
+      $("#excel").click(function() {
+                    let params = new URLSearchParams({
+                        status_joborder : $('#select2StatusJo').find(':selected').val(),
+                        driver_id : $('#select2Driver').find(':selected').val(),
+                        jenismobil_id : $('#select2Jenis').find(':selected').val(),
+                        mobil_id : $('#select2Mobil').find(':selected').val(),
+                        customer_id : $('#select2Customer').find(':selected').val(),
+                        id : $('#select2Joborder').find(':selected').val(),
+                        tgl_awal : $('#tgl_awal').val(),
+                        tgl_alhir : $('#tgl_akhir').val(),
+                    });
+
+                    window.location.href = "{{ route('backend.mutasikasbon.excel') }}?" +params.toString()
+        });
+
 
       $("#formUpdateValidasi").submit(function(e){
         e.preventDefault();

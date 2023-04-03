@@ -17,12 +17,14 @@
                                 <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample2" aria-expanded="true" aria-controls="multiCollapseExample2">Filter</button>
                             </div>
                         </div>
+                        @if(Auth::user()->can('backend-kasbon-create') == 'true')
                         <div class="flex-shrink-0">
                             <a class="btn btn-primary " href="{{ route('backend.kasbon.create') }}">
                                 Tambah
                                 <i class="fas fa-plus"></i>
                             </a>
                         </div>
+                        @endif
                     </div>
 
                         <div class="row">
@@ -32,7 +34,7 @@
 
 
                                         <div class="row">
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <div class="mb-3">
                                                     <label>Driver<span class="text-danger">*</span></label>
                                                     <select id="select2Driver" style="width: 100% !important;" name="driver_id">
@@ -40,7 +42,7 @@
                                                   </div>
 
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <div class="mb-3">
                                                     <label>Status Transaksi<span class="text-danger">*</span></label>
                                                     <select id="select2Jenis" style="width: 100% !important;" name="Jenis">
@@ -48,10 +50,22 @@
                                                         <option value="Pembayaran">Pembayaran</option>
                                                         <option value="Pengajuan">Pengajuan</option>
                                                         <option value="Potong Gaji">Potong Gaji</option>
+                                                        <option value="Potong Joborder">Potong Joborder</option>
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
+                                                <div class="mb-3">
+                                                    <label>Status Validasi<span class="text-danger">*</span></label>
+                                                    <select id="select2ValidasiFilter" style="width: 100% !important;" name="validasi">
+                                                        <option value=""></option>
+                                                        <option value="1">Acc</option>
+                                                        <option value="0">Pending</option>
+
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
                                                 <div class="mb-3">
                                                     <label>Nomor Bon<span class="text-danger">*</span></label>
                                                     <select id="select2Kasbon" style="width: 100% !important;" name="kasbon_id">
@@ -249,7 +263,21 @@
          let select2Validasi = $('#select2Validasi');
       let select2Driver = $('#select2Driver');
       let select2Jenis = $('#select2Jenis');
+      let select2ValidasiFilter = $('#select2ValidasiFilter');
       let select2Kasbon = $('#select2Kasbon');
+
+
+      select2ValidasiFilter.select2({
+        dropdownParent:select2ValidasiFilter.parent(),
+        searchInputPlaceholder: 'Cari Status Validasi',
+        width: '100%',
+        allowClear: true,
+        placeholder: 'Pilih Status Validasi',
+
+      }).on('select2:select', function (e) {
+            let data = e.params.data;
+            console.log(data.id);
+      });
 
       select2Jenis.select2({
         dropdownParent:select2Jenis.parent(),
@@ -357,6 +385,7 @@
           data: function (d) {
             d.jenis = $('#select2Jenis').find(':selected').val();
             d.driver_id = $('#select2Driver').find(':selected').val();
+            d.validasi = $('#select2ValidasiFilter').find(':selected').val();
             d.id = $('#select2Kasbon').find(':selected').val();
             d.tgl_awal = $('#tgl_awal').val();
             d.tgl_alhir = $('#tgl_akhir').val();
