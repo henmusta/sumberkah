@@ -65,7 +65,7 @@ class KasbonController extends Controller
                 $validasi = '<a href="#" data-bs-toggle="modal" data-bs-target="#modalValidasi" data-bs-id="' . $row->id . '"  data-bs-validasi="' . $row->validasi . '"  data-bs-nominal="' . $row->nominal. '" class="edit dropdown-item">Validasi</a>';
                 $delete = '  <a href="#" data-bs-toggle="modal" data-bs-target="#modalDelete" data-bs-id="' . $row->id . '" class="delete dropdown-item">Hapus</a>';
 
-            //    $cek_validasi =  $row->jenis != 'Potong Gaji' && $row->jenis != 'Potong Joborder' ?  $validasi : '';
+                $cek_validasi =  $row->jenis != 'Potong Gaji' && $row->jenis != 'Potong Joborder' ?  $validasi : '';
                 $cek_edit =  $row->validasi != '1' && $row->jenis != 'Potong Gaji' && $row->jenis != 'Potong Joborder' ? $edit : '';
                 $cek_delete = $row->validasi != '1' && $row->jenis != 'Potong Gaji' && $row->jenis != 'Potong Joborder'  ? $delete : '';
 
@@ -77,7 +77,7 @@ class KasbonController extends Controller
                     '. $show.'
                     '. $cek_edit.'
                     '. $cek_delete .'
-                    '. $validasi .'
+                    '. $cek_validasi .'
                 </div>
             </div>';
 
