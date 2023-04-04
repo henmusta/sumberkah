@@ -503,10 +503,9 @@ class PaymentJoController extends Controller
                     // ]);
 
                 }else{
-                    if($kasbon->first()){
+                    if(isset($kasbon)){
                         $kasbon->delete();
                     }
-
                 }
 
                 $driver = Driver::findOrFail($joborder['driver_id']);
@@ -514,14 +513,18 @@ class PaymentJoController extends Controller
                 $Driverlogkasbon->update([
                     'nominal' =>  $request['nominal_kasbon']
                 ]);
-                $cek_kasbon = $paymentjo['nominal_kasbon'] +  $request['nominal_kasbon'];
+                $cek_kasbon = $driver['kasbon'] + $joborder['total_kasbon'] ;
 
-                // dd();
-                $total_kasbon_driver = $joborder['total_kasbon'] - $cek_kasbon;
+
+                $total_kasbon_driver =  $cek_kasbon - $total_kasbon;
+
+                // dd( $total_kasbon_driver);
+
+                $kasbon_id = isset($kasbon) ? $kasbon['id'] : null;
 
                 $paymentjo->update([
                     'nominal' => $request['nominal'],
-                    'kasbon_id' =>  $kasbon['id'],
+                    'kasbon_id' =>  $kasbon_id,
                     'nominal_kasbon' => $request['nominal_kasbon'],
                     'jenis_payment' => $request['jenis_payment'],
                     'keterangan_kasbon' => $request['keterangan_kasbon'],
@@ -534,22 +537,17 @@ class PaymentJoController extends Controller
 
                 $total_sisa_uang_jalan = $joborder['total_uang_jalan'] - $total_payment - $total_kasbon;
 
-                // dd($total_kasbon, $cek_old_kasbon);
-                // $cek_old_kasbon = $driver['kasbon'] + $paymentjo['nominal_kasbon'];
-              //  dd($total_sisa_uang_jalan, $total_payment, $total_kasbon);
                 if( $total_sisa_uang_jalan < 0 ){
                     $response = response()->json([
                         'status' => 'error',
                         'message' => 'Nominal Melebihi Sisa Tagihan'
                     ]);
-                }elseif($total_kasbon_driver < 0){
+                }elseif($total_kasbon  < 0){
                     $response = response()->json([
                         'status' => 'error',
                         'message' => 'Nominal kasbon Melebihi Kasbon Tersedia Tersedia'
                     ]);
                 }else{
-
-
                     // dd($total_kasbon);
                //     dd($total_kasbon_driver);
                     $driver->update([
