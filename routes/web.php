@@ -106,7 +106,7 @@ Route::middleware('auth:henmus')->group(function(){
             Route::resource('rute', Backend\RuteController::class);
 
             //Joborder
-
+            Route::get('joborder/excel', [Backend\JoborderController::class, 'excel'])->name('joborder.excel');
             Route::get('joborder/findkonfirmasijoborder', [Backend\JoborderController::class, 'findkonfirmasijoborder'])->name('joborder.findkonfirmasijoborder');
             Route::get('joborder/findjoborder', [Backend\JoborderController::class, 'findjoborder'])->name('joborder.findjoborder');
             Route::get('Joborder/datatablecekjoborder', [Backend\JoborderController::class, 'datatablecekjoborder'])->name('joborder.datatablecekjoborder');

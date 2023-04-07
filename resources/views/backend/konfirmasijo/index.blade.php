@@ -61,7 +61,7 @@
 
             </div>
             <div class="card-body">
-                <div class="table-responsive">
+                <div class="table">
                     <table id="Datatable" class="table table-bordered border-bottom w-100" style="width:100%">
                         <thead>
                             <tr>

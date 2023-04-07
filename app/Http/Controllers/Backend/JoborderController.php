@@ -8,6 +8,8 @@ use App\Models\Joborder;
 use App\Models\KonfirmasiJo;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Rute;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use App\Models\Jenismobil;
 use App\Models\Driver;
 use App\Models\Mobil;
@@ -554,10 +556,84 @@ class JoborderController extends Controller
 
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
-        $data = Joborder::with('customer','ruteawal','ruteakhir','muatan','mobil', 'driver', 'rute', 'jenismobil');
+        $status_joborder = $request['status_joborder'];
+        $driver_id = $request['driver_id'];
+        $jenismobil_id = $request['jenismobil_id'];
+        $mobil_id = $request['mobil_id'];
+        $customer_id = $request['customer_id'];
+        $id = $request['id'];
+        $tgl_awal = $request['tgl_awal'];
+        $tgl_akhir = $request['tgl_akhir'];
+
+        $data = Joborder::with('customer','ruteawal','ruteakhir','muatan','mobil', 'driver', 'rute', 'jenismobil')
+        ->when($status_joborder, function ($query, $status_joborder) {
+            return $query->where('status_joborder',  $status_joborder);
+         })
+         ->when( $driver_id, function ($query,  $driver_id) {
+            return $query->where('driver_id',   $driver_id);
+         })->when( $jenismobil_id, function ($query,  $jenismobil_id) {
+            return $query->where('jenismobil_id',   $jenismobil_id);
+         })->when( $mobil_id, function ($query,  $mobil_id) {
+            return $query->where('mobil_id',   $mobil_id);
+         })->when( $customer_id, function ($query,  $customer_id) {
+            return $query->where('customer_id',   $customer_id);
+         })->when( $id, function ($query,  $id) {
+            return $query->where('id',   $id);
+         })->when($tgl_awal, function ($query, $tgl_awal) {
+            return $query->whereDate('tgl_joborder', '>=', $tgl_awal);
+         })
+         ->when($tgl_akhir, function ($query, $tgl_akhir) {
+            return $query->whereDate('tgl_joborder', '=', $tgl_akhir);
+         })->get();
+
+
+         $sheet->setCellValue('A1', 'Laporan Joborder');
+         $spreadsheet->getActiveSheet()->mergeCells('A1:M1');
+         $spreadsheet->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+         $rows2 = 2;
+         $sheet->setCellValue('A'.$rows2, 'Id Jo');
+         $sheet->setCellValue('B'.$rows2, 'Tanggal');
+         $sheet->setCellValue('C'.$rows2, 'Status');
+         $sheet->setCellValue('D'.$rows2, 'Driver');
+         $sheet->setCellValue('E'.$rows2, 'Nomor Plat Polisi');
+         $sheet->setCellValue('F'.$rows2, 'Jenis mobil');
+         $sheet->setCellValue('G'.$rows2, 'Customer');
+         $sheet->setCellValue('H'.$rows2, 'Muatan');
+         $sheet->setCellValue('I'.$rows2, 'Alamat Awal');
+         $sheet->setCellValue('J'.$rows2, 'Alamat Akhir');
+         $sheet->setCellValue('K'.$rows2, 'Total Uj');
+         $sheet->setCellValue('L'.$rows2, 'Pembayaran');
+         $sheet->setCellValue('M'.$rows2, 'Sisa Uj');
+         for($col = 'A'; $col !== 'M'; $col++){$sheet->getColumnDimension($col)->setAutoSize(true);}
+         $x = 3;
+         foreach($data as $val){
+                $status_payment = $val['status_payment'] == '0' ? 'Belum Bayar' : ($val['status_payment'] == '1' ? 'Progress Payment' : 'Lunas');
+                $status_jo = $val['status_joborder'] == '0' ? 'Ongoing' : 'Done';
+                 $sheet->setCellValue('A' . $x, $val['kode_joborder']);
+                 $sheet->setCellValue('B' . $x, $val['tgl_joborder']);
+                 $sheet->setCellValue('C' . $x,  $status_jo);
+                 $sheet->setCellValue('D' . $x, $val['driver']['name'] ?? '');
+                 $sheet->setCellValue('E' . $x, $val['mobil']['nomor_plat'] ?? '');
+                 $sheet->setCellValue('F' . $x, $val['customer']['name'] ?? '');
+                 $sheet->setCellValue('G' . $x, $val['jenismobil']['name'] ?? '');
+                 $sheet->setCellValue('H' . $x, $val['muatan']['name'] ?? '');
+                 $sheet->setCellValue('I' . $x, $val['ruteawal']['name'] ?? '');
+                 $sheet->setCellValue('J' . $x, $val['ruteakhir']['name'] ?? '');
+                 $sheet->setCellValue('K' . $x, $val['total_uang_jalan'] ?? '');
+                 $sheet->setCellValue('L' . $x, $status_payment);
+                 $sheet->setCellValue('M' . $x,  $val['sisa_uang_jalan']);
+                 $x++;
+         }
+      $cell   = count($data) + 3;
+      $spreadsheet->getActiveSheet()->getStyle('K6:K'.$cell)->getNumberFormat()->setFormatCode('#,##0');
+      $spreadsheet->getActiveSheet()->getStyle('M6:M'.$cell)->getNumberFormat()->setFormatCode('#,##0');
+
+      $spreadsheet->setActiveSheetIndex(0)->setCellValue('K'.$cell, '=SUM(K6:K' . $cell . ')');
+      $spreadsheet->setActiveSheetIndex(0)->setCellValue('M'.$cell, '=SUM(M6:M' . $cell . ')');
 
       $writer = new Xlsx($spreadsheet);
-      $filename = 'Mutasi Kasbon';
+      $filename = 'Laporan Joborder';
       header('Content-Type: application/vnd.ms-excel');
       header('Content-Disposition: attachment;filename="' . $filename . '.xlsx"');
       header('Cache-Control: max-age=0');
