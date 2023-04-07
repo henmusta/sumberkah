@@ -40,7 +40,7 @@
                                                     <select id="select2StatusPayment" style="width: 100% !important;" name="status_Payment">
                                                         <option value=""></option>
                                                         <option value="0">Belum Bayar</option>
-                                                        <option value="1">Cicilan</option>
+                                                        <option value="1">Progress Payment</option>
                                                         <option value="2">Lunas</option>
                                                     </select>
                                                 </div>

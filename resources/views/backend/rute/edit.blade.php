@@ -247,6 +247,18 @@ $(document).ready(function () {
             // minimumValue: 0
     };
 
+    const currenciesOptionsDecimal = {
+            caretPositionOnFocus: "start",
+            currencySymbol: "Rp. ",
+            unformatOnSubmit: true,
+            allowDecimalPadding: true,
+            decimalCharacter : ',',
+            digitGroupSeparator : '.',
+            decimalPlaces: 3,
+            modifyValueOnWheel: false,
+            // minimumValue: 0
+    };
+
     const 	uang_jalan 		= new AutoNumeric('#uang_jalan',currenciesOptions),
             gaji 		    = new AutoNumeric('#gaji',currenciesOptions);
 
