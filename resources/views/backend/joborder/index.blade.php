@@ -422,7 +422,7 @@
             d.customer_id = $('#select2Customer').find(':selected').val();
             d.id = $('#select2Joborder').find(':selected').val();
             d.tgl_awal = $('#tgl_awal').val();
-            d.tgl_alhir = $('#tgl_akhir').val();
+            d.tgl_akhir = $('#tgl_akhir').val();
           }
         },
 
