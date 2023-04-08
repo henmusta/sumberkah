@@ -93,37 +93,63 @@
                     </div>
 
                 </div>
-                <!-- end row -->
-                <div class="row" style="padding-top:20px;">
-                    <label for="select2Merk">Joborder Terkoneksi<span class="text-danger">*</span></label>
-                    <div class="col-12">
-                        <div class="table-responsive">
-                            <table id="Datatable" class="table table-bordered border-bottom w-100" style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th class="text-center">No</th>
-                                        <th>Kode Joborder</th>
-                                        <th>Tanggal Transaksi</th>
-                                        <th>Keterangan</th>
-                                      </tr>
-                                </thead>
-                                <tbody>
-                                    @php($no=1)
-                                    @foreach ($data['joborder'] as $val)
-                                        <tr>
-                                            <td width="2%" class="text-center">{{$no++}}</td>
-                                            <td>{{$val->kode_joborder}}</td>
-                                            <td>{{$val->tgl_joborder}}</td>
-                                            <td>{{$val->keterangan_joborder}}</td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+
+                <div class="mt-xl-0 mt-4"  style="padding-top:30px;">
+
+
+                    <div class="d-flex align-items-start">
+                        @if(isset($data['joborder']))
+                        <div class="flex-grow-1">
+                            <div class="d-flex gap-2 flex-wrap mb-3 text-center">
+                                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample2" aria-expanded="true" aria-controls="multiCollapseExample2">Joborder Terkoneksi</button>
+                            </div>
+                        </div>
+                        @endif
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="multi-collapse collapse" id="multiCollapseExample2" style="">
+                                <div class="card border shadow-none card-body text-muted mb-0">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="table-responsive">
+                                                <table id="Datatable" class="table table-bordered border-bottom w-100" style="width:100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-center">No</th>
+                                                            <th>Kode Joborder</th>
+                                                            <th>Tanggal Transaksi</th>
+                                                            <th>Keterangan</th>
+                                                          </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @php($no=1)
+                                                        @foreach ($data['joborder'] as $val)
+                                                            <tr>
+                                                                <td width="2%" class="text-center">{{$no++}}</td>
+                                                                <td>{{$val->kode_joborder}}</td>
+                                                                <td>{{$val->tgl_joborder}}</td>
+                                                                <td>{{$val->keterangan_joborder}}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+
+
+
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-
                 </div>
+                <!-- end row -->
+
 
 
 
