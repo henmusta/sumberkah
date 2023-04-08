@@ -477,7 +477,7 @@ class PaymentJoController extends Controller
                             'kode_kasbon'=>  $kasbon['kode_kasbon'],
                             'jenis'=>  $kasbon['jenis'],
                             'tgl_kasbon'=>  $kasbon['tgl_kasbon'],
-                            'keterangan'=> $kasbon['keterangan'],
+                            'keterangan'=> $kasbon['keterangan_kasbon'],
                             'debit'=> $kasbon['nominal'],
                             'kredit'=> '0'
                         ]);
