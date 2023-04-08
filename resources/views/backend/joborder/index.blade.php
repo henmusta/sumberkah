@@ -394,8 +394,13 @@
         processing: true,
         serverSide: true,
         order: [[1, 'desc']],
-        lengthMenu: [[10, 50, -1], [10, 50, "All"]],
-        pageLength: 50,
+        // lengthMenu: [[10, 50, -1], [10, 50, "All"]],
+        // pageLength: 50,
+        aLengthMenu: [
+        [25, 50, 100, 200, -1],
+        [25, 50, 100, 200, "All"]
+        ],
+        iDisplayLength: 50,
         ajax: {
           url: "{{ route('backend.joborder.index') }}",
           data: function (d) {
