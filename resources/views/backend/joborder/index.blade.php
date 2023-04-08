@@ -376,15 +376,6 @@
       let dataTable = $('#Datatable').DataTable({
         dom: 'lfBrtip',
         buttons: [
-            // {
-            //     extend: 'excel',
-            //     footer: true,
-            //     text: 'Excel',
-            //     title: 'Laporan Joborder',
-            //     exportOptions: {
-            //         columns: [ 0, 1, 2, 3, 4, 5 ,6, 7, 8, 9, 10 , 11, 12, 13]
-            //     }
-            // },
             {
                 extend: 'pdfHtml5',
                 footer: true,
@@ -395,13 +386,7 @@
                 exportOptions: {
                     columns: [ 0, 1, 2, 3, 4, 5 ,6, 7, 8, 9, 10 , 11, 12, 13]
                 },
-                // customize : function(doc) {
-                //     doc.styles['td:nth-child(2)'] = {
-                //     width: '200px',
-                //     'max-width': '200px'
-                //     }
-                // }
-            }
+            },
 
         ],
         responsive: true,
@@ -582,6 +567,26 @@
       });
 
 
+      $("#excel").click(function() {
+
+
+        var driver_id = (typeof $('#select2Driver').find(':selected').val() === "undefined") ?  '' : $('#select2Driver').find(':selected').val();
+        // var driver_id = (typeof $('#select2Driver').find(':selected').val() === "undefined") ?  '' : $('#select2Driver').find(':selected').val();
+
+                    let params = new URLSearchParams({
+                        status_joborder : $('#select2StatusJo').find(':selected').val() || '',
+                        driver_id : driver_id,
+                        jenismobil_id : $('#select2Jenis').find(':selected').val() || '',
+                        mobil_id : $('#select2Mobil').find(':selected').val() || '',
+                        customer_id : $('#select2Customer').find(':selected').val() || '',
+                        id : $('#select2Joborder').find(':selected').val() || '',
+                        tgl_awal : $('#tgl_awal').val() || '',
+                        tgl_alhir : $('#tgl_akhir').val() || '',
+                    });
+
+                    window.location.href = "{{ route('backend.joborder.excel') }}?" +params.toString()
+        });
+
       $("#formUpdateValidasi").submit(function(e){
         e.preventDefault();
         let form 	= $(this);
@@ -632,25 +637,6 @@
       });
 
 
-      $("#excel").click(function() {
-
-
-        var driver_id = (typeof $('#select2Driver').find(':selected').val() === "undefined") ?  '' : $('#select2Driver').find(':selected').val();
-       // var driver_id = (typeof $('#select2Driver').find(':selected').val() === "undefined") ?  '' : $('#select2Driver').find(':selected').val();
-
-                    let params = new URLSearchParams({
-                        status_joborder : $('#select2StatusJo').find(':selected').val() || '',
-                        driver_id : driver_id,
-                        jenismobil_id : $('#select2Jenis').find(':selected').val() || '',
-                        mobil_id : $('#select2Mobil').find(':selected').val() || '',
-                        customer_id : $('#select2Customer').find(':selected').val() || '',
-                        id : $('#select2Joborder').find(':selected').val() || '',
-                        tgl_awal : $('#tgl_awal').val() || '',
-                        tgl_alhir : $('#tgl_akhir').val() || '',
-                    });
-
-                    window.location.href = "{{ route('backend.joborder.excel') }}?" +params.toString()
-        });
 
 
     });
