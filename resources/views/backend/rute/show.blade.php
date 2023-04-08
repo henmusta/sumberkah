@@ -98,7 +98,8 @@
 
 
                     <div class="d-flex align-items-start">
-                        @if(isset($data['joborder']))
+
+                        @if(count($data['joborder']) > 0)
                         <div class="flex-grow-1">
                             <div class="d-flex gap-2 flex-wrap mb-3 text-center">
                                 <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample2" aria-expanded="true" aria-controls="multiCollapseExample2">Joborder Terkoneksi</button>
