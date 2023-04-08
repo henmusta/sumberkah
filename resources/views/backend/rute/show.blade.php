@@ -94,7 +94,36 @@
 
                 </div>
                 <!-- end row -->
+                <div class="row" style="padding-top:20px;">
+                    <label for="select2Merk">Joborder Terkoneksi<span class="text-danger">*</span></label>
+                    <div class="col-12">
+                        <div class="table-responsive">
+                            <table id="Datatable" class="table table-bordered border-bottom w-100" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">No</th>
+                                        <th>Kode Joborder</th>
+                                        <th>Tanggal Transaksi</th>
+                                        <th>Keterangan</th>
+                                      </tr>
+                                </thead>
+                                <tbody>
+                                    @php($no=1)
+                                    @foreach ($data['joborder'] as $val)
+                                        <tr>
+                                            <td width="2%" class="text-center">{{$no++}}</td>
+                                            <td>{{$val->kode_joborder}}</td>
+                                            <td>{{$val->tgl_joborder}}</td>
+                                            <td>{{$val->keterangan_joborder}}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
 
+
+                </div>
 
 
 

@@ -161,9 +161,12 @@ class RuteController extends Controller
           ['url' => '#', 'title' => "Update Driver"],
         ];
         $rute = Rute::with('customer','ruteawal','ruteakhir','muatan','jenismobil')->findOrFail($id);
+        $joborder = Joborder::where('rute_id', $id)->get();
         $data = [
           'rute' => $rute,
+          'joborder' => $joborder
         ];
+
 
         return view('backend.rute.show', compact('page_breadcrumbs', 'config', 'data'));
     }
