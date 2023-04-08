@@ -400,14 +400,14 @@
           url: "{{ route('backend.joborder.index') }}",
           data: function (d) {
             // d.status = $('#Select2Status').find(':selected').val();
-            // d.status_joborder = $('#select2StatusJo').find(':selected').val();
-            // d.driver_id = $('#select2Driver').find(':selected').val();
-            // d.jenismobil_id = $('#select2Jenis').find(':selected').val();
-            // d.mobil_id = $('#select2Mobil').find(':selected').val();
-            // d.customer_id = $('#select2Customer').find(':selected').val();
-            // d.id = $('#select2Joborder').find(':selected').val();
-            // d.tgl_awal = $('#tgl_awal').val();
-            // d.tgl_akhir = $('#tgl_akhir').val();
+            d.status_joborder = $('#select2StatusJo').find(':selected').val();
+            d.driver_id = $('#select2Driver').find(':selected').val();
+            d.jenismobil_id = $('#select2Jenis').find(':selected').val();
+            d.mobil_id = $('#select2Mobil').find(':selected').val();
+            d.customer_id = $('#select2Customer').find(':selected').val();
+            d.id = $('#select2Joborder').find(':selected').val();
+            d.tgl_awal = $('#tgl_awal').val();
+            d.tgl_akhir = $('#tgl_akhir').val();
           }
         },
 
