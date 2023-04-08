@@ -297,7 +297,7 @@ class PaymentJoController extends Controller
                                 'driver_id' => $joborder['driver_id'],
                                 'tgl_kasbon'=>  $kasbon['tgl_kasbon'] ?? $request['tgl_pembayaran'],
                                 'jenis'=> 'Potong Joborder',
-                                'keterangan'=> $val['keterangan'],
+                                'keterangan'=> $val['keterangan_kasbon'],
                                 'nominal'=> $val['nominal_kasbon'],
                                 'validasi' =>  '1'
                             ]);
