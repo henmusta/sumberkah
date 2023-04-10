@@ -274,7 +274,7 @@ if(cek_invoice_id != ''){
                     // toastr.success('Data Telah Tersedia', 'Success !');
 
 
-                    if(data.invoice.sisa_tagihan > 0){
+                    if(data.invoice.sisa_tagihan >= 0){
                         $('#plus_payment').prop('disabled', false);
                     }else{
                         $('#plus_payment').prop('disabled', true);
