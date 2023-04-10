@@ -322,6 +322,7 @@ class PaymentJoController extends Controller
                         }
 
 
+                        $paymentjoborder = PaymentJo::find($val['id']);
 
                         $payment = PaymentJo::updateOrCreate([
                             'id' => $val['id']
@@ -329,7 +330,7 @@ class PaymentJoController extends Controller
                             'kasbon_id' =>   $kasbon['id'] ?? null,
                             'joborder_id' => $joborder['id'],
                             'kode_joborder' => $joborder['kode_joborder'],
-                            'tgl_payment' => $request['tgl_pembayaran'],
+                            'tgl_payment' => $paymentjoborder['tgl_payment'] ?? $request['tgl_pembayaran'],
                             'jenis_payment' => $val['jenis_pembayaran'],
                             'nominal_kasbon' => $val['nominal_kasbon'],
                             'keterangan' => $val['keterangan'],
