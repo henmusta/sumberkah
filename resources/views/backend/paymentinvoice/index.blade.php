@@ -124,9 +124,12 @@
                 </div>
               </div>
             </div>
-            <div class="row" >
+            <div class="row">
+                <label> Tabel Pembayaran<span class="text-danger">*</span></label>
+                <div class="col-4">
+                    <input type="text" id="tgl_pembayaran" name="tgl_pembayaran"  class="form-control" placeholder="Tanggal Pembayaran" />
+                </div>
                 <div class="col-12">
-                     <label> Tabel Pembayaran<span class="text-danger">*</span></label>
                      <input type="hidden" id="id" name="id"  class="form-control text-end" />
                         <div class="table-responsive">
                             <table id="DatatableSingle" class="table " width="100%">
@@ -178,6 +181,10 @@ tr.group:hover {
   <script>
 
      $(document).ready(function () {
+        $('#tgl_pembayaran').flatpickr({
+            dateFormat: "Y-m-d",
+            allowInput: true
+         });
         let select2Invoice = $('#select2Invoice');
 
         let selectJenisPayment = $('#select2JenisPayment');
@@ -289,10 +296,12 @@ tr.group:hover {
       modalEdit.addEventListener('show.bs.modal', function (event) {
         let id = event.relatedTarget.getAttribute('data-bs-id');
         let keterangan = event.relatedTarget.getAttribute('data-bs-keterangan');
+        let tgl_payment = event.relatedTarget.getAttribute('data-bs-tgl_payment');
         let num_nominal = event.relatedTarget.getAttribute('data-bs-nominal');
         let jenis_payment = event.relatedTarget.getAttribute('data-bs-jenis_payment');
 
         this.querySelector('input[name=id]').value = id;
+        this.querySelector('input[name=tgl_pembayaran]').value = tgl_payment;
         this.querySelector('input[name=keterangan]').value = keterangan;
         nominal.set(num_nominal);
         selectJenisPayment.val(jenis_payment).trigger('change');
@@ -300,6 +309,7 @@ tr.group:hover {
       });
       modalEdit.addEventListener('hidden.bs.modal', function (event) {
         this.querySelector('input[name=id]').value = '';
+        this.querySelector('input[name=tgl_pembayaran]').value = '';
         this.querySelector('input[name=keterangan]').value = '';
         nominal.set(0);
         selectJenisPayment.val('').trigger('change');

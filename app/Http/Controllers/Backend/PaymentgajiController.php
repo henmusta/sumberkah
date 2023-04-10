@@ -52,6 +52,7 @@ class PaymentGajiController extends Controller
                 $edit = '<a href="#" data-bs-toggle="modal" data-bs-target="#modalEdit"
                     data-bs-id="' . $row->id . '"
                     data-bs-nominal="' . $row->nominal . '"
+                    data-bs-tgl_payment="' . $row->tgl_payment . '"
                     data-bs-keterangan="' . $row->keterangan . '"
                     data-bs-jenis_payment="' . $row->jenis_payment . '"
                     class="edit dropdown-item">Edit</a>';
@@ -210,12 +211,14 @@ class PaymentGajiController extends Controller
                     $payment_id = array();
                     foreach($request['payment'] as $val){
                         $total_payment += $val['nominal'];
+
+                        $payment_gaji = PaymentGaji::find($val['id']);
                         $payment = PaymentGaji::updateOrCreate([
                             'id' => $val['id']
                         ],[
                             'penggajian_id' =>  $penggajian['id'],
                             'kode_gaji' => $penggajian['kode_gaji'],
-                            'tgl_payment' => $request['tgl_pembayaran'],
+                            'tgl_payment' => $payment_gaji['tgl_payment'] ?? $request['tgl_pembayaran'],
                             'nominal' => $val['nominal'],
                             'jenis_payment' => $val['jenis_pembayaran'],
                             'keterangan' => $val['keterangan']
@@ -283,6 +286,7 @@ class PaymentGajiController extends Controller
 
                     $paymentgaji->update([
                         'nominal' => $request['nominal'],
+                        'tgl_payment' => $request['tgl_pembayaran'],
                         'jenis_payment' => $request['jenis_payment'],
                         'keterangan' => $request['keterangan']
                     ]);

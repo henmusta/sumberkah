@@ -48,10 +48,10 @@ class PaymentInvoiceController extends Controller
           return DataTables::of($data)
             ->addColumn('action', function ($row) {
                 $show = '<a href="' . route('backend.invoice.show', $row->invoice_id) . '" class="dropdown-item">Detail</a>';
-
                 $edit = '<a href="#" data-bs-toggle="modal" data-bs-target="#modalEdit"
                     data-bs-id="' . $row->id . '"
                     data-bs-nominal="' . $row->nominal . '"
+                    data-bs-tgl_payment="' . $row->tgl_payment . '"
                     data-bs-keterangan="' . $row->keterangan . '"
                     data-bs-jenis_payment="' . $row->jenis_payment . '"
                     class="edit dropdown-item">Edit</a>';
@@ -207,6 +207,9 @@ class PaymentInvoiceController extends Controller
                     $payment_id = array();
                     foreach($request['payment'] as $val){
                         $total_payment += $val['nominal'];
+
+                        $paymentinvoice = PaymentInvoice::find($val['id']);
+
                         $payment = PaymentInvoice::updateOrCreate([
                             'id' => $val['id']
                         ],[
@@ -218,7 +221,7 @@ class PaymentInvoiceController extends Controller
                             // 'nominal' => $val['nominal'],
                             'invoice_id' =>  $invoice['id'],
                             'kode_invoice' => $invoice['kode_invoice'],
-                            'tgl_payment' => $request['tgl_pembayaran'],
+                            'tgl_payment' => $paymentinvoice['tgl_payment'] ?? $request['tgl_pembayaran'],
                             'nominal' => $val['nominal'],
                             'jenis_payment' => $val['jenis_pembayaran'],
                             'keterangan' => $val['keterangan']
@@ -285,6 +288,7 @@ class PaymentInvoiceController extends Controller
                 //  dd($old_pay, $total_payment,  $request['nominal']);
                     $paymentinvoice->update([
                         'nominal' => $request['nominal'],
+                        'tgl_payment' => $request['tgl_pembayaran'],
                         'jenis_payment' => $request['jenis_payment'],
                         'keterangan' => $request['keterangan']
                     ]);
