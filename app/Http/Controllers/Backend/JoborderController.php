@@ -626,8 +626,8 @@ class JoborderController extends Controller
                  $sheet->setCellValue('C' . $x,  $status_jo);
                  $sheet->setCellValue('D' . $x, $val['driver']['name'] ?? '');
                  $sheet->setCellValue('E' . $x, $val['mobil']['nomor_plat'] ?? '');
-                 $sheet->setCellValue('F' . $x, $val['customer']['name'] ?? '');
-                 $sheet->setCellValue('G' . $x, $val['jenismobil']['name'] ?? '');
+                 $sheet->setCellValue('F' . $x, $val['jenismobil']['name'] ?? '');
+                 $sheet->setCellValue('G' . $x, $val['customer']['name'] ?? '');
                  $sheet->setCellValue('H' . $x, $val['muatan']['name'] ?? '');
                  $sheet->setCellValue('I' . $x, $val['ruteawal']['name'] ?? '');
                  $sheet->setCellValue('J' . $x, $val['ruteakhir']['name'] ?? '');
