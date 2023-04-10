@@ -34,14 +34,14 @@ class RoleController extends Controller
   //    $data = Role::query();
       return DataTables::of($data)
         ->addColumn('action', function ($row) {
-
+            // <li> <a href="#" data-bs-toggle="modal" data-bs-target="#modalDelete" data-bs-id="' . $row->id . '" class="delete dropdown-item">Hapus</a></li>
           $actionBtn = '<div class="dropdown">
           <button type="button" class="btn btn-primary" data-bs-toggle="dropdown" aria-expanded="false">
             Aksi <i class="mdi mdi-chevron-down"></i>
           </button>
           <ul class="dropdown-menu">
 
-            <li> <a href="#" data-bs-toggle="modal" data-bs-target="#modalDelete" data-bs-id="' . $row->id . '" class="delete dropdown-item">Hapus</a></li>
+
           </ul>
         </div>';
           return $actionBtn;
