@@ -4,7 +4,7 @@
 <div class="page-content">
     <div class="container-fluid">
       <div class="card">
-        <input id="role_id" type="text" value="{{Auth::user()->roles()->first()->level }}">
+        <input id="role_id" type="hidden" value="{{Auth::user()->roles()->first()->level }}">
         <div class="row row-sm">
             <div class="col-md-12">
                 <form id="formUpdate" action="{{ route('backend.joborder.update', Request::segment(3)) }}" autocomplete="off">
