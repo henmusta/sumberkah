@@ -561,7 +561,7 @@ if(cek_joborder_id != ''){
                     }
 
 
-                    if(data.joborder.sisa_uang_jalan > 0){
+                    if(data.joborder.sisa_uang_jalan >= 0){
                         $('#plus_payment').prop('disabled', false);
                     }else{
                         $('#plus_payment').prop('disabled', true);
