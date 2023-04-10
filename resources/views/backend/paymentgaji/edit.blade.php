@@ -6,6 +6,7 @@
       <div class="card">
         <div class="row row-sm">
             <div class="col-12">
+                <input type="hidden" id="cek_akses_edit" value="{{Auth::user()->roles()->first()->level }}">
                 <form id="formUpdate" action="{{ route('backend.paymentgaji.update', Request::segment(3)) }}">
                     <meta name="csrf-token" content="{{ csrf_token() }}">
                     @method('PUT')
@@ -290,6 +291,10 @@ $(document).ready(function () {
         ]
 
 
+     let cek_edit = $('#cek_akses_edit').val();
+      var cek_readonly;
+      var cek_disabled;
+
         $('#Datatable').on('changeTotalItem',	function(){
             let total_nominal_payment   = 0;
             let for_sisa_tagihan = 0;
@@ -325,13 +330,14 @@ $(document).ready(function () {
 			columns : [
 
 				{
-					data 		: 'jenis_pembayarab',
+					data 		: 'jenis_pembayaran',
 					className 	: 'text-left',
-					width 		: '150px',
+					width 		: '300px',
 					render 		: function ( columnData, type, rowData, meta ) {
+                        cek_readonly = (rowData.id != undefined && cek_edit != 1) ? 'readonly' : ''
                         return String(`
                         <input  name="payment[`+ meta.row +`][id]" type="hidden" value="`+ rowData.id +`" >
-                            <select class="form-control selectjenis" data-name="jenis_pembayaran" required="required" name="payment[`+ meta.row +`][jenis_pembayaran]">
+                            <select `+ cek_readonly +` class="form-control selectjenis" data-name="jenis_pembayaran" required="required" name="payment[`+ meta.row +`][jenis_pembayaran]">
                                 <option value="Tunai" `+ ( columnData == '1' ? `selected="selected"` : ``) +`>Tunai</option>
                                 <option value="Transfer" `+ ( columnData == '0' ? `selected="selected"` : ``) +`>Transfer</option>
                             </select>
@@ -346,8 +352,9 @@ $(document).ready(function () {
 					className 	: 'text-right',
 					width 		: '400px',
 					render 		: function ( columnData, type, rowData, meta ) {
+                        cek_readonly = (rowData.id != undefined && cek_edit != 1) ? 'readonly' : ''
                         return String(`
-							<input id="keterangan` + meta.row + `" style="width: 400px;" class="form-control" value="`+ columnData +`" name="payment[`+ meta.row +`][keterangan]" required data-column="keterangan" >
+							<input `+ cek_readonly +` id="keterangan` + meta.row + `" style="width: 400px;" class="form-control" value="`+ columnData +`" name="payment[`+ meta.row +`][keterangan]" required data-column="keterangan" >
 						`).trim();
 					}
 				},
@@ -356,8 +363,9 @@ $(document).ready(function () {
 					className 	: 'text-right',
 					width 		: '400px',
 					render 		: function ( columnData, type, rowData, meta ) {
+                        cek_readonly = (rowData.id != undefined && cek_edit != 1) ? 'readonly' : ''
 						return String(`
-							<input style="width: 400px;" id="num_nominal_payment` + meta.row + `" class="form-control text-end" value="`+ columnData +`" name="payment[`+ meta.row +`][nominal]" required data-column="nominal" >
+							<input `+ cek_readonly +` style="width: 400px;" id="num_nominal_payment` + meta.row + `" class="form-control text-end" value="`+ columnData +`" name="payment[`+ meta.row +`][nominal]" required data-column="nominal" >
 						`).trim();
 					}
 				},
@@ -367,8 +375,9 @@ $(document).ready(function () {
 					width 		: '10px',
 					className 	: 'text-center',
 					render 		: function ( columnData, type, rowData, meta ) {
+                        cek_disabled = (rowData.id != undefined && cek_edit != 1) ? 'disabled' : ''
 						return String(`
-							<button type="button" id="id_` + meta.row + `" class="btn btn-sm btn-outline-secondary btn-delete-row"><i class="fa fa-minus"></i></button>
+							<button `+ cek_disabled +` type="button" id="id_` + meta.row + `" class="btn btn-sm btn-outline-secondary btn-delete-row"><i class="fa fa-minus"></i></button>
 						`).trim();
 					}
 				}
@@ -414,7 +423,7 @@ $(document).ready(function () {
                 $('#Datatable').trigger('changeTotalItem');
 			}
 	});
-    $(".selectjenis").select2({ width: '400px' });
+    // $(".selectjenis").select2({ width: '400px' });
 
 
 

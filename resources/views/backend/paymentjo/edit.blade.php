@@ -9,6 +9,7 @@
                 <form id="formUpdate" action="{{ route('backend.paymentjo.update', Request::segment(3)) }}" autocomplete="off">
                     <meta name="csrf-token" content="{{ csrf_token() }}">
                     @method('PUT')
+                    <input type="hidden" id="cek_akses_edit" value="{{Auth::user()->roles()->first()->level }}">
                     <div class="card-header">
                         <div>
                             <h6 class="main-content-label mb-1">{{ $config['page_title'] ?? '' }}</h6>
@@ -222,6 +223,8 @@ textarea:disabled {
 input[type="text"][disabled] {
    color: rgb(12, 11, 11) !important;
 }
+
+
 </style>
 @endsection
 @section('script')
@@ -345,6 +348,11 @@ if(cek_joborder_id != ''){
 
 
 
+      let cek_edit = $('#cek_akses_edit').val();
+      var cek_readonly;
+      var cek_disabled;
+
+
 
       const tablePembayaran = $('#Datatable').DataTable({
 			paging		: false,
@@ -359,9 +367,11 @@ if(cek_joborder_id != ''){
 					className 	: 'text-left',
 					width 		: '150px',
 					render 		: function ( columnData, type, rowData, meta ) {
+                        console.log(rowData.id);
+                        cek_readonly = (rowData.id != undefined && cek_edit != 1) ? 'readonly' : ''
                         return String(`
                             <input name="payment[`+ meta.row +`][id]" type="hidden" value="`+ rowData.id +`" >
-                            <select class="form-control" data-name="jenis_pembayaran" required="required" name="payment[`+ meta.row +`][jenis_pembayaran]">
+                            <select `+ cek_readonly +` class="form-control" data-name="jenis_pembayaran" required="required" name="payment[`+ meta.row +`][jenis_pembayaran]">
                                 <option value="Tunai" `+ ( columnData == '1' ? `selected="selected"` : ``) +`>Tunai</option>
                                 <option value="Transfer" `+ ( columnData == '0' ? `selected="selected"` : ``) +`>Transfer</option>
                             </select>
@@ -376,8 +386,9 @@ if(cek_joborder_id != ''){
 					className 	: 'text-right',
 					width 		: '150px',
 					render 		: function ( columnData, type, rowData, meta ) {
+                        cek_readonly = (rowData.id != undefined  && cek_edit != 1) ? 'readonly' : ''
                         return String(`
-							<input id="keterangan` + meta.row + `" class="form-control"  style="width: 250px;" value="`+ columnData +`" name="payment[`+ meta.row +`][keterangan]" required data-column="keterangan" >
+							<input `+ cek_readonly +` id="keterangan` + meta.row + `" class="form-control"  style="width: 250px;" value="`+ columnData +`" name="payment[`+ meta.row +`][keterangan]" required data-column="keterangan" >
 						`).trim();
 					}
 				},
@@ -386,9 +397,10 @@ if(cek_joborder_id != ''){
 					className 	: 'text-right',
 					width 		: '150px',
 					render 		: function ( columnData, type, rowData, meta ) {
+                        cek_readonly = (rowData.id != undefined && cek_edit != 1) ? 'readonly' : ''
                         return String(`
-                            <input name="payment[`+ meta.row +`][kasbon_id]" type="hidden" value="`+ rowData.kasbon_id +`" >
-							<input id="keterangan_kasbon` + meta.row + `" class="form-control"  style="width: 250px;" value="`+ columnData +`" name="payment[`+ meta.row +`][keterangan_kasbon]" data-column="keterangan" >
+                            <input  name="payment[`+ meta.row +`][kasbon_id]" type="hidden" value="`+ rowData.kasbon_id +`" >
+							<input `+ cek_readonly +` id="keterangan_kasbon` + meta.row + `" class="form-control"  style="width: 250px;" value="`+ columnData +`" name="payment[`+ meta.row +`][keterangan_kasbon]" data-column="keterangan" >
 						`).trim();
 					}
 				},
@@ -397,8 +409,9 @@ if(cek_joborder_id != ''){
 					className 	: 'text-right',
 					width 		: '150px',
 					render 		: function ( columnData, type, rowData, meta ) {
+                        cek_readonly = (rowData.id != undefined && cek_edit != 1) ? 'readonly' : ''
 						return String(`
-							<input id="num_nominal_payment` + meta.row + `" class="form-control text-end"  style="width: 250px;" value="`+ columnData +`" name="payment[`+ meta.row +`][nominal]" required data-column="nominal" >
+							<input `+ cek_readonly +` id="num_nominal_payment` + meta.row + `" class="form-control text-end"  style="width: 250px;" value="`+ columnData +`" name="payment[`+ meta.row +`][nominal]" required data-column="nominal" >
 						`).trim();
 					}
 				},
@@ -407,8 +420,9 @@ if(cek_joborder_id != ''){
 					className 	: 'text-right',
 					width 		: '150px',
 					render 		: function ( columnData, type, rowData, meta ) {
+                        cek_readonly = (rowData.id != undefined && cek_edit != 1) ? 'readonly' : ''
 						return String(`
-							<input id="num_nominal_kasbon` + meta.row + `" class="form-control text-end"  style="width: 250px;" value="`+ columnData +`" name="payment[`+ meta.row +`][nominal_kasbon]" required data-column="nominal" >
+							<input `+ cek_readonly +` id="num_nominal_kasbon` + meta.row + `" class="form-control text-end"  style="width: 250px;" value="`+ columnData +`" name="payment[`+ meta.row +`][nominal_kasbon]" required data-column="nominal" >
 						`).trim();
 					}
 				},
@@ -418,8 +432,9 @@ if(cek_joborder_id != ''){
 					width 		: '10px',
 					className 	: 'text-center',
 					render 		: function ( columnData, type, rowData, meta ) {
+                        cek_disabled = (rowData.id != undefined && cek_edit != 1) ? 'disabled' : ''
 						return String(`
-							<button type="button" id="id_` + meta.row + `" class="btn btn-sm btn-outline-secondary btn-delete-row"><i class="fa fa-minus"></i></button>
+							<button `+ cek_disabled +` type="button" id="id_` + meta.row + `" class="btn btn-sm btn-outline-secondary btn-delete-row"><i class="fa fa-minus"></i></button>
 						`).trim();
 					}
 				}

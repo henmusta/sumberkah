@@ -128,9 +128,7 @@
             </div>
             <div class="row">
                 <label> Tabel Pembayaran<span class="text-danger">*</span></label>
-                <div class="col-4">
-                    <input type="text" id="tgl_pembayaran" name="tgl_pembayaran"  class="form-control" placeholder="Tanggal Pembayaran" />
-                </div>
+
                 <div class="col-12">
                      <input type="hidden" id="id" name="id"  class="form-control text-end" />
                         <div class="table-responsive">
@@ -152,6 +150,12 @@
                                         <th><input  style="width: 400px;" type="text" id="nominal" name="nominal"  class="form-control text-end" /></th>
                                     </tr>
                                 </tbody>
+                                <tfoot>
+                                    <th colspan="2" class="text-end">Tanggal Pembayaran</th>
+                                    <th>
+                                        <input type="text" id="tgl_pembayaran" name="tgl_pembayaran"  class="form-control" placeholder="Tanggal Pembayaran" />
+                                    </th>
+                                </tfoot>
                             </table>
                         </div>
                 </div>

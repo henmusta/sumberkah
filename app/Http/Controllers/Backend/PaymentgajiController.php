@@ -72,8 +72,8 @@ class PaymentGajiController extends Controller
                 $cek_perm_delete = $perm['delete'] == 'true' ? $cek_delete : '';
 
 
-                $cek_level_edit = Auth::user()->roles()->first()->level == '1' ? $edit : $cek_perm_edit;
-                $cek_level_delete = Auth::user()->roles()->first()->level == '1' ? $delete : $cek_perm_delete;
+                $cek_level_edit = Auth::user()->roles()->first()->level == '1' ? $cek_perm_edit : '';
+                $cek_level_delete = Auth::user()->roles()->first()->level == '1' ? $cek_perm_delete : '';
 
                 return '<div class="dropdown">
                 <a href="#" class="btn btn-secondary" data-bs-toggle="dropdown">

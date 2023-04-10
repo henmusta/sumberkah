@@ -54,7 +54,7 @@ class PaymentInvoiceController extends Controller
                     data-bs-tgl_payment="' . $row->tgl_payment . '"
                     data-bs-keterangan="' . $row->keterangan . '"
                     data-bs-jenis_payment="' . $row->jenis_payment . '"
-                    class="edit dropdown-item">Edit</a>';
+                    class="edit dropdown-item">Update</a>';
 
                 $delete = '  <a href="#" data-bs-toggle="modal" data-bs-target="#modalDelete" data-bs-id="' . $row->id . '" class="delete dropdown-item">Hapus</a>';
                 $perm = [
@@ -70,8 +70,8 @@ class PaymentInvoiceController extends Controller
                 $cek_perm_edit = $perm['edit'] == 'true' ? $cek_edit : '';
                 $cek_perm_delete = $perm['delete'] == 'true' ? $cek_delete : '';
 
-                $cek_level_edit = Auth::user()->roles()->first()->level == '1' ? $edit : $cek_perm_edit;
-                $cek_level_delete = Auth::user()->roles()->first()->level == '1' ? $delete : $cek_perm_delete;
+                $cek_level_edit = Auth::user()->roles()->first()->level == '1' ? $cek_perm_edit : '';
+                $cek_level_delete = Auth::user()->roles()->first()->level == '1' ? $cek_perm_delete : '';
 
                 return '<div class="dropdown">
                 <a href="#" class="btn btn-secondary" data-bs-toggle="dropdown">
