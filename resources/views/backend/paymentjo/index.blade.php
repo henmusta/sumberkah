@@ -131,9 +131,13 @@
               </div>
             </div>
             <div class="row" >
+                <label> Tabel Pembayaran<span class="text-danger">*</span></label>
+                <div class="col-4">
+                    <input type="text" id="tgl_pembayaran" name="tgl_pembayaran"  class="form-control" placeholder="Tanggal Pembayaran" />
+                </div>
                 <div class="col-12">
-                     <label> Tabel Pembayaran<span class="text-danger">*</span></label>
-                     <input type="hidden" id="id" name="id"  class="form-control text-end" />
+
+                        <input type="hidden" id="id" name="id"  class="form-control text-end" />
                         <div class="table-responsive">
                             <table id="DatatableSingle" class="table " width="100%">
                                 <thead>
@@ -191,6 +195,11 @@ tr.group:hover {
   <script>
 
      $(document).ready(function () {
+        $('#tgl_pembayaran').flatpickr({
+            dateFormat: "Y-m-d",
+            allowInput: true
+         });
+
         let select2Joborder = $('#select2Joborder');
         const currenciesOptions = {
             caretPositionOnFocus: "start",
@@ -305,6 +314,7 @@ tr.group:hover {
 
       modalEdit.addEventListener('show.bs.modal', function (event) {
         let id = event.relatedTarget.getAttribute('data-bs-id');
+        let tgl_payment = event.relatedTarget.getAttribute('data-bs-tgl_payment');
         let keterangan = event.relatedTarget.getAttribute('data-bs-keterangan');
         let keterangan_kasbon = event.relatedTarget.getAttribute('data-bs-keterangan_kasbon');
         let num_nominal_kasbon = event.relatedTarget.getAttribute('data-bs-nominal_kasbon');
@@ -313,6 +323,7 @@ tr.group:hover {
 
 
         this.querySelector('input[name=id]').value = id;
+        this.querySelector('input[name=tgl_pembayaran]').value = tgl_payment;
         this.querySelector('input[name=keterangan]').value = keterangan;
         this.querySelector('input[name=keterangan_kasbon]').value = keterangan_kasbon;
         nominal.set(num_nominal);
@@ -323,6 +334,7 @@ tr.group:hover {
       modalEdit.addEventListener('hidden.bs.modal', function (event) {
         this.querySelector('input[name=id]').value = '';
         this.querySelector('input[name=keterangan]').value = '';
+        this.querySelector('input[name=tgl_pembayaran]').value = '';
         this.querySelector('input[name=keterangan_kasbon]').value = '';
         nominal.set(0);
         nominal_kasbon.set(0);

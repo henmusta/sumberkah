@@ -56,6 +56,7 @@ class PaymentJoController extends Controller
             $edit = '<a href="#" data-bs-toggle="modal" data-bs-target="#modalEdit"
                 data-bs-id="' . $row->id . '"
                 data-bs-nominal="' . $row->nominal . '"
+                data-bs-tgl_payment="' . $row->tgl_payment . '"
                 data-bs-keterangan="' . $row->keterangan . '"
                 data-bs-nominal_kasbon="' . $row->nominal_kasbon . '"
                 data-bs-keterangan_kasbon="' . $row->keterangan_kasbon . '"
@@ -460,7 +461,7 @@ class PaymentJoController extends Controller
                         'joborder_id' =>  $joborder['id'],
                         'kode_kasbon'=>  $kasbon['kode_kasbon'] ?? $kode,
                         'driver_id' => $joborder['driver_id'],
-                        'tgl_kasbon'=>  $paymentjo['tgl_payment'],
+                        'tgl_kasbon'=>  $paymentjo['tgl_payment'] ?? $request['tgl_pembayaran'],
                         'jenis'=> 'Potong Joborder',
                         'keterangan'=> $request['keterangan_kasbon'],
                         'nominal'=> $request['nominal_kasbon'],
@@ -526,6 +527,7 @@ class PaymentJoController extends Controller
                 $paymentjo->update([
                     'nominal' => $request['nominal'],
                     'kasbon_id' =>  $kasbon_id,
+                    'tgl_payment' =>  $request['tgl_pembayaran'],
                     'nominal_kasbon' => $request['nominal_kasbon'],
                     'jenis_payment' => $request['jenis_payment'],
                     'keterangan_kasbon' => $request['keterangan_kasbon'],
