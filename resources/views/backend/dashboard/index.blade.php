@@ -95,9 +95,9 @@
                                             <h3 class="text-black">INFORMASI KENDARAAN</h3>
                                         </div>
                                     </div>
-                                <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6" >
+                                            <div class="card-body" style="min-height: 915px; border: 1px solid #fff; margin-top:10px">
                                                 <div class="text-center"  style="padding: 20px">
                                                     <h4 class="main-content-label mb-1">Pajak 1 Tahun Kendaraan</h4>
                                                 </div>
@@ -119,7 +119,7 @@
 
 
                                             </div>
-                                            <div class="card-body">
+                                            <div class="card-body" style="min-height: 915px; border: 1px solid #fff; margin-top:10px">
                                                 <div class="text-center"  style="padding: 20px">
                                                     <h4 class="main-content-label mb-1">KIR Kendaraan</h4>
                                                 </div>
@@ -144,7 +144,7 @@
                                         </div>
                                         <div class="col-md-6">
 
-                                            <div class="card-body">
+                                            <div class="card-body" style="min-height: 915px; border: 1px solid #fff; margin-top:10px">
                                                 <div class="text-center"  style="padding: 20px">
                                                     <h4 class="main-content-label mb-1">Ijin Usaha</h4>
                                                 </div>
@@ -166,7 +166,7 @@
 
 
                                             </div>
-                                            <div class="card-body">
+                                            <div class="card-body" style="min-height: 915px; border: 1px solid #fff; margin-top:10px">
                                                 <div class="text-center"  style="padding: 20px">
                                                     <h4 class="main-content-label mb-1">Ijin Bongkar Muat (BM) Kendaraan</h4>
                                                 </div>
@@ -193,7 +193,7 @@
                                             <div class="col-3">
                                             </div>
                                             <div class="col-md-6">
-                                                <div class="card-body">
+                                                <div class="card-body" style="border: 1px solid #fff; margin-top:10px">
                                                     <div class="text-center"  style="padding: 20px">
                                                         <h4 class="main-content-label mb-1">Pajak 5 Tahun Kendaraan</h4>
                                                     </div>
