@@ -272,9 +272,9 @@ if(cek_invoice_id != ''){
                     sisa_tagihan.set(data.invoice.sisa_tagihan);
                     total_sisa_tagihan.set(data.invoice.sisa_tagihan);
                     // toastr.success('Data Telah Tersedia', 'Success !');
-                    console.log(data.invoice.sisa_tagihan);
 
-                    if(data.invoice.sisa_tagihan >= 0){
+
+                    if(data.invoice.sisa_tagihan > 0){
                         $('#plus_payment').prop('disabled', false);
                     }else{
                         $('#plus_payment').prop('disabled', true);

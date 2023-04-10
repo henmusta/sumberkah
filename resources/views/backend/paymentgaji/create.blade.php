@@ -293,7 +293,7 @@ if(cek_gaji_id != ''){
                     // }
 
 
-                    if(data.gaji.sisa_gaji > 0){
+                    if(data.gaji.sisa_gaji >= 0){
                         $('#plus_payment').prop('disabled', false);
                     }else{
                         $('#plus_payment').prop('disabled', true);
