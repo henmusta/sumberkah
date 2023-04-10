@@ -280,9 +280,20 @@ class JoborderController extends Controller
     {
       $validator = Validator::make($request->all(), [
         'tgl_joborder'  => "required",
+        'customer_id'  => "required",
+        'driver_id' => "required",
+        'jenismobil_id' => "required",
+        'first_rute_id'  => "required",
+        'last_rute_id'  => "required",
+        'muatan_id'  => "required",
+        'mobil_id'  => "required",
+        'jenismobil_id'  => "required",
+        'muatan_id'  => "required",
+        'uang_jalan'  => "required",
         'tambahan_potongan' => "required",
         'biaya_lain' => "required_if:potongan_tambahan,!=,None",
-        'total_uang_jalan'  => "required"
+        'total_uang_jalan'  => "required",
+        'kode_rute'  => "required",
       ]);
 
       if ($validator->passes()) {
