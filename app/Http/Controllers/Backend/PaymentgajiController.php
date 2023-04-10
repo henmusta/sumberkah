@@ -55,7 +55,7 @@ class PaymentGajiController extends Controller
                     data-bs-tgl_payment="' . $row->tgl_payment . '"
                     data-bs-keterangan="' . $row->keterangan . '"
                     data-bs-jenis_payment="' . $row->jenis_payment . '"
-                    class="edit dropdown-item">Edit</a>';
+                    class="edit dropdown-item">Update</a>';
 
                 $delete = '  <a href="#" data-bs-toggle="modal" data-bs-target="#modalDelete" data-bs-id="' . $row->id . '" class="delete dropdown-item">Hapus</a>';
                 $perm = [
