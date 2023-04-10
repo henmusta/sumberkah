@@ -599,7 +599,7 @@ class JoborderController extends Controller
 
 
          $sheet->setCellValue('A1', 'Laporan Joborder');
-         $spreadsheet->getActiveSheet()->mergeCells('A1:M1');
+         $spreadsheet->getActiveSheet()->mergeCells('A1:N1');
          $spreadsheet->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
          $rows2 = 2;
@@ -615,8 +615,9 @@ class JoborderController extends Controller
          $sheet->setCellValue('J'.$rows2, 'Alamat Akhir');
          $sheet->setCellValue('K'.$rows2, 'Total Uj');
          $sheet->setCellValue('L'.$rows2, 'Pembayaran');
-         $sheet->setCellValue('M'.$rows2, 'Sisa Uj');
-         for($col = 'A'; $col !== 'M'; $col++){$sheet->getColumnDimension($col)->setAutoSize(true);}
+         $sheet->setCellValue('M'.$rows2, 'Sisa Uang Jalan');
+         $sheet->setCellValue('N'.$rows2, 'Keterangan');
+         for($col = 'A'; $col !== 'N'; $col++){$sheet->getColumnDimension($col)->setAutoSize(true);}
          $x = 3;
          foreach($data as $val){
                 $status_payment = $val['status_payment'] == '0' ? 'Belum Bayar' : ($val['status_payment'] == '1' ? 'Progress Payment' : 'Lunas');
@@ -634,6 +635,7 @@ class JoborderController extends Controller
                  $sheet->setCellValue('K' . $x, $val['total_uang_jalan'] ?? '');
                  $sheet->setCellValue('L' . $x, $status_payment);
                  $sheet->setCellValue('M' . $x,  $val['sisa_uang_jalan']);
+                 $sheet->setCellValue('N' . $x,  $val['keterangan_joborder']);
                  $x++;
          }
       $cell   = count($data) + 3;
