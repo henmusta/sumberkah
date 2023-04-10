@@ -92,10 +92,14 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-2 text-end" style="padding-top:30px;">
-                                                <a id="terapkan_filter" class="btn btn-success">
-                                                    Terapkan Filter
-                                                    <i class="fas fa-align-justify"></i>
-                                                </a>
+                                                <div class="d-flex justify-content-start">
+                                                    <a id="terapkan_filter" class="btn btn-success">
+                                                        Terapkan Filter
+                                                        <i class="fas fa-align-justify"></i>
+                                                    </a>
+                                                    <button  class="btn btn-danger" onClick="window.location.reload();">Refresh</button>
+
+                                                </div>
                                             </div>
                                             <div class="col-md-2 text-end" style="padding-top:30px;">
                                                 <div id="print">
