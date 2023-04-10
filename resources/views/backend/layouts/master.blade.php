@@ -12,6 +12,10 @@
 
         @include('backend.layouts.headercss')
         <style>
+            select[readonly]
+            {
+                pointer-events: none;
+            }
             .select2-selection__rendered {
                 line-height: 35px !important;
             }

@@ -49,12 +49,14 @@
                             </div>
                         </div>
                     </div>
+                    @if(Auth::user()->can('backend-paymentinvoice-create') == 'true')
                     <div class="flex-shrink-0">
                         <a class="btn btn-primary " href="{{ route('backend.paymentinvoice.create') }}">
                             Tambah
                             <i class="fas fa-plus"></i>
                         </a>
                     </div>
+                    @endif
                 </div>
 
             </div>

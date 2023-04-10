@@ -19,12 +19,14 @@
                                 </div>
                             </div>
                         </div>
+                        @if(Auth::user()->can('backend-paymentjo-create') == 'true')
                         <div class="flex-shrink-0">
                             <a class="btn btn-primary " href="{{ route('backend.paymentjo.create') }}">
                                 Tambah
                                 <i class="fas fa-plus"></i>
                             </a>
                         </div>
+                        @endif
                     </div>
 
                     <div class="row">

@@ -16,12 +16,14 @@
                                     <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample2" aria-expanded="true" aria-controls="multiCollapseExample2">Filter</button>
                                 </div>
                             </div>
+                            @if(Auth::user()->can('backend-paymentgaji-create') == 'true')
                             <div class="flex-shrink-0">
                                 <a class="btn btn-primary " href="{{ route('backend.paymentgaji.create') }}">
                                     Tambah
                                     <i class="fas fa-plus"></i>
                                 </a>
                             </div>
+                            @endif
                         </div>
 
                         <div class="row">
