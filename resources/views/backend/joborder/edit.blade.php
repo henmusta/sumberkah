@@ -4,6 +4,7 @@
 <div class="page-content">
     <div class="container-fluid">
       <div class="card">
+        <input id="role_id" type="text" value="{{Auth::user()->roles()->first()->level }}">
         <div class="row row-sm">
             <div class="col-md-12">
                 <form id="formUpdate" action="{{ route('backend.joborder.update', Request::segment(3)) }}" autocomplete="off">
@@ -215,10 +216,14 @@ $(document).ready(function () {
             ]
          });
 
-         $('#tgl_joborder').flatpickr({
-            dateFormat: "Y-m-d",
-            allowInput: true
-         });
+         let role_id =  $('#role_id').val();
+         if(role_id == 1){
+            $('#tgl_joborder').flatpickr({
+                dateFormat: "Y-m-d",
+                allowInput: true
+            });
+         }
+
 
 
     let select2Firstrute = $('#select2Firstrute');
