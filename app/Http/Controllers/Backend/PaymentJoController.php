@@ -453,7 +453,7 @@ class PaymentJoController extends Controller
                 $kasbon = Kasbon::find($paymentjo['kasbon_id']);
                 $kasbonjurnallog = Kasbonjurnallog::where('kasbon_id', $paymentjo['kasbon_id']);
                 if($request['nominal_kasbon'] > 0){
-                    $kode =  $this->KodeKasbon(Carbon::now()->format('d M Y'));
+                    $kode =  $this->KodeKasbon(Carbon::parse($request['tgl_pembayaran'])->format('d M Y'));
                  //   $kasbon = Kasbon::find($paymentjo['kasbon_id']);
                     $kasbon = Kasbon::updateOrCreate([
                         'id' => $paymentjo['kasbon_id']
