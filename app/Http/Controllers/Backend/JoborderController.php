@@ -635,7 +635,7 @@ class JoborderController extends Controller
                  $sheet->setCellValue('K' . $x, $val['total_uang_jalan'] ?? '');
                  $sheet->setCellValue('L' . $x, $status_payment);
                  $sheet->setCellValue('M' . $x,  $val['sisa_uang_jalan']);
-                 $sheet->setCellValue('N' . $x,  $val['keterangan_joborder']);
+                 $sheet->setCellValue('N' . $x,  $val['keterangan_joborder'] ?? '');
                  $x++;
          }
       $cell   = count($data) + 3;
