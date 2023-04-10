@@ -307,11 +307,11 @@ class JoborderController extends Controller
             // }
             $kode =  $this->KodeJoborder(Carbon::parse($request['tgl_joborder'])->format('d M Y'));
             $kode_update = $data['tgl_joborder'] != $request['tgl_joborder'] ? $kode : $data['kode_joborder'];
-
             $data->update([
                 'driver_id'  => $request['driver_id'],
                 'kode_joborder'  =>  $kode_update,
                 'mobil_id'  => $request['mobil_id'],
+                'customer_id'  => $request['customer_id'],
                 'rute_id'  => $request['rute_id'],
                 'tgl_joborder'  => $request['tgl_joborder'],
                 'tambahan_potongan'  => $request['tambahan_potongan'],

@@ -393,7 +393,7 @@
         scrollX: false,
         processing: true,
         serverSide: true,
-        order: [[1, 'desc']],
+        order: [[0, 'desc']],
         // lengthMenu: [[10, 50, -1], [10, 50, "All"]],
         // pageLength: 50,
         aLengthMenu: [
