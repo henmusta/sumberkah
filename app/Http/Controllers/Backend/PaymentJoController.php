@@ -80,8 +80,8 @@ class PaymentJoController extends Controller
             $cek_perm_edit = $perm['edit'] == 'true' ? $cek_edit : '';
             $cek_perm_delete = $perm['delete'] == 'true' ? $cek_delete : '';
 
-            $cek_level_edit = Auth::user()->roles()->first()->level == '1'  && $row->joborder->status_joborder == '0' ? $cek_perm_edit : '';
-            $cek_level_delete = Auth::user()->roles()->first()->level == '1' && $row->joborder->status_joborder == '0' ? $cek_perm_delete : '';
+            $cek_level_edit = Auth::user()->roles()->first()->level == '1'  && $row->joborder->status_joborder == '0' ? $edit : '';
+            $cek_level_delete = Auth::user()->roles()->first()->level == '1' && $row->joborder->status_joborder == '0' ? $delete : '';
 
             return '<div class="dropdown">
             <a href="#" class="btn btn-secondary" data-bs-toggle="dropdown">
