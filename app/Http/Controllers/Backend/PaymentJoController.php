@@ -214,19 +214,26 @@ class PaymentJoController extends Controller
             }
 
             $total_sisa_uang_jalan = $joborder['total_uang_jalan'] - $total_payment - $total_kasbon;
-            $status = $total_sisa_uang_jalan > 0 ? '1' : '2';
 
-            $joborder->update([
-                'total_kasbon'=> $total_kasbon,
-                'total_payment'=> $total_payment,
-                'sisa_uang_jalan'=> $total_sisa_uang_jalan,
-                'status_payment'=> $status
-            ]);
+                if( $total_sisa_uang_jalan < 0 ){
+                    $response = response()->json([
+                        'error' => true,
+                        'message' => 'Sisa Uang Jalan Minus'
+                    ]);
+                }else{
+                    $status = $total_sisa_uang_jalan > 0 ? '1' : '2';
 
-                //   $kode =  $this->KodeRute(Carbon::now()->format('d M Y'));
+                    $joborder->update([
+                        'total_kasbon'=> $total_kasbon,
+                        'total_payment'=> $total_payment,
+                        'sisa_uang_jalan'=> $total_sisa_uang_jalan,
+                        'status_payment'=> $status
+                    ]);
+                        //   $kode =  $this->KodeRute(Carbon::now()->format('d M Y'));
+                    DB::commit();
+                    $response = response()->json($this->responseStore(true, route('backend.paymentjo.index')));
+                }
 
-              DB::commit();
-              $response = response()->json($this->responseStore(true, route('backend.paymentjo.index')));
             } catch (Throwable $throw) {
               dd($throw);
               DB::rollBack();
@@ -397,17 +404,26 @@ class PaymentJoController extends Controller
 
                   $total_sisa_uang_jalan = $joborder['total_uang_jalan'] - $total_payment - $total_kasbon;
 
-                  $status = $total_sisa_uang_jalan > 0 ? '1' : '2';
-                //   dd($total_sisa_uang_jalan);
-                  $joborder->update([
-                    'total_kasbon'=> $total_kasbon,
-                    'total_payment'=> $total_payment,
-                    'sisa_uang_jalan'=> $total_sisa_uang_jalan,
-                    'status_payment'=> $status
-                  ]);
+                  if($total_sisa_uang_jalan < 0){
+                    $response = response()->json([
+                        'error' => true,
+                        'message' => 'Sisa Uang Jalan Minus'
+                    ]);
+                  }else{
+                    $status = $total_sisa_uang_jalan > 0 ? '1' : '2';
+                    //   dd($total_sisa_uang_jalan);
+                      $joborder->update([
+                        'total_kasbon'=> $total_kasbon,
+                        'total_payment'=> $total_payment,
+                        'sisa_uang_jalan'=> $total_sisa_uang_jalan,
+                        'status_payment'=> $status
+                      ]);
 
-                 DB::commit();
-                 $response = response()->json($this->responseStore(true, route('backend.paymentjo.index')));
+                     DB::commit();
+                     $response = response()->json($this->responseStore(true, route('backend.paymentjo.index')));
+                  }
+
+
             }catch (Throwable $throw) {
                 dd($throw);
                 DB::rollBack();

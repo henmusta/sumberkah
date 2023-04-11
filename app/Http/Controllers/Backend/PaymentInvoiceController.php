@@ -143,18 +143,28 @@ class PaymentInvoiceController extends Controller
 
                     $total_sisa_tagihan = $invoice['total_harga'] - $total_payment ;
 
-                    $status = $total_sisa_tagihan > 0 ? '1' : '2';
+                    if( $total_sisa_tagihan < 0){
+                        $response = response()->json([
+                            'status' => 'error',
+                            'message' => 'Nominal Melebihi Sisa Tagihan'
+                        ]);
+                    }else{
+                        $status = $total_sisa_tagihan > 0 ? '1' : '2';
 
-                    $invoice->update([
-                        'total_payment'=> $total_payment,
-                        'sisa_tagihan'=> $total_sisa_tagihan,
-                        'status_payment'=> $status
-                    ]);
+                        $invoice->update([
+                            'total_payment'=> $total_payment,
+                            'sisa_tagihan'=> $total_sisa_tagihan,
+                            'status_payment'=> $status
+                        ]);
+                        DB::commit();
+                        $response = response()->json($this->responseStore(true, route('backend.paymentinvoice.index')));
+                    }
+
+
 
                 //   $kode =  $this->KodeRute(Carbon::now()->format('d M Y'));
 
-              DB::commit();
-              $response = response()->json($this->responseStore(true, route('backend.paymentinvoice.index')));
+
             } catch (Throwable $throw) {
               dd($throw);
               DB::rollBack();
@@ -242,16 +252,25 @@ class PaymentInvoiceController extends Controller
 
                   $total_tagihan = $invoice['total_harga'] - $total_payment;
 
-                  $status = $total_tagihan > 0 ? '1' : '2';
-                //   dd($total_sisa_uang_jalan);
-                  $invoice->update([
-                    'total_payment'=> $total_payment,
-                    'sisa_tagihan'=> $total_tagihan,
-                    'status_payment'=> $status
-                  ]);
+                  if( $total_tagihan < 0){
+                    $response = response()->json([
+                        'status' => 'error',
+                        'message' => 'Nominal Melebihi Sisa Tagihan'
+                    ]);
+                  }else{
+                    $status = $total_tagihan > 0 ? '1' : '2';
+                    //   dd($total_sisa_uang_jalan);
+                      $invoice->update([
+                        'total_payment'=> $total_payment,
+                        'sisa_tagihan'=> $total_tagihan,
+                        'status_payment'=> $status
+                      ]);
 
-                 DB::commit();
-                 $response = response()->json($this->responseStore(true, route('backend.paymentinvoice.index')));
+                     DB::commit();
+                     $response = response()->json($this->responseStore(true, route('backend.paymentinvoice.index')));
+                  }
+
+
             }catch (Throwable $throw) {
                 dd($throw);
                 DB::rollBack();
