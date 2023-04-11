@@ -86,7 +86,7 @@
                                         <th>Dari</th>
                                         <th>Ke</th>
                                         <th width="12%">Uang Jalan</th>
-                                        <th width="12%">{{$data['penggajian']['joborder'][0]['rute']['ritase_tonase'] ?? ''}}</th>
+                                        <th width="8%">{{$data['penggajian']['joborder'][0]['rute']['ritase_tonase'] ?? ''}}</th>
                                         <th width="12%">Biaya Lain</th>
                                         <th width="12%">Gaji</th>
                                       </tr>
