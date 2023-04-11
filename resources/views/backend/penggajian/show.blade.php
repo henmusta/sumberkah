@@ -71,7 +71,7 @@
                         </table>
                     </div>
                 </div>
-                <div class="row" style="padding-top:25px;">
+                <div class="row" style="padding-top:20px;">
                     <div class="col-12">
                         <div class="table-responsive">
                             <table id="Datatable" class="table table-bordered border-bottom w-100" style="width:100%">
@@ -155,10 +155,10 @@
                                  <th style="min-width: 33%; font-weight: normal; text-align: center">Diterima Oleh</th>
                             </tr>
                             <tr>
-                                 <td style="padding-top: 100px; max-width: 33%; text-align: center; text-transform: uppercase">( _ _ _ _ _ _ _ _ _ _ _ _ _ _ _)</td>
-                                 <td style="padding-top: 100px; max-width: 33%; text-align: center; text-transform: uppercase">( _ _ _ _ _ _ _ _ _ _ _ _ _ _ _)</td>
-                                 <td style="padding-top: 100px; max-width: 33%; text-align: center; text-transform: uppercase">( _ _ _ _ _ _ _ _ _ _ _ _ _ _ _)</td>
-                                 <td style="padding-top: 100px; max-width: 33%; text-align: center; text-transform: uppercase">( _ _ _ _ _ _ _ _ _ _ _ _ _ _ _)</td>
+                                 <td style="padding-top: 70px; max-width: 33%; text-align: center; text-transform: uppercase">( _ _ _ _ _ _ _ _ _ _ _ _ _ _ _)</td>
+                                 <td style="padding-top: 70px; max-width: 33%; text-align: center; text-transform: uppercase">( _ _ _ _ _ _ _ _ _ _ _ _ _ _ _)</td>
+                                 <td style="padding-top: 70px; max-width: 33%; text-align: center; text-transform: uppercase">( _ _ _ _ _ _ _ _ _ _ _ _ _ _ _)</td>
+                                 <td style="padding-top: 70px; max-width: 33%; text-align: center; text-transform: uppercase">( _ _ _ _ _ _ _ _ _ _ _ _ _ _ _)</td>
                             </tr>
                       </table>
                     </div>
