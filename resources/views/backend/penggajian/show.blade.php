@@ -36,11 +36,11 @@
                             @php($text =  'Belum Bayar')
                         @endif
 
-                            <tr>
+                            {{-- <tr>
                                 <td style="width: 300px;">Status Pembayaran</td>
                                 <td style="width: 2px; padding-right: 10px">:</td>
                                 <td  style="font-weight:bold"><span class="badge bg-pill {{$class}}">{{$text}}</span> </td>
-                            </tr>
+                            </tr> --}}
                             <tr>
                                 <td style="width: 300px; ">Tanggal Slip Gaji</td>
                                 <td style="width: 2px; padding-right: 10px">:</td>
@@ -58,7 +58,7 @@
                                 <td  style="font-weight:bold">{{$data['penggajian']['driver']['name'] ?? ''}}</td>
                             </tr>
                             <tr>
-                                <td style="width: 300px; ">Tanggal Invoice</td>
+                                <td style="width: 300px; ">Nomor Plat</td>
                                 <td style="width: 2px; padding-right: 10px">:</td>
                                 <td  style="font-weight:bold">{{$data['penggajian']['mobil']['nomor_plat'] ?? ''}}</td>
                             </tr>
@@ -72,7 +72,6 @@
                     </div>
                 </div>
                 <div class="row" style="padding-top:50px;">
-                    <h6 class="main-content-label mb-1">Pembayaran</h6>
                     <div class="col-12">
                         <div class="table-responsive">
                             <table id="Datatable" class="table table-bordered border-bottom w-100" style="width:100%">
@@ -86,14 +85,14 @@
                                         <th>Muatan</th>
                                         <th>Dari</th>
                                         <th>Ke</th>
-                                        <th>Uang Jalan</th>
-                                        <th>{{$data['penggajian']['joborder'][0]['rute']['ritase_tonase'] ?? ''}}</th>
-                                        <th>Biaya Lain</th>
-                                        <th>Gaji</th>
+                                        <th width="12%">Uang Jalan</th>
+                                        <th width="12%">{{$data['penggajian']['joborder'][0]['rute']['ritase_tonase'] ?? ''}}</th>
+                                        <th width="12%">Biaya Lain</th>
+                                        <th width="12%">Gaji</th>
                                       </tr>
                                 </thead>
                                 <tbody>
-                                    @php($no=1);
+                                    @php($no=1)
                                     @php($uang_jalan = $biaya_lain = $gaji = 0)
                                     @foreach ($data['konfirmasijo'] as $val)
                                         @php($uang_jalan += $val->joborder['rute']['uang_jalan'])
@@ -138,9 +137,6 @@
                                             <th class="text-end" colspan="11">Total</th>
                                             <th class="text-end"> Rp. {{ number_format($data['penggajian']['total_gaji'],0,',','.')}}</th>
                                         </tr>
-
-
-
                                     </tfoot>
                                 </tfoot>
                             </table>
@@ -185,7 +181,7 @@
 {
     @page {
       size: A4; /* DIN A4 standard, Europe */
-      margin: 27mm 10mm 27mm 10mm;
+      margin: 8mm 8mm 8mm 8mm;
     }
     html, body {
         width: 210mm;

@@ -19,10 +19,7 @@
                     <div class="text-muted">
                     </div>
                 </div>
-
-
-
-                <div class="row" style="padding-top:10px;">
+                <div class="row" style="">
                     <div class="col-12">
                         <table>
                             <tr>
@@ -61,11 +58,11 @@
                                 @php($text =  'Belum Bayar')
                             @endif
 
-                            <tr>
+                            {{-- <tr>
                                 <td style="width: 300px;">Status Pembayaran</td>
                                 <td style="width: 2px; padding-right: 10px">:</td>
                                 <td  style="font-weight:bold"><span class="badge bg-pill {{$class}}">{{$text}}</span> </td>
-                            </tr>
+                            </tr> --}}
                             <tr>
                                 <td style="width: 300px; ">Keterangan</td>
                                 <td style="width: 2px; padding-right: 10px">:</td>
@@ -74,7 +71,7 @@
                         </table>
                     </div>
                 </div>
-                <div class="row" style="padding-top:50px;">
+                <div class="row" style="padding-top:30px;">
 
                     <div class="col-12">
                         <div class="table-responsive">
@@ -137,9 +134,13 @@
                                         <th class="text-end" colspan="{{$colspan_1}}">Grand Total</th>
                                         <th class="text-end">Rp. {{number_format($data['invoice']['total_harga'],0,',','.')}}</th>
                                     </tr>
+                                </tfoot>
+                            </table>
+                            <table>
+                                <tfoot style=" border: none;">
                                     @php($terbilang = Riskihajar\Terbilang\Facades\Terbilang::make($data['invoice']['total_harga'], ' rupiah')  ?? '' )
-                                    <tr>
-                                        <th class="text-left" colspan="{{$colspan_2}}">Terbilang = #   {{ucwords($terbilang)}} #</th>
+                                    <tr style=" border: none;">
+                                        <th style=" border: none;" class="text-left" colspan="{{$colspan_2}}">Terbilang = #   {{ucwords($terbilang)}} #</th>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -199,7 +200,7 @@
 {
     @page {
       size: A4; /* DIN A4 standard, Europe */
-      margin: 27mm 10mm 27mm 10mm;
+      margin: 10mm 10mm 10mm 10mm;
     }
     html, body {
         width: 210mm;
