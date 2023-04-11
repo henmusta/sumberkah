@@ -71,7 +71,7 @@
                         </table>
                     </div>
                 </div>
-                <div class="row" style="padding-top:50px;">
+                <div class="row" style="padding-top:25px;">
                     <div class="col-12">
                         <div class="table-responsive">
                             <table id="Datatable" class="table table-bordered border-bottom w-100" style="width:100%">
