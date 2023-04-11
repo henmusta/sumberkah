@@ -104,12 +104,12 @@
   <tr>
     <td>Tanggal Joborder</td>
     <td style="width: 2px; padding-right: 10px">:</td>
-    <td style="font-weight: normal">    {{ \Carbon\Carbon::parse( $payment['tgl_payment'])->format('d-m-Y')}} </td>
+    <td style="font-weight: normal">    {{ \Carbon\Carbon::parse( $payment['joborder']['tgl_payment'])->format('d-m-Y')}} </td>
   </tr>
   <tr>
     <td>Tanggal Penyerahan Uang Jalan</td>
     <td style="width: 2px; padding-right: 10px">:</td>
-    <td style="font-weight: normal">{{ \Carbon\Carbon::now()->format('d-m-Y') }}</td>
+    <td style="font-weight: normal">   {{ \Carbon\Carbon::parse( $payment['tgl_payment'])->format('d-m-Y')}}</td>
   </tr>
   <tr>
     <td>Supir</td>
