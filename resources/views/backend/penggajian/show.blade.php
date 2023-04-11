@@ -86,7 +86,7 @@
                                         <th>Dari</th>
                                         <th>Ke</th>
                                         <th width="12%">Uang Jalan</th>
-                                        <th width="8%">{{$data['penggajian']['joborder'][0]['rute']['ritase_tonase'] ?? ''}}</th>
+                                        <th width="5%">{{$data['penggajian']['joborder'][0]['rute']['ritase_tonase'] ?? ''}}</th>
                                         <th width="12%">Biaya Lain</th>
                                         <th width="12%">Gaji</th>
                                       </tr>
@@ -144,10 +144,9 @@
                     </div>
 
                 </div>
-
                 <div class="row" style="padding-top:10px;">
                     <div class="col-12">
-                        <table id="ttd" style="margin-top: 20px; margin-left: 15px;" width="100%">
+                        <table id="ttd" style="margin-left: 15px;" width="100%">
                             <tr>
                                  <th style="min-width: 33%; font-weight: normal; text-align: center">Dibuat Oleh</th>
                                  <th style="min-width: 33%; font-weight: normal; text-align: center">Disetujui Oleh</th>
