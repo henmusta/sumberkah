@@ -272,8 +272,6 @@ if(cek_invoice_id != ''){
                     sisa_tagihan.set(data.invoice.sisa_tagihan);
                     total_sisa_tagihan.set(data.invoice.sisa_tagihan);
                     // toastr.success('Data Telah Tersedia', 'Success !');
-
-
                     if(data.invoice.sisa_tagihan > 0){
                         $('#plus_payment').prop('disabled', false);
                     }else{
@@ -330,8 +328,8 @@ if(cek_invoice_id != ''){
 					render 		: function ( columnData, type, rowData, meta ) {
                         return String(`
                             <select class="form-control selectjenis" data-name="jenis_pembayaran" required="required" name="payment[`+ meta.row +`][jenis_pembayaran]">
-                                <option value="Tunai" `+ ( columnData == '1' ? `selected="selected"` : ``) +`>Tunai</option>
-                                <option value="Transfer" `+ ( columnData == '0' ? `selected="selected"` : ``) +`>Transfer</option>
+                                <option value="Tunai" `+ ( columnData == 'Tunai' ? `selected="selected"` : ``) +`>Tunai</option>
+                                <option value="Transfer" `+ ( columnData == 'Transfer' ? `selected="selected"` : ``) +`>Transfer</option>
                             </select>
                           `).trim();
 						// return String(`

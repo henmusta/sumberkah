@@ -302,16 +302,16 @@ $(document).ready(function () {
 			columns : [
 
 				{
-					data 		: 'jenis_pembayaran',
+					data 		: 'jenis_payment',
 					className 	: 'text-left',
-					width 		: '300px',
+					width 		: '0px',
 					render 		: function ( columnData, type, rowData, meta ) {
                         cek_readonly = (rowData.id != undefined && cek_edit != 1) ? 'readonly' : ''
                         return String(`
                         <input name="payment[`+ meta.row +`][id]" type="hidden" value="`+ rowData.id +`" >
                             <select `+ cek_readonly +` class="form-control selectjenis" data-name="jenis_pembayaran" required="required" name="payment[`+ meta.row +`][jenis_pembayaran]">
-                                <option value="Tunai" `+ ( columnData == '1' ? `selected="selected"` : ``) +`>Tunai</option>
-                                <option value="Transfer" `+ ( columnData == '0' ? `selected="selected"` : ``) +`>Transfer</option>
+                                <option value="Tunai" `+ ( columnData == 'Tunai' ? `selected="selected"` : ``) +`>Tunai</option>
+                                <option value="Transfer" `+ ( columnData == 'Transfer' ? `selected="selected"` : ``) +`>Transfer</option>
                             </select>
                           `).trim();
 						// return String(`

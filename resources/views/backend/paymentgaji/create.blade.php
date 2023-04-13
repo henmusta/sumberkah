@@ -343,14 +343,14 @@ if(cek_gaji_id != ''){
 			columns : [
 
 				{
-					data 		: 'jenis_pembayarab',
+					data 		: 'jenis_payment',
 					className 	: 'text-left',
 					width 		: '150px',
 					render 		: function ( columnData, type, rowData, meta ) {
                         return String(`
                             <select class="form-control select2jenis" data-name="jenis_pembayaran" required="required" name="payment[`+ meta.row +`][jenis_pembayaran]">
-                                <option value="Tunai" `+ ( columnData == '1' ? `selected="selected"` : ``) +`>Tunai</option>
-                                <option value="Transfer" `+ ( columnData == '0' ? `selected="selected"` : ``) +`>Transfer</option>
+                                <option value="Tunai" `+ ( columnData == 'Tunai' ? `selected="selected"` : ``) +`>Tunai</option>
+                                <option value="Transfer" `+ ( columnData == 'Transfer' ? `selected="selected"` : ``) +`>Transfer</option>
                             </select>
                           `).trim();
 						// return String(`
