@@ -168,43 +168,22 @@
         Rp. {{ number_format($joborder['total_uang_jalan'],0,',','.') }}
     </td>
   </tr>
-  <tr>
-    <td>Total Potongan Bon Sebelumnya</td>
-    <td style="width: 2px; padding-right: 10px">:</td>
-    <td style="font-weight: normal;">
-        @php($kasbon_sebelumnya = $joborder['total_kasbon'] - $payment['nominal_kasbon'])
-        Rp. {{ number_format($kasbon_sebelumnya,0,',','.') }}
-    </td>
-  </tr>
 
-  <tr>
-    <td>Total Pembayaran  Sebelumnya</td>
-    <td style="width: 2px; padding-right: 10px">:</td>
-    <td style="font-weight: normal;">
-        @php($pembayaran_sebelumnya = $joborder['total_payment'] - $payment['nominal'])
-        Rp. {{ number_format($pembayaran_sebelumnya,0,',','.') }}
-    </td>
-  </tr>
 
 
   <tr>
-    <td>Potongan Bon  (Saat Ini)</td>
+    <td>Potongan Bon</td>
     <td style="width: 2px; padding-right: 10px">:</td>
     <td style="font-weight: normal;">
         Rp. {{  number_format($payment['nominal_kasbon'],0,',','.') }}
     </td>
   </tr>
 
-
-
-
-
-
   <tr>
-    <td>Grand Total (Saat Ini)</td>
+    <td>Grand Total</td>
     <td style="width: 2px; padding-right: 10px">:</td>
     <td style="font-weight: normal;">
-        @php($grandtotal = $joborder['total_uang_jalan'] - $kasbon_sebelumnya - $pembayaran_sebelumnya)
+        @php($grandtotal = $joborder['total_uang_jalan'] - $payment['nominal_kasbon'])
         Rp. {{  number_format($grandtotal,0,',','.') ?? '' }}
     </td>
   </tr>
@@ -222,14 +201,6 @@
     </td>
   </tr>
 
-  <tr>
-    <td>Sisa Uang Jalan</td>
-    <td style="width: 2px; padding-right: 10px">:</td>
-    <td style="font-weight: normal;">
-
-        Rp. {{  number_format($joborder['sisa_uang_jalan'],0,',','.') ?? '' }}
-    </td>
-  </tr>
 
 
 
