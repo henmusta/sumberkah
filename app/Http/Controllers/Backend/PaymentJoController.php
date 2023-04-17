@@ -609,16 +609,16 @@ class PaymentJoController extends Controller
         // dd($id);
         $paymentjo = PaymentJo::findOrFail($id);
         $joborder = Joborder::with('customer','ruteawal','ruteakhir','muatan','mobil', 'driver', 'rute', 'jenismobil', 'kasbon')->findOrFail($paymentjo['joborder_id']);
-
-      $data = [
-            'payment' => $paymentjo,
-            'joborder' => $joborder,
-      ];
-
-
-      $pdf =  PDF::loadView('backend.pdf.paymentjo', $data);
-      $fileName = 'Bukti-Titipan-Uj-'.$paymentjo['id'].'-'. $joborder['kode_joborder'];
-      return $pdf->stream("${fileName}.pdf");
+        $paymentjolast = PaymentJo::selectRaw('sum(nominal) as nominal_last, sum(nominal_kasbon) as nominal_kasbon_last, count(id) + 1 as urut')->where('id', '<', $paymentjo['id'])->where('joborder_id', $joborder['id'])->first();
+        // dd($paymentjolast);
+        $data = [
+              'paymentlast' => $paymentjolast,
+              'payment' => $paymentjo,
+              'joborder' => $joborder,
+        ];
+        $pdf =  PDF::loadView('backend.pdf.paymentjo', $data);
+        $fileName = 'Bukti-Titipan-Uj-'.$paymentjo['id'].'-'. $joborder['kode_joborder'];
+        return $pdf->stream("${fileName}.pdf");
     }
 
 
