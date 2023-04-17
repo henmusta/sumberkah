@@ -235,7 +235,7 @@
     <td style="width: 2px; padding-right: 10px">:</td>
     <td style="font-weight: normal; text-transform: uppercase"></td>
   </tr>
-  @if(isset($payment['kasbon_id']))
+  @if($payment['nominal_kasbon'] > 0)
   <tr>
     <td>Keterangan Potongan Bon (Kode Kasbon)</td>
     <td style="width: 2px; padding-right: 10px">:</td>
@@ -243,7 +243,6 @@
          {{ isset($payment['kasbon']['kode_kasbon']) ? $payment['keterangan_kasbon']. ' ('. $payment['kasbon']['kode_kasbon'].')' : '' }}
     </td>
   </tr>
-
   @endif
 
 
