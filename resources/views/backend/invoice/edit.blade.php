@@ -172,6 +172,9 @@
 $(document).ready(function () {
 
 
+
+
+
     const currenciesOptions = {
             caretPositionOnFocus: "start",
             currencySymbol: "Rp. ",
@@ -202,6 +205,13 @@ $(document).ready(function () {
     let select2Ppn = $('#select2Ppn');
     let select2TambahanPotongan = $('#select2TambahanPotongan');
 
+//     select2TambahanPotongan.on('change', function (e) {
+//     // var optionSelected = $("option:selected", this);
+
+//     tambahan_potongan.set(0);
+//     count_total();
+// });
+
     select2TambahanPotongan.select2({
         dropdownParent: select2TambahanPotongan.parent(),
         searchInputPlaceholder: 'Cari Potongan Tambahan',
@@ -210,6 +220,15 @@ $(document).ready(function () {
       }).on('select2:select', function (e) {
             let data = e.params.data;
       });
+
+    var cekvalueSelected = select2TambahanPotongan.val();
+    if(cekvalueSelected != 'None'){
+        console.log(cekvalueSelected);
+        $('#nominal_tambahan_potongan').prop("disabled", false);
+    }else{
+        console.log(cekvalueSelected);
+        $('#nominal_tambahan_potongan').prop('disabled', true);
+    }
 
       select2Ppn.select2({
         dropdownParent: select2Ppn.parent(),
