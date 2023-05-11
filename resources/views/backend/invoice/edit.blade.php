@@ -50,9 +50,9 @@
                                   <div class="mb-3">
                                     <label for="activeSelect">Pilih Tambahan / Potongan<span class="text-danger">*</span></label>
                                     <select class="form-select" id="select2TambahanPotongan" name="tambahan_potongan">
-                                      <option value="None">None</option>
-                                      <option value="Tambahan">Tambahan</option>
-                                      <option value="Potongan">Potongan</option>
+                                      <option value="None" {{ $data['invoice']['tambahan_potongan'] == 'None' ? 'selected' : NULL }}>None</option>
+                                      <option value="Tambahan" {{ $data['invoice']['tambahan_potongan'] == 'Tambahan' ? 'selected' : NULL }}>Tambahan</option>
+                                      <option value="Potongan" {{ $data['invoice']['tambahan_potongan'] == 'Potongan' ? 'selected' : NULL }}>Potongan</option>
                                     </select>
                                   </div>
                                   <div class="mb-3">

@@ -18,7 +18,7 @@ class Invoice extends Model
       'payment_hari',
       'tambahan_potongan',
       'sub_total',
-      'nominal_tambahan',
+      'nominal_tambahan_potongan',
       'ppn',
       'nominal_ppn',
       'keterangan_invoice',
