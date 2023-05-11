@@ -375,7 +375,7 @@ $(document).ready(function () {
 
                     $('#kode_joborder').val(JoinedKode);
                     sub_total.set(data.sum_total_harga);
-                    $('#total_tonase').val(data.sum_harga);
+                    $('#total_tonase').val(data.sum_beratmuatan);
                     total_harga.set(data.sum_total_harga);
                     // $('#payment_hari').prop('disabled', false);
                     count_total();

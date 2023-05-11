@@ -225,7 +225,7 @@ class KonfirmasiJoController extends Controller
     public function findkonfirmasijo(Request $request)
     {
     //    dd($request['konfirmasijo_id']);
-    $total_harga = $harga = $gaji = 0;
+    $total_harga = $harga = $gaji = $berat_muatan = 0;
     $kode_joborder = array();
     foreach($request['konfirmasijo_id'] as $val ){
         $konfirmasijo = KonfirmasiJo::findOrFail($val);
@@ -234,10 +234,12 @@ class KonfirmasiJoController extends Controller
         $total_harga += $konfirmasijo['total_harga'];
         $harga += $rute['harga'];
         $gaji += $rute['gaji'];
+        $berat_muatan += $konfirmasijo['berat_muatan'];
         $kode_joborder[] = $konfirmasijo['kode_joborder'];
     }
 
       $data = [
+        'sum_beratmuatan' => $berat_muatan,
         'sum_total_harga' => $total_harga,
         'kode_joborder' => $kode_joborder,
         'sum_harga' => $harga,
