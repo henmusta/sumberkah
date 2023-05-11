@@ -433,8 +433,8 @@
             render: function (data, type, full, meta) {
               let status = {
                 'Pengajuan': {'title': 'Pengajuan', 'class': ' bg-warning'},
-                'Potong Gaji': {'title': 'Potonng Gaji', 'class': ' bg-info'},
-                'Potong Joborder': {'title': 'Potonng Joborder', 'class': ' bg-info'},
+                'Potong Gaji': {'title': 'Potong Gaji', 'class': ' bg-info'},
+                'Potong Joborder': {'title': 'Potong Joborder', 'class': ' bg-info'},
                 'Pembayaran': {'title': 'Pembayaran', 'class': ' bg-success'},
               };
               if (typeof status[data] === 'undefined') {

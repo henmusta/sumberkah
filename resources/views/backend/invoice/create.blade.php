@@ -125,7 +125,7 @@
                                         <th>Plat Nomor</th>
                                         <th>Muatan</th>
                                         <th>Alamat Awal (Dari)</th>
-                                        <th>Alamat Akhir (Dari)</th>
+                                        <th>Alamat Akhir (Ke)</th>
                                         <th>Tonase</th>
                                         <th>Harga</th>
                                         <th>Total Harga</th>
@@ -184,9 +184,11 @@ $(document).ready(function () {
             minimumValue: 0
     };
 
+    const total_tonase = $('#total_tonase').val();
+
     const   nominal_ppn =new AutoNumeric('#nominal_ppn',currenciesOptions),
             tambahan_potongan =new AutoNumeric('#nominal_tambahan_potongan',currenciesOptions),
-            total_tonase =new AutoNumeric('#total_tonase',currenciesOptions),
+            // total_tonase =new AutoNumeric('#total_tonase',currenciesOptions),
             sub_total =new AutoNumeric('#sub_total',currenciesOptions),
             total_harga = new AutoNumeric('#total_harga',currenciesOptions);
 
@@ -277,7 +279,7 @@ $(document).ready(function () {
         scrollX: false,
         processing: true,
         serverSide: true,
-        order: [[0, 'desc']],
+        order: [[1, 'desc']],
         lengthMenu: [[50, -1], [50, "All"]],
         pageLength: 50,
         ajax: {
@@ -290,7 +292,8 @@ $(document).ready(function () {
 
         columns: [
             {
-                data:   "id",
+                data:   "konfirmasi_id",
+                orderable: false, searchable: false,
                 render: function ( data, type, row ) {
                     if ( type === 'display' ) {
                         return '<input type="checkbox" value="'+ data +'" class="editor-active">';
@@ -299,17 +302,17 @@ $(document).ready(function () {
                 },
                 className: "dt-body-center"
           },
-          {data: 'kode_joborder', name: 'kode_joborder'},
-          {data: 'tgl_muat', name: 'tgl_muat'},
-          {data: 'tgl_bongkar', name: 'tgl_bongkar'},
-          {data: 'joborder.mobil.nomor_plat', name: 'joborder.mobil.nomor_plat'},
-          {data: 'joborder.muatan.name', name: 'joborder.muatan.name'},
-          {data: 'joborder.ruteawal.name', name: 'joborder.ruteawal.name'},
-          {data: 'joborder.ruteakhir.name', name: 'joborder.ruteakhir.name'},
-          {data: 'berat_muatan', name: 'berat_muatan'},
-          {data: 'joborder.rute.harga', name: 'joborder.rute.harga'},
-          {data: 'total_harga', name: 'total_harga'},
-          {data: 'joborder.rute.ritase_tonase', name: 'joborder.rute.ritase_tonase'},
+          {data: 'kode_joborder', name: 'konfirmasi_joborder.kode_joborder'},
+          {data: 'tgl_muat', name: 'konfirmasi_joborder.tgl_muat'},
+          {data: 'tgl_bongkar', name: 'konfirmasi_joborder.tgl_bongkar'},
+          {data: 'mobil.nomor_plat', name: 'mobil.nomor_plat'},
+          {data: 'muatan.name', name: 'muatan.name'},
+          {data: 'ruteawal.name', name: 'ruteawal.name'},
+          {data: 'ruteakhir.name', name: 'ruteakhir.name'},
+          {data: 'berat_muatan', name: 'konfirmasi_joborder.berat_muatan'},
+          {data: 'rute.harga', name: 'rute.harga'},
+          {data: 'total_harga', name: 'konfirmasi_joborder.total_harga'},
+          {data: 'rute.ritase_tonase', name: 'rute.ritase_tonase'},
           {data: 'action', className:'text-center', name: 'action', orderable: false, searchable: false},
         //   {data: 'tgl_bongkar', name: 'jenis_payment'},
         //   {data: 'konfirmasi_biaya_lain', name: 'konfirmasi_biaya_lain'},
@@ -360,7 +363,7 @@ $(document).ready(function () {
 
                     $('#kode_joborder').val(JoinedKode);
                     sub_total.set(data.sum_total_harga);
-                    total_tonase.set(data.sum_harga);
+                    $('#total_tonase').val(data.sum_harga);
                     total_harga.set(data.sum_total_harga);
                     $('#payment_hari').prop('disabled', false);
                     toastr.success('Data Telah Tersedia', 'Success !');

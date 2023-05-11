@@ -276,8 +276,6 @@ class PaymentJoController extends Controller
             'tgl_pembayaran'  => "required",
             'payment'  => "required"
           ]);
-
-
           if ($validator->passes()) {
             try {
                 DB::beginTransaction();

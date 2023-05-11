@@ -125,7 +125,7 @@ class PaymentGajiController extends Controller
 
 
           if ($validator->passes()) {
-            $penggajian = Penggajian::findOrFail($request['penggajian_id']);
+            $penggajian = Penggajian::findOrFail($request['penggajian_id'])->get();
             // dd($penggajian);
             DB::beginTransaction();
             try {

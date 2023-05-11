@@ -184,9 +184,11 @@ $(document).ready(function () {
             minimumValue: 0
     };
 
+    const total_tonase = $('#total_tonase').val();
+
     const   nominal_ppn =new AutoNumeric('#nominal_ppn',currenciesOptions),
             tambahan_potongan =new AutoNumeric('#nominal_tambahan_potongan',currenciesOptions),
-            total_tonase =new AutoNumeric('#total_tonase',currenciesOptions),
+            // total_tonase =new AutoNumeric('#total_tonase',currenciesOptions),
             sub_total =new AutoNumeric('#sub_total',currenciesOptions),
             total_harga = new AutoNumeric('#total_harga',currenciesOptions);
 
@@ -277,7 +279,8 @@ $(document).ready(function () {
         columns: [
         //   {data: 'id', className: 'text-center', name: 'id',orderable: false, searchable: false,},
           {
-                data:   "id",
+                data:   "konfirmasi_id",
+                orderable: false, searchable: false,
                 render: function ( data, type, row ) {
                     if ( type === 'display' ) {
                         return '<input type="checkbox" value="'+ data +'" class="editor-active">';
@@ -289,12 +292,12 @@ $(document).ready(function () {
           {data: 'kode_joborder', name: 'kode_joborder'},
           {data: 'tgl_muat', name: 'tgl_muat'},
           {data: 'tgl_bongkar', name: 'tgl_bongkar'},
-          {data: 'joborder.mobil.nomor_plat', name: 'joborder.mobil.nomor_plat'},
-          {data: 'joborder.muatan.name', name: 'joborder.muatan.name'},
-          {data: 'joborder.ruteawal.name', name: 'joborder.ruteawal.name'},
-          {data: 'joborder.ruteakhir.name', name: 'joborder.ruteakhir.name'},
+          {data: 'mobil.nomor_plat', name: 'mobil.nomor_plat'},
+          {data: 'muatan.name', name: 'muatan.name'},
+          {data: 'ruteawal.name', name: 'ruteawal.name'},
+          {data: 'ruteakhir.name', name: 'ruteakhir.name'},
           {data: 'berat_muatan', name: 'berat_muatan'},
-          {data: 'joborder.rute.harga', name: 'joborder.rute.harga'},
+          {data: 'rute.harga', name: 'rute.harga'},
           {data: 'total_harga', name: 'total_harga'},
 
         //   {data: 'tgl_bongkar', name: 'jenis_payment'},
@@ -333,7 +336,7 @@ $(document).ready(function () {
         //   }
         ],
         rowCallback: function ( row, data ) {
-            $('input.editor-active', row).prop( 'checked', data.status == 1 );
+            $('input.editor-active', row).prop( 'checked', data.status_konfirmasi == 1 );
         }
       });
 
@@ -372,7 +375,7 @@ $(document).ready(function () {
 
                     $('#kode_joborder').val(JoinedKode);
                     sub_total.set(data.sum_total_harga);
-                    total_tonase.set(data.sum_harga);
+                    $('#total_tonase').val(data.sum_harga);
                     total_harga.set(data.sum_total_harga);
                     // $('#payment_hari').prop('disabled', false);
                     count_total();

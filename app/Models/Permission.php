@@ -19,6 +19,7 @@ class Permission extends Model
     'menu_permission_id',
     'name',
     'slug',
+    'type',
   ];
 
   protected static function boot()
