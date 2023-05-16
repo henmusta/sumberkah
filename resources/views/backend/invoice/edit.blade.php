@@ -560,6 +560,7 @@ $(document).ready(function () {
         responsive: true,
         scrollX: false,
         processing: true,
+        searching: false,
         serverSide: true,
         order: [[0, 'desc']],
         lengthMenu: [[50, -1], [50, "All"]],
