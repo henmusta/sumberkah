@@ -92,10 +92,10 @@
                                         <input type="text" id="total_harga" value="{{ $data['invoice']['total_harga'] }}" name="total_harga"  class="form-control" readonly/>
                                       </div>
 
-                                      <div class="mb-3">
+                                      {{-- <div class="mb-3">
                                         <label>Kode Joborder<span class="text-danger">*</span></label>
                                         <textarea type="text" id="kode_joborder" value="" name="kode_joborder"  class="form-control" readonly></textarea>
-                                      </div>
+                                      </div> --}}
                                 </div>
                           </div>
                     </div>
@@ -104,15 +104,153 @@
 
 
                     <div  class="card-footer">
-                      <div class="d-flex justify-content-end">
-                        <button id="get_jo" type="button" class="btn btn-success me-2">
-                            Konfirmasi JO
-                        </button>
-                        <button id="btn_simpan" type="button" class="btn btn-secondary me-2" onclick="window.history.back();">
-                          Cancel
-                        </button>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                      </div>
+                        <div class="col-md-xl-12">
+                            <div class="mt-xl-0 mt-4">
+                                <div class="d-flex align-items-start">
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex gap-2 flex-wrap mb-3 text-center">
+                                            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample2" aria-expanded="true" aria-controls="multiCollapseExample2">Filter</button>
+                                        </div>
+                                    </div>
+                                    <div class="flex-shrink-0">
+                                        <div class="d-flex justify-content-end">
+                                            <button id="get_jo" type="button" class="btn btn-success me-2">
+                                                Konfirmasi JO
+                                            </button>
+                                            <button id="btn_simpan" type="button" class="btn btn-secondary me-2" onclick="window.history.back();">
+                                              Cancel
+                                            </button>
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                          </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="multi-collapse collapse" id="multiCollapseExample2" style="">
+                                            <div class="card border shadow-none card-body text-muted mb-0">
+
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <div class="mb-3">
+                                                            <label>Id Joborder<span class="text-danger">*</span></label>
+                                                            <select id="select2Joborder" style="width: 100% !important;" name="joborder_id">
+                                                                <option value="{{ $data['joborder']['id'] ?? '' }}"> {{$data['joborder']['kode_joborder'] ?? '' }}</option>
+                                                            </select>
+                                                          </div>
+
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="mb-3">
+                                                            <label for="activeSelect">Ritase/Tonase/Kilogram <span class="text-danger">*</span></label>
+                                                            <select class="form-select" id="select2Tipe" name="tipe">
+                                                              <option value=""></option>
+                                                              <option value="Ritase">Ritase</option>
+                                                              <option value="Tonase">Tonase</option>
+                                                              <option value="Kilogram">Kilogram</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="mb-3">
+                                                            <label>Nomor Plat Polisi<span class="text-danger">*</span></label>
+                                                            <select id="select2Mobil" style="width: 100% !important;" name="mobil_id">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="mb-3">
+                                                            <label>Muatan<span class="text-danger">*</span></label>
+                                                            <select id="select2Muatan" style="width: 100% !important;" name="muatan_id">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="mb-3">
+                                                            <label>Tanggal Muat</label>
+                                                            <div class=" input-group mb-3">
+                                                                <input type="text" id="tgl_awal_muat" class="form-control datePicker"
+                                                                        placeholder="Tanggal Awal" value=""
+                                                                       />
+                                                                <span class="input-group-text" id="basic-addon2">S/D</span>
+                                                                <input type="text" id="tgl_akhir_muat" class="form-control datePicker"
+                                                                        placeholder="Tanggal Akhir" value=""
+                                                                        />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <div class="mb-3">
+                                                            <label>Tanggal Bongkar</label>
+                                                            <div class=" input-group mb-3">
+                                                                <input type="text" id="tgl_awal_bongkar" class="form-control datePicker"
+                                                                        placeholder="Tanggal Awal" value=""
+                                                                       />
+                                                                <span class="input-group-text" id="basic-addon2">S/D</span>
+                                                                <input type="text" id="tgl_akhir_bongkar" class="form-control datePicker"
+                                                                        placeholder="Tanggal Akhir" value=""
+                                                                        />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="mb-3">
+                                                            <label>Rute Awal<span class="text-danger">*</span></label>
+                                                            <select id="select2Firstrute" style="width: 100% !important;" name="first_rute_id">
+                                                            </select>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="mb-3">
+                                                            <label>Rute Akhir<span class="text-danger">*</span></label>
+                                                            <select id="select2Lastrute" style="width: 100% !important;" name="last_rute_id">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-4 text-end" style="padding-top:30px;">
+                                                        <div class="d-flex justify-content-start">
+                                                            {{-- <a id="terapkan_filter" class="btn btn-success">
+                                                                Terapkan Filter
+                                                                <i class="fas fa-align-justify"></i>
+                                                            </a> --}}
+                                                            <a  class="btn btn-danger" id="reset">Refresh</a>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+
+
+
+
+
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-xl-12">
+                            <div class="mb-3">
+                                <label>Kode Joborder<span class="text-danger">*</span></label>
+                                <textarea type="text" id="kode_joborder" value="" name="kode_joborder"  class="form-control" readonly></textarea>
+                            </div>
+                        </div>
+
                     </div>
 
                     <div class="card-body">
@@ -171,7 +309,146 @@
 
 $(document).ready(function () {
 
+    $('#tgl_awal_muat, #tgl_akhir_muat, #tgl_awal_bongkar, #tgl_akhir_bongkar').flatpickr({
+            dateFormat: "Y-m-d",
+            allowInput: true
+         });
 
+        let select2Mobil = $('#select2Mobil');
+        let select2Joborder = $('#select2Joborder');
+
+        let select2Firstrute = $('#select2Firstrute');
+        let select2Lastrute = $('#select2Lastrute');
+        let select2Muatan = $('#select2Muatan');
+        let select2Tipe = $('#select2Tipe');
+
+        select2Firstrute.select2({
+        dropdownParent: select2Firstrute.parent(),
+        searchInputPlaceholder: 'Cari Alamat Rute',
+        allowClear: true,
+        width: '100%',
+        placeholder: 'Pilih Alamat Awal (Dari)',
+        ajax: {
+          url: "{{ route('backend.alamatrute.select2') }}",
+          dataType: "json",
+          cache: true,
+          data: function (e) {
+            return {
+              q: e.term || '',
+              page: e.page || 1
+            }
+          },
+        },
+        }).on('select2:select', function (e) {
+            let data = e.params.data;
+            console.log(data.id);
+    });
+
+    select2Lastrute.select2({
+        dropdownParent: select2Lastrute.parent(),
+        searchInputPlaceholder: 'Cari Alamat Rute',
+        allowClear: true,
+        width: '100%',
+        placeholder: 'Pilih Alamat Akhir (Ke)',
+        ajax: {
+          url: "{{ route('backend.alamatrute.select2') }}",
+          dataType: "json",
+          cache: true,
+          data: function (e) {
+            return {
+              q: e.term || '',
+              page: e.page || 1
+            }
+          },
+        },
+       }).on('select2:select', function (e) {
+            let data = e.params.data;
+            console.log(data.id);
+    });
+
+    select2Muatan.select2({
+        dropdownParent: select2Muatan.parent(),
+        searchInputPlaceholder: 'Cari Muatan',
+        allowClear: true,
+        width: '100%',
+        placeholder: 'Pilih Muatan',
+        ajax: {
+          url: "{{ route('backend.muatan.select2') }}",
+          dataType: "json",
+          cache: true,
+          data: function (e) {
+            return {
+              q: e.term || '',
+              page: e.page || 1
+            }
+          },
+        },
+      }).on('select2:select', function (e) {
+            let data = e.params.data;
+            console.log(data.id);
+    });
+
+
+
+
+
+    select2Tipe.select2({
+        dropdownParent: select2Tipe.parent(),
+        searchInputPlaceholder: 'Cari Tipe',
+        width: '100%',
+        allowClear: true,
+        placeholder: 'select Tipe',
+
+      }).on('select2:select', function (e) {
+            let data = e.params.data;
+       //     select2Mobil.empty().trigger('change');
+    });
+
+
+    select2Mobil.select2({
+        dropdownParent:   select2Mobil.parent(),
+        searchInputPlaceholder: 'Cari Mobil',
+        width: '100%',
+        allowClear: true,
+        placeholder: 'Pilih Mobil',
+        ajax: {
+          url: "{{ route('backend.mobil.select2') }}",
+          dataType: "json",
+          cache: true,
+          data: function (e) {
+            return {
+              q: e.term || '',
+              page: e.page || 1
+            }
+          },
+        },
+      }).on('select2:select', function (e) {
+            let data = e.params.data;
+            // select2Customer.empty().trigger('change');
+    });
+
+    select2Joborder.select2({
+        dropdownParent:  select2Joborder.parent(),
+        searchInputPlaceholder: 'Cari Job Order',
+        width: '100%',
+        allowClear: true,
+        placeholder: 'Pilih Job Order',
+        ajax: {
+          url: "{{ route('backend.joborder.select2') }}",
+          dataType: "json",
+          cache: true,
+          data: function (e) {
+            return {
+                // konfirmasi_joborder: 2,
+              q: e.term || '',
+              page: e.page || 1
+            }
+          },
+        },
+      }).on('select2:select', function (e) {
+            let data = e.params.data;
+            console.log(data);
+      });
 
 
 
@@ -292,6 +569,17 @@ $(document).ready(function () {
           data: function (d) {
             d.customer_id = $('#select2Customer').find(':selected').val();
             d.invoice_id = $('#invoice_id').val();
+            d.tipe = $('#select2Tipe').find(':selected').val();
+            d.mobil_id = $('#select2Mobil').find(':selected').val();
+            d.muatan_id = $('#select2Muatan').find(':selected').val();
+            d.id = $('#select2Joborder').find(':selected').val();
+            d.rute_awal = $('#select2Firstrute').find(':selected').val();
+            d.rute_akhir = $('#select2Lastrute').find(':selected').val();
+            d.tgl_awal_muat = $('#tgl_awal_muat').val();
+            d.tgl_akhir_muat = $('#tgl_akhir_muat').val();
+            d.tgl_awal_bongkar = $('#tgl_awal_bongkar').val();
+            d.tgl_akhir_bongkar = $('#tgl_akhir_bongkar').val();
+            d.kode_joborder = $('#kode_joborder').val();
           }
         },
 
@@ -356,10 +644,30 @@ $(document).ready(function () {
         ],
         rowCallback: function ( row, data ) {
             $('input.editor-active', row).prop( 'checked', data.status_konfirmasi == 1 );
+            let joborder = JSON.parse("[" + $('#kode_joborder').val() + "]");
+            if( joborder != undefined || joborder.length > 0){
+                joborder.forEach(function(joborder) {
+                    if(joborder == data.kode_joborder){
+                        console.log(data.kode_joborder);
+                        console.log(joborder);
+                        $('input.editor-active', row).prop( 'checked', data.kode_joborder == joborder);
+                    }
+                });
+            }
         }
       });
 
 
+      $("#reset").click(function() {
+        $("#select2Mobil, #select2Joborder, #select2Firstrute, #select2Lastrute #select2Muatan").empty().trigger('change');
+        $("#select2Tipe").val();
+      });
+
+
+
+        $("#select2Mobil, #select2Joborder, #select2Firstrute, #select2Lastrute #select2Muatan, #select2Tipe").on('change', function (e) {
+            dataTable.draw();
+        });
 
       $('#get_jo').on('click', function(e) {
 

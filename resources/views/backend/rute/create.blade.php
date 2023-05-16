@@ -360,12 +360,12 @@ $(document).ready(function () {
             }
           },
         },
-      }).on('select2:select', function (e) {
+        }).on('select2:select', function (e) {
             let data = e.params.data;
             console.log(data.id);
-      });
+    });
 
-      select2Lastrute.select2({
+    select2Lastrute.select2({
         dropdownParent: select2Lastrute.parent(),
         searchInputPlaceholder: 'Cari Alamat Rute',
         allowClear: true,
@@ -382,12 +382,12 @@ $(document).ready(function () {
             }
           },
         },
-      }).on('select2:select', function (e) {
+       }).on('select2:select', function (e) {
             let data = e.params.data;
             console.log(data.id);
-      });
+    });
 
-      select2Muatan.select2({
+    select2Muatan.select2({
         dropdownParent: select2Muatan.parent(),
         searchInputPlaceholder: 'Cari Muatan',
         allowClear: true,
@@ -407,11 +407,11 @@ $(document).ready(function () {
       }).on('select2:select', function (e) {
             let data = e.params.data;
             console.log(data.id);
-      });
+    });
 
 
 
-      select2Jenis.select2({
+    select2Jenis.select2({
         dropdownParent: select2Jenis.parent(),
         searchInputPlaceholder: 'Cari Jenis Mobil',
         allowClear: true,
@@ -428,10 +428,10 @@ $(document).ready(function () {
             }
           },
         },
-      }).on('select2:select', function (e) {
+    }).on('select2:select', function (e) {
             let data = e.params.data;
             console.log(data.id);
-      });
+    });
 
 
 

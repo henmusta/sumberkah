@@ -123,8 +123,9 @@
                                     </tr>
                                     @endif
                                     <tr>
+                                        @php($sub_total = $data['invoice']['total_harga'] - $data['invoice']['nominal_ppn'] )
                                         <th class="text-end" colspan="{{$colspan_1}}">Total</th>
-                                        <th class="text-end">Rp. {{number_format($data['konfirmasijo']->SUM('total_harga'),0,',','.')}}</th>
+                                        <th class="text-end">Rp. {{number_format($sub_total,0,',','.')}}</th>
                                     </tr>
                                     <tr>
                                         <th class="text-end" colspan="{{$colspan_1}}">PPN 11%</th>

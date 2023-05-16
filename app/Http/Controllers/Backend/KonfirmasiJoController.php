@@ -174,14 +174,16 @@ class KonfirmasiJoController extends Controller
     public function datatablecekjo(Request $request)
     {
       if ($request->ajax()) {
+            $id = $request['id'];
             $driver_id = $request['driver_id'];
             $mobil_id = $request['mobil_id'];
+
+            $kode_joborder = $request['kode_joborder'];
+            // dd($kode_joborder);
             $bulan_kerja = $request['bulan_kerja'] ?? Carbon::now()->format('Y-m-d');
             $month = date("m",strtotime($bulan_kerja));
             $year = date("Y",strtotime($bulan_kerja));
             $penggajian_id = $request['penggajian_id'];
-
-
             $customer_id = $request['customer_id'];
             $invoice_id = $request['invoice_id'];
             $create = $request['create'];
@@ -192,33 +194,115 @@ class KonfirmasiJoController extends Controller
                                          konfirmasi_joborder.status as status_konfirmasi,
                                          konfirmasi_joborder.tgl_bongkar,
                                          konfirmasi_joborder.berat_muatan,
+                                         rute.ritase_tonase as tipe,
                                          konfirmasi_joborder.total_harga
                                          ')->with('customer','ruteawal','ruteakhir','muatan','mobil', 'driver', 'rute', 'jenismobil')
                             ->Join('konfirmasi_joborder', 'konfirmasi_joborder.joborder_id', '=', 'joborder.id')
+                            ->Join('rute', 'joborder.rute_id', '=', 'rute.id')
+                            ->where('konfirmasi_joborder.customer_id', $customer_id)
+                            ->when($create, function ($query, $create) {
+                                return $query->where('konfirmasi_joborder.status', '0');
+                             })
+                             ->when($id, function ($query, $id) {
+                                return $query->where('konfirmasi_joborder.joborder_id', $id);
+                             });
 
-            ->when($create, function ($query, $create) {
-                return $query->where('konfirmasi_joborder.status', '0');
-            })
-            ->when($invoice_id, function ($query, $invoice_id) {
-                return $query->where('konfirmasi_joborder.invoice_id', $invoice_id)->orWhere('konfirmasi_joborder.status', '0');
-            })
-           ->where('konfirmasi_joborder.customer_id', $customer_id);
+
+                            if ($request->filled('invoice_id')) {
+                                $data->where('konfirmasi_joborder.invoice_id', $invoice_id)->orWhere('konfirmasi_joborder.status', '0');
+                            }
+
+
+                            if ($request->filled('tipe')) {
+                                $data->where('rute.ritase_tonase', $request['tipe']);
+                            }
+
+                            if ($request->filled('jenismobil_id')) {
+                                $data->where('jenismobil_id', $request['jenismobil_id']);
+                            }
+                            if ($request->filled('mobil_id')) {
+                                $data->where('mobil_id', $request['mobil_id']);
+                            }
+
+                            if ($request->filled('rute_awal')) {
+                                $data->where('first_rute_id', $request['rute_awal']);
+                            }
+
+                            if ($request->filled('rute_akhir')) {
+                                $data->where('last_rute_id', $request['rute_akhir']);
+                            }
+
+                            if ($request->filled('id')) {
+                                $data->where('joborder.id', $request['id']);
+                            }
+
+                            if ($request->filled('tgl_awal_muat')) {
+                                    $data->whereDate('tgl_muat', '>=', $request['tgl_awal_muat']);
+                            }
+                            if ($request->filled('tgl_akhir_muat')) {
+                                 $data->whereDate('tgl_muat', '<=', $request['tgl_akhir_muat']);
+                            }
+
+                            if ($request->filled('tgl_awal_bongkar')) {
+                                $data->whereDate('tgl_bongkar', '>=', $request['tgl_awal_bongkar']);
+                            }
+                            if ($request->filled('tgl_akhir_bongkar')) {
+                                $data->whereDate('tgl_bongkar', '<=', $request['tgl_akhir_bongkar']);
+                            }
+
+                            if ($request->filled('kode_joborder')) {
+                                $joborder = explode(',',$kode_joborder);
+                                $data->orwhereIn('konfirmasi_joborder.kode_joborder', $joborder);
+                            }
+
+            // ->when($create, function ($query, $create) {
+            //     return $query->where('konfirmasi_joborder.status', '0');
+            // })
+            // ->when($invoice_id, function ($query, $invoice_id) {
+            //     return $query->where('konfirmasi_joborder.invoice_id', $invoice_id)->orWhere('konfirmasi_joborder.status', '0');
+            // })->where('konfirmasi_joborder.customer_id', $customer_id)
+            // ->when($kode_joborder, function ($query, $kode_joborder) {
+            //     $joborder = array($kode_joborder);
+            //     return $query->orwhereIn('konfirmasi_joborder.kode_joborder', $joborder);
+            // });
+
+
+
+
+            // if ($request->filled('kode_joborder')) {
+            //     $joborder = array($request['kode_joborder']);
+            //     $data->orwhereIn('konfirmasi_joborder.kode_joborder', $joborder);
+            //     // $data->where('status_payment', $request['status_payment']);
+            //  }
+
+
+
+        //    dd($data);
 
             // ->where('customer_id', $request['customer_id']);
         return DataTables::of($data)
         ->addColumn('action', function ($row) {
-         $show = '<a href="' . route('backend.joborder.show', $row->id) . '" class="dropdown-item">Detail</a>';
-            return '<div class="dropdown">
-            <a href="#" class="btn btn-secondary" data-bs-toggle="dropdown">
-                Aksi <i class="mdi mdi-chevron-down"></i>
-            </a>
-            <div class="dropdown-menu" data-popper-placement="bottom-start" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(0px, 40px);">
-                '. $show .'
-            </div>
-        </div>';
-
-        })
-          ->make(true);
+            $show = '<a href="' . route('backend.joborder.show', $row->id) . '" class="dropdown-item">Detail</a>';
+                return '<div class="dropdown">
+                    <a href="#" class="btn btn-secondary" data-bs-toggle="dropdown">
+                        Aksi <i class="mdi mdi-chevron-down"></i>
+                    </a>
+                    <div class="dropdown-menu" data-popper-placement="bottom-start" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(0px, 40px);">
+                        '. $show .'
+                    </div>
+                </div>';
+            })
+        //   ->addColumn('cek', function ($row) {
+        //     $cek = $row->kode_joborder;
+        //     // $colors = array("red", "blue", "green");
+        //     if (in_array($cek, $kode_joborder)) {
+        //         return '1';
+        //     }else{
+        //         return '0';
+        //     }
+        //    })
+           ->rawColumns(['action'])
+           ->make(true);
       }
     }
 
