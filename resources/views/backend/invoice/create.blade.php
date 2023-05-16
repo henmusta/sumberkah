@@ -620,25 +620,13 @@ $(document).ready(function () {
         rowCallback: function ( row, data, displayNum, displayIndex, index) {
 
             let joborder = JSON.parse("[" + $('#kode_joborder').val() + "]");
-            // console.log(joborder);
-                    // console.log(data.kode_joborder);
-
             if( joborder != undefined || joborder.length > 0){
                 joborder.forEach(function(joborder) {
-
-                    // joborder.forEach(function(joborder) {
-
-                    // });
-                    // console.log(row);
-
                     if(joborder == data.kode_joborder){
                         console.log(data.kode_joborder);
-                      console.log(joborder);
-                                  $('input.editor-active', row).prop( 'checked', data.kode_joborder == joborder);
+                        console.log(joborder);
+                        $('input.editor-active', row).prop( 'checked', data.kode_joborder == joborder);
                     }
-
-
-
                 });
             }
 
@@ -653,18 +641,16 @@ $(document).ready(function () {
     //     let select2Muatan = $('#select2Muatan');
     //     let select2Tipe = $('#select2Tipe');
 
-$("#reset").click(function() {
-    $("#select2Mobil, #select2Joborder, #select2Firstrute, #select2Lastrute #select2Muatan").empty().trigger('change');
-    $("#select2Tipe").val();
-    // dataTable.draw();
-});
+      $("#reset").click(function() {
+        $("#select2Mobil, #select2Joborder, #select2Firstrute, #select2Lastrute #select2Muatan").empty().trigger('change');
+        $("#select2Tipe, #tgl_awal_muat, #tgl_akhir_muat, #tgl_awal_bongkar, #tgl_akhir_bongkar").val('');
+      });
 
 
 
-$("#select2Mobil, #select2Joborder, #select2Firstrute, #select2Lastrute #select2Muatan, #select2Tipe").on('change', function (e) {
-    dataTable.draw();
-});
-
+        $("#select2Mobil, #select2Joborder, #select2Firstrute, #select2Lastrute #select2Muatan, #select2Tipe, #tgl_awal_muat, #tgl_akhir_muat, #tgl_awal_bongkar, #tgl_akhir_bongkar").on('change', function (e) {
+            dataTable.draw();
+        });
 
 
       $('#get_jo').on('click', function(e) {

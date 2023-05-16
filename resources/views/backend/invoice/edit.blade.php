@@ -661,12 +661,13 @@ $(document).ready(function () {
 
       $("#reset").click(function() {
         $("#select2Mobil, #select2Joborder, #select2Firstrute, #select2Lastrute #select2Muatan").empty().trigger('change');
-        $("#select2Tipe").val();
+        $("#select2Tipe, #tgl_awal_muat, #tgl_akhir_muat, #tgl_awal_bongkar, #tgl_akhir_bongkar").val('');
+
       });
 
 
 
-        $("#select2Mobil, #select2Joborder, #select2Firstrute, #select2Lastrute #select2Muatan, #select2Tipe").on('change', function (e) {
+        $("#select2Mobil, #select2Joborder, #select2Firstrute, #select2Lastrute #select2Muatan, #select2Tipe, #tgl_awal_muat, #tgl_akhir_muat, #tgl_awal_bongkar, #tgl_akhir_bongkar").on('change', function (e) {
             dataTable.draw();
         });
 
