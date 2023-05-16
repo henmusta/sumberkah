@@ -131,8 +131,8 @@
                                                     <div class="col-md-3">
                                                         <div class="mb-3">
                                                             <label>Id Joborder<span class="text-danger">*</span></label>
-                                                            <select id="select2Joborder" style="width: 100% !important;" name="joborder_id">
-                                                                <option value="{{ $data['joborder']['id'] ?? '' }}"> {{$data['joborder']['kode_joborder'] ?? '' }}</option>
+                                                            <select id="select2Joborder" style="width: 100% !important;" name="joborder_id[]" multiple="multiple">
+
                                                             </select>
                                                           </div>
 
@@ -569,7 +569,7 @@ $(document).ready(function () {
             d.tipe = $('#select2Tipe').find(':selected').val();
             d.mobil_id = $('#select2Mobil').find(':selected').val();
             d.muatan_id = $('#select2Muatan').find(':selected').val();
-            d.id = $('#select2Joborder').find(':selected').val();
+            d.id = $('#select2Joborder').val();
             d.rute_awal = $('#select2Firstrute').find(':selected').val();
             d.rute_akhir = $('#select2Lastrute').find(':selected').val();
             d.tgl_awal_muat = $('#tgl_awal_muat').val();

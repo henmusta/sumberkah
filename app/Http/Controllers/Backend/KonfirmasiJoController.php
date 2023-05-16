@@ -202,14 +202,16 @@ class KonfirmasiJoController extends Controller
                             ->where('konfirmasi_joborder.customer_id', $customer_id)
                             ->when($create, function ($query, $create) {
                                 return $query->where('konfirmasi_joborder.status', '0');
-                             })
-                             ->when($id, function ($query, $id) {
-                                return $query->where('konfirmasi_joborder.joborder_id', $id);
                              });
 
 
                             if ($request->filled('invoice_id')) {
                                 $data->where('konfirmasi_joborder.invoice_id', $invoice_id)->orWhere('konfirmasi_joborder.status', '0');
+                            }
+
+
+                            if ($request->filled('muatan_id')) {
+                                $data->where('joborder.muatan_id', $request['muatan_id']);
                             }
 
 
@@ -233,7 +235,8 @@ class KonfirmasiJoController extends Controller
                             }
 
                             if ($request->filled('id')) {
-                                $data->where('joborder.id', $request['id']);
+                                // dd($request['id']);
+                                $data->whereIn('joborder.id', $request['id']);
                             }
 
                             if ($request->filled('tgl_awal_muat')) {
