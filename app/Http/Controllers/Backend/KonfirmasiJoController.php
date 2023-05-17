@@ -227,11 +227,11 @@ class KonfirmasiJoController extends Controller
                             }
 
                             if ($request->filled('rute_awal')) {
-                                $data->where('first_rute_id', $request['rute_awal']);
+                                $data->where('joborder.first_rute_id', $request['rute_awal']);
                             }
 
                             if ($request->filled('rute_akhir')) {
-                                $data->where('last_rute_id', $request['rute_akhir']);
+                                $data->where('joborder.last_rute_id', $request['rute_akhir']);
                             }
 
                             if ($request->filled('id')) {
