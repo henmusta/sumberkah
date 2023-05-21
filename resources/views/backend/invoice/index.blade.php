@@ -262,7 +262,6 @@ tr.group:hover {
           cache: true,
           data: function (e) {
             return {
-              jenismobil_id:  select2Jenis.find(":selected").val() || '00',
               q: e.term || '',
               page: e.page || 1
             }
@@ -333,6 +332,7 @@ tr.group:hover {
             d.status_payment = $('#select2StatusPayment').find(':selected').val();
             d.ppn = $('#select2Ppn').find(':selected').val();
             d.id = $('#select2Invoice').find(':selected').val();
+            d.customer_id = $('#select2Customer').find(':selected').val();
             d.tgl_invoice = $('#tgl_invoice').val();
             d.tgl_jatuh_tempo = $('#tgl_jatuh_tempo').val();
             d.tgl_awal = $('#tgl_awal').val();
@@ -346,7 +346,7 @@ tr.group:hover {
           {data: 'customer.name', className: 'text-left', name: 'customer.name'},
           {data: 'total_harga', name: 'total_harga'},
           {data: 'sisa_tagihan', name: 'sisa_tagihan'},
-          {data: 'tgl_jatuh_tempo', name: 'tgl_tempo_tempo'},
+          {data: 'tgl_jatuh_tempo', name: 'tgl_jatuh_tempo'},
           {data: 'status_payment', name: 'status_payment'},
           {data: 'action', name: 'action', orderable: false, searchable: false},
         ],
