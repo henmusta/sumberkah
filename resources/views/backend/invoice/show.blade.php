@@ -115,30 +115,47 @@
                                         </tr>
                                     @endforeach
                                 </tbody>
-                                <tfoot>
-                                    @if($data['invoice']['tambahan_potongan'] != 'None')
-                                    <tr>
-                                        <th class="text-end" colspan="9">{{$data['invoice']['tambahan_potongan']}} Harga</th>
-                                        <th class="text-end">Rp. {{number_format($data['invoice']['nominal_tambahan_potongan'],0,',','.')}}</th>
-                                    </tr>
-                                    @endif
-                                    <tr>
-                                        @php($sub_total = $data['invoice']['total_harga'] - $data['invoice']['nominal_ppn'] )
-                                        <th class="text-end" colspan="{{$colspan_1}}">Total</th>
-                                        <th class="text-end">Rp. {{number_format($sub_total,0,',','.')}}</th>
-                                    </tr>
-                                    <tr>
-                                        <th class="text-end" colspan="{{$colspan_1}}">PPN 11%</th>
-                                        <th class="text-end">Rp. {{number_format($data['invoice']['nominal_ppn'],0,',','.')}}</th>
-                                    </tr>
-                                    <tr>
-                                        <th class="text-end" colspan="{{$colspan_1}}">Grand Total</th>
-                                        <th class="text-end">Rp. {{number_format($data['invoice']['total_harga'],0,',','.')}}</th>
-                                    </tr>
-                                </tfoot>
+                                @if($data['invoice']['tambahan_potongan'] != 'None')
+                                <tr style="page-break-inside:avoid;">
+                                    <th class="text-end" colspan="9">{{$data['invoice']['tambahan_potongan']}} Harga</th>
+                                    <th class="text-end">Rp. {{number_format($data['invoice']['nominal_tambahan_potongan'],0,',','.')}}</th>
+                                </tr>
+                                @endif
+                                <tr style="page-break-inside:avoid;">
+                                    @php($sub_total = $data['invoice']['total_harga'] - $data['invoice']['nominal_ppn'] )
+                                    <th class="text-end" colspan="{{$colspan_1}}">Total</th>
+                                    <th class="text-end">Rp. {{number_format($sub_total,0,',','.')}}</th>
+                                </tr>
+                                <tr style="page-break-inside:avoid;">
+                                    <th class="text-end" colspan="{{$colspan_1}}">PPN 11%</th>
+                                    <th class="text-end">Rp. {{number_format($data['invoice']['nominal_ppn'],0,',','.')}}</th>
+                                </tr>
+                                <tr style="page-break-inside:avoid;">
+                                    <th class="text-end" colspan="{{$colspan_1}}">Grand Total</th>
+                                    <th class="text-end">Rp. {{number_format($data['invoice']['total_harga'],0,',','.')}}</th>
+                                </tr>
+                                {{-- <tr style="page-break-inside:avoid;">
+                                    <td colspan="9">Total</td>
+                                    <td>a</td>
+                                </tr>
+                                <tr style="page-break-inside:avoid;">
+                                    <td colspan="9">Total</td>
+                                    <td>a</td>
+                                </tr>
+                                <tr style="page-break-inside:avoid;">
+                                    <td colspan="9">Total</td>
+                                    <td>a</td>
+                                </tr>
+                                <tr style="page-break-inside:avoid;">
+                                    <td colspan="9">Total</td>
+                                    <td>a</td>
+                                </tr>
+                                <tfoot style="overflow: hidden;">
+
+                                </tfoot> --}}
                             </table>
                             <table>
-                                <tfoot style=" border: none;">
+                                <tfoot style=" border: none;" >
                                     @php($terbilang = Riskihajar\Terbilang\Facades\Terbilang::make($data['invoice']['total_harga'], ' rupiah')  ?? '' )
                                     <tr style=" border: none;">
                                         <th style=" border: none;" class="text-left" colspan="{{$colspan_2}}">Terbilang = #   {{ucwords($terbilang)}} #</th>
@@ -199,13 +216,14 @@
 <style>
 @media print
 {
+
     @page {
       size: A4; /* DIN A4 standard, Europe */
       margin: 10mm 10mm 10mm 10mm;
     }
     html, body {
         width: 210mm;
-        /* height: 282mm; */
+        height: 282mm;
         font-size: 10px;
         color: #000;
         background: #FFF;
