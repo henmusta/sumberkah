@@ -70,6 +70,8 @@
                                 <th>Tanggal Muat</th>
                                 <th>Tanggal Bongkar</th>
                                 <th>Biaya Lain</th>
+                                <th>Berat Muatan Ritase/Kg/Ton</th>
+                                {{-- <th>Tipe Muatan</th> --}}
                                 <th>Keterangan</th>
                                 {{-- <th width="8%">Aksi</th> --}}
                               </tr>
@@ -151,6 +153,8 @@ tr.group:hover {
           {data: 'tgl_muat', name: 'tgl_muat'},
           {data: 'tgl_bongkar', name: 'jenis_payment'},
           {data: 'konfirmasi_biaya_lain', name: 'konfirmasi_biaya_lain'},
+          {data: 'berat_muatan', name: 'berat_muatan'},
+        //   {data: 'tipe', name: 'tipe'},
           {data: 'keterangan_konfirmasi', name: 'keterangan_konfirmasi'},
         ],
 

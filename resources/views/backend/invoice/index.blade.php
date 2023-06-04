@@ -124,7 +124,11 @@
                                         </div>
 
 
-
+                                        <div class="row" >
+                                            <div class="text-center">
+                                                <label >Sisa Invoice Yang Belum Dibayar : {{ number_format($data['belum_bayar']['belum_bayar'])}}</label>
+                                            </div>
+                                        </div>
 
 
 

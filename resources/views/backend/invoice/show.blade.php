@@ -216,7 +216,6 @@
 <style>
 @media print
 {
-
     @page {
       size: A4; /* DIN A4 standard, Europe */
       margin: 10mm 10mm 10mm 10mm;

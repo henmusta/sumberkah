@@ -47,8 +47,10 @@ class JoborderController extends Controller
           ['url' => '#', 'title' => "Data Joborder"],
         ];
         $joborder = Joborder::find($request['joborder_id']);
+        $belum_bayar = Joborder::selectRaw('sum(sisa_uang_jalan) as belum_bayar')->where('status_payment', '0')->first();
         $data = [
           'joborder' => $joborder,
+          'belum_bayar' => $joborder
         ];
 
 
@@ -576,6 +578,8 @@ class JoborderController extends Controller
         $tgl_awal = $request['tgl_awal'];
         $tgl_akhir = $request['tgl_akhir'];
 
+        // dd( $tgl_akhir);
+
         $data = Joborder::with('customer','ruteawal','ruteakhir','muatan','mobil', 'driver', 'rute', 'jenismobil')
         ->when($status_joborder, function ($query, $status_joborder) {
             return $query->where('status_joborder',  $status_joborder);
@@ -594,7 +598,7 @@ class JoborderController extends Controller
             return $query->whereDate('tgl_joborder', '>=', $tgl_awal);
          })
          ->when($tgl_akhir, function ($query, $tgl_akhir) {
-            return $query->whereDate('tgl_joborder', '=', $tgl_akhir);
+            return $query->whereDate('tgl_joborder', '<=', $tgl_akhir);
          })->get();
 
 
@@ -639,11 +643,11 @@ class JoborderController extends Controller
                  $x++;
          }
       $cell   = count($data) + 3;
-      $spreadsheet->getActiveSheet()->getStyle('K6:K'.$cell)->getNumberFormat()->setFormatCode('#,##0');
-      $spreadsheet->getActiveSheet()->getStyle('M6:M'.$cell)->getNumberFormat()->setFormatCode('#,##0');
+      $spreadsheet->getActiveSheet()->getStyle('K3:K'.$cell)->getNumberFormat()->setFormatCode('#,##0');
+      $spreadsheet->getActiveSheet()->getStyle('M3:M'.$cell)->getNumberFormat()->setFormatCode('#,##0');
 
-      $spreadsheet->setActiveSheetIndex(0)->setCellValue('K'.$cell, '=SUM(K6:K' . $cell . ')');
-      $spreadsheet->setActiveSheetIndex(0)->setCellValue('M'.$cell, '=SUM(M6:M' . $cell . ')');
+      $spreadsheet->setActiveSheetIndex(0)->setCellValue('K'.$cell, '=SUM(K3:K' . $cell . ')');
+      $spreadsheet->setActiveSheetIndex(0)->setCellValue('M'.$cell, '=SUM(M3:M' . $cell . ')');
 
       $writer = new Xlsx($spreadsheet);
       $filename = 'Laporan Joborder';

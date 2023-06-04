@@ -39,8 +39,10 @@ class PenggajianController extends Controller
           ['url' => '#', 'title' => "Data Gaji"],
         ];
         $penggajian = Penggajian::find($request['penggajian_id']);
+        $belum_bayar = Penggajian::selectRaw('sum(sisa_gaji) as belum_bayar')->where('status_payment', '0')->first();
         $data = [
-          'gaji' => $penggajian
+          'gaji' => $penggajian,
+          'belum_bayar' => $belum_bayar
         ];
         if ($request->ajax()) {
             $month = date("m",strtotime($request['bulan_kerja']));

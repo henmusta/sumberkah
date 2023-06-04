@@ -449,7 +449,7 @@ div.dt-btn-container {
         scrollX: false,
         processing: true,
         serverSide: true,
-        order: [[0, 'desc']],
+        order: [[9, 'asc']],
         lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
         pageLength: 10,
         ajax: {
@@ -474,7 +474,7 @@ div.dt-btn-container {
             {data: 'muatan.name', name: 'muatan.name'},
             {data: 'ruteawal.name', name: 'ruteawal.name'},
             {data: 'ruteakhir.name', name: 'ruteakhir.name'},
-            {data: 'konfirmasijo.0.tgl_konfirmasi', name: 'konfirmasijo.0.tgl_konfirmasi'},
+            {data: 'konfirmasijo.0.tgl_konfirmasi', name: 'konfirmasi_joborder.tgl_konfirmasi'},
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ],
         columnDefs: [
@@ -519,12 +519,12 @@ div.dt-btn-container {
             {data: 'kode_invoice', name: 'kode_invoice'},
             {data: 'tgl_invoice', name: 'tgl_invoice'},
             {data: 'customer.name', name: 'customer.name'},
-            {data: 'total_harga', name: 'total_harga'},
+            {data: 'total_harga', name: 'total_harga', class: 'text-end'},
             {data: 'tgl_jatuh_tempo', name: 'tgl_jatuh_tempo'},
         ],
         columnDefs: [
             {
-                targets: [3],
+                targets: [4],
                 render: $.fn.dataTable.render.number('.', ',', 0, '')
             }
             ],

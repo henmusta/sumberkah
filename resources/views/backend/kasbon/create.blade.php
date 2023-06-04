@@ -6,6 +6,7 @@
       <div class="card">
         <div class="row row-sm">
             <div class="col-12">
+                <input id="role_id" type="hidden" value="{{Auth::user()->roles()->first()->level }}">
                 <form id="formStore" action="{{ route('backend.kasbon.store') }}">
                     @csrf
                     <div class="card-header">
@@ -168,10 +169,16 @@ $(document).ready(function () {
             console.log(data.id);
     });
 
-    $('#tgl_kasbon').flatpickr({
-       dateFormat: "Y-m-d",
-       allowInput: true
-    });
+    let role_id =  $('#role_id').val();
+    // console.log(role_id);
+        if(role_id == 1){
+            $('#tgl_kasbon').flatpickr({
+                dateFormat: "Y-m-d",
+                allowInput: true
+            });
+        }
+
+
 
 
     $('#nominal').on('keyup', function(){

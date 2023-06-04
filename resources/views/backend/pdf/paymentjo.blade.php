@@ -233,7 +233,7 @@
   <tr>
     <td>Keterangan</td>
     <td style="width: 2px; padding-right: 10px">:</td>
-    <td style="font-weight: normal; text-transform: uppercase"></td>
+    <td style="font-weight: normal; text-transform: uppercase">{{$payment['keterangan']}}</td>
   </tr>
   @if($payment['nominal_kasbon'] > 0)
   <tr>

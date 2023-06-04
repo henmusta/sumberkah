@@ -38,7 +38,7 @@ class KonfirmasiJoController extends Controller
           ['url' => '#', 'title' => "Konfirmasi Joborder"],
         ];
         if ($request->ajax()) {
-          $data = KonfirmasiJo::query();
+          $data = KonfirmasiJo::with('joborder');
           if ($request->filled('id')) {
             $data->where('joborder_id', $request['id']);
           }

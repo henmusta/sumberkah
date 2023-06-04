@@ -106,9 +106,9 @@
 
                                                 </div>
                                             </div>
-                                            <div class="col-md-2 text-end" style="padding-top:30px;">
-                                                <div id="print">
-
+                                            <div class="row" >
+                                                <div class="text-center">
+                                                    <label >Sisa Gaji Yang Belum Dibayar : {{ number_format($data['belum_bayar']['belum_bayar'])}}</label>
                                                 </div>
                                             </div>
                                         </div>

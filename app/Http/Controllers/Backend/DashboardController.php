@@ -186,8 +186,11 @@ class DashboardController extends Controller
     {
       if ($request->ajax()) {
 
-        $data = Joborder::with('customer','ruteawal','ruteakhir','muatan','mobil', 'driver', 'rute', 'jenismobil','konfirmasijo')->where('status_joborder', '1')
-                            ->whereNull('invoice_id');
+        $data = Joborder::selectRaw('joborder.*, konfirmasi_joborder.tgl_konfirmasi')
+                             ->leftJoin('konfirmasi_joborder','konfirmasi_joborder.joborder_id', '=', 'joborder.id')
+                             ->with('customer','ruteawal','ruteakhir','muatan','mobil', 'driver', 'rute', 'jenismobil','konfirmasijo')
+                             ->where('status_joborder', '1')
+                            ->whereNull('joborder.invoice_id');
             // ->where('customer_id', $request['customer_id']);
         return DataTables::of($data)
         ->addColumn('action', function ($row) {

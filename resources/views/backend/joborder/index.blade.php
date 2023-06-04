@@ -591,7 +591,7 @@
                         customer_id : $('#select2Customer').find(':selected').val() || '',
                         id : $('#select2Joborder').find(':selected').val() || '',
                         tgl_awal : $('#tgl_awal').val() || '',
-                        tgl_alhir : $('#tgl_akhir').val() || '',
+                        tgl_akhir : $('#tgl_akhir').val() || '',
                     });
 
                     window.location.href = "{{ route('backend.joborder.excel') }}?" +params.toString()
