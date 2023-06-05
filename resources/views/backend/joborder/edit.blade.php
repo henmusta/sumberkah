@@ -251,7 +251,6 @@ $(document).ready(function () {
             return {
               validasi: 1,
               status_aktif: 1,
-              status_jalan: 1,
               q: e.term || '',
               page: e.page || 1
             }
