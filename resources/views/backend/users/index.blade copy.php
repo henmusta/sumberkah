@@ -73,6 +73,9 @@
   </div>
 
 
+
+
+
  <div class="modal fade" id="modalReset" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -95,18 +98,20 @@
       </div>
     </div>
   </div>
-  <div class="modal fade" id="modalDelete" tabindex="-1" aria-labelledby="modalDeleteLabel" aria-hidden="true">
+
+
+  {{-- <div class="modal fade" id="modalOffline" tabindex="-1" aria-labelledby="modalDeleteLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="modalDeleteLabel">Hapus</h5>
+
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <meta name="csrf-token" content="{{ csrf_token() }}">
-        @method('DELETE')
+        <form id="formOffline" action="{{ route('backend.users.offline') }}">
+            @csrf
         <div class="modal-body">
-          <a href="" class="urlDelete" type="hidden"></a>
-          Apa anda yakin ingin menghapus data ini?
+          <input type="hidden" name="id"></a>
+            Paksa OFFLINE Akun ini?
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
@@ -114,31 +119,7 @@
         </div>
       </div>
     </div>
-  </div>
-
-  <div class="modal fade" id="modalOffline" tabindex="-1" aria-labelledby="modalDeleteLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-    <form id="formOffline" action="{{ route('backend.users.offline') }}">
-        </div>
-
-            @csrf
-            <div class="modal-body">
-            <input type="hidden" name="id"></a>
-                Paksa OFFLINE Akun ini?
-            </div>
-
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-          <button id="formDelete" type="submit" class="btn btn-primary">Submit</button>
-        </div>
-    </form>
-      </div>
-    </div>
-  </div>
+  </div> --}}
 @endsection
 
 @section('css')
@@ -156,8 +137,9 @@
       let modalDelete = document.getElementById('modalDelete');
       const bsDelete = new bootstrap.Modal(modalDelete);
 
-      let modalOffline = document.getElementById('modalOffline');
-      const bsOffline = new bootstrap.Modal(modalOffline);
+
+    //   let modalOffline = document.getElementById('modalOffline');
+    //   const bsOffline = new bootstrap.Modal(modalOffline);
 
     let dataTable = $('#Datatable').DataTable({
         responsive: true,
@@ -253,14 +235,14 @@
       });
 
 
-      modalOffline.addEventListener('show.bs.modal', function (event) {
-        let button = event.relatedTarget;
-        let id = event.relatedTarget.getAttribute('data-bs-id');
-        this.querySelector('input[name=id]').value= id;
-      });
-      modalOffline.addEventListener('hidden.bs.modal', function (event) {
-        this.querySelector('input[name=id]').value= '';
-      });
+    //   modalOffline.addEventListener('show.bs.modal', function (event) {
+    //     let button = event.relatedTarget;
+    //     let id = button.getAttribute('data-bs-id');
+    //     this.querySelector('#formOffline').setAttribute('action', '{{ route("backend.users.offline") }}/' + event.relatedTarget.getAttribute('data-bs-id'));
+    //   });
+    //   modalOffline.addEventListener('hidden.bs.modal', function (event) {
+    //     this.querySelector('input[name=id]').value= '';
+    //   });
 
       $("#formImport").submit(function (e) {
         e.preventDefault();
@@ -306,6 +288,50 @@
         });
       });
 
+    //   $("#formOffline").submit(function (e) {
+    //     e.preventDefault();
+    //     let form = $(this);
+    //     let btnSubmit = form.find("[type='submit']");
+    //     let btnSubmitHtml = btnSubmit.html();
+    //     let url = form.attr("action");
+    //     let data = new FormData(this);
+    //     $.ajax({
+    //       beforeSend: function () {
+    //         btnSubmit.addClass("disabled").html("<i class='bx bx-hourglass bx-spin font-size-16 align-middle me-2'></i> Loading ...").prop("disabled", "disabled");
+    //       },
+    //       cache: false,
+    //       processData: false,
+    //       contentType: false,
+    //       type: "POST",
+    //       url: url,
+    //       data: data,
+    //       success: function (response) {
+    //         console.log(response);
+    //         let errorImport = $('#errorImport');
+    //         errorImport.css('display', 'none');
+    //         errorImport.find('.alert-text').html('');
+    //         btnSubmit.removeClass("disabled").html(btnSubmitHtml).removeAttr("disabled");
+    //         if (response.status === "success") {
+    //           toastr.success(response.message, 'Success !');
+    //           dataTable.draw();
+    //           bsOffline.hide();
+    //         } else {
+    //           toastr.error((response.message ? response.message : "Please complete your form"), 'Failed !');
+    //           if (response.error !== undefined) {
+    //             errorImport.removeAttr('style');
+    //             $.each(response.error, function (key, value) {
+    //               errorImport.find('.alert-text').append('<span style="display: block">' + value + '</span>');
+    //             });
+    //           }
+    //         }
+    //       },
+    //       error: function (response) {
+    //         btnSubmit.removeClass("disabled").html(btnSubmitHtml).removeAttr("disabled");
+    //         toastr.error(response.responseJSON.message, 'Failed !');
+    //       }
+    //     });
+    //   });
+
 
 
       $("#formReset").submit(function (e) {
@@ -346,52 +372,6 @@
           }
         });
       });
-
-
-    $("#formOffline").submit(function (e) {
-        e.preventDefault();
-        let form = $(this);
-        let btnSubmit = form.find("[type='submit']");
-        let btnSubmitHtml = btnSubmit.html();
-        let url = form.attr("action");
-        let data = new FormData(this);
-        $.ajax({
-          beforeSend: function () {
-            btnSubmit.addClass("disabled").html("<i class='bx bx-hourglass bx-spin font-size-16 align-middle me-2'></i> Loading ...").prop("disabled", "disabled");
-          },
-          cache: false,
-          processData: false,
-          contentType: false,
-          type: "POST",
-          url: url,
-          data: data,
-          success: function (response) {
-            console.log(response);
-            let errorImport = $('#errorImport');
-            errorImport.css('display', 'none');
-            errorImport.find('.alert-text').html('');
-            btnSubmit.removeClass("disabled").html(btnSubmitHtml).removeAttr("disabled");
-            if (response.status === "success") {
-              toastr.success(response.message, 'Success !');
-              dataTable.draw();
-              bsOffline.hide();
-            } else {
-              toastr.error((response.message ? response.message : "Please complete your form"), 'Failed !');
-              if (response.error !== undefined) {
-                errorImport.removeAttr('style');
-                $.each(response.error, function (key, value) {
-                  errorImport.find('.alert-text').append('<span style="display: block">' + value + '</span>');
-                });
-              }
-            }
-          },
-          error: function (response) {
-            btnSubmit.removeClass("disabled").html(btnSubmitHtml).removeAttr("disabled");
-            toastr.error(response.responseJSON.message, 'Failed !');
-          }
-        });
-      });
-
 
       $("#formDelete").click(function (e) {
         e.preventDefault();

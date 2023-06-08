@@ -39,7 +39,7 @@ class PenggajianController extends Controller
           ['url' => '#', 'title' => "Data Gaji"],
         ];
         $penggajian = Penggajian::find($request['penggajian_id']);
-        $belum_bayar = Penggajian::selectRaw('sum(sisa_gaji) as belum_bayar')->where('status_payment', '0')->first();
+        $belum_bayar = Penggajian::selectRaw('sum(sisa_gaji) as belum_bayar')->where('status_payment', '!=', '2')->first();
         $data = [
           'gaji' => $penggajian,
           'belum_bayar' => $belum_bayar
@@ -614,6 +614,116 @@ class PenggajianController extends Controller
         $response = response()->json(['error' => $validator->errors()->all()]);
       }
       return $response;
+    }
+
+    public function excel(Request $request)
+    {
+
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $status_payment = $request['status_payment'];
+        $driver_id = $request['driver_id'];
+        $id = $request['id'];
+        $validasi = $request['validasi'] ;
+        $tgl_awal = $request['tgl_awal'];
+        $tgl_akhir = $request['tgl_akhir'];
+        // dd( $validasi);
+        $data = Penggajian::with('driver', 'mobil');
+        if ($request->filled('status_payment')) {
+             $data->where('status_payment', $request['status_payment']);
+        }
+        if ($request->filled('driver_id')) {
+            $data->where('driver_id', $request['driver_id']);
+        }
+
+        if ($request->filled('mobil_id')) {
+            $data->where('mobil_id', $request['mobil_id']);
+        }
+
+        if ($request->filled('id')) {
+            $data->where('id', $request['id']);
+        }
+
+
+         if ($request->filled('bulan_kerja')) {
+            $data->whereMonth('tgl_gaji',  $month)->whereYear('tgl_gaji', $year);
+         }
+
+
+
+
+        if ($request->filled('tgl_awal')) {
+                $data->whereDate('tgl_gaji', '>=', $request['tgl_awal']);
+        }
+        if ($request->filled('tgl_akhir')) {
+            $data->whereDate('tgl_gaji', '<=', $request['tgl_akhir']);
+        }
+
+
+
+
+        // $data = Kasbon::with('driver','joborder')
+        //  ->when( $jenis, function ($query, $jenis) {
+        //     return $query->where('jenis2', $jenis);
+        //  })
+        //  ->when( $driver_id, function ($query,  $driver_id) {
+        //     return $query->where('driver_id',   $driver_id);
+        //  })
+        //  ->when($validasi != null, function ($query, $validasi) {
+        //     return $query->where('validasi',  $validasi);
+        //  })
+        //  ->when( $id, function ($query,  $id) {
+        //     return $query->where('id',   $id);
+        //  })->when($tgl_awal, function ($query, $tgl_awal) {
+        //     return $query->whereDate('tgl_kasbon', '>=', $tgl_awal);
+        //  })
+        //  ->when($tgl_akhir, function ($query, $tgl_akhir) {
+        //     return $query->whereDate('tgl_kasbon', '<=', $tgl_akhir);
+        //  })->get();
+
+        //  dd( $validasi);
+
+
+
+         $sheet->setCellValue('A1', 'Laporan Gaji');
+         $spreadsheet->getActiveSheet()->mergeCells('A1:F1');
+         $spreadsheet->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+         $rows2 = 2;
+         $sheet->setCellValue('A'.$rows2, 'Kode Gaji');
+         $sheet->setCellValue('B'.$rows2, 'Tanggal Gaji');
+         $sheet->setCellValue('C'.$rows2, 'Driver');
+         $sheet->setCellValue('D'.$rows2, 'No Polisi');
+         $sheet->setCellValue('E'.$rows2, 'Bulan Kerja');
+         $sheet->setCellValue('F'.$rows2, 'Total Gaji');
+         $sheet->setCellValue('F'.$rows2, 'Sisa Gaji');
+         $sheet->setCellValue('F'.$rows2, 'Status');
+         for($col = 'A'; $col !== 'F'; $col++){$sheet->getColumnDimension($col)->setAutoSize(true);}
+         $x = 3;
+         foreach($data as $val){
+                $status_validasi = $val['validasi'] == '0' ? 'Pending' : 'Acc';
+                 $sheet->setCellValue('A' . $x, $val['tgl_kasbon']);
+                 $sheet->setCellValue('B' . $x, $val['kode_kasbon']);
+                 $sheet->setCellValue('C' . $x, $val['driver']['name']);
+                 $sheet->setCellValue('D' . $x, $val['jenis'] ?? '');
+                 $sheet->setCellValue('E' . $x, $val['nominal'] ?? '');
+                 $sheet->setCellValue('F' . $x, $status_validasi);
+                 $x++;
+         }
+      $cell   = count($data) + 3;
+      $spreadsheet->getActiveSheet()->getStyle('E3:E'.$cell)->getNumberFormat()->setFormatCode('#,##0');
+
+      $spreadsheet->setActiveSheetIndex(0)->setCellValue('E'.$cell, '=SUM(E3:E' . $cell . ')');
+
+      $writer = new Xlsx($spreadsheet);
+      $filename = 'Laporan Kasbon';
+      header('Content-Type: application/vnd.ms-excel');
+      header('Content-Disposition: attachment;filename="' . $filename . '.xlsx"');
+      header('Cache-Control: max-age=0');
+      $writer->save('php://output');
+
     }
 
 

@@ -308,8 +308,8 @@ $(document).ready(function () {
             plugins: [
                 new monthSelectPlugin({
                 shorthand: true,
-                dateFormat: "Y",
-                // altFormat: "Y",
+
+                altFormat: "Y",
                 theme: "dark"
                 })
             ]

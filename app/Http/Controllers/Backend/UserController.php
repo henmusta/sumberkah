@@ -56,6 +56,7 @@ class UserController extends Controller
                     <div class="dropdown-menu" data-popper-placement="bottom-start" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(0px, 40px);">
                         <a class="dropdown-item" href="users/' . $row->id . '/edit">Ubah</a>
                         <a href="#" data-bs-toggle="modal" data-bs-target="#modalReset" data-bs-id="' . $row->id . '" class="dropdown-item">Reset Password</a>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#modalOffline" data-bs-id="' . $row->id . '" class="dropdown-item">Trigger OFFLINE</a>
                         <a href="#" data-bs-toggle="modal" data-bs-target="#modalDelete" data-bs-id="' . $row->id . '" class="delete dropdown-item">Hapus</a>
                     </div>
                 </div>';
@@ -350,6 +351,23 @@ class UserController extends Controller
     }
     return $response;
   }
+
+
+  public function offline(Request $request)
+  {
+    $validator = Validator::make($request->all(), [
+      'id' => 'required|integer',
+    ]);
+
+    if ($validator->passes()) {
+        Cache::forget('is_online' .  $request['id']);
+        $response = response()->json($this->responseUpdate(true));
+    } else {
+      $response = response()->json(['error' => $validator->errors()->all()]);
+    }
+    return $response;
+  }
+
 
   public function changepassword(Request $request)
   {

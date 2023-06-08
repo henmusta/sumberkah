@@ -103,8 +103,10 @@
                                             </div>
                                             <div class="col-md-2 text-end" style="padding-top:30px;">
                                                 <div id="print">
+                                                    <button id="excel" class="btn btn-secondary buttons-excel buttons-html5"  tabindex="0" aria-controls="Datatable" type="button"><span>Excel</span></button>
                                                 </div>
                                             </div>
+
 
                                         </div>
 
@@ -389,7 +391,7 @@
           data: function (d) {
             d.jenis = $('#select2Jenis').find(':selected').val();
             d.driver_id = $('#select2Driver').find(':selected').val();
-            d.validasi = $('#select2ValidasiFilter').find(':selected').val();
+            d.validasi = $('#select2ValidasiFilter').val();
             d.id = $('#select2Kasbon').find(':selected').val();
             d.tgl_awal = $('#tgl_awal').val();
             d.tgl_alhir = $('#tgl_akhir').val();
@@ -516,6 +518,20 @@
           }
         });
       });
+
+      $("#excel").click(function() {
+
+            let params = new URLSearchParams({
+                jenis : $('#select2Jenis').find(':selected').val() || '',
+                driver_id : $('#select2Driver').find(':selected').val() || '',
+                validasi : $('#select2ValidasiFilter').find(':selected').val() || '',
+                id : $('#select2Kasbon').find(':selected').val() || '',
+                tgl_awal : $('#tgl_awal').val() || '',
+                tgl_alhir : $('#tgl_akhir').val() || '',
+            });
+
+            window.location.href = "{{ route('backend.kasbon.excel') }}?" +params.toString()
+     });
 
 
       $("#formUpdateValidasi").submit(function(e){

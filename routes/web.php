@@ -35,6 +35,7 @@ Route::middleware('auth:henmus')->group(function(){
     Route::prefix('backend')->name('backend.')->group(function(){
       Route::post('resetpassword', [Backend\UserController::class, 'resetpassword'])->name('users.resetpassword');
       Route::post('changepassword', [Backend\UserController::class, 'changepassword'])->name('users.changepassword');
+      Route::post('users/offline', [Backend\UserController::class, 'offline'])->name('users.offline');
       Route::get('users/select2', [Backend\UserController::class, 'select2'])->name('users.select2');
       Route::post('users/import', [Backend\UserController::class, 'import'])->name('users.import');
       Route::resource('users', Backend\UserController::class);
@@ -125,6 +126,7 @@ Route::middleware('auth:henmus')->group(function(){
             Route::resource('konfirmasijo', Backend\KonfirmasiJoController::class);
 
             //Kasbon
+            Route::get('kasbon/excel', [Backend\KasbonController::class, 'excel'])->name('kasbon.excel');
             Route::put('kasbon/validasi', [Backend\KasbonController::class, 'validasi'])->name('kasbon.validasi');
             Route::get('kasbon/select2', [Backend\KasbonController::class, 'select2'])->name('kasbon.select2');
 
