@@ -134,6 +134,7 @@ Route::middleware('auth:henmus')->group(function(){
 
 
             //Invoice
+
             Route::get('invoice/findinvoice', [Backend\InvoiceController::class, 'findinvoice'])->name('invoice.findinvoice');
             Route::get('invoice/select2', [Backend\InvoiceController::class, 'select2'])->name('invoice.select2');
             Route::resource('invoice', Backend\InvoiceController::class);
@@ -145,6 +146,7 @@ Route::middleware('auth:henmus')->group(function(){
 
 
             //Penggajian
+            Route::get('penggajian/excel', [Backend\PenggajianController::class, 'excel'])->name('penggajian.excel');
             Route::get('penggajian/findpenggajian', [Backend\PenggajianController::class, 'findpenggajian'])->name('penggajian.findpenggajian');
             Route::get('penggajian/select2', [Backend\PenggajianController::class, 'select2'])->name('penggajian.select2');
             Route::resource('penggajian', Backend\PenggajianController::class);

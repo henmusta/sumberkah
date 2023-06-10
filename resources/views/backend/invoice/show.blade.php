@@ -108,11 +108,16 @@
                                             <td>{{$val->joborder['ruteawal']['name']}}</td>
                                             <td>{{$val->joborder['ruteakhir']['name']}}</td>
                                             @if($val->joborder['rute']['ritase_tonase'] != 'Ritase')
-                                                 <td>{{number_format($val->berat_muatan,0,',','.')}}</td>
+                                                 @php($cek_bm = fmod($val->berat_muatan, 1) != 0 ? 3 : 0)
+                                                 <td>{{number_format($val->berat_muatan, $cek_bm,',','.')}}</td>
                                             @endif
-                                            <td class="text-end"> Rp. {{ number_format($val->joborder['rute']['harga'],0,',','.')}}</td>
-                                            <td class="text-end"> Rp. {{ number_format($val->total_harga,0,',','.')}}</td>
-                                        </tr>
+                                            <td class="text-end"> Rp.
+                                                @php($cek_thr = fmod($val->joborder['rute']['harga'], 1) != 0 ? 3 : 0)
+                                                {{ number_format($val->joborder['rute']['harga'],$cek_thr,',','.')}}</td>
+                                            <td class="text-end"> Rp.
+                                                @php($cek_th = fmod($val->total_harga, 1) != 0 ? 3 : 0)
+                                                {{ number_format($val->total_harga,$cek_th,',','.')}}</td>
+                                           </tr>
                                     @endforeach
                                 </tbody>
                                 @if($data['invoice']['tambahan_potongan'] != 'None')
@@ -124,15 +129,21 @@
                                 <tr style="page-break-inside:avoid;">
                                     @php($sub_total = $data['invoice']['total_harga'] - $data['invoice']['nominal_ppn'] )
                                     <th class="text-end" colspan="{{$colspan_1}}">Total</th>
-                                    <th class="text-end">Rp. {{number_format($sub_total,0,',','.')}}</th>
+                                    <th class="text-end">Rp.
+                                        @php($cek_st =  fmod($sub_total, 1) != 0.0 ? 3 : 0)
+                                        {{number_format($sub_total,$cek_st,',','.')}}</th>
                                 </tr>
                                 <tr style="page-break-inside:avoid;">
                                     <th class="text-end" colspan="{{$colspan_1}}">PPN 11%</th>
-                                    <th class="text-end">Rp. {{number_format($data['invoice']['nominal_ppn'],0,',','.')}}</th>
+                                    <th class="text-end">Rp.
+                                        @php($cek_ppn =  fmod($data['invoice']['nominal_ppn'], 1) != 0.0 ? 3 : 0)
+                                        {{number_format($data['invoice']['nominal_ppn'],$cek_ppn,',','.')}}</th>
                                 </tr>
                                 <tr style="page-break-inside:avoid;">
                                     <th class="text-end" colspan="{{$colspan_1}}">Grand Total</th>
-                                    <th class="text-end">Rp. {{number_format($data['invoice']['total_harga'],0,',','.')}}</th>
+                                    <th class="text-end">Rp.
+                                        @php($cek_tha = fmod($data['invoice']['total_harga'], 1) != 0.0 ? 3 : 0)
+                                        {{number_format($data['invoice']['total_harga'],$cek_tha ,',','.')}}</th>
                                 </tr>
                                 {{-- <tr style="page-break-inside:avoid;">
                                     <td colspan="9">Total</td>

@@ -106,9 +106,14 @@
 
                                                 </div>
                                             </div>
+                                            <div class="col-md-2 text-end" style="padding-top:30px;">
+                                                <div id="print">
+                                                    <button id="excel" class="btn btn-secondary buttons-excel buttons-html5"  tabindex="0" aria-controls="Datatable" type="button"><span>Excel</span></button>
+                                                </div>
+                                            </div>
                                             <div class="row" >
                                                 <div class="text-center">
-                                                    <label >Sisa Gaji Yang Belum Dibayar : {{ number_format($data['belum_bayar']['belum_bayar'])}}</label>
+                                                    <label >Sisa Gaji Yang Belum Dibayar : {{ number_format($data['belum_bayar']['belum_bayar'],0,',','.')}}</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -308,15 +313,15 @@ tr.group:hover {
       let dataTable = $('#Datatable').DataTable({
         dom: 'lfBrtip',
         buttons: [
-            {
-                extend: 'excel',
-                footer: true,
-                text: 'Excel',
-                title: 'Laporan Gaji',
-                exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4, 5, 6, 7]
-                }
-            },
+            // {
+            //     extend: 'excel',
+            //     footer: true,
+            //     text: 'Excel',
+            //     title: 'Laporan Gaji',
+            //     exportOptions: {
+            //         columns: [ 0, 1, 2, 3, 4, 5, 6, 7]
+            //     }
+            // },
             {
                 extend: 'pdfHtml5',
                 footer: true,
@@ -446,6 +451,21 @@ tr.group:hover {
           }
         });
       });
+
+      $("#excel").click(function() {
+
+            let params = new URLSearchParams({
+               status_payment : $('#select2StatusPayment').find(':selected').val() || '',
+               driver_id : $('#select2Driver').find(':selected').val() || '',
+               mobil_id : $('#select2Mobil').find(':selected').val() || '',
+               bulan_kerja :  $('#bulan_kerja').val() || '',
+               id : $('#select2Gaji').find(':selected').val() || '',
+               tgl_awal : $('#tgl_awal').val() || '',
+               tgl_alhir : $('#tgl_akhir').val() || '',
+            });
+
+            window.location.href = "{{ route('backend.penggajian.excel') }}?" +params.toString()
+        });
 
     });
   </script>

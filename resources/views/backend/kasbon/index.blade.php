@@ -351,15 +351,15 @@
       let dataTable = $('#Datatable').DataTable({
         dom: 'lfBrtip',
         buttons: [
-            {
-                extend: 'excel',
-                footer: true,
-                text: 'Excel',
-                title: 'Laporan Kasbon',
-                exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4, 5]
-                }
-            },
+            // {
+            //     extend: 'excel',
+            //     footer: true,
+            //     text: 'Excel',
+            //     title: 'Laporan Kasbon',
+            //     exportOptions: {
+            //         columns: [ 0, 1, 2, 3, 4, 5]
+            //     }
+            // },
             {
                 extend: 'pdfHtml5',
                 footer: true,

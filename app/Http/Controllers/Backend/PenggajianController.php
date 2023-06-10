@@ -18,6 +18,8 @@ use Carbon\Carbon;
 use App\Traits\ResponseStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+Use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use Throwable;
@@ -164,7 +166,7 @@ class PenggajianController extends Controller
                   $total_gaji = $request['sub_total'] + $request['bonus'] - $request['nominal_kasbon'];
                   $bulan_keja =$request['bulan_kerja'].'-01';
                   if($total_gaji < 0){
-                    $response = response()->json($this->responseStore(true, 'Total Gaji Salah', route('backend.invoice.create')));
+                    $response = response()->json($this->responseStore(true, 'Total Gaji Salah', route('backend.penggajian.create')));
                   }else{
                     $data = Penggajian::create([
                         'kode_gaji'  => $kode,
@@ -626,41 +628,61 @@ class PenggajianController extends Controller
         $status_payment = $request['status_payment'];
         $driver_id = $request['driver_id'];
         $id = $request['id'];
-        $validasi = $request['validasi'] ;
+        $mobil_id = $request['mobil_id'];
+        $bulan_kerja = $request['bulan_kerja'] ;
         $tgl_awal = $request['tgl_awal'];
         $tgl_akhir = $request['tgl_akhir'];
+
+
+
         // dd( $validasi);
-        $data = Penggajian::with('driver', 'mobil');
-        if ($request->filled('status_payment')) {
-             $data->where('status_payment', $request['status_payment']);
-        }
-        if ($request->filled('driver_id')) {
-            $data->where('driver_id', $request['driver_id']);
-        }
+        $data = Penggajian::with('driver', 'mobil')
+        ->when( $status_payment != null, function ($query, $status_payment) {
+            return $query->where('status_payment', $status_payment);
+         })->when( $driver_id, function ($query, $driver_id) {
+            return $query->where('driver_id', $driver_id);
+         })->when( $mobil_id, function ($query, $mobil_id) {
+            return $query->where('mobil_id', $mobil_id);
+         })->when( $bulan_kerja, function ($query, $bulan_kerja) {
+            $month = date("m",strtotime($bulan_kerja));
+            $year = date("Y",strtotime($bulan_kerja));
+            return $query->whereMonth('tgl_gaji',  $month)->whereYear('tgl_gaji', $year);
+         })->when($tgl_awal, function ($query, $tgl_awal) {
+            return $query->whereDate('tgl_gaji', '>=', $tgl_awal);
+         })
+         ->when($tgl_akhir, function ($query, $tgl_akhir) {
+            return $query->whereDate('tgl_gaji', '<=', $tgl_akhir);
+         })->get();
 
-        if ($request->filled('mobil_id')) {
-            $data->where('mobil_id', $request['mobil_id']);
-        }
+        //  dd($data);
 
-        if ($request->filled('id')) {
-            $data->where('id', $request['id']);
-        }
+        // if ($request->filled('driver_id')) {
+        //     $data->where('driver_id', $request['driver_id']);
+        // }
+
+        // if ($request->filled('mobil_id')) {
+        //     $data->where('mobil_id', $request['mobil_id']);
+        // }
+
+        // if ($request->filled('id')) {
+        //     $data->where('id', $request['id']);
+        // }
 
 
-         if ($request->filled('bulan_kerja')) {
-            $data->whereMonth('tgl_gaji',  $month)->whereYear('tgl_gaji', $year);
-         }
+        //  if ($request->filled('bulan_kerja')) {
+        //     $data->whereMonth('tgl_gaji',  $month)->whereYear('tgl_gaji', $year);
+        //  }
 
 
 
 
-        if ($request->filled('tgl_awal')) {
-                $data->whereDate('tgl_gaji', '>=', $request['tgl_awal']);
-        }
-        if ($request->filled('tgl_akhir')) {
-            $data->whereDate('tgl_gaji', '<=', $request['tgl_akhir']);
-        }
-
+        // if ($request->filled('tgl_awal')) {
+        //         $data->whereDate('tgl_gaji', '>=', $request['tgl_awal']);
+        // }
+        // if ($request->filled('tgl_akhir')) {
+        //     $data->whereDate('tgl_gaji', '<=', $request['tgl_akhir']);
+        // }
+        // $data->get();
 
 
 
@@ -688,7 +710,7 @@ class PenggajianController extends Controller
 
 
          $sheet->setCellValue('A1', 'Laporan Gaji');
-         $spreadsheet->getActiveSheet()->mergeCells('A1:F1');
+         $spreadsheet->getActiveSheet()->mergeCells('A1:H1');
          $spreadsheet->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
          $rows2 = 2;
@@ -698,27 +720,33 @@ class PenggajianController extends Controller
          $sheet->setCellValue('D'.$rows2, 'No Polisi');
          $sheet->setCellValue('E'.$rows2, 'Bulan Kerja');
          $sheet->setCellValue('F'.$rows2, 'Total Gaji');
-         $sheet->setCellValue('F'.$rows2, 'Sisa Gaji');
-         $sheet->setCellValue('F'.$rows2, 'Status');
-         for($col = 'A'; $col !== 'F'; $col++){$sheet->getColumnDimension($col)->setAutoSize(true);}
+         $sheet->setCellValue('g'.$rows2, 'Sisa Gaji');
+         $sheet->setCellValue('H'.$rows2, 'Status');
+         for($col = 'A'; $col !== 'H'; $col++){$sheet->getColumnDimension($col)->setAutoSize(true);}
          $x = 3;
          foreach($data as $val){
-                $status_validasi = $val['validasi'] == '0' ? 'Pending' : 'Acc';
-                 $sheet->setCellValue('A' . $x, $val['tgl_kasbon']);
-                 $sheet->setCellValue('B' . $x, $val['kode_kasbon']);
+                 $status_payment = $val['status_payment'] == '0' ? 'Belum Bayar' : ($val['status_payment'] == '1' ? 'Progress Payment' : 'Lunas');
+                 $sheet->setCellValue('A' . $x, $val['kode_gaji']);
+                 $sheet->setCellValue('B' . $x, $val['tgl_gaji']);
                  $sheet->setCellValue('C' . $x, $val['driver']['name']);
-                 $sheet->setCellValue('D' . $x, $val['jenis'] ?? '');
-                 $sheet->setCellValue('E' . $x, $val['nominal'] ?? '');
-                 $sheet->setCellValue('F' . $x, $status_validasi);
+                 $sheet->setCellValue('D' . $x, $val['mobil']['nomor_plat'] ?? '');
+                 $sheet->setCellValue('E' . $x, $val['bulan_kerja']  ?? '');
+                 $sheet->setCellValue('F' . $x, $val['total_gaji']  ?? '');
+                 $sheet->setCellValue('G' . $x, $val['sisa_gaji']  ?? '');
+                 $sheet->setCellValue('H' . $x, $status_payment);
                  $x++;
          }
       $cell   = count($data) + 3;
-      $spreadsheet->getActiveSheet()->getStyle('E3:E'.$cell)->getNumberFormat()->setFormatCode('#,##0');
+      $spreadsheet->getActiveSheet()->getStyle('F3:F'.$cell)->getNumberFormat()->setFormatCode('#,##0');
+      $spreadsheet->setActiveSheetIndex(0)->setCellValue('F'.$cell, '=SUM(F3:F' . $cell . ')');
 
-      $spreadsheet->setActiveSheetIndex(0)->setCellValue('E'.$cell, '=SUM(E3:E' . $cell . ')');
+      $spreadsheet->getActiveSheet()->getStyle('G3:G'.$cell)->getNumberFormat()->setFormatCode('#,##0');
+      $spreadsheet->setActiveSheetIndex(0)->setCellValue('G'.$cell, '=SUM(G3:G' . $cell . ')');
+
+
 
       $writer = new Xlsx($spreadsheet);
-      $filename = 'Laporan Kasbon';
+      $filename = 'Laporan Gaji';
       header('Content-Type: application/vnd.ms-excel');
       header('Content-Disposition: attachment;filename="' . $filename . '.xlsx"');
       header('Cache-Control: max-age=0');
