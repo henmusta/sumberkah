@@ -613,7 +613,11 @@ $(document).ready(function () {
             // return '<input type="checkbox"' + (data == "true" ? ' checked="checked"' : '') + '>';
           {
             targets: [8, 9, 10],
-            render: $.fn.dataTable.render.number('.', ',', 0, '')
+            render: function (data, type, full, meta) {
+                let dta = data % 1;
+                let cek = (dta == 0 ) ? 0 : 3;
+                return   $.fn.dataTable.render.number('.', ',', cek, '').display(data);
+            }
           },
 
         ],
@@ -629,8 +633,6 @@ $(document).ready(function () {
                     }
                 });
             }
-
-
         }
       });
     //   let select2Mobil = $('#select2Mobil');

@@ -199,11 +199,10 @@ class KonfirmasiJoController extends Controller
                                          ')->with('customer','ruteawal','ruteakhir','muatan','mobil', 'driver', 'rute', 'jenismobil')
                             ->Join('konfirmasi_joborder', 'konfirmasi_joborder.joborder_id', '=', 'joborder.id')
                             ->Join('rute', 'joborder.rute_id', '=', 'rute.id')
-                            ->where('konfirmasi_joborder.customer_id', $customer_id)
+                            // ->where('konfirmasi_joborder.customer_id', $customer_id)
                             ->when($create, function ($query, $create) {
                                 return $query->where('konfirmasi_joborder.status', '0');
                              });
-
 
                             if ($request->filled('invoice_id')) {
                                 $data->where('konfirmasi_joborder.invoice_id', $invoice_id)->orWhere('konfirmasi_joborder.status', '0');
@@ -252,6 +251,12 @@ class KonfirmasiJoController extends Controller
                             if ($request->filled('tgl_akhir_bongkar')) {
                                 $data->whereDate('tgl_bongkar', '<=', $request['tgl_akhir_bongkar']);
                             }
+
+
+                            if ($request->filled('customer_id')) {
+                                $data->where('konfirmasi_joborder.customer_id', $customer_id);
+                            }
+
 
                             if ($request->filled('kode_joborder')) {
                                 $joborder = explode(',',$kode_joborder);
