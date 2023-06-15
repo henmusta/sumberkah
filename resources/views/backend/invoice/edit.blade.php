@@ -614,14 +614,26 @@ $(document).ready(function () {
         ],
 
         columnDefs: [
-        {
-            targets: [8, 9, 10],
+            {
+            targets: [8, 9],
             render: function (data, type, full, meta) {
                 let dta = data % 1;
-                let cek = (dta == 0) ? 0 : 3;
+                let cek = (dta == 0 ) ? 0 : 3;
                 return   $.fn.dataTable.render.number('.', ',', cek, '').display(data);
             }
           },
+
+          {
+            targets: [10],
+            render: function (data, type, full, meta) {
+                // console.log();
+                let dta = parseFloat(data).toFixed();
+                return   $.fn.dataTable.render.number('.', ',', 0, '').display(dta);
+                // return dta;
+            }
+          },
+
+
         //   {
         //     targets: 0,
         //     orderable: false, searchable: false,
@@ -642,9 +654,6 @@ $(document).ready(function () {
         //     checkboxes: {
         //         selectRow: true
         //     },
-
-
-
         //   }
         ],
         rowCallback: function ( row, data ) {

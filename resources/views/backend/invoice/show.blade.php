@@ -115,8 +115,8 @@
                                                 @php($cek_thr = fmod($val->joborder['rute']['harga'], 1) != 0 ? 3 : 0)
                                                 {{ number_format($val->joborder['rute']['harga'],$cek_thr,',','.')}}</td>
                                             <td class="text-end"> Rp.
-                                                @php($cek_th = fmod($val->total_harga, 1) != 0 ? 3 : 0)
-                                                {{ number_format($val->total_harga,$cek_th,',','.')}}</td>
+
+                                                {{ number_format(ceil($val->total_harga),0,',','.')}}</td>
                                            </tr>
                                     @endforeach
                                 </tbody>
@@ -130,20 +130,20 @@
                                     @php($sub_total = $data['invoice']['total_harga'] - $data['invoice']['nominal_ppn'] )
                                     <th class="text-end" colspan="{{$colspan_1}}">Total</th>
                                     <th class="text-end">Rp.
-                                        @php($cek_st =  fmod($sub_total, 1) != 0.0 ? 3 : 0)
-                                        {{number_format($sub_total,$cek_st,',','.')}}</th>
+
+                                        {{number_format(ceil($sub_total),0,',','.')}}</th>
                                 </tr>
                                 <tr style="page-break-inside:avoid;">
                                     <th class="text-end" colspan="{{$colspan_1}}">PPN 11%</th>
                                     <th class="text-end">Rp.
-                                        @php($cek_ppn =  fmod($data['invoice']['nominal_ppn'], 1) != 0.0 ? 3 : 0)
-                                        {{number_format($data['invoice']['nominal_ppn'],$cek_ppn,',','.')}}</th>
+
+                                        {{number_format(ceil($data['invoice']['nominal_ppn']),$cek_ppn,',','.')}}</th>
                                 </tr>
                                 <tr style="page-break-inside:avoid;">
                                     <th class="text-end" colspan="{{$colspan_1}}">Grand Total</th>
                                     <th class="text-end">Rp.
-                                        @php($cek_tha = fmod($data['invoice']['total_harga'], 1) != 0.0 ? 3 : 0)
-                                        {{number_format($data['invoice']['total_harga'],$cek_tha ,',','.')}}</th>
+
+                                        {{number_format(ceil($data['invoice']['total_harga']),0 ,',','.')}}</th>
                                 </tr>
                                 {{-- <tr style="page-break-inside:avoid;">
                                     <td colspan="9">Total</td>
