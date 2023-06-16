@@ -137,7 +137,7 @@
                                     <th class="text-end" colspan="{{$colspan_1}}">PPN 11%</th>
                                     <th class="text-end">Rp.
 
-                                        {{number_format(ceil($data['invoice']['nominal_ppn']),$cek_ppn,',','.')}}</th>
+                                        {{number_format(ceil($data['invoice']['nominal_ppn']),0,',','.')}}</th>
                                 </tr>
                                 <tr style="page-break-inside:avoid;">
                                     <th class="text-end" colspan="{{$colspan_1}}">Grand Total</th>
