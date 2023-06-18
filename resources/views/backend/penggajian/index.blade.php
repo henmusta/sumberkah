@@ -113,7 +113,7 @@
                                             </div>
                                             <div class="row" >
                                                 <div class="text-center">
-                                                    <label >Sisa Gaji Yang Belum Dibayar : {{ number_format($data['belum_bayar']['belum_bayar'],0,',','.')}}</label>
+                                                    <label id="sisa_payment"></label>
                                                 </div>
                                             </div>
                                         </div>
@@ -357,7 +357,7 @@ tr.group:hover {
             d.bulan_kerja =  $('#bulan_kerja').val();
             d.id = $('#select2Gaji').find(':selected').val();
             d.tgl_awal = $('#tgl_awal').val();
-            d.tgl_alhir = $('#tgl_akhir').val();
+            d.tgl_akhir = $('#tgl_akhir').val();
           }
         },
 
@@ -413,7 +413,35 @@ tr.group:hover {
 
       $("#terapkan_filter").click(function() {
         dataTable.draw();
+
+        sisa_payment();
       });
+      sisa_payment();
+      function sisa_payment(){
+        $.ajaxSetup({
+                headers: { 'X-CSRF-Token' : $('meta[name=_token]').attr('content') }
+            });
+            jQuery.ajax({
+                url: "{{ route('backend.penggajian.sisapayment') }}",
+                type: 'GET',
+                data: {
+                    status_payment : $('#select2StatusPayment').find(':selected').val() || '',
+                    driver_id : $('#select2Driver').find(':selected').val() || '',
+                    mobil_id : $('#select2Mobil').find(':selected').val() || '',
+                    bulan_kerja :  $('#bulan_kerja').val() || '',
+                    id : $('#select2Gaji').find(':selected').val() || '',
+                    tgl_awal : $('#tgl_awal').val() || '',
+                    tgl_akhir : $('#tgl_akhir').val() || '',
+                },
+                success: function( data ){
+                    $("#sisa_payment").html('Sisa Gaji Yang Belum Dibayar : ' + $.fn.dataTable.render.number('.', ',', 0, '').display(data.sisa_payment));
+                    console.log(data);
+                },
+                error: function (xhr, b, c) {
+                    console.log("xhr=" + xhr + " b=" + b + " c=" + c);
+                }
+            });
+      }
 
       modalDelete.addEventListener('show.bs.modal', function (event) {
         let button = event.relatedTarget;
@@ -461,7 +489,7 @@ tr.group:hover {
                bulan_kerja :  $('#bulan_kerja').val() || '',
                id : $('#select2Gaji').find(':selected').val() || '',
                tgl_awal : $('#tgl_awal').val() || '',
-               tgl_alhir : $('#tgl_akhir').val() || '',
+               tgl_akhir : $('#tgl_akhir').val() || '',
             });
 
             window.location.href = "{{ route('backend.penggajian.excel') }}?" +params.toString()

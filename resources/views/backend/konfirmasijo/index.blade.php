@@ -149,9 +149,9 @@ tr.group:hover {
 
         columns: [
           {data: 'kode_joborder', name: 'kode_joborder'},
-          {data: 'tgl_konfirmasi', name: 'tgl_payment'},
+          {data: 'tgl_konfirmasi', name: 'tgl_konfirmasi'},
           {data: 'tgl_muat', name: 'tgl_muat'},
-          {data: 'tgl_bongkar', name: 'jenis_payment'},
+          {data: 'tgl_bongkar', name: 'tgl_bongkar'},
           {data: 'konfirmasi_biaya_lain', name: 'konfirmasi_biaya_lain'},
           {data: 'berat_muatan', name: 'berat_muatan'},
         //   {data: 'tipe', name: 'tipe'},

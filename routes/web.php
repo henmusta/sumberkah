@@ -146,6 +146,7 @@ Route::middleware('auth:henmus')->group(function(){
 
 
             //Penggajian
+            Route::get('penggajian/sisapayment', [Backend\PenggajianController::class, 'sisapayment'])->name('penggajian.sisapayment');
             Route::get('penggajian/excel', [Backend\PenggajianController::class, 'excel'])->name('penggajian.excel');
             Route::get('penggajian/findpenggajian', [Backend\PenggajianController::class, 'findpenggajian'])->name('penggajian.findpenggajian');
             Route::get('penggajian/select2', [Backend\PenggajianController::class, 'select2'])->name('penggajian.select2');

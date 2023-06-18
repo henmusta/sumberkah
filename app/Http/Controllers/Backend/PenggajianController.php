@@ -754,6 +754,59 @@ class PenggajianController extends Controller
 
     }
 
+    public function sisapayment(Request $request)
+    {
+
+        $status_payment = $request['status_payment'];
+        $driver_id = $request['driver_id'];
+        $id = $request['id'];
+        $mobil_id = $request['mobil_id'];
+        $bulan_kerja = $request['bulan_kerja'] ;
+        $tgl_awal = $request['tgl_awal'];
+        $tgl_akhir = $request['tgl_akhir'];
+        // $data = [
+        //     'legislasi' => $legislasi,
+        //     'agenda' =>  $agenda,
+        //     'aspirasi' =>  $aspirasi,
+        //     'survey' => $survey,
+        //     'partisipan' =>  $partisipan,
+        //     'ChartLegislasiJson' => $ChartLegislasi,
+        //     'ChartTahapanJson' =>  $ChartTahapan,
+        //     'ChartAspirasiJson' => $ChartAspirasi,
+        //     'ChartSurveyJson' => $ChartSurvey,
+        //   ];
+
+
+
+        //    $results = array(
+        //     "data" =>  $data
+        //   );
+        // $sisapayment = Penggajian::
+        $data = Penggajian::selectRaw('sum(sisa_gaji) as sisa_payment')->with('driver', 'mobil')
+        ->where('status_payment', '!=', '2')
+        ->when( $status_payment != null, function ($query, $status_payment) {
+            return $query->where('status_payment', $status_payment);
+         })->when( $driver_id, function ($query, $driver_id) {
+            return $query->where('driver_id', $driver_id);
+         })->when( $mobil_id, function ($query, $mobil_id) {
+            return $query->where('mobil_id', $mobil_id);
+         })->when( $bulan_kerja, function ($query, $bulan_kerja) {
+
+            $month = date("m",strtotime($bulan_kerja));
+            $year = date("Y",strtotime($bulan_kerja));
+            return $query->whereMonth('tgl_gaji',  $month)->whereYear('tgl_gaji', $year);
+         })->when($tgl_awal, function ($query, $tgl_awal) {
+            return $query->whereDate('tgl_gaji', '>=', $tgl_awal);
+         })
+         ->when($tgl_akhir, function ($query, $tgl_akhir) {
+            return $query->whereDate('tgl_gaji', '<=', $tgl_akhir);
+         })->first();
+        //   dd(response()->json($results['data']->sortByDesc('urut')));
+
+        return response()->json($data);
+
+    }
+
 
 
 
