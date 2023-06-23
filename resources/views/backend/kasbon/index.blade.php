@@ -394,7 +394,7 @@
             d.validasi = $('#select2ValidasiFilter').val();
             d.id = $('#select2Kasbon').find(':selected').val();
             d.tgl_awal = $('#tgl_awal').val();
-            d.tgl_alhir = $('#tgl_akhir').val();
+            d.tgl_akhir = $('#tgl_akhir').val();
           }
         },
 
@@ -527,7 +527,7 @@
                 validasi : $('#select2ValidasiFilter').find(':selected').val() || '',
                 id : $('#select2Kasbon').find(':selected').val() || '',
                 tgl_awal : $('#tgl_awal').val() || '',
-                tgl_alhir : $('#tgl_akhir').val() || '',
+                tgl_akhir : $('#tgl_akhir').val() || '',
             });
 
             window.location.href = "{{ route('backend.kasbon.excel') }}?" +params.toString()

@@ -1,19 +1,18 @@
 @extends('backend.layouts.master')
 
 @section('content')
-<div class="page-content">
+ <div class="page-content">
     <div class="container-fluid">
       <div class="card">
         <div class="row row-sm">
             <div class="col-12">
-                <form id="formUpdate" action="{{ route('backend.penggajian.update', Request::segment(3)) }}">
-                    <meta name="csrf-token" content="{{ csrf_token() }}">
-                    @method('PUT')
+                <form id="formStore" action="{{ route('backend.penggajian.store') }}">
+                    @csrf
                     <div class="card-header">
                         <div>
                             <h6 class="main-content-label mb-1">{{ $config['page_title'] ?? '' }}</h6>
                         </div><br>
-                        <div id="errorEdit" class="mb-3" style="display:none;">
+                        <div id="errorCreate" class="mb-3" style="display:none;">
                             <div class="alert alert-danger" role="alert">
                               <div class="alert-text">
                               </div>
@@ -23,7 +22,6 @@
                     <div class="card-body">
                          <div class="row">
                               <div class="col-md-6">
-                                <input id="penggajian_id" name="penggajian_id"  value="{{ $data['gaji']['id'] }}" type="hidden">
                                     <div class="mb-3">
                                         <label>Tanggal<span class="text-danger">*</span></label>
                                         <input type="text" id="tgl_gaji"  value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" name="tgl_gaji"  class="form-control"/>
@@ -31,46 +29,45 @@
                                       <div class="mb-3">
                                         <label>Driver<span class="text-danger">*</span></label>
                                         <select id="select2Driver" style="width: 100% !important;" name="driver_id">
-                                            <option value="{{ $data['gaji']['driver']['id'] }}"> {{$data['gaji']['driver']['name'] }}</option>
+
                                         </select>
                                       </div>
                                       <div class="mb-3">
                                         <label>Nomor Plat Polisi<span class="text-danger">*</span></label>
                                         <select id="select2Mobil" style="width: 100% !important;" name="mobil_id">
-                                            <option value="{{ $data['gaji']['mobil']['id'] }}"> {{$data['gaji']['mobil']['nomor_plat'] }}</option>
                                         </select>
                                       </div>
                                       <div class="mb-3">
                                         <label>Bulan Kerja<span class="text-danger">*</span></label>
-                                        <input type="text" id="bulan_kerja"  value="{{ \Carbon\Carbon::parse($data['gaji']['bulan_kerja'])->format('Y-m') }}" name="bulan_kerja"  class="form-control"/>
+                                        <input type="text" id="bulan_kerja"  value="{{ \Carbon\Carbon::now()->format('Y-m') }}" name="bulan_kerja"  class="form-control"/>
                                        </div>
                                        <div class="mb-3">
                                         <label>Keterangan<span class="text-danger"></span></label>
-                                        <textarea type="text" id="keterangan_gaji"  name="keterangan_gaji"  class="form-control">{{ $data['gaji']['keterangan_gaji'] ?? ''}}</textarea>
+                                        <textarea type="text" id="keterangan_gaji" value="" name="keterangan_gaji"  class="form-control"></textarea>
                                        </div>
                               </div>
 
                               <div class="col-md-6">
                                 <div class="mb-3">
                                     <label>Sub_total<span class="text-danger">*</span></label>
-                                    <input type="text" id="sub_total" value="{{ $data['gaji']['sub_total'] ?? '' }}" name="sub_total"  class="form-control" readonly/>
+                                    <input type="text" id="sub_total" value="0" name="sub_total"  class="form-control" readonly/>
                                 </div>
                                 <div class="mb-3">
                                     <label>Kasbon Tersedia<span class="text-danger"></span></label>
-                                    <input type="text" id="total_kasbon"  value="{{ $data['gaji']['driver']['kasbon'] + $data['gaji']['nominal_kasbon'] ?? '' }}" name="total_kasbon"  class="form-control" disabled/>
+                                    <input type="text" id="total_kasbon" value="0" name="total_kasbon"  class="form-control" disabled/>
                                 </div>
                                 <div class="mb-3">
                                     <label>Bayar Kasbon<span class="text-danger"></span></label>
-                                    <input type="text" id="nominal_kasbon" value="{{ $data['gaji']['nominal_kasbon'] ?? '' }}" name="nominal_kasbon"  class="form-control" disabled/>
+                                    <input type="text" id="nominal_kasbon" value="0" name="nominal_kasbon"  class="form-control" disabled/>
                                 </div>
                                 <div class="mb-3">
                                     <label>bonus<span class="text-danger"></span></label>
-                                    <input type="text" id="bonus" value="{{ $data['gaji']['bonus'] ?? '' }}" name="bonus"  class="form-control" disabled/>
+                                    <input type="text" id="bonus" value="0" name="bonus"  class="form-control" disabled/>
                                 </div>
 
                                 <div class="mb-3">
                                     <label>Grand Total<span class="text-danger">*</span></label>
-                                    <input type="text" id="total_gaji" value="{{ $data['gaji']['total_gaji'] ?? '' }}" name="total_gaji"  class="form-control" readonly/>
+                                    <input type="text" id="total_gaji" value="" name="total_gaji"  class="form-control" readonly/>
                                 </div>
                               </div>
 

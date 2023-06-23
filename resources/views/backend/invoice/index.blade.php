@@ -340,7 +340,7 @@ tr.group:hover {
             d.tgl_invoice = $('#tgl_invoice').val();
             d.tgl_jatuh_tempo = $('#tgl_jatuh_tempo').val();
             d.tgl_awal = $('#tgl_awal').val();
-            d.tgl_alhir = $('#tgl_akhir').val();
+            d.tgl_akhir = $('#tgl_akhir').val();
           }
         },
 
