@@ -845,7 +845,7 @@ div.dt-btn-container {
        scrollX: false,
        processing: true,
        serverSide: true,
-       order: [[0, 'asc']],
+       order: [[3, 'asc']],
        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
        pageLength: 10,
        ajax: {
