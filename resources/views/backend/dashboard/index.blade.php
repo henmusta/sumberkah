@@ -631,7 +631,7 @@ div.dt-btn-container {
        scrollX: false,
        processing: true,
        serverSide: true,
-       order: [[0, 'desc']],
+       order: [[4, 'asc']],
        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
        pageLength: 10,
        ajax: {
@@ -651,7 +651,7 @@ div.dt-btn-container {
          {data: 'name', name: 'name'},
          {data: 'telp', name: 'telp'},
          {data: 'tgl_sim', name: 'tgl_sim'},
-         {data: 'exp_sim', className:'text-center', name: 'exp_sim'},
+         {data: 'exp_sim', className:'text-center', name: 'tgl_sim'},
 
        ],
        columnDefs: [
@@ -676,7 +676,7 @@ div.dt-btn-container {
        scrollX: false,
        processing: true,
        serverSide: true,
-       order: [[0, 'desc']],
+       order: [[3, 'asc']],
        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
        pageLength: 10,
        ajax: {
@@ -695,7 +695,7 @@ div.dt-btn-container {
          },
          {data: 'nomor_plat', name: 'nomor_plat'},
          {data: 'berlaku_stnk', name: 'berlaku_stnk'},
-         {data: 'exp_stnk', className:'text-center', name: 'exp_stnk'},
+         {data: 'exp_stnk', className:'text-center', name: 'berlaku_stnk'},
        ],
      });
 
@@ -715,7 +715,7 @@ div.dt-btn-container {
        scrollX: false,
        processing: true,
        serverSide: true,
-       order: [[0, 'desc']],
+       order: [[3, 'asc']],
        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
        pageLength: 10,
        ajax: {
@@ -734,7 +734,7 @@ div.dt-btn-container {
          },
          {data: 'nomor_plat', name: 'nomor_plat'},
          {data: 'berlaku_pajak', name: 'berlaku_pajak'},
-         {data: 'exp_pajak', className:'text-center', name: 'exp_pajak'},
+         {data: 'exp_pajak', className:'text-center', name: 'berlaku_pajak'},
 
        ],
        columnDefs: [
@@ -760,7 +760,7 @@ div.dt-btn-container {
        scrollX: false,
        processing: true,
        serverSide: true,
-       order: [[0, 'desc']],
+       order: [[3, 'asc']],
        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
        pageLength: 10,
        ajax: {
@@ -779,7 +779,7 @@ div.dt-btn-container {
          },
          {data: 'nomor_plat', name: 'nomor_plat'},
          {data: 'berlaku_kir', name: 'berlaku_kir'},
-         {data: 'exp_kir', className:'text-center', name: 'exp_kir'},
+         {data: 'exp_kir', className:'text-center', name: 'berlaku_kir'},
 
        ],
        columnDefs: [
@@ -802,7 +802,7 @@ div.dt-btn-container {
        scrollX: false,
        processing: true,
        serverSide: true,
-       order: [[0, 'desc']],
+       order: [[3, 'asc']],
        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
        pageLength: 10,
        ajax: {
@@ -821,7 +821,7 @@ div.dt-btn-container {
          },
          {data: 'nomor_plat', name: 'nomor_plat'},
          {data: 'berlaku_ijin_bongkar', name: 'berlaku_ijin_bongkar'},
-         {data: 'exp_bm', className:'text-center', name: 'exp_bm'},
+         {data: 'exp_bm', className:'text-center', name: 'berlaku_ijin_bongkar'},
 
        ],
        columnDefs: [
@@ -845,7 +845,7 @@ div.dt-btn-container {
        scrollX: false,
        processing: true,
        serverSide: true,
-       order: [[0, 'desc']],
+       order: [[0, 'asc']],
        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
        pageLength: 10,
        ajax: {
@@ -864,7 +864,7 @@ div.dt-btn-container {
          },
          {data: 'nomor_plat', name: 'nomor_plat'},
          {data: 'berlaku_ijin_usaha', name: 'berlaku_ui'},
-         {data: 'exp_iu', className:'text-center', name: 'expiu'},
+         {data: 'exp_iu', className:'text-center', name: 'berlaku_ijin_usaha'},
 
        ],
        columnDefs: [
