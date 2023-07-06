@@ -261,7 +261,7 @@ return [
         'MenuTop' => App\Classes\Theme\MenuTop::class,
         'Image' => Intervention\Image\Facades\Image::class,
         // 'Captcha' => Mews\Captcha\Facades\Captcha::class,
-        // 'PDF' => Barryvdh\DomPDF\Facade::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
         'Terbilang' => Riskihajar\Terbilang\Facades\Terbilang::class,
         'Setting'    => App\Helpers\Setting::class,
         'Footer'    => App\Helpers\Footer::class,

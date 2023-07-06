@@ -103,7 +103,7 @@
                                             </div>
                                             <div class="col-md-2 text-end" style="padding-top:30px;">
                                                 <div id="print">
-                                                    <button id="excel" class="btn btn-secondary buttons-excel buttons-html5"  tabindex="0" aria-controls="Datatable" type="button"><span>Excel</span></button>
+                                                    <button id="pdf" class="btn btn-secondary buttons-excel buttons-html5"  tabindex="0" aria-controls="Datatable" type="button"><span>PDF</span></button>
                                                 </div>
                                             </div>
 

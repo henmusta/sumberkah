@@ -257,11 +257,12 @@ class KonfirmasiJoController extends Controller
                                 $data->where('konfirmasi_joborder.customer_id', $customer_id);
                             }
 
-
                             if ($request->filled('kode_joborder')) {
                                 $joborder = explode(',',$kode_joborder);
                                 $data->orwhereIn('konfirmasi_joborder.kode_joborder', $joborder);
                             }
+                            $data->groupBy('joborder.id');
+
 
             // ->when($create, function ($query, $create) {
             //     return $query->where('konfirmasi_joborder.status', '0');

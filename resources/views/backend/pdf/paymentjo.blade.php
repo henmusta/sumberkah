@@ -240,7 +240,7 @@
     <td>Keterangan Potongan Bon (Kode Kasbon)</td>
     <td style="width: 2px; padding-right: 10px">:</td>
     <td style="font-weight: normal; text-transform: uppercase">
-         {{ isset($payment['kasbon']['kode_kasbon']) ? $payment['keterangan_kasbon']. ' ('. $payment['kasbon']['kode_kasbon'].')' : '' }}
+         {{ isset($payment['kasbon']['kode_kasbon']) ? $payment['keterangan_kasbon']. ' ('. $payment['kasbon']['kode_kasbon'].') ' : '' }}
     </td>
   </tr>
   @endif
