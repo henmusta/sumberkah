@@ -464,9 +464,21 @@ $(document).ready(function () {
             minimumValue: 0
     };
 
+    const currenciesOptionsDecimal = {
+            caretPositionOnFocus: "start",
+            currencySymbol: "",
+            unformatOnSubmit: true,
+            allowDecimalPadding: true,
+            decimalCharacter : ',',
+            digitGroupSeparator : '.',
+            decimalPlaces: 3,
+            modifyValueOnWheel: false,
+            minimumValue: 0
+    };
+
     const   nominal_ppn =new AutoNumeric('#nominal_ppn',currenciesOptions),
             tambahan_potongan =new AutoNumeric('#nominal_tambahan_potongan',currenciesOptions),
-            total_tonase =new AutoNumeric('#total_tonase',currenciesOptions),
+            total_tonase =new AutoNumeric('#total_tonase',currenciesOptionsDecimal),
             sub_total =new AutoNumeric('#sub_total',currenciesOptions),
             total_harga = new AutoNumeric('#total_harga',currenciesOptions);
 

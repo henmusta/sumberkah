@@ -464,7 +464,7 @@ $(document).ready(function () {
 
     const currenciesOptionsDecimal = {
             caretPositionOnFocus: "start",
-            currencySymbol: "Rp. ",
+            currencySymbol: "",
             unformatOnSubmit: true,
             allowDecimalPadding: true,
             decimalCharacter : ',',
@@ -478,7 +478,7 @@ $(document).ready(function () {
 
     const   nominal_ppn =new AutoNumeric('#nominal_ppn',currenciesOptions),
             tambahan_potongan =new AutoNumeric('#nominal_tambahan_potongan',currenciesOptions),
-            total_tonase =new AutoNumeric('#total_tonase',currenciesOptions),
+            total_tonase =new AutoNumeric('#total_tonase',currenciesOptionsDecimal),
             sub_total =new AutoNumeric('#sub_total',currenciesOptions),
             total_harga = new AutoNumeric('#total_harga',currenciesOptions);
 
