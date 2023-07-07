@@ -213,7 +213,7 @@ class DashboardController extends Controller
     {
       if ($request->ajax()) {
         $tgl_now = Carbon::now()->format('Y-m-d');
-        $data = Invoice::with('customer')->whereDate('tgl_jatuh_tempo', '<=', $tgl_now);
+        $data = Invoice::with('customer')->whereDate('tgl_jatuh_tempo', '<=', $tgl_now)->where('status_payment', '0');
             // ->where('customer_id', $request['customer_id']);
         return DataTables::of($data)
         ->addColumn('exp_due', function ($row) {

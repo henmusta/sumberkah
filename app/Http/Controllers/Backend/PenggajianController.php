@@ -524,6 +524,7 @@ class PenggajianController extends Controller
                         'nominal'=> $request['nominal_kasbon']
                     ]);
                 }
+
                 $kode =  $this->KodeGaji(Carbon::parse($request['tgl_gaji'])->format('d M Y'));
                 $kode_update =  $data['tgl_gaji'] != $request['tgl_gaji'] ? $kode : $data['kode_gaji'];
                 $data->update([
