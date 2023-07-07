@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Helpers\FileUpload;
 use App\Http\Controllers\Controller;
 use App\Models\Mobil;
+use App\Models\Joborder;
 use App\Models\Driver;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\ResponseStatus;
@@ -153,8 +154,10 @@ class DriverController extends Controller
           ['url' => '#', 'title' => "Update Driver"],
         ];
         $driver = Driver::findOrFail($id);
+        $joborder = Joborder::where('driver_id', $id)->where('status_joborder', '0')->get();
         $data = [
           'driver' => $driver,
+          'joborder' =>  $joborder
         ];
 
         return view('backend.driver.show', compact('page_breadcrumbs', 'config', 'data'));

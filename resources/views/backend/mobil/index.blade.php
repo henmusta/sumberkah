@@ -37,6 +37,7 @@
                                 <th>Dump</th>
                                 <th>Tahun</th>
                                 <th>Validasi</th>
+                                <th>Status Jalan</th>
                                 <th width="10%">Aksi</th>
                               </tr>
                         </thead>
@@ -161,6 +162,7 @@
           {data: 'dump', name: 'dump'},
           {data: 'tahun', name: 'tahun'},
           {data: 'validasi', name: 'validasi'},
+          {data: 'status_jalan', name: 'status_jalan'},
           {data: 'action', name: 'action', orderable: false, searchable: false},
         ],
         columnDefs: [
@@ -172,6 +174,21 @@
               let status = {
                 0: {'title': '  NonActive', 'class': ' bg-danger'},
                 1: {'title': 'Active', 'class': ' bg-success'},
+              };
+              if (typeof status[data] === 'undefined') {
+                return data;
+              }
+              return '<span class="badge bg-pill' + status[data].class + '">' + status[data].title +
+                '</span>';
+            },
+          },
+          {
+            className: 'dt-center',
+            targets: [8],
+            render: function (data, type, full, meta) {
+              let status = {
+                0: {'title': 'Tidak Jalan', 'class': ' bg-success'},
+                1: {'title': 'Jalan', 'class': ' bg-warning'},
               };
               if (typeof status[data] === 'undefined') {
                 return data;

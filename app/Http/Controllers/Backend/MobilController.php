@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Helpers\FileUpload;
 use App\Http\Controllers\Controller;
 use App\Models\Mobil;
+use App\Models\Joborder;
 use App\Traits\ResponseStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -161,8 +162,10 @@ class MobilController extends Controller
           ['url' => '#', 'title' => "Update Kendaraan"],
         ];
         $mobil = Mobil::with('merkmobil', 'tipemobil', 'jenismobil')->findOrFail($id);
+        $joborder = Joborder::where('mobil_id', $id)->where('status_joborder', '0')->get();
         $data = [
           'mobil' => $mobil,
+          'joborder' => $joborder,
         ];
 
         return view('backend.mobil.show', compact('page_breadcrumbs', 'config', 'data'));

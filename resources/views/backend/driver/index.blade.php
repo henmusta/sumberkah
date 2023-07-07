@@ -33,6 +33,7 @@
                                 <th>Nama Lengkap</th>
                                 <th>Nama Panggilan</th>
                                 <th>No hp</th>
+                                <th>Status Jalan</th>
                                 <th>Status aktif</th>
                                 <th>Validasi</th>
                                 <th width="10%">Aksi</th>
@@ -203,6 +204,7 @@
           {data: 'name', name: 'name'},
           {data: 'panggilan', name: 'panggilan'},
           {data: 'telp', name: 'telp'},
+          {data: 'status_jalan', name: 'status_jalan'},
           {data: 'status_aktif', name: 'status_aktif'},
           {data: 'validasi', name: 'validasi'},
           {data: 'action', name: 'action', orderable: false, searchable: false},
@@ -210,7 +212,23 @@
         columnDefs: [
             {
             className: 'dt-center',
-            targets: [4,5],
+            targets: [4],
+            render: function (data, type, full, meta) {
+              let status = {
+                0: {'title': 'Tidak Jalan', 'class': ' bg-success'},
+                1: {'title': 'Jalan', 'class': ' bg-warning'},
+              };
+              if (typeof status[data] === 'undefined') {
+                return data;
+              }
+              return '<span class="badge bg-pill' + status[data].class + '">' + status[data].title +
+                '</span>';
+            },
+          },
+
+            {
+            className: 'dt-center',
+            targets: [5,6],
             render: function (data, type, full, meta) {
               let status = {
                 0: {'title': 'Tidak Aktif', 'class': ' bg-danger'},
