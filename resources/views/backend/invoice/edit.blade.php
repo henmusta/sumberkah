@@ -464,11 +464,9 @@ $(document).ready(function () {
             minimumValue: 0
     };
 
-    const total_tonase = $('#total_tonase').val();
-
     const   nominal_ppn =new AutoNumeric('#nominal_ppn',currenciesOptions),
             tambahan_potongan =new AutoNumeric('#nominal_tambahan_potongan',currenciesOptions),
-            // total_tonase =new AutoNumeric('#total_tonase',currenciesOptions),
+            total_tonase =new AutoNumeric('#total_tonase',currenciesOptions),
             sub_total =new AutoNumeric('#sub_total',currenciesOptions),
             total_harga = new AutoNumeric('#total_harga',currenciesOptions);
 
@@ -717,7 +715,7 @@ $(document).ready(function () {
 
                     $('#kode_joborder').val(JoinedKode);
                     sub_total.set(data.sum_total_harga);
-                    $('#total_tonase').val(data.sum_beratmuatan);
+                    total_tonase.set(data.sum_beratmuatan);
                     total_harga.set(data.sum_total_harga);
                     // $('#payment_hari').prop('disabled', false);
                     count_total();

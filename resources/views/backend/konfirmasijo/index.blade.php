@@ -162,6 +162,14 @@ tr.group:hover {
           {
             targets: [4],
             render: $.fn.dataTable.render.number('.', ',', 0, '')
+          },
+          {
+            targets: [5],
+            render: function (data, type, full, meta) {
+                let dta = data % 1;
+                let cek = (dta == 0 ) ? 0 : 3;
+                return   $.fn.dataTable.render.number('.', ',', cek, '').display(data);
+            }
           }
         ],
       });
