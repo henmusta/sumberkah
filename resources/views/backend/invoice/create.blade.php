@@ -469,7 +469,7 @@ $(document).ready(function () {
             allowDecimalPadding: true,
             decimalCharacter : ',',
             digitGroupSeparator : '.',
-            decimalPlaces: 0,
+            decimalPlaces: 3,
             modifyValueOnWheel: false,
             minimumValue: 0
     };

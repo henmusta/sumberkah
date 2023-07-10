@@ -26,7 +26,7 @@ class DashboardController extends Controller
     public function dtdriver(Request $request)
     {
       if ($request->ajax()) {
-        $data = Driver::query();
+        $data = Driver::where('validasi', '1');
         if ($request->filled('status_jalan')) {
             $data->where('status_jalan', '!=', $request['status_jalan']);
         }
@@ -60,7 +60,7 @@ class DashboardController extends Controller
     public function dtmobil(Request $request)
     {
       if ($request->ajax()) {
-        $data = Mobil::with('merkmobil', 'tipemobil', 'jenismobil');
+        $data = Mobil::with('merkmobil', 'tipemobil', 'jenismobil')->where('validasi', '1');
         if ($request->filled('status_jalan')) {
             $data->where('status_jalan', '!=', $request['status_jalan']);
         }

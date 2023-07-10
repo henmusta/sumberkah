@@ -42,6 +42,7 @@ class KonfirmasiJoController extends Controller
           if ($request->filled('id')) {
             $data->where('joborder_id', $request['id']);
           }
+          $data->groupBy('konfirmasi_joborder.kode_joborder');
           return DataTables::of($data)
             ->addColumn('action', function ($row) {
                 $perm = [
