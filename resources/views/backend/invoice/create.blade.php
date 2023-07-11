@@ -478,7 +478,8 @@ $(document).ready(function () {
 
     const   nominal_ppn =new AutoNumeric('#nominal_ppn',currenciesOptions),
             tambahan_potongan =new AutoNumeric('#nominal_tambahan_potongan',currenciesOptions),
-            total_tonase =new AutoNumeric('#total_tonase',currenciesOptionsDecimal),
+            total_tonase_float =new AutoNumeric('#total_tonase',currenciesOptionsDecimal),
+            total_tonase_int =new AutoNumeric('#total_tonase',currenciesOptionsDecimal),
             sub_total =new AutoNumeric('#sub_total',currenciesOptions),
             total_harga = new AutoNumeric('#total_harga',currenciesOptions);
 
@@ -712,7 +713,8 @@ $(document).ready(function () {
 
                     $('#kode_joborder').val(JoinedKode);
                     sub_total.set(data.sum_total_harga);
-                    total_tonase.set(data.sum_beratmuatan);
+                    let dta = data.sum_beratmuatan % 1;
+                    let cek = (dta == 0 ) ?   total_tonase_int.set(data.sum_beratmuatan) :  total_tonase_float.set(data.sum_beratmuatan);
                     total_harga.set(data.sum_total_harga);
                     $('#payment_hari').prop('disabled', false);
                     toastr.success('Data Telah Tersedia', 'Success !');
