@@ -464,6 +464,20 @@ $(document).ready(function () {
             minimumValue: 0
     };
 
+    const currenciesOptionsInt = {
+           caretPositionOnFocus: "start",
+            currencySymbol: "Rp. ",
+            unformatOnSubmit: true,
+            allowDecimalPadding: true,
+            decimalCharacter : ',',
+            digitGroupSeparator : '.',
+            decimalPlaces: 0,
+            modifyValueOnWheel: false,
+            minimumValue: 0
+    };
+
+
+
     const currenciesOptionsDecimal = {
             caretPositionOnFocus: "start",
             currencySymbol: "",
@@ -475,10 +489,8 @@ $(document).ready(function () {
             modifyValueOnWheel: false,
             minimumValue: 0
     };
-
     const   nominal_ppn =new AutoNumeric('#nominal_ppn',currenciesOptions),
             tambahan_potongan =new AutoNumeric('#nominal_tambahan_potongan',currenciesOptions),
-            total_tonase =new AutoNumeric('#total_tonase',currenciesOptionsDecimal),
             sub_total =new AutoNumeric('#sub_total',currenciesOptions),
             total_harga = new AutoNumeric('#total_harga',currenciesOptions);
 
@@ -727,7 +739,16 @@ $(document).ready(function () {
 
                     $('#kode_joborder').val(JoinedKode);
                     sub_total.set(data.sum_total_harga);
-                    total_tonase.set(data.sum_beratmuatan);
+                    let dta = data.sum_beratmuatan % 1;
+                    if(dta == 0){
+                        const total_tonase_int =new AutoNumeric('#total_tonase',currenciesOptionsInt);
+                        total_tonase_int.set(data.sum_beratmuatan);
+                    }else{
+                        const total_tonase_float =new AutoNumeric('#total_tonase',currenciesOptionsDecimal);
+                        total_tonase_float.set(data.sum_beratmuatan);
+                    }
+
+
                     total_harga.set(data.sum_total_harga);
                     // $('#payment_hari').prop('disabled', false);
                     count_total();
