@@ -300,6 +300,42 @@
                                     <div class="col-12">
                                         <div class="card">
                                             <div class="card-header text-center">
+                                                <div class="alert alert-success alert-dismissible fade show px-3 mb-0" role="alert">
+                                                    <h3 class="text-black">INVOICE JATUH TEMPO</h3>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                {{-- <div class="text-center"  style="padding: 20px">
+                                                    <h4 class="main-content-label mb-1">Berlaku Sim</h4>
+                                                </div> --}}
+                                                <div class="table-responsive">
+                                                    <table id="Datatableinvoice" class="table table-bordered border-bottom" style="width:100%">
+                                                        <thead>
+                                                            <tr>
+                                                                <th width="5%">No</th>
+                                                                <th>Kode Invoice</th>
+                                                                <th>Customer</th>
+                                                                <th>Tanggal Invoice</th>
+                                                                <th>Nominal Invoice</th>
+                                                                <th>Due Date</th>
+
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-header text-center">
                                                 <div class="alert alert-danger alert-dismissible fade show px-3 mb-0" role="alert">
                                                     <h3 class="text-black">JOBORDER BELUM ADA INVOICE</h3>
                                                 </div>
@@ -337,42 +373,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="card">
-                                            <div class="card-header text-center">
-                                                <div class="alert alert-success alert-dismissible fade show px-3 mb-0" role="alert">
-                                                    <h3 class="text-black">INVOICE JATUH TEMPO</h3>
-                                                </div>
-                                            </div>
-                                            <div class="card-body">
-                                                {{-- <div class="text-center"  style="padding: 20px">
-                                                    <h4 class="main-content-label mb-1">Berlaku Sim</h4>
-                                                </div> --}}
-                                                <div class="table-responsive">
-                                                    <table id="Datatableinvoice" class="table table-bordered border-bottom" style="width:100%">
-                                                        <thead>
-                                                            <tr>
-                                                                <th width="5%">No</th>
-                                                                <th>Kode Invoice</th>
-                                                                <th>Customer</th>
-                                                                <th>Tanggal Invoice</th>
-                                                                <th>Nominal Invoice</th>
-                                                                <th>Due Date</th>
 
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </p>
                         </div>
                     @endif

@@ -33,7 +33,7 @@
                                 <div class="col-md-6">
                                      <div class="mb-3">
                                         <label>Tanggal Invoice<span class="text-danger">*</span></label>
-                                        <input type="text" id="tgl_invoice" value="" name="tgl_invoice"  class="form-control"/>
+                                        <input type="text" id="tgl_invoice" value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" name="tgl_invoice"  class="form-control"/>
                                       </div>
                                 </div>
                           </div>
@@ -462,8 +462,8 @@ $(document).ready(function () {
     };
 
     const currenciesOptionsInt = {
-            caretPositionOnFocus: "start",
-            currencySymbol: "",
+           caretPositionOnFocus: "start",
+            currencySymbol: "Rp. ",
             unformatOnSubmit: true,
             allowDecimalPadding: true,
             decimalCharacter : ',',
@@ -491,8 +491,6 @@ $(document).ready(function () {
 
     const   nominal_ppn =new AutoNumeric('#nominal_ppn',currenciesOptions),
             tambahan_potongan =new AutoNumeric('#nominal_tambahan_potongan',currenciesOptions),
-            total_tonase_float =new AutoNumeric('#total_tonase',currenciesOptionsDecimal),
-            total_tonase_int =new AutoNumeric('#total_tonase',currenciesOptionsInt),
             sub_total =new AutoNumeric('#sub_total',currenciesOptions),
             total_harga = new AutoNumeric('#total_harga',currenciesOptions);
 
@@ -724,10 +722,21 @@ $(document).ready(function () {
                     const JoinedKode = kode_joborder.join();
                     // console.log(JoinedKode);
 
+
+
+
                     $('#kode_joborder').val(JoinedKode);
                     sub_total.set(data.sum_total_harga);
                     let dta = data.sum_beratmuatan % 1;
-                    let cek = (dta == 0 ) ?   total_tonase_int.set(data.sum_beratmuatan) :  total_tonase_float.set(data.sum_beratmuatan);
+                    if(dta == 0){
+                        const total_tonase_int =new AutoNumeric('#total_tonase',currenciesOptionsInt);
+                        total_tonase_int.set(data.sum_beratmuatan);
+                    }else{
+                        const total_tonase_float =new AutoNumeric('#total_tonase',currenciesOptionsDecimal);
+                        total_tonase_float.set(data.sum_beratmuatan);
+                    }
+                    // let cek = (dta == 0 ) ?   total_tonase_int.set(data.sum_beratmuatan) :  ;
+                    // let cek = (dta == 0 ) ?   total_tonase_int.set(data.sum_beratmuatan) :  total_tonase_float.set(data.sum_beratmuatan);
                     total_harga.set(data.sum_total_harga);
                     $('#payment_hari').prop('disabled', false);
                     toastr.success('Data Telah Tersedia', 'Success !');
