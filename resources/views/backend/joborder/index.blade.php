@@ -296,6 +296,7 @@
           data: function (e) {
             return {
               jenismobil_id:  select2Jenis.find(":selected").val() || '',
+              validasi: 1,
               q: e.term || '',
               page: e.page || 1
             }
@@ -319,6 +320,7 @@
           cache: true,
           data: function (e) {
             return {
+              validasi: 1,
               q: e.term || '',
               page: e.page || 1
             }
