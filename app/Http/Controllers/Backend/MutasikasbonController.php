@@ -19,7 +19,7 @@ use Yajra\DataTables\Facades\DataTables;
 use Throwable;
 
 
-class MutasikasbonController extends Controller
+class MutasiKasbonController extends Controller
 {
     use ResponseStatus,NoUrutTrait;
     function __construct()

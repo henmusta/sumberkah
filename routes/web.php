@@ -158,10 +158,10 @@ Route::middleware('auth:henmus')->group(function(){
 
 
              //Mutasi Kasbon
-            Route::get('mutasikasbon/excel', [Backend\MutasikasbonController::class, 'excel'])->name('mutasikasbon.excel');
-            Route::get('mutasikasbon/ceksaldo', [Backend\MutasikasbonController::class, 'ceksaldo'])->name('mutasikasbon.ceksaldo');
-            Route::get('mutasikasbon/datatablecekdriver', [Backend\MutasikasbonController::class, 'datatablecekdriver'])->name('mutasikasbon.datatablecekdriver');
-            Route::resource('mutasikasbon', Backend\MutasikasbonController::class);
+            Route::get('mutasikasbon/excel', [Backend\MutasiKasbonController::class, 'excel'])->name('mutasikasbon.excel');
+            Route::get('mutasikasbon/ceksaldo', [Backend\MutasiKasbonController::class, 'ceksaldo'])->name('mutasikasbon.ceksaldo');
+            Route::get('mutasikasbon/datatablecekdriver', [Backend\MutasiKasbonController::class, 'datatablecekdriver'])->name('mutasikasbon.datatablecekdriver');
+            Route::resource('mutasikasbon', Backend\MutasiKasbonController::class);
 
                    //Mutasi Kasbon all
                    Route::get('mutasikasbonall/excel', [Backend\MutasiKasbonAllController::class, 'excel'])->name('mutasikasbonall.excel');
