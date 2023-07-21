@@ -54,14 +54,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-4">
-                                                <div class="mb-3">
-                                                    <label>Driver<span class="text-danger">*</span></label>
-                                                    <select id="select2Driver" style="width: 100% !important;" name="driver_id">
-                                                        <option value="{{ $data['driver']['id'] ?? '' }}"> {{$data['driver']['name'] ?? '' }}</option>
-                                                    </select>
-                                                  </div>
-                                            </div>
+
                                             <div class="col-md-2 text-end" style="padding-top:30px;">
                                                 <a id="terapkan_filter" class="btn btn-success">
                                                     Terapkan Filter
@@ -87,9 +80,9 @@
                     <div class="mb-4">
                            {{-- <img  src="{{URL::to('storage/images/logo/'.Setting::get_setting()->icon)}}" alt="logo" height="50"> --}}
                     </div>
-                    <div class="text-muted">
+                    {{-- <div class="text-muted">
                         <h5 class="text-center" id="driver_name">Nama Driver : {{$data['driver']['name'] ?? '' }}</h5>
-                    </div>
+                    </div> --}}
                 </div>
 
 
@@ -101,9 +94,10 @@
 
                                 <tr>
                                     <tr>
-                                        <th colspan="5"style="text-align:right">Saldo Bon Awal: </th>
-                                        <th colspan="3" class="text-end" id="saldo_awal"></th>
+                                        <th colspan="6"style="text-align:right">Saldo Bon Awal: </th>
+                                        <th colspan="4" class="text-end" id="saldo_awal"></th>
                                      </tr>
+                                    <th>Nama Driver</th>
                                     <th>Tanggal Transaksi</th>
                                     <th>Kode Kasbon</th>
                                     <th>Kode Gaji</th>
@@ -120,15 +114,15 @@
                             <tfoot>
 
                                  <tr>
-                                     <th colspan="5" style="text-align:right">Total Debit :</th>
+                                     <th colspan="6" style="text-align:right">Total Debit :</th>
                                      <th colspan="3" class="text-end"  id="total_debit"></th>
                                  </tr>
                                  <tr>
-                                    <th colspan="5" style="text-align:right">Total Kredit :</th>
+                                    <th colspan="6" style="text-align:right">Total Kredit :</th>
                                     <th colspan="3"  class="text-end"  id="total_kredit"></th>
                                 </tr>
                                  <tr>
-                                    <th colspan="5"style="text-align:right">Saldo Bon Akhir: </th>
+                                    <th colspan="6"style="text-align:right">Saldo Bon Akhir: </th>
                                     <th colspan="3" class="text-end"  id="saldo_akhir"></th>
                                  </tr>
                             </tfoot>
@@ -196,36 +190,15 @@ function printDiv(divName) {
         $('#tgl_awal, #tgl_akhir').flatpickr({
             dateFormat: "Y-m-d"
          });
-         let select2Driver = $('#select2Driver');
-    select2Driver.select2({
-        dropdownParent:  select2Driver.parent(),
-        searchInputPlaceholder: 'Cari Driver',
-        width: '100%',
-        placeholder: 'Pilih Driver',
-        ajax: {
-          url: "{{ route('backend.driver.select2') }}",
-          dataType: "json",
-          cache: true,
-          data: function (e) {
-            return {
-              q: e.term || '',
-              page: e.page || 1
-            }
-          },
-        },
-      }).on('select2:select', function (e) {
-            let data = e.params.data;
-            $('#cek_name').val(data.text)
-            console.log(data.id);
-    });
+
     $("#excel").click(function() {
                     let params = new URLSearchParams({
-                        driver_id :  select2Driver.find(':selected').val(),
+
                         tgl_awal : $('#tgl_awal').val(),
                         tgl_akhir : $('#tgl_akhir').val()
                     });
 
-                    window.location.href = "{{ route('backend.mutasikasbon.excel') }}?" +params.toString()
+                    window.location.href = "{{ route('backend.mutasikasbonall.excel') }}?" +params.toString()
         });
     let dataTable = $('#Datatable').DataTable({
         // dom: 'lfBrtip',
@@ -266,9 +239,8 @@ function printDiv(divName) {
         lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
         pageLength: 50,
         ajax: {
-          url: "{{ route('backend.mutasikasbon.index') }}",
+          url: "{{ route('backend.mutasikasbonall.index') }}",
           data: function (d) {
-            d.driver_id =  select2Driver.find(':selected').val();
             d.tgl_awal = $('#tgl_awal').val();
             d.tgl_akhir = $('#tgl_akhir').val();
           }
@@ -281,6 +253,7 @@ function printDiv(divName) {
         //             return meta.row + meta.settings._iDisplayStart + 1;
         //         }
         //   },
+          {data: 'driver.name', name: 'driver.name'},
           {data: 'tgl_kasbon', name: 'tgl_kasbon'},
           {data: 'kode_kasbon', name: 'kode_kasbon'},
           {data: 'gaji.kode_gaji', name: 'joborder.kode_gaji'},
@@ -296,11 +269,11 @@ function printDiv(divName) {
           {
             orderable: false, searchable: false,
             defaultContent: "-",
-            targets: [0, 1, 2, 3 ,4 ,5 ,6 , 7]
+            targets: [0, 1, 2, 3 ,4 ,5 ,6 , 7, 8]
          },
          {
             className: 'text-end',
-            targets: [5, 6, 7],
+            targets: [6, 7, 8],
             render: $.fn.dataTable.render.number('.', ',', 0, '')
           },
 
@@ -319,14 +292,14 @@ function printDiv(divName) {
 
             // Total over all pages
             total_debit = api
-                .column(5)
+                .column(6)
                 .data()
                 .reduce(function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0);
 
             total_kredit = api
-                .column(6)
+                .column(7)
                 .data()
                 .reduce(function (a, b) {
                     return intVal(a) + intVal(b);
@@ -354,14 +327,13 @@ function printDiv(divName) {
       });
       get_saldo();
       function get_saldo(){
-            let driver_id = select2Driver.find(':selected').val();
-            console.log(driver_id);
+
             let tgl_awal = $('#tgl_awal').val();
             let tgl_akhir = $('#tgl_akhir').val();
          $.ajax({
-                url: "{{ route('backend.mutasikasbon.ceksaldo') }}",
+                url: "{{ route('backend.mutasikasbonall.ceksaldo') }}",
                 type: 'GET',
-                data: {driver_id:   driver_id, tgl_awal: tgl_awal, tgl_akhir: tgl_akhir},
+                data: { tgl_awal: tgl_awal, tgl_akhir: tgl_akhir},
                 dataType: 'json', // added data type
                 success: function(res) {
 

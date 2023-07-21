@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="page-content">
-    <div class="container-fluid">
+    <div class="container-fluid full">
         <div class="card">
             <div class="card-header">
                 <div class="float-end">
@@ -60,7 +60,7 @@
                             <tr>
                                 <td style="width: 300px; ">Nomor Plat</td>
                                 <td style="width: 2px; padding-right: 10px">:</td>
-                                <td  style="font-weight:bold">{{$data['penggajian']['mobil']['nomor_plat'] ?? ''}}</td>
+                                <td  style="font-weight:bold">{{$data['penggajian']['mobil']['nomor_plat'] ?? ''}} ( {{$data['penggajian']['mobil']['jenismobil']['name']}} )</td>
                             </tr>
                             <tr>
                                 <td style="width: 300px; ">Bulan Kerja</td>
@@ -84,6 +84,7 @@
                                     <tr>
                                         <th class="text-center">No</th>
                                         <th>Kode Joborder</th>
+                                        <th>Tanggal Joborder</th>
                                         <th>Tanggal Muat</th>
                                         <th>Tanggal Bongkar</th>
                                         <th>Customer</th>
@@ -106,6 +107,7 @@
                                         <tr>
                                             <td width="2%" class="text-center">{{$no++}}</td>
                                             <td>{{$val->kode_joborder}}</td>
+                                            <td>{{$val->joborder['tgl_joborder']}}</td>
                                             <td>{{$val->tgl_muat}}</td>
                                             <td>{{$val->tgl_bongkar}}</td>
                                             <td>{{$val->joborder['customer']['name']}}</td>
@@ -113,7 +115,8 @@
                                             <td>{{$val->joborder['ruteawal']['name']}}</td>
                                             <td>{{$val->joborder['ruteakhir']['name']}}</td>
                                             <td class="text-end"> Rp. {{ number_format($val->joborder['rute']['uang_jalan'],0,',','.')}}</td>
-                                            <td class="text-end">{{ $val->berat_muatan}}</td>
+                                            @php($cek_bm = fmod($val->berat_muatan, 1) != 0 ? 3 : 0)
+                                            <td>{{number_format($val->berat_muatan, $cek_bm,',','.')}}</td>
                                             <td class="text-end"> Rp. {{ number_format($val->joborder['biaya_lain'],0,',','.')}}</td>
                                             <td class="text-end"> Rp. {{ number_format($val->joborder['rute']['gaji'],0,',','.')}}</td>
                                         </tr>
@@ -123,23 +126,24 @@
                                     <tfoot>
                                         {{-- {{DD($data['konfirmasijo']->collect('joborder')->collect('rute')->collect(uang_jalan))}} --}}
                                         <tr>
-                                            <th class="text-end" colspan="8">Total</th>
+                                            <th class="text-end" colspan="9">Total</th>
                                             <th class="text-end"> Rp. {{ number_format($uang_jalan,0,',','.')}}</th>
-                                            <th class="text-end"> {{ $data['konfirmasijo']->sum('berat_muatan')}}</th>
+                                            @php($cek_sbm = fmod($data['konfirmasijo']->sum('berat_muatan'), 1) != 0 ? 3 : 0)
+                                            <td class="text-end">{{number_format($data['konfirmasijo']->sum('berat_muatan'), $cek_sbm,',','.')}}</td>
                                             <th class="text-end"> Rp. {{ number_format($biaya_lain,0,',','.')}}</th>
                                             <th class="text-end"> Rp. {{ number_format($gaji,0,',','.')}}</th>
                                         </tr>
 
                                         <tr>
-                                            <th class="text-end" colspan="11">Potong Kasbon</th>
+                                            <th class="text-end" colspan="12">Potong Kasbon</th>
                                             <th class="text-end"> Rp. {{ number_format($data['penggajian']['nominal_kasbon'],0,',','.')}}</th>
                                         </tr>
                                         <tr>
-                                            <th class="text-end" colspan="11">Bonus</th>
+                                            <th class="text-end" colspan="12">Bonus</th>
                                             <th class="text-end"> Rp. {{ number_format($data['penggajian']['bonus'],0,',','.')}}</th>
                                         </tr>
                                         <tr>
-                                            <th class="text-end" colspan="11">Total</th>
+                                            <th class="text-end" colspan="12">Total</th>
                                             <th class="text-end"> Rp. {{ number_format($data['penggajian']['total_gaji'],0,',','.')}}</th>
                                         </tr>
                                     </tfoot>

@@ -162,5 +162,23 @@ Route::middleware('auth:henmus')->group(function(){
             Route::get('mutasikasbon/ceksaldo', [Backend\MutasikasbonController::class, 'ceksaldo'])->name('mutasikasbon.ceksaldo');
             Route::get('mutasikasbon/datatablecekdriver', [Backend\MutasikasbonController::class, 'datatablecekdriver'])->name('mutasikasbon.datatablecekdriver');
             Route::resource('mutasikasbon', Backend\MutasikasbonController::class);
+
+                   //Mutasi Kasbon all
+                   Route::get('mutasikasbonall/excel', [Backend\MutasikasbonAllController::class, 'excel'])->name('mutasikasbonall.excel');
+                   Route::get('mutasikasbonall/ceksaldo', [Backend\MutasikasbonAllController::class, 'ceksaldo'])->name('mutasikasbonall.ceksaldo');
+                   Route::get('mutasikasbonall/datatablecekdriver', [Backend\MutasikasbonAllController::class, 'datatablecekdriver'])->name('mutasikasbonall.datatablecekdriver');
+                   Route::resource('mutasikasbonall', Backend\MutasikasbonAllController::class);
+
+            //Laporan PaymentJo
+            Route::post('rptjo/getreport', [Backend\RptJoController::class, 'getreport'])->name('rptjo.getreport');
+            Route::get('rptjo/pdf', [Backend\RptJoController::class, 'pdf'])->name('rptjo.pdf');
+            Route::get('rptjo/excel', [Backend\RptJoController::class, 'excel'])->name('rptjo.excel');
+            Route::resource('rptjo', Backend\RptJoController::class);
+
+             //Laporan PaymentGaji
+             Route::post('rptgaji/getreport', [Backend\RptGajiController::class, 'getreport'])->name('rptgaji.getreport');
+             Route::get('rptgaji/pdf', [Backend\RptGajiController::class, 'pdf'])->name('rptgaji.pdf');
+             Route::get('rptgaji/excel', [Backend\RptGajiController::class, 'excel'])->name('rptgaji.excel');
+             Route::resource('rptgaji', Backend\RptGajiController::class);
     });
   });
