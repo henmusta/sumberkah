@@ -125,7 +125,7 @@ class RptGajiController extends Controller
             $rows5 = 5;
             $sheet->setCellValue('A'.$rows5, 'No');
             $sheet->setCellValue('B'.$rows5, 'Tanggal Payment');
-            $sheet->setCellValue('C'.$rows5, 'Kode Joborder');
+            $sheet->setCellValue('C'.$rows5, 'Kode Gaji');
             $sheet->setCellValue('D'.$rows5, 'Jenis Pembayaran');
             $sheet->setCellValue('E'.$rows5, 'Keterangan Pembayaran');
             $sheet->setCellValue('F'.$rows5, 'Nominal Pembayaran');
@@ -140,7 +140,7 @@ class RptGajiController extends Controller
             foreach($data as $val){
                     $sheet->setCellValue('A' . $x, $no++);
                     $sheet->setCellValue('B' . $x, $val['tgl_payment']);
-                    $sheet->setCellValue('C' . $x, $val['kode_joborder'] ?? '');
+                    $sheet->setCellValue('C' . $x, $val['kode_gaji'] ?? '');
                     $sheet->setCellValue('D' . $x, $val['jenis_payment'] ?? '');
                     $sheet->setCellValue('E' . $x, $val['keterangan']);
                     $sheet->setCellValue('F' . $x, $val['nominal']);
