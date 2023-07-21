@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
+use PDF;
 use Throwable;
 
 class JoborderController extends Controller
@@ -656,6 +657,50 @@ class JoborderController extends Controller
       header('Cache-Control: max-age=0');
       $writer->save('php://output');
 
+    }
+
+    public function pdf(Request $request)
+    {
+
+        $status_joborder = $request['status_joborder'];
+        $driver_id = $request['driver_id'];
+        $jenismobil_id = $request['jenismobil_id'];
+        $mobil_id = $request['mobil_id'];
+        $customer_id = $request['customer_id'];
+        $id = $request['id'];
+        $tgl_awal = $request['tgl_awal'];
+        $tgl_akhir = $request['tgl_akhir'];
+
+        // dd( $tgl_akhir);
+
+        $data = Joborder::with('customer','ruteawal','ruteakhir','muatan','mobil', 'driver', 'rute', 'jenismobil')
+        ->when($status_joborder, function ($query, $status_joborder) {
+            return $query->where('status_joborder',  $status_joborder);
+         })
+         ->when( $driver_id, function ($query,  $driver_id) {
+            return $query->where('driver_id',   $driver_id);
+         })->when( $jenismobil_id, function ($query,  $jenismobil_id) {
+            return $query->where('jenismobil_id',   $jenismobil_id);
+         })->when( $mobil_id, function ($query,  $mobil_id) {
+            return $query->where('mobil_id',   $mobil_id);
+         })->when( $customer_id, function ($query,  $customer_id) {
+            return $query->where('customer_id',   $customer_id);
+         })->when( $id, function ($query,  $id) {
+            return $query->where('id',   $id);
+         })->when($tgl_awal, function ($query, $tgl_awal) {
+            return $query->whereDate('tgl_joborder', '>=', $tgl_awal);
+         })
+         ->when($tgl_akhir, function ($query, $tgl_akhir) {
+            return $query->whereDate('tgl_joborder', '<=', $tgl_akhir);
+         })->get();
+
+                $data = [
+                    'jo' => $data,
+                ];
+
+        $pdf =  PDF::loadView('backend.joborder.report',  compact('data'));
+        $fileName = 'Laporan-Payment_JO : '. $tgl_awal . '-SD-' .$tgl_akhir;
+        return $pdf->stream("${fileName}.pdf");
     }
 
 }

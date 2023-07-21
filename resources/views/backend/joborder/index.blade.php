@@ -103,8 +103,9 @@
 
                                             </div>
                                             <div class="col-md-2 text-end" style="padding-top:30px;">
-                                                <div id="print">
+                                                <div class="dt-buttons btn-group flex-wrap">
                                                     <button id="excel" class="btn btn-secondary buttons-excel buttons-html5"  tabindex="0" aria-controls="Datatable" type="button"><span>Excel</span></button>
+                                                    <button class="btn btn-secondary buttons-pdf buttons-html5"  tabindex="0" aria-controls="Datatable" type="button" id="pdf"><span>PDF</span></button>
                                                 </div>
                                             </div>
 
@@ -381,17 +382,17 @@
       let dataTable = $('#Datatable').DataTable({
         dom: 'lfBrtip',
         buttons: [
-            {
-                extend: 'pdfHtml5',
-                footer: true,
-                text: 'PDF',
-                title: 'Laporan Joborder',
-                pageSize: 'A4',
-                orientation : 'landscape',
-                exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4, 5 ,6, 7, 8, 9, 10 , 11, 12, 13]
-                },
-            },
+            // {
+            //     extend: 'pdfHtml5',
+            //     footer: true,
+            //     text: 'PDF',
+            //     title: 'Laporan Joborder',
+            //     pageSize: 'A4',
+            //     orientation : 'landscape',
+            //     exportOptions: {
+            //         columns: [ 0, 1, 2, 3, 4, 5 ,6, 7, 8, 9, 10 , 11, 12, 13]
+            //     },
+            // },
 
         ],
         responsive: true,
@@ -575,6 +576,26 @@
         $('#text_jo').removeClass();
         this.querySelector('#formUpdateValidasi').setAttribute('href', '');
       });
+
+      $("#pdf").click(function() {
+
+
+            var driver_id = (typeof $('#select2Driver').find(':selected').val() === "undefined") ?  '' : $('#select2Driver').find(':selected').val();
+// var driver_id = (typeof $('#select2Driver').find(':selected').val() === "undefined") ?  '' : $('#select2Driver').find(':selected').val();
+
+            let params = new URLSearchParams({
+                status_joborder : $('#select2StatusJo').find(':selected').val() || '',
+                driver_id : driver_id,
+                jenismobil_id : $('#select2Jenis').find(':selected').val() || '',
+                mobil_id : $('#select2Mobil').find(':selected').val() || '',
+                customer_id : $('#select2Customer').find(':selected').val() || '',
+                id : $('#select2Joborder').find(':selected').val() || '',
+                tgl_awal : $('#tgl_awal').val() || '',
+                tgl_akhir : $('#tgl_akhir').val() || '',
+            });
+
+            window.location.href = "{{ route('backend.joborder.pdf') }}?" +params.toString()
+     });
 
 
       $("#excel").click(function() {
