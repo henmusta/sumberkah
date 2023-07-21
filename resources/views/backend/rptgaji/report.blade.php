@@ -65,7 +65,7 @@
 <body>
 
     <div class="header" style="padding-bottom: 20px;">
-        <h3  style=" text-align: center; margin-top:25px;margin-bottom: 0">Laporan Payment Jo</h3>
+        <h3  style=" text-align: center; margin-top:25px;margin-bottom: 0">Laporan Payment Gaji</h3>
         <h5  style=" text-align: center; margin-top:25px;margin-bottom: 0">TANGGAL : {{\Carbon\Carbon::parse($data['tgl_awal'])->format('d-m-Y')}} S/D {{\Carbon\Carbon::parse($data['tgl_akhir'])->format('d-m-Y')}} </h5>
     </div>
 
@@ -79,9 +79,7 @@
                 <th>Kode Joborder</th>
                 <th>Jenis Pembayaran</th>
                 <th>Keterangan Pembayaran</th>
-                <th>Keterangan Kasbon</th>
                 <th>Nominal Pembayaran</th>
-                <th>Nominal Kasbon</th>
             </tr>
         </thead>
         <tbody>
@@ -92,18 +90,15 @@
                     <td>{{$val->tgl_payment}}</td>
                     <td>{{$val->kode_joborder}}</td>
                     <td>{{$val->jenis_payment}}</td>
-                    <td>{{$val->keterangan_pembayaran}}</td>
-                    <td>{{$val->keterangan_kasbon}}</td>
+                    <td>{{$val->keterangan}}</td>
                     <td  class="text-end">Rp. {{ number_format($val->nominal,0,',','.')}}</td>
-                    <td  class="text-end">Rp. {{ number_format($val->nominal_kasbon,0,',','.')}}</td>
                    </tr>
             @endforeach
         </tbody>
         <tfoot>
             <tr>
-                <th colspan="6"style="text-align:right">Total: </th>
+                <th colspan="5"style="text-align:right">Total: </th>
                 <th class="text-end" id="">Rp. {{ number_format($data['payment']->sum('nominal'),0,',','.')}}</th>
-                <th class="text-end" id="">Rp. {{ number_format($data['payment']->sum('nominal_kasbon'),0,',','.')}}</th>
              </tr>
         </tfoot>
     </table>
