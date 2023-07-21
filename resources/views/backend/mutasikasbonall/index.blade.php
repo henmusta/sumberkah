@@ -90,13 +90,12 @@
                 <div class="row" style="padding-top:10px;">
                     <div class="table-responsive">
                         <table id="Datatable" class="table table-bordered border-bottom w-100" style="width:100%">
-                            <thead>
-
+                            <thead style="display: table-row-group;">
                                 <tr>
-                                    <tr>
-                                        <th colspan="6"style="text-align:right">Saldo Bon Awal: </th>
-                                        <th colspan="4" class="text-end" id="saldo_awal"></th>
-                                     </tr>
+                                    <th colspan="6"style="text-align:right">Saldo Bon Awal: </th>
+                                    <th colspan="4" class="text-end" id="saldo_awal"></th>
+                                </tr>
+                                <tr>
                                     <th>Nama Driver</th>
                                     <th>Tanggal Transaksi</th>
                                     <th>Kode Kasbon</th>
@@ -111,7 +110,7 @@
                             <tbody>
 
                             </tbody>
-                            <tfoot>
+
 
                                  <tr>
                                      <th colspan="6" style="text-align:right">Total Debit :</th>
@@ -125,7 +124,7 @@
                                     <th colspan="6"style="text-align:right">Saldo Bon Akhir: </th>
                                     <th colspan="3" class="text-end"  id="saldo_akhir"></th>
                                  </tr>
-                            </tfoot>
+
                         </table>
                     </div>
                 </div>
@@ -151,7 +150,7 @@
         width: 210mm;
         /* height: 297mm; */
         height: 282mm;
-        font-size: 16px;
+        font-size: 12px;
         color: #000;
         background: #FFF;
         overflow:visible;
