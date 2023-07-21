@@ -76,7 +76,7 @@
             <tr >
                 <th>No</th>
                 <th>Tanggal Payment</th>
-                <th>Kode Joborder</th>
+                <th>Kode Gaji</th>
                 <th>Jenis Pembayaran</th>
                 <th>Keterangan Pembayaran</th>
                 <th>Nominal Pembayaran</th>
@@ -88,7 +88,7 @@
                 <tr>
                     <td width="2%" class="text-center">{{$no++}}</td>
                     <td>{{$val->tgl_payment}}</td>
-                    <td>{{$val->kode_joborder}}</td>
+                    <td>{{$val->kode_gaji}}</td>
                     <td>{{$val->jenis_payment}}</td>
                     <td>{{$val->keterangan}}</td>
                     <td  class="text-end">Rp. {{ number_format($val->nominal,0,',','.')}}</td>
