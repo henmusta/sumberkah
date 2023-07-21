@@ -164,10 +164,10 @@ Route::middleware('auth:henmus')->group(function(){
             Route::resource('mutasikasbon', Backend\MutasikasbonController::class);
 
                    //Mutasi Kasbon all
-                   Route::get('mutasikasbonall/excel', [Backend\MutasikasbonAllController::class, 'excel'])->name('mutasikasbonall.excel');
-                   Route::get('mutasikasbonall/ceksaldo', [Backend\MutasikasbonAllController::class, 'ceksaldo'])->name('mutasikasbonall.ceksaldo');
-                   Route::get('mutasikasbonall/datatablecekdriver', [Backend\MutasikasbonAllController::class, 'datatablecekdriver'])->name('mutasikasbonall.datatablecekdriver');
-                   Route::resource('mutasikasbonall', Backend\MutasikasbonAllController::class);
+                   Route::get('mutasikasbonall/excel', [Backend\MutasiKasbonAllController::class, 'excel'])->name('mutasikasbonall.excel');
+                   Route::get('mutasikasbonall/ceksaldo', [Backend\MutasiKasbonAllController::class, 'ceksaldo'])->name('mutasikasbonall.ceksaldo');
+                   Route::get('mutasikasbonall/datatablecekdriver', [Backend\MutasiKasbonAllController::class, 'datatablecekdriver'])->name('mutasikasbonall.datatablecekdriver');
+                   Route::resource('mutasikasbonall', Backend\MutasiKasbonAllController::class);
 
             //Laporan PaymentJo
             Route::post('rptjo/getreport', [Backend\RptJoController::class, 'getreport'])->name('rptjo.getreport');
