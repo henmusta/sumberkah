@@ -65,7 +65,7 @@
 <body>
 
     <div class="header" style="padding-bottom: 20px;">
-        <h3  style=" text-align: center; margin-top:25px;margin-bottom: 0">Laporan Payment Gaji</h3>
+        <h3  style=" text-align: center; margin-top:25px;margin-bottom: 0">Laporan Payment Joborder</h3>
         <h5  style=" text-align: center; margin-top:25px;margin-bottom: 0">TANGGAL : {{\Carbon\Carbon::parse($data['tgl_awal'])->format('d-m-Y')}} S/D {{\Carbon\Carbon::parse($data['tgl_akhir'])->format('d-m-Y')}} </h5>
     </div>
 
