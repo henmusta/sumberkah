@@ -84,8 +84,8 @@
                                     <tr>
                                         <th class="text-center">No</th>
                                         <th>Kode Joborder</th>
-                                        <th>Tgl Konfirmasi</th>
                                         <th>Tgl Joborder</th>
+                                        <th>Tgl Konfirmasi</th>
                                         <th>Tgl Muat</th>
                                         <th>Tgl Bongkar</th>
                                         <th>Customer</th>
@@ -108,8 +108,8 @@
                                         <tr>
                                             <td width="2%" class="text-center">{{$no++}}</td>
                                             <td>{{$val->kode_joborder}}</td>
-                                            <td>{{$val->tgl_konfirmasi}}</td>
                                             <td>{{$val->joborder['tgl_joborder']}}</td>
+                                            <td>{{$val->tgl_konfirmasi}}</td>
                                             <td>{{$val->tgl_muat}}</td>
                                             <td>{{$val->tgl_bongkar}}</td>
                                             <td>{{$val->joborder['customer']['name']}}</td>
