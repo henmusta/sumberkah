@@ -84,9 +84,10 @@
                                     <tr>
                                         <th class="text-center">No</th>
                                         <th>Kode Joborder</th>
-                                        <th>Tanggal Joborder</th>
-                                        <th>Tanggal Muat</th>
-                                        <th>Tanggal Bongkar</th>
+                                        <th>Tgl Konfirmasi</th>
+                                        <th>Tgl Joborder</th>
+                                        <th>Tgl Muat</th>
+                                        <th>Tgl Bongkar</th>
                                         <th>Customer</th>
                                         <th>Muatan</th>
                                         <th>Dari</th>
@@ -107,6 +108,7 @@
                                         <tr>
                                             <td width="2%" class="text-center">{{$no++}}</td>
                                             <td>{{$val->kode_joborder}}</td>
+                                            <td>{{$val->tgl_konfirmasi}}</td>
                                             <td>{{$val->joborder['tgl_joborder']}}</td>
                                             <td>{{$val->tgl_muat}}</td>
                                             <td>{{$val->tgl_bongkar}}</td>
@@ -126,7 +128,7 @@
                                     <tfoot>
                                         {{-- {{DD($data['konfirmasijo']->collect('joborder')->collect('rute')->collect(uang_jalan))}} --}}
                                         <tr>
-                                            <th class="text-end" colspan="9">Total</th>
+                                            <th class="text-end" colspan="10">Total</th>
                                             <th class="text-end"> Rp. {{ number_format($uang_jalan,0,',','.')}}</th>
                                             @php($cek_sbm = fmod($data['konfirmasijo']->sum('berat_muatan'), 1) != 0 ? 3 : 0)
                                             <td class="text-end">{{number_format($data['konfirmasijo']->sum('berat_muatan'), $cek_sbm,',','.')}}</td>
@@ -135,15 +137,15 @@
                                         </tr>
 
                                         <tr>
-                                            <th class="text-end" colspan="12">Potong Kasbon</th>
+                                            <th class="text-end" colspan="13">Potong Kasbon</th>
                                             <th class="text-end"> Rp. {{ number_format($data['penggajian']['nominal_kasbon'],0,',','.')}}</th>
                                         </tr>
                                         <tr>
-                                            <th class="text-end" colspan="12">Bonus</th>
+                                            <th class="text-end" colspan="13">Bonus</th>
                                             <th class="text-end"> Rp. {{ number_format($data['penggajian']['bonus'],0,',','.')}}</th>
                                         </tr>
                                         <tr>
-                                            <th class="text-end" colspan="12">Total</th>
+                                            <th class="text-end" colspan="13">Total</th>
                                             <th class="text-end"> Rp. {{ number_format($data['penggajian']['total_gaji'],0,',','.')}}</th>
                                         </tr>
                                     </tfoot>
