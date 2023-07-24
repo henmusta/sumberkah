@@ -92,10 +92,10 @@
                                         <th>Muatan</th>
                                         <th>Dari</th>
                                         <th>Ke</th>
-                                        <th width="12%">Uang Jalan</th>
+                                        <th width="10%">Uang Jalan</th>
                                         <th width="5%">{{$data['penggajian']['joborder'][0]['rute']['ritase_tonase'] ?? ''}}</th>
-                                        <th width="12%">Biaya Lain</th>
-                                        <th width="12%">Gaji</th>
+                                        <th width="10%">Biaya Lain</th>
+                                        <th width="10%">Gaji</th>
                                       </tr>
                                 </thead>
                                 <tbody>
@@ -196,7 +196,7 @@
     html, body {
         width: 210mm;
         /* height: 282mm; */
-        font-size: 10px;
+        font-size: 9px;
         color: #000;
         background: #FFF;
         overflow:visible;
