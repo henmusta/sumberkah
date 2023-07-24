@@ -122,7 +122,7 @@
                                 </tbody>
                                 @if($data['invoice']['tambahan_potongan'] != 'None')
                                 <tr style="page-break-inside:avoid;">
-                                    <th class="text-end" colspan="9">{{$data['invoice']['tambahan_potongan']}} Harga</th>
+                                    <th class="text-end" colspan="{{$colspan_1}}">{{$data['invoice']['tambahan_potongan']}} Harga</th>
                                     <th class="text-end">Rp. {{number_format($data['invoice']['nominal_tambahan_potongan'],0,',','.')}}</th>
                                 </tr>
                                 @endif
