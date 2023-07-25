@@ -15,8 +15,10 @@
     }
 
     .header {
-      position: fixed;
+      /* position: fixed; */
+      text-align: right;
       top: 0;
+      font-size: 10px;
     }
 
     .header table, tr, td {
@@ -84,8 +86,7 @@
 </head>
 <body>
 <div class="header">
-
-
+    <p class="text-left">{{ $joborder['createdby']['name'] ?? '' }} ( {{  \Carbon\Carbon::parse($joborder['created_at'])->format('d-m-Y')  }} )</p>
 </div>
 <h5 style=" text-align: center; margin-top:25px;margin-bottom: 0">BUKTI TITIPAN UANG JALAN</h5>
 
