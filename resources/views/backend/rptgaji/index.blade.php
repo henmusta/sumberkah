@@ -114,7 +114,12 @@
                 tgl_awal : $('#tgl_awal').val() || '',
                 tgl_akhir : $('#tgl_akhir').val() || '',
             };
+            let btnSubmit = $("#terapkan_filter");
+            let btnSubmitHtml = btnSubmit.html();
             $.ajax({
+                beforeSend: function () {
+                    btnSubmit.addClass("disabled").html("<span aria-hidden='true' class='spinner-border spinner-border-sm' role='status'></span> Loading ...").prop("disabled", "disabled");
+                },
                 cache: false,
                 processData: false,
                 contentType: 'application/json',
@@ -125,6 +130,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function(res) {
+                    btnSubmit.removeClass("disabled").html(btnSubmitHtml).removeAttr("disabled");
                     $("#report").html(res);
                     $("#cetak").prop('hidden', false);
                 }
@@ -137,7 +143,10 @@
                             tgl_akhir : $('#tgl_akhir').val() || '',
                         });
 
-                        window.location.href = "{{ route('backend.rptgaji.pdf') }}?" +params.toString()
+                        let url =  "{{ route('backend.rptgaji.pdf') }}?" +params.toString();
+                        window.open(url, '_blank');
+
+                        // window.location.href = "{{ route('backend.rptgaji.pdf') }}?" +params.toString()
         });
 
         $("#excel").click(function() {

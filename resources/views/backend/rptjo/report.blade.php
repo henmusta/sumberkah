@@ -25,6 +25,10 @@
         padding: 50px;
     }
 
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
 
     .headertable,
       .headertable th, .headertable td {
@@ -78,7 +82,7 @@
                 <th>Tanggal Payment</th>
                 <th>Kode Joborder</th>
                 <th>Jenis Pembayaran</th>
-                <th>Keterangan Pembayaran</th>
+                <th>Operator (Waktu)</th>
                 <th>Keterangan Kasbon</th>
                 <th>Nominal Pembayaran</th>
                 <th>Nominal Kasbon</th>
@@ -90,9 +94,9 @@
                 <tr>
                     <td width="2%" class="text-center">{{$no++}}</td>
                     <td>{{$val->tgl_payment}}</td>
-                    <td>{{$val->kode_joborder}}</td>
+                    <td><a href="{{ route('backend.joborder.index') }}?joborder_id={{$val['joborder']->id}}" target="_blank">{{$val->kode_joborder}}</a></td>
                     <td>{{$val->jenis_payment}}</td>
-                    <td>{{$val->keterangan}}</td>
+                    <td>{{$val['joborder']->createdby['name']}} ( {{\Carbon\Carbon::parse($val['joborder']->created_at)->format('d-m-Y H:i:s')}} )</td>
                     <td>{{$val->keterangan_kasbon}}</td>
                     <td  class="text-end">Rp. {{ number_format($val->nominal,0,',','.')}}</td>
                     <td  class="text-end">Rp. {{ number_format($val->nominal_kasbon,0,',','.')}}</td>

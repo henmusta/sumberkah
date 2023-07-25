@@ -595,8 +595,8 @@
                 tgl_awal : $('#tgl_awal').val() || '',
                 tgl_akhir : $('#tgl_akhir').val() || '',
             });
-
-            window.location.href = "{{ route('backend.joborder.pdf') }}?" +params.toString()
+            let url =  "{{ route('backend.joborder.pdf') }}?" +params.toString();
+            window.open(url, '_blank');
      });
 
 

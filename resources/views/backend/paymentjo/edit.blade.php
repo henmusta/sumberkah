@@ -442,7 +442,7 @@ if(cek_joborder_id != ''){
 			initComplete : function(settings, json){
 				let api = this.api();
 				$(api.table().footer()).find('.btn-add-row').click(function(){
-                    let keterangan_payment = 'Payment Joborder : '+ $('#cek_kode_joborder').val();
+                    let keterangan_payment = '-';
 					api.row.add({ jenis_pembayaran: '', keterangan : keterangan_payment, keterangan_kasbon : '', nominal : 0, nominal_kasbon : 0 }).draw();
 				});
 			},
@@ -475,7 +475,7 @@ if(cek_joborder_id != ''){
                     if(get_nominal_kasbon > get_kasbon){
                         toastr.error('Nominal Kasbon Melebihi Kasbon Tersedia', 'Gagal !');
                         AutoNumeric.getAutoNumericElement('#num_nominal_kasbon' + index).set(0);
-                        $(row).find('#keterangan_kasbon' + index).val('');
+                        // $(row).find('#keterangan_kasbon' + index).val('');
                     }
                     else{
                         let keterangan_kasbon = '-';

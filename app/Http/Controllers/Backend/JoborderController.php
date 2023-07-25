@@ -607,23 +607,30 @@ class JoborderController extends Controller
          $spreadsheet->getActiveSheet()->mergeCells('A1:N1');
          $spreadsheet->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
-         $rows2 = 2;
-         $sheet->setCellValue('A'.$rows2, 'Id Jo');
-         $sheet->setCellValue('B'.$rows2, 'Tanggal');
-         $sheet->setCellValue('C'.$rows2, 'Status');
-         $sheet->setCellValue('D'.$rows2, 'Driver');
-         $sheet->setCellValue('E'.$rows2, 'Nomor Plat Polisi');
-         $sheet->setCellValue('F'.$rows2, 'Jenis mobil');
-         $sheet->setCellValue('G'.$rows2, 'Customer');
-         $sheet->setCellValue('H'.$rows2, 'Muatan');
-         $sheet->setCellValue('I'.$rows2, 'Alamat Awal');
-         $sheet->setCellValue('J'.$rows2, 'Alamat Akhir');
-         $sheet->setCellValue('K'.$rows2, 'Total Uj');
-         $sheet->setCellValue('L'.$rows2, 'Pembayaran');
-         $sheet->setCellValue('M'.$rows2, 'Sisa Uang Jalan');
-         $sheet->setCellValue('N'.$rows2, 'Keterangan');
+         if($request['tgl_awal'] != null && $request['tgl_akhir'] != null){
+            $spreadsheet->getActiveSheet()->mergeCells('A2:N2');
+            $sheet->setCellValue('A2', 'Tanggal : '. date('d-m-Y', strtotime($request['tgl_awal'])) .' S/D '. date('d-m-Y', strtotime($request['tgl_akhir'])));
+            $spreadsheet->getActiveSheet()->getStyle('A2')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+         }
+
+
+         $rows3 = 3;
+         $sheet->setCellValue('A'.$rows3, 'Id Jo');
+         $sheet->setCellValue('B'.$rows3, 'Tanggal');
+         $sheet->setCellValue('C'.$rows3, 'Status');
+         $sheet->setCellValue('D'.$rows3, 'Driver');
+         $sheet->setCellValue('E'.$rows3, 'Nomor Plat Polisi');
+         $sheet->setCellValue('F'.$rows3, 'Jenis mobil');
+         $sheet->setCellValue('G'.$rows3, 'Customer');
+         $sheet->setCellValue('H'.$rows3, 'Muatan');
+         $sheet->setCellValue('I'.$rows3, 'Alamat Awal');
+         $sheet->setCellValue('J'.$rows3, 'Alamat Akhir');
+         $sheet->setCellValue('K'.$rows3, 'Total Uj');
+         $sheet->setCellValue('L'.$rows3, 'Pembayaran');
+         $sheet->setCellValue('M'.$rows3, 'Sisa Uang Jalan');
+         $sheet->setCellValue('N'.$rows3, 'Keterangan');
          for($col = 'A'; $col !== 'N'; $col++){$sheet->getColumnDimension($col)->setAutoSize(true);}
-         $x = 3;
+         $x = 4;
          foreach($data as $val){
                 $status_payment = $val['status_payment'] == '0' ? 'Belum Bayar' : ($val['status_payment'] == '1' ? 'Progress Payment' : 'Lunas');
                 $status_jo = $val['status_joborder'] == '0' ? 'Ongoing' : 'Done';
@@ -643,7 +650,7 @@ class JoborderController extends Controller
                  $sheet->setCellValue('N' . $x,  $val['keterangan_joborder'] ?? '');
                  $x++;
          }
-      $cell   = count($data) + 3;
+      $cell   = count($data) + 4;
       $spreadsheet->getActiveSheet()->getStyle('K3:K'.$cell)->getNumberFormat()->setFormatCode('#,##0');
       $spreadsheet->getActiveSheet()->getStyle('M3:M'.$cell)->getNumberFormat()->setFormatCode('#,##0');
 
@@ -696,6 +703,8 @@ class JoborderController extends Controller
 
                 $data = [
                     'jo' => $data,
+                    'tgl_awal' => $request['tgl_awal'],
+                    'tgl_akhir' => $request['tgl_akhir'],
                 ];
 
         $pdf =  PDF::loadView('backend.joborder.report',  compact('data'));

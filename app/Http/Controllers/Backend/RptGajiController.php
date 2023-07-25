@@ -79,7 +79,7 @@ class RptGajiController extends Controller
                 $tgl_awal = $request['tgl_awal'];
                 $tgl_akhir = $request['tgl_akhir'];
                 // $rup = Rup::where('')
-                $payment = PaymentGaji::orderBy('tgl_payment','desc')
+                $payment = PaymentGaji::with('penggajian')->orderBy('tgl_payment','desc')
                 ->when($tgl_awal, function ($query, $tgl_awal) {
                     return $query->whereDate('tgl_payment', '>=', $tgl_awal);
                  })
@@ -104,7 +104,7 @@ class RptGajiController extends Controller
         $tgl_awal = date('Y-m-d', strtotime($request['tgl_awal']));
         $tgl_akhir =  date('Y-m-d', strtotime($request['tgl_akhir']));
         // $total_debit_awal = $total_kredit_awal =   $total_debit = $total_kredit = $saldo_awal = $saldo_akhir = 0;
-        $data = PaymentGaji::orderBy('tgl_payment','desc')
+        $data = PaymentGaji::with('penggajian')->orderBy('tgl_payment','desc')
         ->when($tgl_awal, function ($query, $tgl_awal) {
             return $query->whereDate('tgl_payment', '>=', $tgl_awal);
          })

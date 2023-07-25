@@ -46,7 +46,7 @@
     }
 
     #pakettable, td {
-        font-size:5px;
+        font-size:8px;
     }
 
     .header {
@@ -66,6 +66,9 @@
 
     <div class="header" style="padding-bottom: 20px;">
         <h3  style=" text-align: center; margin-top:25px;margin-bottom: 0">Laporan Joborder</h3>
+        @if($data['tgl_awal'] != null && $data['tgl_akhir'] != null)
+        <h5  style=" text-align: center; margin-top:25px;margin-bottom: 0">TANGGAL : {{\Carbon\Carbon::parse($data['tgl_awal'])->format('d-m-Y')}} S/D {{\Carbon\Carbon::parse($data['tgl_akhir'])->format('d-m-Y')}} </h5>
+        @endif
     </div>
 
 

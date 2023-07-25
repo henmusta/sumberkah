@@ -393,7 +393,7 @@ if(cek_gaji_id != ''){
 			initComplete : function(settings, json){
 				let api = this.api();
 				$(api.table().footer()).find('.btn-add-row').click(function(){
-                    let keterangan_payment = 'Payment Kode Slip Gaji : '+ $('#cek_kode_gaji').val();
+                    let keterangan_payment = '-';
 					api.row.add({ jenis_pembayaran: '', keterangan : keterangan_payment, nominal : 0 }).draw();
 				});
 			},

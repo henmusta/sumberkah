@@ -33,6 +33,10 @@
         border: 1px solid black;
         border-collapse: collapse;
     }
+    a {
+        color: inherit;
+        text-decoration: none;
+     }
 
     #pakettable{
         width: 100%;
@@ -88,7 +92,7 @@
                 <tr>
                     <td width="2%" class="text-center">{{$no++}}</td>
                     <td>{{$val->tgl_payment}}</td>
-                    <td>{{$val->kode_gaji}}</td>
+                    <td><a href="{{ route('backend.penggajian.index') }}?penggajian_id={{$val['penggajian']->id}}" target="_blank">{{$val->kode_gaji}}</a></td>
                     <td>{{$val->jenis_payment}}</td>
                     <td>{{$val->keterangan}}</td>
                     <td  class="text-end">Rp. {{ number_format($val->nominal,0,',','.')}}</td>

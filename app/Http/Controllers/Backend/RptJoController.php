@@ -50,7 +50,7 @@ class RptJoController extends Controller
                 $tgl_awal = $request['tgl_awal'];
                 $tgl_akhir = $request['tgl_akhir'];
                 // $rup = Rup::where('')
-                $payment = PaymentJo::orderBy('tgl_payment','desc')
+                $payment = PaymentJo::with('joborder')->orderBy('kode_joborder','desc')
                 ->when($tgl_awal, function ($query, $tgl_awal) {
                     return $query->whereDate('tgl_payment', '>=', $tgl_awal);
                  })
@@ -79,7 +79,7 @@ class RptJoController extends Controller
                 $tgl_awal = $request['tgl_awal'];
                 $tgl_akhir = $request['tgl_akhir'];
                 // $rup = Rup::where('')
-                $payment = PaymentJo::orderBy('tgl_payment','desc')
+                $payment = PaymentJo::orderBy('kode_joborder','desc')
                 ->when($tgl_awal, function ($query, $tgl_awal) {
                     return $query->whereDate('tgl_payment', '>=', $tgl_awal);
                  })
@@ -104,7 +104,7 @@ class RptJoController extends Controller
         $tgl_awal = date('Y-m-d', strtotime($request['tgl_awal']));
         $tgl_akhir =  date('Y-m-d', strtotime($request['tgl_akhir']));
         // $total_debit_awal = $total_kredit_awal =   $total_debit = $total_kredit = $saldo_awal = $saldo_akhir = 0;
-        $data = PaymentJo::orderBy('tgl_payment','desc')
+        $data = PaymentJo::with('joborder')->orderBy('kode_joborder','desc')
         ->when($tgl_awal, function ($query, $tgl_awal) {
             return $query->whereDate('tgl_payment', '>=', $tgl_awal);
          })
@@ -127,7 +127,7 @@ class RptJoController extends Controller
             $sheet->setCellValue('B'.$rows5, 'Tanggal Payment');
             $sheet->setCellValue('C'.$rows5, 'Kode Joborder');
             $sheet->setCellValue('D'.$rows5, 'Jenis Pembayaran');
-            $sheet->setCellValue('E'.$rows5, 'Keterangan Pembayaran');
+            $sheet->setCellValue('E'.$rows5, 'Operator (Waktu)');
             $sheet->setCellValue('F'.$rows5, 'Keterangan Kasbon');
             $sheet->setCellValue('G'.$rows5, 'Nominal Pembayaran');
             $sheet->setCellValue('H'.$rows5, 'Nominal Kasbon');
@@ -144,7 +144,7 @@ class RptJoController extends Controller
                     $sheet->setCellValue('B' . $x, $val['tgl_payment']);
                     $sheet->setCellValue('C' . $x, $val['kode_joborder'] ?? '');
                     $sheet->setCellValue('D' . $x, $val['jenis_payment'] ?? '');
-                    $sheet->setCellValue('E' . $x, $val['keterangan']);
+                    $sheet->setCellValue('E' . $x, $val['joborder']->createdby['name'] . ' ( ' .date('d-m-Y', strtotime($val['created_at'])) .' )');
                     $sheet->setCellValue('F' . $x, $val['keterangan_kasbon']);
                     $sheet->setCellValue('G' . $x, $val['nominal']);
                     $sheet->setCellValue('H' . $x, $val['nominal_kasbon']);
