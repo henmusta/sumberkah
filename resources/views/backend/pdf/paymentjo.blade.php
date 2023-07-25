@@ -86,7 +86,7 @@
 </head>
 <body>
 <div class="header">
-    <p class="text-left">{{ $joborder['createdby']['name'] ?? '' }} ( {{  \Carbon\Carbon::parse($joborder['created_at'])->format('d-m-Y')  }} )</p>
+    <p class="text-left">{{ $joborder['createdby']['name'] ?? '' }} ( {{  \Carbon\Carbon::parse($joborder['created_at'])->format('d-m-Y H:i')  }} )</p>
 </div>
 <h5 style=" text-align: center; margin-top:25px;margin-bottom: 0">BUKTI TITIPAN UANG JALAN</h5>
 
