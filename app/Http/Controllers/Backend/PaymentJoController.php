@@ -327,7 +327,7 @@ class PaymentJoController extends Controller
 
                         }
 
-
+                    //    dd($val['keterangan_kasbon']);
                         $paymentjoborder = PaymentJo::find($val['id']);
 
                         $payment = PaymentJo::updateOrCreate([

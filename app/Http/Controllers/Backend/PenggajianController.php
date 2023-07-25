@@ -289,7 +289,7 @@ class PenggajianController extends Controller
           ['url' => '#', 'title' => "Detail Invoice"],
         ];
         $penggajian = Penggajian::with('driver', 'mobil', 'joborder')->findOrFail($id);
-        $konfirmasiJo = KonfirmasiJo::with('joborder')->where('penggajian_id',  $penggajian['id'])->get();
+        $konfirmasiJo = KonfirmasiJo::with('joborder')->where('penggajian_id',  $penggajian['id'])->orderBy('kode_joborder', 'desc')->get();
         // dd( $invoice['joborder'][0]['muatan']);
         $data = [
           'penggajian' => $penggajian,
