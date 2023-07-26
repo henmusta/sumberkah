@@ -708,6 +708,7 @@ class JoborderController extends Controller
                 ];
 
         $pdf =  PDF::loadView('backend.joborder.report',  compact('data'));
+        $pdf->setPaper('F4', 'potrait');
         $fileName = 'Laporan-Payment_JO : '. $tgl_awal . '-SD-' .$tgl_akhir;
         return $pdf->stream("${fileName}.pdf");
     }

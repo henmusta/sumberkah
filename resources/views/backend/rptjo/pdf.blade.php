@@ -7,7 +7,7 @@
         /* size: 21cm 15cm; */
         /* size: landscape; */
         margin: 0;
-        margin: 10mm 10mm 10mm 10mm;
+        margin: 5mm 5mm 5mm 5mm;
     }
     body {
       font-family: Arial, sans-serif;
@@ -47,13 +47,13 @@
     }
 
     #pakettable, #pakettable th, #pakettable td {
-        padding: 10px;
+        padding: 5px;
         border: 1px solid black;
         border-collapse: collapse;
     }
 
     #pakettable, td {
-        font-size:12px;
+        font-size:10px;
     }
 
     .header {

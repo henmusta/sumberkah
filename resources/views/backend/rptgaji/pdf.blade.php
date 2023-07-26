@@ -7,7 +7,7 @@
         /* size: 21cm 15cm; */
         /* size: landscape; */
         margin: 0;
-        margin: 10mm 10mm 10mm 10mm;
+        margin: 5mm 5mm 5mm 5mm;
     }
     body {
       font-family: Arial, sans-serif;
@@ -47,13 +47,13 @@
     }
 
     #pakettable, #pakettable th, #pakettable td {
-        padding: 10px;
+        padding: 5px;
         border: 1px solid black;
         border-collapse: collapse;
     }
 
     #pakettable, td {
-        font-size:12px;
+        font-size:10px;
     }
 
     .header {
@@ -72,7 +72,7 @@
 <body>
 
     <div class="header" style="padding-bottom: 20px;">
-        <h3  style=" text-align: center; margin-top:25px;margin-bottom: 0">Laporan Payment Joborder</h3>
+        <h3  style=" text-align: center; margin-top:25px;margin-bottom: 0">Laporan Payment Gaji</h3>
         <h5  style=" text-align: center; margin-top:25px;margin-bottom: 0">TANGGAL : {{\Carbon\Carbon::parse($data['tgl_awal'])->format('d-m-Y')}} S/D {{\Carbon\Carbon::parse($data['tgl_akhir'])->format('d-m-Y')}} </h5>
     </div>
 
@@ -83,28 +83,22 @@
             <tr >
                 <th>No</th>
                 <th>Tanggal Payment</th>
-                <th>Kode Joborder</th>
-                <th>Keterangan Kasbon</th>
+                <th>Kode Gaji</th>
                 <th>Jenis Pembayaran</th>
+                <th>Keterangan Pembayaran</th>
                 <th>Nominal Pembayaran</th>
-                <th>Nominal Kasbon</th>
-                <th>Operator (Waktu)</th>
             </tr>
         </thead>
         <tbody>
             @php($no=1)
-            @php($total_uj = $nominal = $nominal_kasbon = 0)
             @foreach ($data['payment'] as $val)
-                {{-- @php($total_uj += $val['joborder']->total_uang_jalan) --}}
                 <tr>
                     <td width="2%" class="text-center">{{$no++}}</td>
                     <td>{{$val->tgl_payment}}</td>
-                    <td><a href="{{ route('backend.joborder.index') }}?joborder_id={{$val['joborder']->id}}" target="_blank">{{$val->kode_joborder}}</a></td>
-                    <td>{{$val->keterangan_kasbon}}</td>
+                    <td><a href="{{ route('backend.penggajian.index') }}?penggajian_id={{$val['penggajian']->id}}" target="_blank">{{$val->kode_gaji}}</a></td>
                     <td>{{$val->jenis_payment}}</td>
+                    <td>{{$val->keterangan}}</td>
                     <td  class="text-end">Rp. {{ number_format($val->nominal,0,',','.')}}</td>
-                    <td  class="text-end">Rp. {{ number_format($val->nominal_kasbon,0,',','.')}}</td>
-                    <td>{{$val['joborder']->createdby['name']}} ( {{\Carbon\Carbon::parse($val['joborder']->created_at)->format('d-m-Y H:i:s')}} )</td>
                    </tr>
             @endforeach
         </tbody>
@@ -112,13 +106,6 @@
             <tr>
                 <th colspan="5"style="text-align:right">Total: </th>
                 <th class="text-end" id="">Rp. {{ number_format($data['payment']->sum('nominal'),0,',','.')}}</th>
-                <th class="text-end" id="">Rp. {{ number_format($data['payment']->sum('nominal_kasbon'),0,',','.')}}</th>
-                <th></th>
-             </tr>
-             <tr>
-                <th colspan="5"style="text-align:right">Grand Total: </th>
-                @php($grand_total = $data['payment']->sum('nominal') - $data['payment']->sum('nominal_kasbon'))
-                <th class="text-end" colspan="3" id="">Rp. {{ number_format($grand_total,0,',','.')}}</th>
              </tr>
         </tfoot>
     </table>

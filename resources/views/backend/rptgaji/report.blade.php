@@ -3,9 +3,10 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
   <style>
 
-    @page {
+
+@page {
         /* size: 21cm 15cm; */
-        size: landscape;
+        /* size: landscape; */
         margin: 0;
         margin: 10mm 10mm 10mm 10mm;
     }
@@ -20,11 +21,18 @@
     }
 
 
+    .text-end{
+        text-align: right !important;
+    }
     .headertable{
         width: 100%;
         padding: 50px;
     }
 
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
 
     .headertable,
       .headertable th, .headertable td {
@@ -33,10 +41,6 @@
         border: 1px solid black;
         border-collapse: collapse;
     }
-    a {
-        color: inherit;
-        text-decoration: none;
-     }
 
     #pakettable{
         width: 100%;

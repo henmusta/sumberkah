@@ -93,7 +93,7 @@ class RptGajiController extends Controller
                     'payment' => $payment,
                 ];
 
-        $pdf =  PDF::loadView('backend.rptgaji.report',  compact('data'));
+        $pdf =  PDF::loadView('backend.rptgaji.pdf',  compact('data'));
         $fileName = 'Laporan-Payment_JO : '. $tgl_awal . '-SD-' .$tgl_akhir;
         return $pdf->stream("${fileName}.pdf");
     }
