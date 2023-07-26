@@ -139,7 +139,7 @@ class KonfirmasiJoController extends Controller
 
 
                             $driver = Driver::findOrFail($joborder['driver_id']);
-                            $cek_status_jalan_driver = count($cek_sj_driver) > '1' ? '1' : '0';
+                            $cek_status_jalan_driver = count($cek_sj_driver) > '0' ? '1' : '0';
                             // dd($cek_status_jalan_driver);
 
                         //    dd( $cek_status_jalan_driver);
@@ -147,7 +147,7 @@ class KonfirmasiJoController extends Controller
                                 'status_jalan'  =>  $cek_status_jalan_driver,
                             ]);
                             $mobil = Mobil::findOrFail($joborder['mobil_id']);
-                            $cek_status_jalan_mobil = count($cek_sj_mobil) > '1' ? '1' : '0';
+                            $cek_status_jalan_mobil = count($cek_sj_mobil) > '0' ? '1' : '0';
                             $mobil->update([
                                 'status_jalan'  =>  $cek_status_jalan_mobil,
                             ]);
