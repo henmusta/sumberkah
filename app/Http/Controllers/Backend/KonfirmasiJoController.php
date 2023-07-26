@@ -106,7 +106,6 @@ class KonfirmasiJoController extends Controller
                   $rute = Rute::findOrFail( $joborder['rute_id']);
 
                   $total_harga = $rute['harga'] * $request['berat_muatan'];
-
                   if($total_harga < 0){
                     $response = response()->json([
                         'status' => 'error',
@@ -129,9 +128,9 @@ class KonfirmasiJoController extends Controller
                       ]);
 
                       if(isset($data['id'])){
-                        $joborder->update([
-                            'status_joborder' => 1
-                        ]);
+                            $joborder->update([
+                                'status_joborder' => 1
+                            ]);
 
                             $cek_sj_driver = Joborder::where('driver_id',$joborder['driver_id'])->where('status_joborder', '0')->get();
                             $cek_sj_mobil = Joborder::where('mobil_id',$joborder['mobil_id'])->where('status_joborder', '0')->get();
@@ -140,7 +139,7 @@ class KonfirmasiJoController extends Controller
 
                             $driver = Driver::findOrFail($joborder['driver_id']);
                             $cek_status_jalan_driver = count($cek_sj_driver) <= '1' ? '0' : '1';
-                            // dd($cek_status_jalan_driver);
+                           // dd($cek_status_jalan_driver,  count($cek_sj_driver));
 
                         //    dd( $cek_status_jalan_driver);
                             $driver->update([

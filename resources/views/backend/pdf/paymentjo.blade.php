@@ -21,6 +21,13 @@
       font-size: 10px;
     }
 
+    #head {
+        width: 100%;
+        margin-top: 5px;
+        font-size: 10px;
+        font-weight: normal;
+    }
+
     .header table, tr, td {
       margin: 0;
       padding: 0;
@@ -86,9 +93,30 @@
 </head>
 <body>
 <div class="header">
-    <p class="text-left">{{ $joborder['createdby']['name'] ?? '' }} ( {{  \Carbon\Carbon::parse($joborder['created_at'])->format('d-m-Y H:i:s')  }} )</p>
+
 </div>
-<h5 style=" text-align: center; margin-top:25px;margin-bottom: 0">BUKTI TITIPAN UANG JALAN</h5>
+<table id="head">
+    <tr>
+      <td style="width: 20%; font-weight: normal; text-align: center">-</td>
+      <td style="width: 60%; font-weight: bold; font-size: 14px; text-align: center">BUKTI TITIPAN UANG JALAN</td>
+      <td style="width: 20%; font-weight: normal; text-align: right">{{ $joborder['createdby']['name'] ?? '' }} ( {{  \Carbon\Carbon::parse($joborder['created_at'])->format('d-m-Y H:i:s')  }} )</td>
+    </tr>
+  </table>
+{{-- <table>
+    <thead>
+        <tr>
+            <th width="20%"></th>
+            <th width="60%"><h5 style=" text-align: center; margin-top:25px;margin-bottom: 0">BUKTI TITIPAN UANG JALAN</h5></th>
+            <th width="20%"><p class="text-left">{{ $joborder['createdby']['name'] ?? '' }} ( {{  \Carbon\Carbon::parse($joborder['created_at'])->format('d-m-Y H:i:s')  }} )</p></th>
+        </tr>
+        <tr>
+            <th width="20%"></th>
+            <th width="60%"><h5 style=" text-align: center; margin-top:25px;margin-bottom: 0">BUKTI TITIPAN UANG JALAN</h5></th>
+            <th width="20%"><p class="text-left"></p></th>
+        </tr>
+    </thead>
+</table> --}}
+
 
 <div style="  height: 50%; !important">
 

@@ -90,7 +90,9 @@
         </thead>
         <tbody>
             @php($no=1)
+            @php($total_uj = $nominal = $nominal_kasbon = 0)
             @foreach ($data['payment'] as $val)
+                @php($total_uj += $val['joborder']->total_uang_jalan)
                 <tr>
                     <td width="2%" class="text-center">{{$no++}}</td>
                     <td>{{$val->tgl_payment}}</td>
@@ -105,8 +107,14 @@
         </tbody>
         <tfoot>
             <tr>
-                <th colspan="7"style="text-align:right">Total: </th>
+                <th colspan="6"style="text-align:right">Total: </th>
                 <th class="text-end" id="">Rp. {{ number_format($data['payment']->sum('nominal'),0,',','.')}}</th>
+                <th class="text-end" id="">Rp. {{ number_format($data['payment']->sum('nominal_kasbon'),0,',','.')}}</th>
+             </tr>
+             <tr>
+                <th colspan="6"style="text-align:right">Grand Total: </th>
+                @php($grand_total = $total_uj - $data['payment']->sum('nominal_kasbon'))
+                <th class="text-end" colspan="2" id="">Rp. {{ number_format($grand_total,0,',','.')}}</th>
              </tr>
         </tfoot>
     </table>

@@ -139,7 +139,13 @@ class RptJoController extends Controller
 
             $x = 6;
             $no = 1;
+            $total_uj = $nominal = $nominal_kasbon = 0;
             foreach($data as $val){
+
+                    $total_uj += $val['joborder']->total_uang_jalan;
+                    $nominal += $val['nominal'];
+                    $nominal_kasbon += $val['nominal_kasbon'];
+
                     $sheet->setCellValue('A' . $x, $no++);
                     $sheet->setCellValue('B' . $x, $val['tgl_payment']);
                     $sheet->setCellValue('C' . $x, $val['kode_joborder'] ?? '');
@@ -153,8 +159,7 @@ class RptJoController extends Controller
 
             $cell   = count($data) + 6;
             // $spreadsheet->getActiveSheet()->getStyle('F6:F'.$cell + 3)->getNumberFormat()->setFormatCode('#,##0');
-            $spreadsheet->getActiveSheet()->getStyle('G6:G'.$cell)->getNumberFormat()->setFormatCode('#,##0');
-            $spreadsheet->getActiveSheet()->getStyle('H6:H'.$cell)->getNumberFormat()->setFormatCode('#,##0');
+
 
             // $cell_tk = $cell + 1;
             // $cell_sba = $cell + 2;
@@ -163,6 +168,16 @@ class RptJoController extends Controller
             $spreadsheet->getActiveSheet()->getStyle('A'.$cell)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
             $spreadsheet->setActiveSheetIndex(0)->setCellValue('G'.$cell, '=SUM(G5:G' . $cell . ')');
             $spreadsheet->setActiveSheetIndex(0)->setCellValue('H'.$cell, '=SUM(H5:H' . $cell . ')');
+
+             $cell_gt =  $cell + 1;
+             $spreadsheet->setActiveSheetIndex(0)->setCellValue('A'. $cell_gt, 'Grand Total :');
+             $spreadsheet->getActiveSheet()->mergeCells( 'A' .  $cell_gt . ':F' .  $cell_gt . '');
+             $spreadsheet->getActiveSheet()->mergeCells( 'G' .  $cell_gt . ':H' .  $cell_gt . '');
+             $spreadsheet->getActiveSheet()->getStyle('A'.$cell_gt)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
+             $spreadsheet->setActiveSheetIndex(0)->setCellValue('G'.$cell_gt, $total_uj - $nominal_kasbon);
+
+             $spreadsheet->getActiveSheet()->getStyle('G6:G'.$cell_gt)->getNumberFormat()->setFormatCode('#,##0');
+             $spreadsheet->getActiveSheet()->getStyle('H6:H'.$cell_gt)->getNumberFormat()->setFormatCode('#,##0');
 
 
       $writer = new Xlsx($spreadsheet);

@@ -49,7 +49,7 @@ class PenggajianController extends Controller
         if ($request->ajax()) {
             $month = date("m",strtotime($request['bulan_kerja']));
             $year = date("Y",strtotime($request['bulan_kerja']));
-          $data = Penggajian::with('driver', 'mobil');
+          $data = Penggajian::selectRaw('penggajian.*')->with('driver', 'mobil');
             if ($request->filled('status_payment')) {
                  $data->where('status_payment', $request['status_payment']);
             }
@@ -289,7 +289,7 @@ class PenggajianController extends Controller
           ['url' => '#', 'title' => "Detail Invoice"],
         ];
         $penggajian = Penggajian::with('driver', 'mobil', 'joborder')->findOrFail($id);
-        $konfirmasiJo = KonfirmasiJo::with('joborder')->where('penggajian_id',  $penggajian['id'])->orderBy('kode_joborder', 'desc')->get();
+        $konfirmasiJo = KonfirmasiJo::with('joborder')->where('penggajian_id',  $penggajian['id'])->orderBy('kode_joborder', 'asc')->get();
         // dd( $invoice['joborder'][0]['muatan']);
         $data = [
           'penggajian' => $penggajian,
