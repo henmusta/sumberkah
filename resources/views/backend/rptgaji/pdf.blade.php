@@ -84,28 +84,44 @@
                 <th>No</th>
                 <th>Tanggal Payment</th>
                 <th>Kode Gaji</th>
+                <th>Nama Supir</th>
+                <th>No polisi</th>
+                <th>Periode Gaji</th>
                 <th>Jenis Pembayaran</th>
-                <th>Keterangan Pembayaran</th>
                 <th>Nominal Pembayaran</th>
+                <th>Sisa Pembayaran</th>
+                <th>Total Gaji</th>
+                <th>Operator (Waktu)</th>
             </tr>
         </thead>
         <tbody>
             @php($no=1)
+            @php($sisa_gaji = $total_gaji = 0)
             @foreach ($data['payment'] as $val)
+                @php($sisa_gaji += $val['penggajian']->sisa_gaji)
+                @php($total_gaji += $val['penggajian']->total_gaji)
                 <tr>
                     <td width="2%" class="text-center">{{$no++}}</td>
                     <td>{{$val->tgl_payment}}</td>
                     <td><a href="{{ route('backend.penggajian.index') }}?penggajian_id={{$val['penggajian']->id}}" target="_blank">{{$val->kode_gaji}}</a></td>
+                    <td>{{$val['penggajian']->driver['name']}}</td>
+                    <td>{{$val['penggajian']->mobil['nomor_plat']}}</td>
+                    <td>{{ \Carbon\Carbon::parse($val['penggajian']['bulan_kerja'])->isoFormat('MMMM Y')}}</td>
                     <td>{{$val->jenis_payment}}</td>
-                    <td>{{$val->keterangan}}</td>
                     <td  class="text-end">Rp. {{ number_format($val->nominal,0,',','.')}}</td>
+                    <td  class="text-end">Rp. {{ number_format($val['penggajian']->sisa_gaji,0,',','.')}}</td>
+                    <td  class="text-end">Rp. {{ number_format($val['penggajian']->total_gaji,0,',','.')}}</td>
+                    <td>{{$val['penggajian']->createdby['name']}} ( {{\Carbon\Carbon::parse($val['penggajian']->created_at)->format('d-m-Y H:i:s')}} )</td>
                    </tr>
             @endforeach
         </tbody>
         <tfoot>
             <tr>
-                <th colspan="5"style="text-align:right">Total: </th>
+                <th colspan="7"style="text-align:right">Total: </th>
                 <th class="text-end" id="">Rp. {{ number_format($data['payment']->sum('nominal'),0,',','.')}}</th>
+                <th class="text-end" id="">Rp. {{ number_format($sisa_gaji,0,',','.')}}</th>
+                <th class="text-end" id="">Rp. {{ number_format($total_gaji,0,',','.')}}</th>
+                <th></th>
              </tr>
         </tfoot>
     </table>

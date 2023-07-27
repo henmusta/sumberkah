@@ -153,7 +153,7 @@ class RptJoController extends Controller
                     $sheet->setCellValue('E' . $x, $val['jenis_payment'] ?? '');
                     $sheet->setCellValue('F' . $x, $val['nominal']);
                     $sheet->setCellValue('G' . $x, $val['nominal_kasbon']);
-                    $sheet->setCellValue('H' . $x, $val['joborder']->createdby['name'] . ' ( ' .date('d-m-Y', strtotime($val['created_at'])) .' )');
+                    $sheet->setCellValue('H' . $x, $val['joborder']->createdby['name'] . ' ( ' .date('d-m-Y', strtotime($val['joborder']->created_at)) .' )');
                     $x++;
             }
 

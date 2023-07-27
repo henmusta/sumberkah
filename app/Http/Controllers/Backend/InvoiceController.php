@@ -9,6 +9,8 @@ use App\Models\Invoice;
 use App\Models\KonfirmasiJo;
 use App\Models\Customer;
 use App\Models\Joborder;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use App\Traits\NoUrutTrait;
 use Carbon\Carbon;
 use App\Traits\ResponseStatus;
@@ -16,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
+use PDF;
 use Throwable;
 
 class InvoiceController extends Controller
@@ -52,6 +55,10 @@ class InvoiceController extends Controller
 
             if ($request->filled('id')) {
                 $data->where('id', $request['id']);
+            }
+
+            if ($request->filled('ppn')) {
+                $data->where('ppn', $request['ppn']);
             }
 
             if ($request->filled('tgl_invoice')) {
@@ -455,6 +462,154 @@ class InvoiceController extends Controller
       }
 
       return $response;
+    }
+
+
+    public function pdf(Request $request)
+    {
+
+       $status_payment = $request['status_payment'];
+       $customer_id =  $request['customer_id'];
+       $id = $request['id'];
+       $ppn = $request['ppn'];
+       $tgl_invoice = $request['tgl_invoice'];
+       $tgl_jatuh_tempo = $request['tgl_jatuh_tempo'];
+       $tgl_awal = $request['tgl_awal'];
+       $tgl_akhir = $request['tgl_akhir'];
+
+        // dd( $tgl_akhir);
+        $data = Invoice::with('customer','createdby')
+         ->when($status_payment, function ($query, $status_payment) {
+            return $query->where('status_payment',  $status_payment);
+         })->when($customer_id, function ($query, $customer_id) {
+            return $query->where('customer_id',  $customer_id);
+         })->when($id, function ($query, $id) {
+            return $query->where('id',  $customer_id);
+         })->when($ppn, function ($query, $ppn) {
+            return $query->where('ppn',  $ppn);
+         })->when($tgl_invoice, function ($query, $tgl_invoice) {
+            return $query->whereDate('tgl_invoice',  $tgl_invoice);
+         })->when($tgl_jatuh_tempo, function ($query, $tgl_jatuh_tempo) {
+            return $query->whereDate('tgl_jatuh_tempo',  $tgl_jatuh_tempo);
+         })->when($tgl_awal, function ($query, $tgl_awal) {
+                return $query->whereDate('tgl_invoice', '>=', $tgl_awal);
+         })->when($tgl_akhir, function ($query, $tgl_akhir) {
+            return $query->whereDate('tgl_invoice', '<=', $tgl_akhir);
+         })->get();
+
+
+                $data = [
+                    'invoice' => $data,
+                    'tgl_awal' => $request['tgl_awal'],
+                    'tgl_akhir' => $request['tgl_akhir'],
+                ];
+
+        $pdf =  PDF::loadView('backend.invoice.report',  compact('data'));
+        $pdf->setPaper('F4', 'landscape');
+        $fileName = 'Laporan-Payment_JO : '. $tgl_awal . '-SD-' .$tgl_akhir;
+        return $pdf->stream("${fileName}.pdf");
+    }
+
+    public function excel(Request $request)
+    {
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+
+        $status_payment = $request['status_payment'];
+        $customer_id =  $request['customer_id'];
+        $id = $request['id'];
+        $ppn = $request['ppn'];
+        $tgl_invoice = $request['tgl_invoice'];
+        $tgl_jatuh_tempo = $request['tgl_jatuh_tempo'];
+        $tgl_awal = $request['tgl_awal'];
+        $tgl_akhir = $request['tgl_akhir'];
+
+         // dd( $tgl_akhir);
+         $data = Invoice::with('customer','createdby')
+          ->when($status_payment, function ($query, $status_payment) {
+             return $query->where('status_payment',  $status_payment);
+          })->when($customer_id, function ($query, $customer_id) {
+             return $query->where('customer_id',  $customer_id);
+          })->when($id, function ($query, $id) {
+             return $query->where('id',  $customer_id);
+          })->when($ppn, function ($query, $ppn) {
+             return $query->where('ppn',  $ppn);
+          })->when($tgl_invoice, function ($query, $tgl_invoice) {
+             return $query->whereDate('tgl_invoice',  $tgl_invoice);
+          })->when($tgl_jatuh_tempo, function ($query, $tgl_jatuh_tempo) {
+             return $query->whereDate('tgl_jatuh_tempo',  $tgl_jatuh_tempo);
+          })->when($tgl_awal, function ($query, $tgl_awal) {
+                 return $query->whereDate('tgl_invoice', '>=', $tgl_awal);
+          })->when($tgl_akhir, function ($query, $tgl_akhir) {
+             return $query->whereDate('tgl_invoice', '<=', $tgl_akhir);
+          })->get();
+
+         $sheet->setCellValue('A1', 'Laporan Invoice');
+         $spreadsheet->getActiveSheet()->mergeCells('A1:N1');
+         $spreadsheet->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+         if($request['tgl_awal'] != null && $request['tgl_akhir'] != null){
+            $spreadsheet->getActiveSheet()->mergeCells('A2:N2');
+            $sheet->setCellValue('A2', 'Tanggal : '. date('d-m-Y', strtotime($request['tgl_awal'])) .' S/D '. date('d-m-Y', strtotime($request['tgl_akhir'])));
+            $spreadsheet->getActiveSheet()->getStyle('A2')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+         }
+
+        //  <th>No</th>
+        //  <th class="text-center">Kode Invoice</th>
+        //  <th>Tanggal Invoice</th>
+        //  <th>Customer</th>
+        //  <th>Total Tagihan</th>
+        //  <th>Sisa Tagihan</th>
+        //  <th>Batas Pembayaran</th>
+        //  <th>Status Pembayaran</th>
+        //  <th>Operator (Waktu)</th>
+
+
+         $rows3 = 3;
+         $sheet->setCellValue('A'.$rows3, 'Kode Invoice');
+         $sheet->setCellValue('B'.$rows3, 'Tanggal Invoice');
+         $sheet->setCellValue('C'.$rows3, 'Customer');
+         $sheet->setCellValue('D'.$rows3, 'Total Tagihan');
+         $sheet->setCellValue('E'.$rows3, 'Sisa Tagihan');
+         $sheet->setCellValue('F'.$rows3, 'Batas Pembayaran');
+         $sheet->setCellValue('G'.$rows3, 'Status Pembayaran');
+         $sheet->setCellValue('H'.$rows3, 'Operator Waktu');
+
+         for($col = 'A'; $col !== 'I'; $col++){$sheet->getColumnDimension($col)->setAutoSize(true);}
+         $x = 4;
+         foreach($data as $val){
+                $status_payment = $val['status_payment'] == '0' ? 'Belum Bayar' : ($val['status_payment'] == '1' ? 'Progress Payment' : 'Lunas');
+                 $sheet->setCellValue('A' . $x, $val['kode_invoice']);
+                 $sheet->setCellValue('B' . $x, $val['tgl_invoice']);
+                 $sheet->setCellValue('C' . $x, $val['customer']['name'] ?? '');
+                 $sheet->setCellValue('D' . $x, $val['total_harga'] ?? '');
+                 $sheet->setCellValue('E' . $x, $val['sisa_tagihan'] ?? '');
+                 $sheet->setCellValue('F' . $x, $val['tgl_jatuh_tempo'] ?? '');
+                 $sheet->setCellValue('G' . $x, $status_payment ?? '');
+                 $sheet->setCellValue('H' . $x, $val['createdby']->name . ' ( ' .date('d-m-Y', strtotime($val['created_at'])) .' )');
+                 $x++;
+         }
+      $cell   = count($data) + 4;
+
+      $spreadsheet->setActiveSheetIndex(0)->setCellValue('A'.$cell, 'Total :');
+      $spreadsheet->getActiveSheet()->mergeCells( 'A' . $cell . ':C' . $cell . '');
+      $spreadsheet->getActiveSheet()->getStyle('A'.$cell)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
+
+
+      $spreadsheet->getActiveSheet()->getStyle('D4:D'.$cell)->getNumberFormat()->setFormatCode('#,##0');
+      $spreadsheet->getActiveSheet()->getStyle('E4:E'.$cell)->getNumberFormat()->setFormatCode('#,##0');
+
+      $spreadsheet->setActiveSheetIndex(0)->setCellValue('D'.$cell, '=SUM(D3:D' . $cell . ')');
+      $spreadsheet->setActiveSheetIndex(0)->setCellValue('E'.$cell, '=SUM(E3:E' . $cell . ')');
+
+      $writer = new Xlsx($spreadsheet);
+      $filename = 'Laporan Invoice';
+      header('Content-Type: application/vnd.ms-excel');
+      header('Content-Disposition: attachment;filename="' . $filename . '.xlsx"');
+      header('Cache-Control: max-age=0');
+      $writer->save('php://output');
+
     }
 
 }

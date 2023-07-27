@@ -135,7 +135,8 @@ Route::middleware('auth:henmus')->group(function(){
 
 
             //Invoice
-
+            Route::get('invoice/excel', [Backend\InvoiceController::class, 'excel'])->name('invoice.excel');
+            Route::get('invoice/pdf', [Backend\InvoiceController::class, 'pdf'])->name('invoice.pdf');
             Route::get('invoice/findinvoice', [Backend\InvoiceController::class, 'findinvoice'])->name('invoice.findinvoice');
             Route::get('invoice/select2', [Backend\InvoiceController::class, 'select2'])->name('invoice.select2');
             Route::resource('invoice', Backend\InvoiceController::class);

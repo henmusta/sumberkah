@@ -116,7 +116,9 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-2 text-end" style="padding-top:30px;">
-                                                <div id="print">
+                                                <div class="dt-buttons btn-group flex-wrap">
+                                                    <button id="excel" class="btn btn-secondary buttons-excel buttons-html5"  tabindex="0" aria-controls="Datatable" type="button"><span>Excel</span></button>
+                                                    <button class="btn btn-secondary buttons-pdf buttons-html5"  tabindex="0" aria-controls="Datatable" type="button" id="pdf"><span>PDF</span></button>
                                                 </div>
                                             </div>
 
@@ -295,31 +297,31 @@ tr.group:hover {
       let dataTable = $('#Datatable').DataTable({
         dom: 'lfBrtip',
         buttons: [
-            {
-                extend: 'excel',
-                footer: true,
-                text: 'Excel',
-                title: 'Laporan Invoice',
-                exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4, 5, 6]
-                }
-            },
-            {
-                extend: 'pdfHtml5',
-                footer: true,
-                text: 'PDF',
-                title: 'Laporan Invoice',
-                pageSize: 'A4',
-                exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4, 5 ,6]
-                },
-                // customize : function(doc) {
-                //     doc.styles['td:nth-child(2)'] = {
-                //     width: '200px',
-                //     'max-width': '200px'
-                //     }
-                // }
-            },
+            // {
+            //     extend: 'excel',
+            //     footer: true,
+            //     text: 'Excel',
+            //     title: 'Laporan Invoice',
+            //     exportOptions: {
+            //         columns: [ 0, 1, 2, 3, 4, 5, 6]
+            //     }
+            // },
+            // {
+            //     extend: 'pdfHtml5',
+            //     footer: true,
+            //     text: 'PDF',
+            //     title: 'Laporan Invoice',
+            //     pageSize: 'A4',
+            //     exportOptions: {
+            //         columns: [ 0, 1, 2, 3, 4, 5 ,6]
+            //     },
+            //     // customize : function(doc) {
+            //     //     doc.styles['td:nth-child(2)'] = {
+            //     //     width: '200px',
+            //     //     'max-width': '200px'
+            //     //     }
+            //     // }
+            // },
 
 
         ],
@@ -399,6 +401,39 @@ tr.group:hover {
       $("#terapkan_filter").click(function() {
         dataTable.draw();
       });
+
+      $("#pdf").click(function() {
+
+        let params = new URLSearchParams({
+           status_payment : $('#select2StatusPayment').find(':selected').val() || '',
+           ppn : $('#select2Ppn').find(':selected').val() || '',
+           id : $('#select2Invoice').find(':selected').val() || '',
+           customer_id : $('#select2Customer').find(':selected').val() || '',
+           tgl_invoice : $('#tgl_invoice').val() || '',
+           tgl_jatuh_tempo : $('#tgl_jatuh_tempo').val() || '',
+           tgl_awal : $('#tgl_awal').val() || '',
+           tgl_akhir : $('#tgl_akhir').val() || ''
+        });
+        let url =  "{{ route('backend.invoice.pdf') }}?" +params.toString();
+        window.open(url, '_blank');
+     });
+
+     $("#excel").click(function() {
+
+        let params = new URLSearchParams({
+            status_payment : $('#select2StatusPayment').find(':selected').val() || '',
+            ppn : $('#select2Ppn').find(':selected').val() || '',
+            id : $('#select2Invoice').find(':selected').val() || '',
+            customer_id : $('#select2Customer').find(':selected').val() || '',
+            tgl_invoice : $('#tgl_invoice').val() || '',
+            tgl_jatuh_tempo : $('#tgl_jatuh_tempo').val() || '',
+            tgl_awal : $('#tgl_awal').val() || '',
+            tgl_akhir : $('#tgl_akhir').val() || ''
+        });
+        let url =  "{{ route('backend.invoice.excel') }}?" +params.toString();
+        window.open(url, '_blank');
+    });
+
 
       $("#formDelete").click(function (e) {
         e.preventDefault();

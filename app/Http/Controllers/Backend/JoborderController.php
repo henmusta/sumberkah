@@ -581,7 +581,7 @@ class JoborderController extends Controller
 
         // dd( $tgl_akhir);
 
-        $data = Joborder::with('customer','ruteawal','ruteakhir','muatan','mobil', 'driver', 'rute', 'jenismobil')
+        $data = Joborder::with('customer','ruteawal','ruteakhir','muatan','mobil', 'driver', 'rute', 'jenismobil', 'createdby')
         ->when($status_joborder, function ($query, $status_joborder) {
             return $query->where('status_joborder',  $status_joborder);
          })
@@ -629,7 +629,8 @@ class JoborderController extends Controller
          $sheet->setCellValue('L'.$rows3, 'Pembayaran');
          $sheet->setCellValue('M'.$rows3, 'Sisa Uang Jalan');
          $sheet->setCellValue('N'.$rows3, 'Keterangan');
-         for($col = 'A'; $col !== 'N'; $col++){$sheet->getColumnDimension($col)->setAutoSize(true);}
+         $sheet->setCellValue('O'.$rows3, 'Operator (Waktu)');
+         for($col = 'A'; $col !== 'Q'; $col++){$sheet->getColumnDimension($col)->setAutoSize(true);}
          $x = 4;
          foreach($data as $val){
                 $status_payment = $val['status_payment'] == '0' ? 'Belum Bayar' : ($val['status_payment'] == '1' ? 'Progress Payment' : 'Lunas');
@@ -648,9 +649,15 @@ class JoborderController extends Controller
                  $sheet->setCellValue('L' . $x, $status_payment);
                  $sheet->setCellValue('M' . $x,  $val['sisa_uang_jalan']);
                  $sheet->setCellValue('N' . $x,  $val['keterangan_joborder'] ?? '');
+                 $sheet->setCellValue('O' . $x, $val['createdby']->name . ' ( ' .date('d-m-Y', strtotime($val['created_at'])) .' )');
                  $x++;
          }
       $cell   = count($data) + 4;
+
+      $spreadsheet->setActiveSheetIndex(0)->setCellValue('A'.$cell, 'Total :');
+      $spreadsheet->getActiveSheet()->mergeCells( 'A' . $cell . ':J' . $cell . '');
+      $spreadsheet->getActiveSheet()->getStyle('A'.$cell)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
+
       $spreadsheet->getActiveSheet()->getStyle('K3:K'.$cell)->getNumberFormat()->setFormatCode('#,##0');
       $spreadsheet->getActiveSheet()->getStyle('M3:M'.$cell)->getNumberFormat()->setFormatCode('#,##0');
 
@@ -680,7 +687,7 @@ class JoborderController extends Controller
 
         // dd( $tgl_akhir);
 
-        $data = Joborder::with('customer','ruteawal','ruteakhir','muatan','mobil', 'driver', 'rute', 'jenismobil')
+        $data = Joborder::with('customer','ruteawal','ruteakhir','muatan','mobil', 'driver', 'rute', 'jenismobil', 'createdby')
         ->when($status_joborder, function ($query, $status_joborder) {
             return $query->where('status_joborder',  $status_joborder);
          })
@@ -708,7 +715,7 @@ class JoborderController extends Controller
                 ];
 
         $pdf =  PDF::loadView('backend.joborder.report',  compact('data'));
-        $pdf->setPaper('F4', 'potrait');
+        $pdf->setPaper('F4', 'landscape');
         $fileName = 'Laporan-Payment_JO : '. $tgl_awal . '-SD-' .$tgl_akhir;
         return $pdf->stream("${fileName}.pdf");
     }

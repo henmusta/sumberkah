@@ -3,7 +3,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
   <style>
 
-    @page {
+@page {
         /* size: 21cm 15cm; */
         size: landscape;
         margin: 0;
@@ -65,7 +65,7 @@
 <body>
 
     <div class="header" style="padding-bottom: 20px;">
-        <h3  style=" text-align: center; margin-top:25px;margin-bottom: 0">Laporan Joborder</h3>
+        <h3  style=" text-align: center; margin-top:25px;margin-bottom: 0">Laporan Invoice</h3>
         @if($data['tgl_awal'] != null && $data['tgl_akhir'] != null)
         <h5  style=" text-align: center; margin-top:25px;margin-bottom: 0">TANGGAL : {{\Carbon\Carbon::parse($data['tgl_awal'])->format('d-m-Y')}} S/D {{\Carbon\Carbon::parse($data['tgl_akhir'])->format('d-m-Y')}} </h5>
         @endif
@@ -77,54 +77,39 @@
         <thead style="background-color: #fff !important; color:black;">
             <tr >
                 <th>No</th>
-                <th class="text-center">Id JO</th>
-                <th>Tanggal</th>
-                <th>Status</th>
-                <th>Driver</th>
-                <th>No Plat Polisi</th>
-                <th>Jenis Mobil</th>
+                <th class="text-center">Kode Invoice</th>
+                <th>Tanggal Invoice</th>
                 <th>Customer</th>
-                <th>Muatan</th>
-                <th>Alamat Awal (Dari)</th>
-                <th>Alamat Akhir (Ke)</th>
-                <th width="8%">Total Uj</th>
-                <th>Pembayaran</th>
-                <th width="8%">Sisa Uj</th>
-                <th>Keterangan</th>
+                <th>Total Tagihan</th>
+                <th>Sisa Tagihan</th>
+                <th>Batas Pembayaran</th>
+                <th>Status Pembayaran</th>
                 <th>Operator (Waktu)</th>
             </tr>
         </thead>
         <tbody>
             @php($no=1)
-            @foreach ($data['jo'] as $val)
+            @foreach ($data['invoice'] as $val)
             @php($status_payment = $val['status_payment'] == '0' ? 'Belum Bayar' : ($val['status_payment'] == '1' ? 'Progress Payment' : 'Lunas'))
-            @php($status_jo = $val['status_joborder'] == '0' ? 'Ongoing' : 'Done')
                 <tr>
                     <td width="2%" class="text-center">{{$no++}}</td>
-                    <td>{{$val->kode_joborder}}</td>
-                    <td>{{$val->tgl_joborder}}</td>
-                    <td>{{$status_jo}}</td>
-                    <td>{{$val->driver['name']}}</td>
-                    <td>{{$val->mobil['nomor_plat']}}</td>
-                    <td>{{$val->jenismobil['name']}}</td>
+                    <td>{{$val->kode_invoice}}</td>
+                    <td>{{$val->tgl_invoice}}</td>
                     <td>{{$val->customer['name']}}</td>
-                    <td>{{$val->muatan['name']}}</td>
-                    <td>{{$val->ruteawal['name']}}</td>
-                    <td>{{$val->ruteakhir['name']}}</td>
-                    <td  width="60px" class="text-end">Rp. {{ number_format($val->total_uang_jalan,0,',','.')}}</td>
+                    <td  class="text-end">Rp. {{ number_format($val->total_harga,0,',','.')}}</td>
+                    <td  class="text-end">Rp. {{ number_format($val->sisa_tagihan,0,',','.')}}</td>
+                    <td>{{$val->tgl_jatuh_tempo}}</td>
                     <td>{{$status_payment}}</td>
-                    <td  class="text-end">Rp. {{ number_format($val->sisa_uang_jalan,0,',','.')}}</td>
-                    <td>{{$val->keterangan_joborder}}</td>
                     <td>{{ $val['createdby']->name ?? '' }} ( {{  \Carbon\Carbon::parse($val['created_at'])->format('d-m-Y H:i:s')  }} )</td>
-                   </tr>
+                </tr>
             @endforeach
         </tbody>
         <tfoot>
             <tr>
-                <th colspan="11"style="text-align:right">Total: </th>
-                <th class="text-end" id="">Rp. {{ number_format($data['jo']->sum('total_uang_jalan'),0,',','.')}}</th>
+                <th colspan="4"style="text-align:right">Total: </th>
+                <th class="text-end" id="">Rp. {{ number_format($data['invoice']->sum('total_harga'),0,',','.')}}</th>
+                <th class="text-end" id="">Rp. {{ number_format($data['invoice']->sum('sisa_tagihan'),0,',','.')}}</th>
                 <th></th>
-                <th class="text-end" id="">Rp. {{ number_format($data['jo']->sum('sisa_uang_jalan'),0,',','.')}}</th>
                 <th></th>
                 <th></th>
              </tr>
