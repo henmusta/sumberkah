@@ -128,10 +128,9 @@
 
                                         <div class="row" >
                                             <div class="text-center">
-                                                <label >Sisa Invoice Yang Belum Dibayar : {{ number_format($data['belum_bayar']['belum_bayar'],0,',','.') }}</label>
+                                                <label id="sisa_payment"></label>
                                             </div>
                                         </div>
-
 
 
                                     </div>
@@ -400,7 +399,37 @@ tr.group:hover {
 
       $("#terapkan_filter").click(function() {
         dataTable.draw();
+        sisa_payment();
       });
+
+      sisa_payment();
+      function sisa_payment(){
+        $.ajaxSetup({
+                headers: { 'X-CSRF-Token' : $('meta[name=_token]').attr('content') }
+            });
+            jQuery.ajax({
+                url: "{{ route('backend.invoice.sisapayment') }}",
+                type: 'GET',
+                data: {
+                    status_payment : $('#select2StatusPayment').find(':selected').val() || '',
+                    ppn : $('#select2Ppn').find(':selected').val() || '',
+                    id : $('#select2Invoice').find(':selected').val() || '',
+                    customer_id : $('#select2Customer').find(':selected').val() || '',
+                    tgl_invoice : $('#tgl_invoice').val() || '',
+                    tgl_jatuh_tempo : $('#tgl_jatuh_tempo').val() || '',
+                    tgl_awal : $('#tgl_awal').val() || '',
+                    tgl_akhir : $('#tgl_akhir').val() || ''
+                },
+                success: function( data ){
+                    let sisa_payments = (data.belum_bayar == null) ? 0 : data.belum_bayar;
+                    $("#sisa_payment").html('Sisa Invoice Yang Belum Dibayar : ' + $.fn.dataTable.render.number('.', ',', 0, '').display(sisa_payments));
+                    console.log(data);
+                },
+                error: function (xhr, b, c) {
+                    console.log("xhr=" + xhr + " b=" + b + " c=" + c);
+                }
+            });
+      }
 
       $("#pdf").click(function() {
 

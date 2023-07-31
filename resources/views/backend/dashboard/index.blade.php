@@ -314,8 +314,8 @@
                                                             <tr>
                                                                 <th width="5%">No</th>
                                                                 <th>Kode Invoice</th>
-                                                                <th>Customer</th>
                                                                 <th>Tanggal Invoice</th>
+                                                                <th>Customer</th>
                                                                 <th>Nominal Invoice</th>
                                                                 <th>Due Date</th>
 

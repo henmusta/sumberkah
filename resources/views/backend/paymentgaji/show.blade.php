@@ -16,6 +16,7 @@
                     <div class="mb-4">
                            <img  src="{{URL::to('storage/images/logo/'.Setting::get_setting()->icon)}}" alt="logo" height="50">
                     </div>
+
                     <div class="text-muted">
                         {{ \Carbon\Carbon::parse($data['mobil']['created_at'])->isoFormat('dddd, D MMMM Y')}}
                         {{-- {{ $data['legislasi']['created_at'] ?? '' }} --}}
@@ -78,6 +79,7 @@
 
 @section('css')
 <style>
+
 @media print
 {
     @page {

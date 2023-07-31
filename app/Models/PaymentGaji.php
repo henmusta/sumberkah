@@ -15,7 +15,9 @@ class PaymentGaji extends Model
       'tgl_payment',
       'nominal',
       'jenis_payment',
-      'keterangan'
+      'keterangan',
+      'created_by',
+      'updated_by'
     ];
 
     public function penggajian()

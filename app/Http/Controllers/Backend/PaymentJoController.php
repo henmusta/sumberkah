@@ -158,7 +158,8 @@ class PaymentJoController extends Controller
                       'tgl_kasbon'=> $request['tgl_pembayaran'],
                       'keterangan'=> $val_payment['keterangan'],
                       'nominal'=> $val_payment['nominal_kasbon'],
-                      'validasi' =>  '1'
+                      'validasi' =>  '1',
+                      'created_by' => Auth::user()->id
                     ]);
 
                    $kasbonjurnallog = Kasbonjurnallog::create([
@@ -198,7 +199,8 @@ class PaymentJoController extends Controller
                     'nominal_kasbon' => $val_payment['nominal_kasbon'],
                     'jenis_payment' => $val_payment['jenis_pembayaran'],
                     'keterangan_kasbon' => $val_payment['keterangan_kasbon'],
-                    'keterangan' => $val_payment['keterangan']
+                    'keterangan' => $val_payment['keterangan'],
+                    'created_by' => Auth::user()->id
                   ]);
                   $Driverlogkasbon = Driverlogkasbon::create([
                     'joborder_id' =>  $request['joborder_id'],
@@ -305,7 +307,8 @@ class PaymentJoController extends Controller
                                 'jenis'=> 'Potong Joborder',
                                 'keterangan'=> $val['keterangan_kasbon'],
                                 'nominal'=> $val['nominal_kasbon'],
-                                'validasi' =>  '1'
+                                'validasi' =>  '1',
+                                'created_by' => ($val['id'] == '' || $val['id'] == null || $val['id'] == 'undefined') ? Auth::user()->id :  $kasbon['created_by']
                             ]);
                             $kasbon_id[] = $kasbon['id'];
 
@@ -342,6 +345,7 @@ class PaymentJoController extends Controller
                             'keterangan' => $val['keterangan'],
                             'keterangan_kasbon' => $val['keterangan_kasbon'],
                             'nominal' => $val['nominal'],
+                            'created_by' => ($val['id'] == '' || $val['id'] == null || $val['id'] == 'undefined') ? Auth::user()->id : $paymentjoborder['created_by']
                         ]);
                         $payment_id[] = $payment['id'];
                         $cek_kasbon = Kasbon::where([
@@ -479,7 +483,8 @@ class PaymentJoController extends Controller
                         'jenis'=> 'Potong Joborder',
                         'keterangan'=> $request['keterangan_kasbon'],
                         'nominal'=> $request['nominal_kasbon'],
-                        'validasi' =>  '1'
+                        'validasi' =>  '1',
+                        'created_by' => Auth::user()->id
                     ]);
                     // $kasbon_id[] = $kasbon['id'];
 
@@ -545,7 +550,8 @@ class PaymentJoController extends Controller
                     'nominal_kasbon' => $request['nominal_kasbon'],
                     'jenis_payment' => $request['jenis_payment'],
                     'keterangan_kasbon' => $request['keterangan_kasbon'],
-                    'keterangan' => $request['keterangan']
+                    'keterangan' => $request['keterangan'],
+                    'updated_by' => Auth::user()->id
                 ]);
 
                 // dd($paymentjo);

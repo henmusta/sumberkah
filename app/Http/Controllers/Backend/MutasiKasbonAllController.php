@@ -17,6 +17,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Yajra\DataTables\Facades\DataTables;
 use Throwable;
+use PDF;
 
 
 class MutasiKasbonAllController extends Controller
@@ -241,7 +242,7 @@ class MutasiKasbonAllController extends Controller
             $spreadsheet = new Spreadsheet();
             $sheet = $spreadsheet->getActiveSheet();
             // $sheet->setCellValue('A1', 'Mutasi Kasbon');
-            $spreadsheet->getActiveSheet()->mergeCells('A2:I2');
+            $spreadsheet->getActiveSheet()->mergeCells('A2:J2');
             $sheet->setCellValue('A2', 'Mutasi Kasbon Keseluruhan');
             $spreadsheet->getActiveSheet()->getStyle('A2')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
@@ -263,8 +264,9 @@ class MutasiKasbonAllController extends Controller
             $sheet->setCellValue('G'.$rows5, 'Debit');
             $sheet->setCellValue('H'.$rows5, 'Kredit');
             $sheet->setCellValue('I'.$rows5, 'Saldo Kasbon');
+            $sheet->setCellValue('J'.$rows5, 'Operator (Waktu)');
 
-            for($col = 'A'; $col !== 'I'; $col++){$sheet->getColumnDimension($col)->setAutoSize(true);}
+            for($col = 'A'; $col !== 'K'; $col++){$sheet->getColumnDimension($col)->setAutoSize(true);}
 
             // $list = $pajak->get();
             // // $first = $pajak->first();
@@ -280,6 +282,7 @@ class MutasiKasbonAllController extends Controller
                     $sheet->setCellValue('G' . $x, $val['debit']);
                     $sheet->setCellValue('H' . $x, $val['kredit']);
                     $sheet->setCellValue('I' . $x, $val['new_saldo']);
+                    $sheet->setCellValue('J' . $x,  $val['kasbon']['createdby']->name . ' ( ' .date('d-m-Y', strtotime( $val['kasbon']['created_at'])) .' )');
                     $x++;
             }
 
@@ -321,5 +324,75 @@ class MutasiKasbonAllController extends Controller
       header('Cache-Control: max-age=0');
       $writer->save('php://output');
 
+    }
+
+    public function pdf(Request $request)
+    {
+
+        $tgl_awal = date('Y-m-d', strtotime($request['tgl_awal']));
+        $tgl_akhir =  date('Y-m-d', strtotime($request['tgl_akhir']));
+        $total_debit_awal = $total_kredit_awal =   $total_debit = $total_kredit = $saldo_awal = $saldo_akhir = 0;
+        $data = array();
+        $get_saldo_awal =  Kasbonjurnallog::whereDate('tgl_kasbon', '<',  $tgl_awal)->get();
+        foreach($get_saldo_awal as $key => $i){
+            $total_debit_awal += $i['debit'];
+            $total_kredit_awal += $i['kredit'];
+        }
+
+        $saldo_awal = $total_kredit_awal - $total_debit_awal;
+        $get_data = Kasbonjurnallog::selectRaw('kasbon_jurnallog.*')->with('driver','joborder', 'gaji')
+        ->when($tgl_awal, function ($query, $tgl_awal) {
+            return $query->whereDate('tgl_kasbon', '>=',  $tgl_awal);
+        })
+        ->when($tgl_akhir, function ($query, $tgl_akhir) {
+            return $query->whereDate('tgl_kasbon', '<=', $tgl_akhir);
+        })
+
+        ->get();
+
+        if(count($get_data) > 0){
+            // dd( $get_data);
+            foreach($get_data as $key => $val){
+                // dd($val);
+
+                $total_debit += $val['debit'];
+                $total_kredit += $val['kredit'];
+                $data[] = $val;
+                // $get_data[0]['saldo_awal'] =  $saldo_awal;
+                $get_data[$key]['saldo'] =  $val['kredit'] - $val['debit'];
+
+                $new_saldo = $saldo_awal;
+                if ($key == 0) {
+                    $new_saldo = $new_saldo + (float)$get_data[0]->saldo;
+                    $get_data[0]->new_saldo = $new_saldo;
+                }
+                else{
+                    $new_saldo = (float)$get_data[$key-1]->new_saldo + (float)$get_data[$key]->saldo;
+                    $get_data[$key]->new_saldo = $new_saldo;
+                    // $get_data[$key]->saldo_awal = $new_saldo;
+                }
+
+         }
+            $data[0]['saldo_akhir'] =  end($data)->new_saldo;
+        }else{
+            $data[0]['saldo_akhir'] = $saldo_awal;
+        }
+
+
+
+                $data = [
+                    'mutasikasbonall' => $data,
+                    'saldo_awal' => $saldo_awal,
+                    'saldo_akhir' => $data[0]['saldo_akhir'],
+                    'total_debit' => $total_debit,
+                    'total_kredit' => $total_kredit,
+                    'tgl_awal' => $request['tgl_awal'],
+                    'tgl_akhir' => $request['tgl_akhir'],
+                ];
+
+        $pdf =  PDF::loadView('backend.mutasikasbonall.report',  compact('data'));
+        $pdf->setPaper('F4', 'landscape');
+        $fileName = 'Laporan-MutasiKasbon : '. $tgl_awal . '-SD-' .$tgl_akhir;
+        return $pdf->stream("${fileName}.pdf");
     }
 }

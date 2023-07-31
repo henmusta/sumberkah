@@ -26,9 +26,9 @@
                                     <div class="float-end" id="print">
                                     </div>
                                     <div class="dt-buttons btn-group flex-wrap">
-                                         <button id="excel" class="btn btn-secondary buttons-excel buttons-html5"  tabindex="0" aria-controls="Datatable" type="button"><span>Excel</span></button>
-                                        <button class="btn btn-secondary buttons-pdf buttons-html5" onclick="printDiv('printableArea')" tabindex="0" aria-controls="Datatable" type="button"><span>PDF</span></button>
-                                    </div>
+                                        <button id="excel" class="btn btn-secondary buttons-excel buttons-html5"  tabindex="0" aria-controls="Datatable" type="button"><span>Excel</span></button>
+                                       <button class="btn btn-secondary buttons-pdf buttons-html5"  tabindex="0" aria-controls="Datatable" id="pdf" type="button"><span>PDF</span></button>
+                                   </div>
                                 </div>
                             </div>
                         </div>
@@ -198,6 +198,15 @@ function printDiv(divName) {
                     });
 
                     window.location.href = "{{ route('backend.mutasikasbonall.excel') }}?" +params.toString()
+        });
+
+        $("#pdf").click(function() {
+                    let params = new URLSearchParams({
+                        tgl_awal : $('#tgl_awal').val(),
+                        tgl_akhir : $('#tgl_akhir').val()
+                    });
+
+                    window.location.href = "{{ route('backend.mutasikasbonall.pdf') }}?" +params.toString()
         });
     let dataTable = $('#Datatable').DataTable({
         // dom: 'lfBrtip',

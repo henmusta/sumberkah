@@ -11,17 +11,23 @@
                 </div>
             </div>
             <div class="card-body" id="printableArea">
-                <div class="invoice-title text-center">
+                {{-- <div class="invoice-title text-center">
                     <h2 class="main-content-label mb-1">Penggajian</h2>
                     <div class="mb-4">
-                           {{-- <img  src="{{URL::to('storage/images/logo/'.Setting::get_setting()->icon)}}" alt="logo" height="50"> --}}
+
                     </div>
                     <div class="text-muted">
+
                     </div>
-                </div>
+                </div> --}}
 
-
-
+                 <table width="100%">
+                    <tr>
+                      <td style="width: 20%; font-weight: normal; text-align: center"></td>
+                      <td style="width: 60%; font-weight: bold; font-size: 18px; text-align: center">Penggajian</td>
+                      <td style="width: 20%; font-weight: normal; text-align: right"><p id="hideshow">{{ $data['penggajian']['createdby']['name'] ?? '' }} ( {{  \Carbon\Carbon::parse($data['penggajian']['created_at'])->format('d-m-Y H:i:s')  }} )</p></td>
+                    </tr>
+                  </table><br><br>
                 <div class="row" style="padding-top:10px;">
                     <div class="col-12">
                         <table>
@@ -156,7 +162,7 @@
 
                 </div>
                 <div class="row" style="padding-top:10px;">
-                    <div class="col-12">
+                    <div class="col-12" id="hideshow">
                         <table id="ttd" style="margin-left: 15px;" width="100%">
                             <tr>
                                  <th style="min-width: 33%; font-weight: normal; text-align: center">Dibuat Oleh</th>
@@ -187,8 +193,14 @@
 
 @section('css')
 <style>
+#hideshow {
+  display: none;
+}
 @media print
 {
+    #hideshow {
+     display: block;
+    }
     @page {
       size: A4; /* DIN A4 standard, Europe */
       margin: 8mm 8mm 8mm 8mm;

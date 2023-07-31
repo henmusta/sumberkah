@@ -18,7 +18,9 @@ class PaymentJo extends Model
       'nominal_kasbon',
       'jenis_payment',
       'keterangan_kasbon',
-      'keterangan'
+      'keterangan',
+      'created_by',
+      'updated_by'
     ];
 
     public function joborder()

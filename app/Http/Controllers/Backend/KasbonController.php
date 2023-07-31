@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Helpers\FileUpload;
 use App\Http\Controllers\Controller;
 use App\Models\Kasbon;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Kasbonjurnallog;
 use App\Models\Driver;
 use App\Models\Joborder;
@@ -18,6 +19,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
+use PDF;
 use Throwable;
 
 class KasbonController extends Controller
@@ -124,7 +126,8 @@ class KasbonController extends Controller
                     'tgl_kasbon'=> $request['tgl_kasbon'],
                     'keterangan'=> $request['keterangan'],
                     'nominal'=> $request['nominal'],
-                    'validasi' => '0'
+                    'validasi' => '0',
+                    'created_by' => Auth::user()->id
                   ]);
 
                 //   if(isset($data['id']) && $request['jenis'] == "Pembayaran" ){
@@ -324,6 +327,7 @@ class KasbonController extends Controller
                     'keterangan'=> $request['keterangan'],
                     'nominal'=> $request['nominal'],
                     'validasi'=> $status,
+                    'updated_by' => Auth::user()->id
                 ]);
                 DB::commit();
                 $response = response()->json($this->responseUpdate(true, route('backend.kasbon.index')));
@@ -400,6 +404,49 @@ class KasbonController extends Controller
       return $response;
     }
 
+    public function pdf(Request $request)
+    {
+
+        $jenis = $request['jenis'];
+        $driver_id = $request['driver_id'];
+        $id = $request['id'];
+        $validasi = $request['validasi'] ;
+        $tgl_awal = $request['tgl_awal'];
+        $tgl_akhir = $request['tgl_akhir'];
+        // dd( $validasi);
+        $data = Kasbon::with('driver','joborder', 'createdby')
+         ->when( $jenis, function ($query, $jenis) {
+            return $query->where('jenis2', $jenis);
+         })
+         ->when( $driver_id, function ($query,  $driver_id) {
+            return $query->where('driver_id',   $driver_id);
+         })
+         ->when($validasi != null, function ($query, $validasi) {
+            return $query->where('validasi',  $validasi);
+         })
+         ->when( $id, function ($query,  $id) {
+            return $query->where('id',   $id);
+         })->when($tgl_awal, function ($query, $tgl_awal) {
+            return $query->whereDate('tgl_kasbon', '>=', $tgl_awal);
+         })
+         ->when($tgl_akhir, function ($query, $tgl_akhir) {
+            return $query->whereDate('tgl_kasbon', '<=', $tgl_akhir);
+         })->get();
+
+
+
+                $data = [
+                    'kasbon' => $data,
+                    'tgl_awal' => $request['tgl_awal'],
+                    'tgl_akhir' => $request['tgl_akhir'],
+                ];
+
+        $pdf =  PDF::loadView('backend.kasbon.report',  compact('data'));
+        $pdf->setPaper('F4', 'landscape');
+        $fileName = 'Laporan-Kasbon : '. $tgl_awal . '-SD-' .$tgl_akhir;
+        return $pdf->stream("${fileName}.pdf");
+    }
+
     public function excel(Request $request)
     {
 
@@ -414,7 +461,7 @@ class KasbonController extends Controller
         $tgl_awal = $request['tgl_awal'];
         $tgl_akhir = $request['tgl_akhir'];
         // dd( $validasi);
-        $data = Kasbon::with('driver','joborder')
+        $data = Kasbon::with('driver','joborder', 'createdby')
          ->when( $jenis, function ($query, $jenis) {
             return $query->where('jenis2', $jenis);
          })
@@ -438,18 +485,26 @@ class KasbonController extends Controller
 
 
          $sheet->setCellValue('A1', 'Laporan Kasbon');
-         $spreadsheet->getActiveSheet()->mergeCells('A1:F1');
+         $spreadsheet->getActiveSheet()->mergeCells('A1:G1');
          $spreadsheet->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
-         $rows2 = 2;
-         $sheet->setCellValue('A'.$rows2, 'Tanggal Transaksi');
-         $sheet->setCellValue('B'.$rows2, 'Kode Kasbon');
-         $sheet->setCellValue('C'.$rows2, 'Driver');
-         $sheet->setCellValue('D'.$rows2, 'Jenis Transaksi');
-         $sheet->setCellValue('E'.$rows2, 'Nominal');
-         $sheet->setCellValue('F'.$rows2, 'Status');
-         for($col = 'A'; $col !== 'F'; $col++){$sheet->getColumnDimension($col)->setAutoSize(true);}
-         $x = 3;
+         if($request['tgl_awal'] != null && $request['tgl_akhir'] != null){
+            $spreadsheet->getActiveSheet()->mergeCells('A2:G2');
+            $sheet->setCellValue('A2', 'Tanggal : '. date('d-m-Y', strtotime($request['tgl_awal'])) .' S/D '. date('d-m-Y', strtotime($request['tgl_akhir'])));
+            $spreadsheet->getActiveSheet()->getStyle('A2')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+         }
+
+         $rows3 = 3;
+         $sheet->setCellValue('A'.$rows3, 'Tanggal Transaksi');
+         $sheet->setCellValue('B'.$rows3, 'Kode Kasbon');
+         $sheet->setCellValue('C'.$rows3, 'Driver');
+         $sheet->setCellValue('D'.$rows3, 'Transaksi');
+         $sheet->setCellValue('E'.$rows3, 'Nominal');
+         $sheet->setCellValue('F'.$rows3, 'Status');
+         $sheet->setCellValue('G'.$rows3, 'Operator (Waktu)');
+
+         for($col = 'A'; $col !== 'H'; $col++){$sheet->getColumnDimension($col)->setAutoSize(true);}
+         $x = 4;
          foreach($data as $val){
                 $status_validasi = $val['validasi'] == '0' ? 'Pending' : 'Acc';
                  $sheet->setCellValue('A' . $x, $val['tgl_kasbon']);
@@ -458,9 +513,16 @@ class KasbonController extends Controller
                  $sheet->setCellValue('D' . $x, $val['jenis'] ?? '');
                  $sheet->setCellValue('E' . $x, $val['nominal'] ?? '');
                  $sheet->setCellValue('F' . $x, $status_validasi);
+                 $sheet->setCellValue('G' . $x, $val['createdby']->name . ' ( ' .date('d-m-Y', strtotime($val['created_at'])) .' )');
                  $x++;
          }
-      $cell   = count($data) + 3;
+      $cell   = count($data) + 4;
+
+      $spreadsheet->setActiveSheetIndex(0)->setCellValue('A'.$cell, 'Total :');
+      $spreadsheet->getActiveSheet()->mergeCells( 'A' . $cell . ':D' . $cell . '');
+      $spreadsheet->getActiveSheet()->getStyle('A'.$cell)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
+
+
       $spreadsheet->getActiveSheet()->getStyle('E3:E'.$cell)->getNumberFormat()->setFormatCode('#,##0');
 
       $spreadsheet->setActiveSheetIndex(0)->setCellValue('E'.$cell, '=SUM(E3:E' . $cell . ')');

@@ -94,7 +94,7 @@ class RptJoController extends Controller
                 ];
 
         $pdf =  PDF::loadView('backend.rptjo.pdf',  compact('data'));
-
+        $pdf->setPaper('F4', 'landscape');
         $fileName = 'Laporan-Payment_JO : '. $tgl_awal . '-SD-' .$tgl_akhir;
         return $pdf->stream("${fileName}.pdf");
     }
@@ -127,10 +127,10 @@ class RptJoController extends Controller
             $sheet->setCellValue('A'.$rows5, 'No');
             $sheet->setCellValue('B'.$rows5, 'Tanggal Payment');
             $sheet->setCellValue('C'.$rows5, 'Kode Joborder');
-            $sheet->setCellValue('D'.$rows5, 'Keterangan Kasbon');
-            $sheet->setCellValue('E'.$rows5, 'Jenis Pembayaran');
-            $sheet->setCellValue('F'.$rows5, 'Nominal Pembayaran');
-            $sheet->setCellValue('G'.$rows5, 'Nominal Kasbon');
+            $sheet->setCellValue('D'.$rows5, 'Jenis Pembayaran');
+            $sheet->setCellValue('E'.$rows5, 'Nominal Pembayaran');
+            $sheet->setCellValue('F'.$rows5, 'Nominal Kasbon');
+            $sheet->setCellValue('G'.$rows5, 'Keterangan Kasbon');
             $sheet->setCellValue('H'.$rows5, 'Operator (Waktu)');
             for($col = 'A'; $col !== 'I'; $col++){$sheet->getColumnDimension($col)->setAutoSize(true);}
 
@@ -149,10 +149,10 @@ class RptJoController extends Controller
                     $sheet->setCellValue('A' . $x, $no++);
                     $sheet->setCellValue('B' . $x, $val['tgl_payment']);
                     $sheet->setCellValue('C' . $x, $val['kode_joborder'] ?? '');
-                    $sheet->setCellValue('D' . $x, $val['keterangan_kasbon']);
-                    $sheet->setCellValue('E' . $x, $val['jenis_payment'] ?? '');
-                    $sheet->setCellValue('F' . $x, $val['nominal']);
-                    $sheet->setCellValue('G' . $x, $val['nominal_kasbon']);
+                    $sheet->setCellValue('D' . $x, $val['jenis_payment'] ?? '');
+                    $sheet->setCellValue('E' . $x, $val['nominal']);
+                    $sheet->setCellValue('F' . $x, $val['nominal_kasbon']);
+                    $sheet->setCellValue('G' . $x, $val['keterangan_kasbon']);
                     $sheet->setCellValue('H' . $x, $val['joborder']->createdby['name'] . ' ( ' .date('d-m-Y', strtotime($val['joborder']->created_at)) .' )');
                     $x++;
             }
@@ -164,20 +164,20 @@ class RptJoController extends Controller
             // $cell_tk = $cell + 1;
             // $cell_sba = $cell + 2;
             $spreadsheet->setActiveSheetIndex(0)->setCellValue('A'.$cell, 'Total :');
-            $spreadsheet->getActiveSheet()->mergeCells( 'A' . $cell . ':E' . $cell . '');
+            $spreadsheet->getActiveSheet()->mergeCells( 'A' . $cell . ':D' . $cell . '');
             $spreadsheet->getActiveSheet()->getStyle('A'.$cell)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
             $spreadsheet->setActiveSheetIndex(0)->setCellValue('F'.$cell, '=SUM(F5:F' . $cell . ')');
-            $spreadsheet->setActiveSheetIndex(0)->setCellValue('G'.$cell, '=SUM(G5:G' . $cell . ')');
+            $spreadsheet->setActiveSheetIndex(0)->setCellValue('E'.$cell, '=SUM(E5:E' . $cell . ')');
 
              $cell_gt =  $cell + 1;
              $spreadsheet->setActiveSheetIndex(0)->setCellValue('A'. $cell_gt, 'Grand Total :');
-             $spreadsheet->getActiveSheet()->mergeCells( 'A' .  $cell_gt . ':E' .  $cell_gt . '');
-             $spreadsheet->getActiveSheet()->mergeCells( 'F' .  $cell_gt . ':H' .  $cell_gt . '');
+             $spreadsheet->getActiveSheet()->mergeCells( 'A' .  $cell_gt . ':D' .  $cell_gt . '');
+             $spreadsheet->getActiveSheet()->mergeCells( 'E' .  $cell_gt . ':F' .  $cell_gt . '');
              $spreadsheet->getActiveSheet()->getStyle('A'.$cell_gt)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
-             $spreadsheet->setActiveSheetIndex(0)->setCellValue('F'.$cell_gt, $total_uj - $nominal_kasbon);
+             $spreadsheet->setActiveSheetIndex(0)->setCellValue('E'.$cell_gt, $total_uj - $nominal_kasbon);
 
              $spreadsheet->getActiveSheet()->getStyle('F6:F'.$cell_gt)->getNumberFormat()->setFormatCode('#,##0');
-             $spreadsheet->getActiveSheet()->getStyle('G6:G'.$cell_gt)->getNumberFormat()->setFormatCode('#,##0');
+             $spreadsheet->getActiveSheet()->getStyle('E6:E'.$cell_gt)->getNumberFormat()->setFormatCode('#,##0');
 
 
       $writer = new Xlsx($spreadsheet);

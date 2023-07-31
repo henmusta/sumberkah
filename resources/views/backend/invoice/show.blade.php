@@ -11,14 +11,21 @@
                 </div>
             </div>
             <div class="card-body" id="printableArea">
-                <div class="invoice-title text-center">
+                {{-- <div class="invoice-title text-center">
                     <h2 class="main-content-label mb-1">Invoice</h2>
                     <div class="mb-4">
-                           {{-- <img  src="{{URL::to('storage/images/logo/'.Setting::get_setting()->icon)}}" alt="logo" height="50"> --}}
+
                     </div>
                     <div class="text-muted">
                     </div>
-                </div>
+                </div> --}}
+                <table width="100%">
+                    <tr>
+                      <td style="width: 20%; font-weight: normal; text-align: center"></td>
+                      <td style="width: 60%; font-weight: bold; font-size: 18px; text-align: center">Invoice</td>
+                      <td style="width: 20%; font-weight: normal; text-align: right"><p id="hideshow">{{ $data['invoice']['createdby']['name'] ?? '' }} ( {{  \Carbon\Carbon::parse($data['invoice']['created_at'])->format('d-m-Y H:i:s')  }} )</p></td>
+                    </tr>
+                  </table><br><br>
                 <div class="row" style="">
                     <div class="col-12">
                         <table>
@@ -178,7 +185,7 @@
 
                 </div>
 
-                <div class="row" style="padding-top:10px;">
+                <div class="row" style="padding-top:10px;" id="hideshow">
                     <div class="col-12">
                         <table>
                             <tr>
@@ -225,8 +232,15 @@
 
 @section('css')
 <style>
+
+#hideshow {
+  display: none;
+}
 @media print
 {
+    #hideshow {
+         display: block;
+    }
     @page {
       size: A4; /* DIN A4 standard, Europe */
       margin: 10mm 10mm 10mm 10mm;

@@ -107,8 +107,9 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-2 text-end" style="padding-top:30px;">
-                                                <div id="print">
+                                                <div class="dt-buttons btn-group flex-wrap">
                                                     <button id="excel" class="btn btn-secondary buttons-excel buttons-html5"  tabindex="0" aria-controls="Datatable" type="button"><span>Excel</span></button>
+                                                    <button class="btn btn-secondary buttons-pdf buttons-html5"  tabindex="0" aria-controls="Datatable" type="button" id="pdf"><span>PDF</span></button>
                                                 </div>
                                             </div>
                                             <div class="row" >
@@ -311,36 +312,7 @@ tr.group:hover {
     });
 
       let dataTable = $('#Datatable').DataTable({
-        dom: 'lfBrtip',
-        buttons: [
-            // {
-            //     extend: 'excel',
-            //     footer: true,
-            //     text: 'Excel',
-            //     title: 'Laporan Gaji',
-            //     exportOptions: {
-            //         columns: [ 0, 1, 2, 3, 4, 5, 6, 7]
-            //     }
-            // },
-            {
-                extend: 'pdfHtml5',
-                footer: true,
-                text: 'PDF',
-                title: 'Laporan Gaji',
-                pageSize: 'A4',
-                exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4, 5 ,6, 7]
-                },
-                // customize : function(doc) {
-                //     doc.styles['td:nth-child(2)'] = {
-                //     width: '200px',
-                //     'max-width': '200px'
-                //     }
-                // }
-            },
-
-
-        ],
+        // dom: 'lfBrtip',
         responsive: true,
         scrollX: false,
         processing: true,
@@ -409,7 +381,6 @@ tr.group:hover {
         ],
       });
 
-      dataTable.buttons().container().appendTo($('#print'));
 
       $("#terapkan_filter").click(function() {
         dataTable.draw();
@@ -434,7 +405,8 @@ tr.group:hover {
                     tgl_akhir : $('#tgl_akhir').val() || '',
                 },
                 success: function( data ){
-                    $("#sisa_payment").html('Sisa Gaji Yang Belum Dibayar : ' + $.fn.dataTable.render.number('.', ',', 0, '').display(data.sisa_payment));
+                    let sisa_payments = (data.sisa_payment == null) ? 0 : data.sisa_payment;
+                    $("#sisa_payment").html('Sisa Gaji Yang Belum Dibayar : ' + $.fn.dataTable.render.number('.', ',', 0, '').display(sisa_payments));
                     console.log(data);
                 },
                 error: function (xhr, b, c) {
@@ -492,8 +464,27 @@ tr.group:hover {
                tgl_akhir : $('#tgl_akhir').val() || '',
             });
 
-            window.location.href = "{{ route('backend.penggajian.excel') }}?" +params.toString()
-        });
+            let url =  "{{ route('backend.penggajian.excel') }}?" +params.toString()
+            window.open(url, '_blank');
+
+      });
+
+      $("#pdf").click(function() {
+
+            let params = new URLSearchParams({
+                status_payment : $('#select2StatusPayment').find(':selected').val() || '',
+                driver_id : $('#select2Driver').find(':selected').val() || '',
+                mobil_id : $('#select2Mobil').find(':selected').val() || '',
+                bulan_kerja :  $('#bulan_kerja').val() || '',
+                id : $('#select2Gaji').find(':selected').val() || '',
+                tgl_awal : $('#tgl_awal').val() || '',
+                tgl_akhir : $('#tgl_akhir').val() || '',
+            });
+
+            let url = "{{ route('backend.penggajian.pdf') }}?" +params.toString()
+            window.open(url, '_blank');
+     });
+
 
     });
   </script>

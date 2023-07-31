@@ -127,6 +127,7 @@ Route::middleware('auth:henmus')->group(function(){
             Route::resource('konfirmasijo', Backend\KonfirmasiJoController::class);
 
             //Kasbon
+            Route::get('kasbon/pdf', [Backend\KasbonController::class, 'pdf'])->name('kasbon.pdf');
             Route::get('kasbon/excel', [Backend\KasbonController::class, 'excel'])->name('kasbon.excel');
             Route::put('kasbon/validasi', [Backend\KasbonController::class, 'validasi'])->name('kasbon.validasi');
             Route::get('kasbon/select2', [Backend\KasbonController::class, 'select2'])->name('kasbon.select2');
@@ -135,6 +136,7 @@ Route::middleware('auth:henmus')->group(function(){
 
 
             //Invoice
+            Route::get('invoice/sisapayment', [Backend\InvoiceController::class, 'sisapayment'])->name('invoice.sisapayment');
             Route::get('invoice/excel', [Backend\InvoiceController::class, 'excel'])->name('invoice.excel');
             Route::get('invoice/pdf', [Backend\InvoiceController::class, 'pdf'])->name('invoice.pdf');
             Route::get('invoice/findinvoice', [Backend\InvoiceController::class, 'findinvoice'])->name('invoice.findinvoice');
@@ -149,6 +151,7 @@ Route::middleware('auth:henmus')->group(function(){
 
             //Penggajian
             Route::get('penggajian/sisapayment', [Backend\PenggajianController::class, 'sisapayment'])->name('penggajian.sisapayment');
+            Route::get('penggajian/pdf', [Backend\PenggajianController::class, 'pdf'])->name('penggajian.pdf');
             Route::get('penggajian/excel', [Backend\PenggajianController::class, 'excel'])->name('penggajian.excel');
             Route::get('penggajian/findpenggajian', [Backend\PenggajianController::class, 'findpenggajian'])->name('penggajian.findpenggajian');
             Route::get('penggajian/select2', [Backend\PenggajianController::class, 'select2'])->name('penggajian.select2');
@@ -160,12 +163,14 @@ Route::middleware('auth:henmus')->group(function(){
 
 
              //Mutasi Kasbon
+             Route::get('mutasikasbon/pdf', [Backend\MutasiKasbonController::class, 'pdf'])->name('mutasikasbon.pdf');
             Route::get('mutasikasbon/excel', [Backend\MutasiKasbonController::class, 'excel'])->name('mutasikasbon.excel');
             Route::get('mutasikasbon/ceksaldo', [Backend\MutasiKasbonController::class, 'ceksaldo'])->name('mutasikasbon.ceksaldo');
             Route::get('mutasikasbon/datatablecekdriver', [Backend\MutasiKasbonController::class, 'datatablecekdriver'])->name('mutasikasbon.datatablecekdriver');
             Route::resource('mutasikasbon', Backend\MutasiKasbonController::class);
 
                    //Mutasi Kasbon all
+                   Route::get('mutasikasbonall/pdf', [Backend\MutasiKasbonAllController::class, 'pdf'])->name('mutasikasbonall.pdf');
                    Route::get('mutasikasbonall/excel', [Backend\MutasiKasbonAllController::class, 'excel'])->name('mutasikasbonall.excel');
                    Route::get('mutasikasbonall/ceksaldo', [Backend\MutasiKasbonAllController::class, 'ceksaldo'])->name('mutasikasbonall.ceksaldo');
                    Route::get('mutasikasbonall/datatablecekdriver', [Backend\MutasiKasbonAllController::class, 'datatablecekdriver'])->name('mutasikasbonall.datatablecekdriver');

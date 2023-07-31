@@ -125,10 +125,11 @@ class PaymentGajiController extends Controller
 
 
           if ($validator->passes()) {
-            $penggajian = Penggajian::findOrFail($request['penggajian_id'])->get();
+            $penggajian = Penggajian::findOrFail($request['penggajian_id']);
             // dd($penggajian);
             DB::beginTransaction();
             try {
+                // dd( Auth::user()->id);
              $total_payment = 0;
                     if(isset($request['payment'])){
                         foreach($request['payment'] as $val_payment){
@@ -139,7 +140,8 @@ class PaymentGajiController extends Controller
                             'tgl_payment' => $request['tgl_pembayaran'],
                             'nominal' => $val_payment['nominal'],
                             'jenis_payment' => $val_payment['jenis_pembayaran'],
-                            'keterangan' => $val_payment['keterangan']
+                            'keterangan' => $val_payment['keterangan'],
+                            'created_by' => Auth::user()->id
                         ]);
                         }
                     }
@@ -220,7 +222,6 @@ class PaymentGajiController extends Controller
                     $payment_id = array();
                     foreach($request['payment'] as $val){
                         $total_payment += $val['nominal'];
-
                         $payment_gaji = PaymentGaji::find($val['id']);
                         $payment = PaymentGaji::updateOrCreate([
                             'id' => $val['id']
@@ -230,7 +231,8 @@ class PaymentGajiController extends Controller
                             'tgl_payment' => $payment_gaji['tgl_payment'] ?? $request['tgl_pembayaran'],
                             'nominal' => $val['nominal'],
                             'jenis_payment' => $val['jenis_pembayaran'],
-                            'keterangan' => $val['keterangan']
+                            'keterangan' => $val['keterangan'],
+                            'created_by' => ($val['id'] == '' || $val['id'] == null || $val['id'] == 'undefined') ? Auth::user()->id : $payment_gaji['created_by']
                         ]);
                         $payment_id[] = $payment['id'];
                     }
@@ -306,7 +308,8 @@ class PaymentGajiController extends Controller
                         'nominal' => $request['nominal'],
                         'tgl_payment' => $request['tgl_pembayaran'],
                         'jenis_payment' => $request['jenis_payment'],
-                        'keterangan' => $request['keterangan']
+                        'keterangan' => $request['keterangan'],
+                        'updated_by' => Auth::user()->id
                     ]);
 
 

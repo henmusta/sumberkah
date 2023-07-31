@@ -37,6 +37,9 @@ class InvoiceController extends Controller
         $page_breadcrumbs = [
           ['url' => '#', 'title' => "Data Invoice"],
         ];
+
+
+
         $invoice = Invoice::with('customer')->find($request['invoice_id']);
         $belum_bayar = Invoice::selectRaw('sum(sisa_tagihan) as belum_bayar')->where('status_payment', '!=', '2')->first();
         $data = [
@@ -609,7 +612,45 @@ class InvoiceController extends Controller
       header('Content-Disposition: attachment;filename="' . $filename . '.xlsx"');
       header('Cache-Control: max-age=0');
       $writer->save('php://output');
+    }
+
+
+    public function sisapayment(Request $request)
+    {
+
+        $status_payment = $request['status_payment'];
+        $customer_id =  $request['customer_id'];
+        $id = $request['id'];
+        $ppn = $request['ppn'];
+        $tgl_invoice = $request['tgl_invoice'];
+        $tgl_jatuh_tempo = $request['tgl_jatuh_tempo'];
+        $tgl_awal = $request['tgl_awal'];
+        $tgl_akhir = $request['tgl_akhir'];
+
+
+        $data = Invoice::selectRaw('sum(sisa_tagihan) as belum_bayar')
+         ->when($status_payment, function ($query, $status_payment) {
+            return $query->where('status_payment',  $status_payment);
+         })->when($customer_id, function ($query, $customer_id) {
+            return $query->where('customer_id',  $customer_id);
+         })->when($id, function ($query, $id) {
+            return $query->where('id',  $customer_id);
+         })->when($ppn, function ($query, $ppn) {
+            return $query->where('ppn',  $ppn);
+         })->when($tgl_invoice, function ($query, $tgl_invoice) {
+            return $query->whereDate('tgl_invoice',  $tgl_invoice);
+         })->when($tgl_jatuh_tempo, function ($query, $tgl_jatuh_tempo) {
+            return $query->whereDate('tgl_jatuh_tempo',  $tgl_jatuh_tempo);
+         })->when($tgl_awal, function ($query, $tgl_awal) {
+                return $query->whereDate('tgl_invoice', '>=', $tgl_awal);
+         })->when($tgl_akhir, function ($query, $tgl_akhir) {
+            return $query->whereDate('tgl_invoice', '<=', $tgl_akhir);
+         })->where('status_payment', '!=', '2')->first();
+        //   dd(response()->json($results['data']->sortByDesc('urut')));
+
+        return response()->json($data);
 
     }
+
 
 }

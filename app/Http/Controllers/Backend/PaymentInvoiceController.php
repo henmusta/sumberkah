@@ -136,7 +136,8 @@ class PaymentInvoiceController extends Controller
                             'tgl_payment' => $request['tgl_pembayaran'],
                             'nominal' => $val_payment['nominal'],
                             'jenis_payment' => $val_payment['jenis_pembayaran'],
-                            'keterangan' => $val_payment['keterangan']
+                            'keterangan' => $val_payment['keterangan'],
+                            'created_by' => Auth::user()->id
                         ]);
                         }
                     }
@@ -234,7 +235,8 @@ class PaymentInvoiceController extends Controller
                             'tgl_payment' => $paymentinvoice['tgl_payment'] ?? $request['tgl_pembayaran'],
                             'nominal' => $val['nominal'],
                             'jenis_payment' => $val['jenis_pembayaran'],
-                            'keterangan' => $val['keterangan']
+                            'keterangan' => $val['keterangan'],
+                            'created_by' => ($val['id'] == '' || $val['id'] == null || $val['id'] == 'undefined') ? Auth::user()->id : $paymentinvoice['created_by']
                         ]);
                         $payment_id[] = $payment['id'];
                     }
@@ -309,7 +311,8 @@ class PaymentInvoiceController extends Controller
                         'nominal' => $request['nominal'],
                         'tgl_payment' => $request['tgl_pembayaran'],
                         'jenis_payment' => $request['jenis_payment'],
-                        'keterangan' => $request['keterangan']
+                        'keterangan' => $request['keterangan'],
+                        'updated_by' => Auth::user()->id
                     ]);
 
                     // dd($total_payment);

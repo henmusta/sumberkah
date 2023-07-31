@@ -3,9 +3,9 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
   <style>
 
-@page {
+    @page {
         /* size: 21cm 15cm; */
-        /* size: landscape; */
+        size: F4 landscape;
         margin: 0;
         margin: 5mm 5mm 5mm 5mm;
     }
@@ -85,13 +85,13 @@
                 <th>Tanggal Payment</th>
                 <th>Kode Gaji</th>
                 <th>Nama Supir</th>
-                <th>No polisi</th>
+                <th width="80px">No polisi</th>
                 <th>Periode Gaji</th>
                 <th>Jenis Pembayaran</th>
                 <th>Nominal Pembayaran</th>
                 <th>Sisa Pembayaran</th>
                 <th>Total Gaji</th>
-                <th>Operator (Waktu)</th>
+                <th width="150px">Operator (Waktu)</th>
             </tr>
         </thead>
         <tbody>

@@ -22,6 +22,7 @@ Use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
+use PDF;
 use Throwable;
 class PenggajianController extends Controller
 {
@@ -211,7 +212,8 @@ class PenggajianController extends Controller
                                 'tgl_kasbon'=> $request['tgl_gaji'],
                                 'keterangan'=> 'Pembayaran Bon Kode Slip Gaji '.$data['kode_gaji'],
                                 'nominal'=> $request['nominal_kasbon'],
-                                'validasi' =>  '1'
+                                'validasi' =>  '1',
+                                'created_by' => Auth::user()->id
                             ]);
 
                             if(isset($kasbon['id'])){
@@ -440,7 +442,8 @@ class PenggajianController extends Controller
                         'jenis'=> 'Potong Gaji',
                         'keterangan'=> $cek_kasbon_id['keterangan'] ?? 'Pembayaran Bon Kode Slip Gaji '.$data['kode_gaji'],
                         'nominal'=> $request['nominal_kasbon'],
-                        'validasi' =>  '1'
+                        'validasi' =>  '1',
+                        'created_by' => Auth::user()->id
                     ]);
                     // $update_kasbon = $kasbon->first();
                     // dd($kasbon, $data['id']);
@@ -619,6 +622,52 @@ class PenggajianController extends Controller
       return $response;
     }
 
+    public function pdf(Request $request)
+    {
+
+        $status_payment = $request['status_payment'];
+        $driver_id = $request['driver_id'];
+        $id = $request['id'];
+        $mobil_id = $request['mobil_id'];
+        $bulan_kerja = $request['bulan_kerja'] ;
+        $tgl_awal = $request['tgl_awal'];
+        $tgl_akhir = $request['tgl_akhir'];
+
+
+
+        // dd( $validasi);
+        $data = Penggajian::with('driver', 'mobil')
+        ->when( $status_payment != null, function ($query, $status_payment) {
+            return $query->where('status_payment', $status_payment);
+         })->when( $driver_id, function ($query, $driver_id) {
+            return $query->where('driver_id', $driver_id);
+         })->when( $mobil_id, function ($query, $mobil_id) {
+            return $query->where('mobil_id', $mobil_id);
+         })->when( $bulan_kerja, function ($query, $bulan_kerja) {
+            $month = date("m",strtotime($bulan_kerja));
+            $year = date("Y",strtotime($bulan_kerja));
+            return $query->whereMonth('tgl_gaji',  $month)->whereYear('tgl_gaji', $year);
+         })->when($tgl_awal, function ($query, $tgl_awal) {
+            return $query->whereDate('tgl_gaji', '>=', $tgl_awal);
+         })
+         ->when($tgl_akhir, function ($query, $tgl_akhir) {
+            return $query->whereDate('tgl_gaji', '<=', $tgl_akhir);
+         })->get();
+
+
+                $data = [
+                    'gaji' => $data,
+                    'tgl_awal' => $request['tgl_awal'],
+                    'tgl_akhir' => $request['tgl_akhir'],
+                ];
+
+        $pdf =  PDF::loadView('backend.penggajian.report',  compact('data'));
+        $pdf->setPaper('F4', 'landscape');
+        $fileName = 'Laporan-Penggajian : '. $tgl_awal . '-SD-' .$tgl_akhir;
+        return $pdf->stream("${fileName}.pdf");
+    }
+
+
     public function excel(Request $request)
     {
 
@@ -711,20 +760,30 @@ class PenggajianController extends Controller
 
 
          $sheet->setCellValue('A1', 'Laporan Gaji');
-         $spreadsheet->getActiveSheet()->mergeCells('A1:H1');
+         $spreadsheet->getActiveSheet()->mergeCells('A1:I1');
          $spreadsheet->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
-         $rows2 = 2;
-         $sheet->setCellValue('A'.$rows2, 'Kode Gaji');
-         $sheet->setCellValue('B'.$rows2, 'Tanggal Gaji');
-         $sheet->setCellValue('C'.$rows2, 'Driver');
-         $sheet->setCellValue('D'.$rows2, 'No Polisi');
-         $sheet->setCellValue('E'.$rows2, 'Bulan Kerja');
-         $sheet->setCellValue('F'.$rows2, 'Total Gaji');
-         $sheet->setCellValue('g'.$rows2, 'Sisa Gaji');
-         $sheet->setCellValue('H'.$rows2, 'Status');
-         for($col = 'A'; $col !== 'H'; $col++){$sheet->getColumnDimension($col)->setAutoSize(true);}
-         $x = 3;
+
+         if($request['tgl_awal'] != null && $request['tgl_akhir'] != null){
+            $spreadsheet->getActiveSheet()->mergeCells('A2:I2');
+            $sheet->setCellValue('A2', 'Tanggal : '. date('d-m-Y', strtotime($request['tgl_awal'])) .' S/D '. date('d-m-Y', strtotime($request['tgl_akhir'])));
+            $spreadsheet->getActiveSheet()->getStyle('A2')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+         }
+
+
+         $rows3 = 3;
+         $sheet->setCellValue('A'.$rows3, 'Kode Gaji');
+         $sheet->setCellValue('B'.$rows3, 'Tanggal Gaji');
+         $sheet->setCellValue('C'.$rows3, 'Driver');
+         $sheet->setCellValue('D'.$rows3, 'No Polisi');
+         $sheet->setCellValue('E'.$rows3, 'Bulan Kerja');
+         $sheet->setCellValue('F'.$rows3, 'Total Gaji');
+         $sheet->setCellValue('g'.$rows3, 'Sisa Gaji');
+         $sheet->setCellValue('H'.$rows3, 'Status');
+         $sheet->setCellValue('I'.$rows3, 'Operator (Waktu)');
+
+         for($col = 'A'; $col !== 'J'; $col++){$sheet->getColumnDimension($col)->setAutoSize(true);}
+         $x = 4;
          foreach($data as $val){
                  $status_payment = $val['status_payment'] == '0' ? 'Belum Bayar' : ($val['status_payment'] == '1' ? 'Progress Payment' : 'Lunas');
                  $sheet->setCellValue('A' . $x, $val['kode_gaji']);
@@ -735,9 +794,15 @@ class PenggajianController extends Controller
                  $sheet->setCellValue('F' . $x, $val['total_gaji']  ?? '');
                  $sheet->setCellValue('G' . $x, $val['sisa_gaji']  ?? '');
                  $sheet->setCellValue('H' . $x, $status_payment);
+                 $sheet->setCellValue('I' . $x, $val['createdby']->name . ' ( ' .date('d-m-Y', strtotime($val['created_at'])) .' )');
                  $x++;
          }
-      $cell   = count($data) + 3;
+      $cell   = count($data) + 4;
+
+      $spreadsheet->setActiveSheetIndex(0)->setCellValue('A'.$cell, 'Total :');
+      $spreadsheet->getActiveSheet()->mergeCells( 'A' . $cell . ':E' . $cell . '');
+      $spreadsheet->getActiveSheet()->getStyle('A'.$cell)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
+
       $spreadsheet->getActiveSheet()->getStyle('F3:F'.$cell)->getNumberFormat()->setFormatCode('#,##0');
       $spreadsheet->setActiveSheetIndex(0)->setCellValue('F'.$cell, '=SUM(F3:F' . $cell . ')');
 

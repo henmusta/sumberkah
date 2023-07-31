@@ -4,8 +4,7 @@
   <style>
 
     @page {
-        /* size: 21cm 15cm; */
-        size: landscape;
+        size: F4 landscape;
         margin: 0;
         margin: 10mm 10mm 10mm 10mm;
     }

@@ -18,7 +18,9 @@ class Kasbon extends Model
       'nominal',
       'joborder_id',
       'penggajian_id',
-      'validasi'
+      'validasi',
+      'created_by',
+      'updated_by'
     ];
 
 
@@ -27,10 +29,24 @@ class Kasbon extends Model
       return $this->belongsTo(Driver::class, 'driver_id');
     }
 
+    public function penggajian()
+    {
+      return $this->belongsTo(Penggajian::class, 'penggajian_id');
+    }
 
     public function joborder()
     {
       return $this->belongsTo(Joborder::class, 'joborder_id');
+    }
+
+    public function createdby()
+    {
+      return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function updatedby()
+    {
+      return $this->belongsTo(User::class, 'updated_by');
     }
 
 }

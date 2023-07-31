@@ -4,8 +4,7 @@
   <style>
 
 @page {
-        /* size: 21cm 15cm; */
-        /* size: landscape; */
+        size: F4 landscape;
         margin: 0;
         margin: 5mm 5mm 5mm 5mm;
     }
@@ -84,11 +83,11 @@
                 <th>No</th>
                 <th>Tanggal Payment</th>
                 <th>Kode Joborder</th>
-                <th>Keterangan Kasbon</th>
                 <th>Jenis Pembayaran</th>
                 <th>Nominal Pembayaran</th>
                 <th>Nominal Kasbon</th>
-                <th>Operator (Waktu)</th>
+                <th>Keterangan Kasbon</th>
+                <th width="150px">Operator (Waktu)</th>
             </tr>
         </thead>
         <tbody>
@@ -100,25 +99,28 @@
                     <td width="2%" class="text-center">{{$no++}}</td>
                     <td>{{$val->tgl_payment}}</td>
                     <td><a href="{{ route('backend.joborder.index') }}?joborder_id={{$val['joborder']->id}}" target="_blank">{{$val->kode_joborder}}</a></td>
-                    <td>{{$val->keterangan_kasbon}}</td>
                     <td>{{$val->jenis_payment}}</td>
                     <td  class="text-end">Rp. {{ number_format($val->nominal,0,',','.')}}</td>
                     <td  class="text-end">Rp. {{ number_format($val->nominal_kasbon,0,',','.')}}</td>
+                    <td>{{$val->keterangan_kasbon}}</td>
                     <td>{{$val['joborder']->createdby['name']}} ( {{\Carbon\Carbon::parse($val['joborder']->created_at)->format('d-m-Y H:i:s')}} )</td>
                    </tr>
             @endforeach
         </tbody>
         <tfoot>
             <tr>
-                <th colspan="5"style="text-align:right">Total: </th>
+                <th colspan="4"style="text-align:right">Total: </th>
                 <th class="text-end" id="">Rp. {{ number_format($data['payment']->sum('nominal'),0,',','.')}}</th>
                 <th class="text-end" id="">Rp. {{ number_format($data['payment']->sum('nominal_kasbon'),0,',','.')}}</th>
                 <th></th>
+                <th></th>
              </tr>
              <tr>
-                <th colspan="5"style="text-align:right">Grand Total: </th>
+                <th colspan="4"style="text-align:right">Grand Total: </th>
                 @php($grand_total = $data['payment']->sum('nominal') - $data['payment']->sum('nominal_kasbon'))
-                <th class="text-end" colspan="3" id="">Rp. {{ number_format($grand_total,0,',','.')}}</th>
+                <th class="text-end" colspan="2" id="">Rp. {{ number_format($grand_total,0,',','.')}}</th>
+                <th></th>
+                <th></th>
              </tr>
         </tfoot>
     </table>

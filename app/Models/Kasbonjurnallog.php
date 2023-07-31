@@ -29,7 +29,7 @@ class Kasbonjurnallog extends Model
 
     public function kasbon()
     {
-      return $this->belongsTo(Kasbon::class, 'kasbon_id');
+      return $this->belongsTo(Kasbon::class, 'kasbon_id')->with('createdby');
     }
 
     public function joborder()
