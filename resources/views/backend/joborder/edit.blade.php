@@ -23,13 +23,13 @@
                     </div>
                     <div class="card-body" style="border: 1px solid #fff; padding:20px;">
                         <div class="row" >
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                  <div class="mb-3">
                                     <label>Tanggal<span class="text-danger">*</span></label>
                                     <input type="text" id="tgl_joborder" value="{{$data['joborder']['tgl_joborder'] ?? ''}}" name="tgl_joborder"  class="form-control" placeholder="Masukan Tanggal Joborder"/>
                                   </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="mb-3">
                                    <label>Driver<span class="text-danger">*</span></label>
                                    <select id="select2Driver" style="width: 100% !important;" name="driver_id">
@@ -37,16 +37,17 @@
                                    </select>
                                  </div>
                            </div>
+                           <div class="col-md-4">
+                            <div class="mb-3">
+                               <label>Jenis Mobil<span class="text-danger">*</span></label>
+                               <select id="select2Jenis" style="width: 100% !important;" name="jenismobil_id" readonly>
+                                   <option value="{{ $data['joborder']['jenismobil']['id'] }}"> {{$data['joborder']['jenismobil']['name'] }}</option>
+                               </select>
+                             </div>
+                           </div>
                         </div>
                         <div class="row" >
-                            <div class="col-md-6">
-                                 <div class="mb-3">
-                                    <label>Jenis Mobil<span class="text-danger">*</span></label>
-                                    <select id="select2Jenis" style="width: 100% !important;" name="jenismobil_id" readonly>
-                                        <option value="{{ $data['joborder']['jenismobil']['id'] }}"> {{$data['joborder']['jenismobil']['name'] }}</option>
-                                    </select>
-                                  </div>
-                            </div>
+
                             <div class="col-md-6">
                                 <div class="mb-3">
                                    <label>Nomor Plat Polisi<span class="text-danger">*</span></label>
@@ -55,91 +56,104 @@
                                    </select>
                                  </div>
                            </div>
+                           <div class="col-md-6">
+                                <div class="mb-3">
+                                <label>Customer<span class="text-danger">*</span></label>
+                                <select id="select2Customer" style="width: 100% !important;" name="customer_id" readonly>
+                                    <option value="{{ $data['joborder']['customer']['id'] }}"> {{$data['joborder']['customer']['name'] }}</option>
+                                </select>
+                                </div>
+                           </div>
                         </div>
-                        <div class="row" >
-                            <div class="col-md-12">
-                                  <div class="mb-3">
-                                    <label>Customer<span class="text-danger">*</span></label>
-                                    <select id="select2Customer" style="width: 100% !important;" name="customer_id" readonly>
-                                        <option value="{{ $data['joborder']['customer']['id'] }}"> {{$data['joborder']['customer']['name'] }}</option>
-                                    </select>
-                                  </div>
-                            </div>
-                        </div>
+                        {{-- <div class="row" >
+
+                        </div> --}}
                     </div>
 
 
                     <div id="rute_muatan" class="card-body" style="border: 1px solid #fff; padding:20px;">
-                        <div class="row" >
-                            <div class="col-md-12" >
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="mb-3">
-                                            <label>Muatan<span class="text-danger">*</span></label>
-                                            <select id="select2Muatan" style="width: 100% !important;" name="muatan_id">
-                                                <option value="{{ $data['joborder']['muatan']['id'] }}"> {{$data['joborder']['muatan']['name'] }}</option>
-                                            </select>
-                                          </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="mb-3">
-                                            <label>Alamat Awal (Dari)<span class="text-danger">*</span></label>
-                                            <select id="select2Firstrute" style="width: 100% !important;" name="first_rute_id">
-                                                <option value="{{ $data['joborder']['ruteawal']['id'] }}"> {{$data['joborder']['ruteawal']['name'] }}</option>
-                                            </select>
-                                          </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="mb-3">
-                                            <label>Alamat Akhir (Ke)<span class="text-danger">*</span></label>
-                                            <select id="select2Lastrute" style="width: 100% !important;" name="last_rute_id">
-                                                <option value="{{ $data['joborder']['ruteakhir']['id'] }}"> {{$data['joborder']['ruteakhir']['name'] }}</option>
-                                            </select>
-                                          </div>
-                                    </div>
-                                </div>
-                                  <div class="mb-3">
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label>Muatan<span class="text-danger">*</span></label>
+                                    <select id="select2Muatan" style="width: 100% !important;" name="muatan_id">
+                                        <option value="{{ $data['joborder']['muatan']['id'] }}"> {{$data['joborder']['muatan']['name'] }}</option>
+                                    </select>
+                                  </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label>Alamat Awal (Dari)<span class="text-danger">*</span></label>
+                                    <select id="select2Firstrute" style="width: 100% !important;" name="first_rute_id">
+                                        <option value="{{ $data['joborder']['ruteawal']['id'] }}"> {{$data['joborder']['ruteawal']['name'] }}</option>
+                                    </select>
+                                  </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label>Alamat Akhir (Ke)<span class="text-danger">*</span></label>
+                                    <select id="select2Lastrute" style="width: 100% !important;" name="last_rute_id">
+                                        <option value="{{ $data['joborder']['ruteakhir']['id'] }}"> {{$data['joborder']['ruteakhir']['name'] }}</option>
+                                    </select>
+                                  </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
                                     <label>Cek Rute Tersedia<span class="text-danger">*</span></label>
                                     <input type="hidden" id="kode_rute" name="kode_rute">
                                     <select id="select2Rute" style="width: 100% !important;" name="rute_id" readonly>
                                         <option value="{{ $data['joborder']['rute']['id'] }}"> {{$data['joborder']['rute']['kode_rute'] }}</option>
                                     </select>
-                                  </div>
+                                </div>
                             </div>
+
                         </div>
                     </div>
 
                     <div id="number_jo" class="card-body" style="border: 1px solid #fff; padding:20px;">
-                        <div class="row" >
-                            <div class="col-md-12" >
-                                  <div class="mb-3">
+
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
                                     <label>Uang Jalan<span class="text-danger">*</span></label>
                                     <input type="text" id="uang_jalan" name="uang_jalan" value="{{ $data['joborder']['rute']['uang_jalan'] ?? '' }}"  readonly class="form-control" placeholder="Masukan Uang Jalan"/>
                                   </div>
-                                  <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label>Tambahan Potongan UJ<span class="text-danger">*</span></label>
-                                            <select id="tambahan_potongan" style="width: 100% !important;" name="tambahan_potongan">
-                                                <option value="None"  {{ $data['joborder']['tambahan_potongan'] == 'None' ? 'selected' : NULL }}>Tidak Ada</option>
-                                                <option value="Tambahan" {{ $data['joborder']['tambahan_potongan'] == 'Tambahan' ? 'selected' : NULL }}>Tambahan</option>
-                                                <option value="Potongan" {{ $data['joborder']['tambahan_potongan'] == 'Potongan' ? 'selected' : NULL }}>Potongan</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label>Biaya Tambahan/Potongan UJ<span class="text-danger">*</span></label>
-                                            <input required type="text" id="biaya_lain"  value="{{ $data['joborder']['biaya_lain'] ?? '' }}" name="biaya_lain"  class="form-control" placeholder="Biaya Tambahan/Potongan UJ" readonly/>
-                                        </div>
-                                    </div>
-                                  </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label>Tambahan Potongan UJ<span class="text-danger">*</span></label>
+                                    <select id="tambahan_potongan" style="width: 100% !important;" name="tambahan_potongan">
+                                        <option value="None"  {{ $data['joborder']['tambahan_potongan'] == 'None' ? 'selected' : NULL }}>Tidak Ada</option>
+                                        <option value="Tambahan" {{ $data['joborder']['tambahan_potongan'] == 'Tambahan' ? 'selected' : NULL }}>Tambahan</option>
+                                        <option value="Potongan" {{ $data['joborder']['tambahan_potongan'] == 'Potongan' ? 'selected' : NULL }}>Potongan</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                          </div>
 
 
-                                  <div class="mb-3">
-                                    <label>Total Uang Jalan<span class="text-danger">*</span></label>
-                                    <input type="text" value="{{ $data['joborder']['total_uang_jalan'] ?? '' }}" id="total_uang_jalan" name="total_uang_jalan"  class="form-control" placeholder="Total Uang Jalan" readonly/>
-                                  </div>
+                        <div class="row" >
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label>Biaya Tambahan/Potongan UJ<span class="text-danger">*</span></label>
+                                    <input required type="text" id="biaya_lain"  value="{{ $data['joborder']['biaya_lain'] ?? '' }}" name="biaya_lain"  class="form-control" placeholder="Biaya Tambahan/Potongan UJ" readonly/>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                <label>Total Uang Jalan<span class="text-danger">*</span></label>
+                                <input type="text" value="{{ $data['joborder']['total_uang_jalan'] ?? '' }}" id="total_uang_jalan" name="total_uang_jalan"  class="form-control" placeholder="Total Uang Jalan" readonly/>
+                              </div>
+                            </div>
+                            <div class="col-md-12" >
                                   <div class="mb-3">
                                     <label>Keterangan/Catatan Joborder<span class="text-danger"></span></label>
                                     <textarea type="text" id="keterangan_joborder" name="keterangan_joborder"  class="form-control" placeholder="Keterangan Joborder">{{ $data['joborder']['keterangan_joborder'] ?? '' }}</textarea>

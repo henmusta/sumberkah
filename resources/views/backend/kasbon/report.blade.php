@@ -7,7 +7,7 @@
         /* size: 21cm 15cm; */
         size: landscape;
         margin: 0;
-        margin: 10mm 10mm 10mm 10mm;
+        margin: 10mm 10mm 20mm 10mm;
     }
     body {
       font-family: Arial, sans-serif;
@@ -18,6 +18,25 @@
     .text-end{
         text-align: right !important;
     }
+
+    footer {
+                /* Place the footer at the bottom of each page */
+                position: fixed;
+                left: 0;
+                right: 0;
+                bottom: 0;
+
+                /* Any other appropriate styling */
+                color: #070808;
+                font-size: 10px;
+                font-weight: bold;
+            }
+
+            /* Show current page number via CSS counter feature */
+            .page-number:before {
+                content: counter(page);
+            }
+
 
     .text-center{
         text-align: center !important;
@@ -124,7 +143,9 @@
     </table>
 
 
-
+    <footer>
+        Page <span class="page-number"></span>
+    </footer>
 
 
 </body>

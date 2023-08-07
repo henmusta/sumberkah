@@ -24,6 +24,23 @@
         padding: 50px;
     }
 
+           footer {
+                /* Place the footer at the bottom of each page */
+                position: fixed;
+                left: 0;
+                right: 0;
+                bottom: 0;
+
+                /* Any other appropriate styling */
+                color: #070808;
+                font-size: 10px;
+                font-weight: bold;
+            }
+
+            /* Show current page number via CSS counter feature */
+            .page-number:before {
+                content: counter(page);
+            }
 
     .headertable,
       .headertable th, .headertable td {
@@ -102,9 +119,9 @@
                     <td width="2%" class="text-center">{{$no++}}</td>
                     <td>{{$val->kode_joborder}}</td>
                     <td>{{$val->tgl_joborder}}</td>
-                    <td>{{$status_jo}}</td>
+                    <td width="20px">{{$status_jo}}</td>
                     <td>{{$val->driver['name']}}</td>
-                    <td>{{$val->mobil['nomor_plat']}}</td>
+                    <td width="50px">{{$val->mobil['nomor_plat']}}</td>
                     <td>{{$val->jenismobil['name']}}</td>
                     <td>{{$val->customer['name']}}</td>
                     <td>{{$val->muatan['name']}}</td>
@@ -130,9 +147,10 @@
         </tfoot>
     </table>
 
-
-
-
+    <footer>
+        Page <span class="page-number"></span>
+    </footer>
 
 </body>
 </html>
+

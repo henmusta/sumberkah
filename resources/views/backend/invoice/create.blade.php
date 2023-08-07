@@ -463,7 +463,7 @@ $(document).ready(function () {
 
     const currenciesOptionsInt = {
            caretPositionOnFocus: "start",
-            currencySymbol: "Rp. ",
+            currencySymbol: "",
             unformatOnSubmit: true,
             allowDecimalPadding: true,
             decimalCharacter : ',',

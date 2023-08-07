@@ -15,6 +15,25 @@
       /* height: 50% !important; */
     }
 
+    footer {
+                /* Place the footer at the bottom of each page */
+                position: fixed;
+                left: 0;
+                right: 0;
+                bottom: 0;
+
+                /* Any other appropriate styling */
+                color: #070808;
+                font-size: 10px;
+                font-weight: bold;
+            }
+
+            /* Show current page number via CSS counter feature */
+            .page-number:before {
+                content: counter(page);
+            }
+
+
     .cover{
 
     }
@@ -126,7 +145,9 @@
         </tfoot>
     </table>
 
-
+    <footer>
+        Page <span class="page-number"></span>
+    </footer>
 
 
 
