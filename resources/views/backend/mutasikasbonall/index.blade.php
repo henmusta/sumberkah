@@ -197,7 +197,8 @@ function printDiv(divName) {
                         tgl_akhir : $('#tgl_akhir').val()
                     });
 
-                    window.location.href = "{{ route('backend.mutasikasbonall.excel') }}?" +params.toString()
+                    let url = "{{ route('backend.mutasikasbonall.excel') }}?" +params.toString();
+                    window.open(url, '_blank');
         });
 
         $("#pdf").click(function() {
@@ -206,7 +207,8 @@ function printDiv(divName) {
                         tgl_akhir : $('#tgl_akhir').val()
                     });
 
-                    window.location.href = "{{ route('backend.mutasikasbonall.pdf') }}?" +params.toString()
+                    let url = "{{ route('backend.mutasikasbonall.pdf') }}?" +params.toString();
+                    window.open(url, '_blank');
         });
     let dataTable = $('#Datatable').DataTable({
         // dom: 'lfBrtip',

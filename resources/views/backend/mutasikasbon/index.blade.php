@@ -25,6 +25,7 @@
                                 <th width="5%">No</th>
                                 <th>Nama Supir</th>
                                 <th>Kasbon</th>
+                                <th width="10%">Status Supir</th>
                                 <th width="10%">Aksi</th>
                               </tr>
                         </thead>
@@ -104,6 +105,7 @@
           },
           {data: 'name', name: 'name'},
           {data: 'kasbon', name: 'kasbon'},
+          {data: 'validasi', name: 'validasi'},
           {data: 'action', name: 'action',  className: 'text-center', orderable: false, searchable: false},
         ],
         columnDefs: [
@@ -113,7 +115,21 @@
             render: $.fn.dataTable.render.number('.', ',', 0, '')
           },
 
-
+          {
+            className: 'dt-center',
+            targets: [3],
+            render: function (data, type, full, meta) {
+              let status = {
+                0: {'title': 'Tidak Aktif', 'class': ' bg-danger'},
+                1: {'title': 'Aktif', 'class': ' bg-success'},
+              };
+              if (typeof status[data] === 'undefined') {
+                return data;
+              }
+              return '<span class="badge bg-pill' + status[data].class + '">' + status[data].title +
+                '</span>';
+            },
+          },
 
         ],
       });
