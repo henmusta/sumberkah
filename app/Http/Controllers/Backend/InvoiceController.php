@@ -508,9 +508,27 @@ class InvoiceController extends Controller
                 ];
 
         $pdf =  PDF::loadView('backend.invoice.report',  compact('data'));
-        $pdf->setPaper('F4', 'landscape');
+        $pdf->setPaper('F4', 'potrait');
         $fileName = 'Laporan-Payment_JO : '. $tgl_awal . '-SD-' .$tgl_akhir;
-        return $pdf->stream("${fileName}.pdf");
+
+
+
+        $x          = 100;
+        $y          = 100;
+        $text       = "{PAGE_NUM} of {PAGE_COUNT}";
+        $font       = $pdf->getFontMetrics()->get_font('Helvetica', 'normal');
+        $size       = 10;
+        $color      = array(0,0,0);
+        $word_space = 0.0;
+        $char_space = 0.0;
+        $angle      = 0.0;
+
+        $pdf->getCanvas()->page_text(
+        $x, $y, $text, $font, $size, $color, $word_space, $char_space, $angle
+        );
+
+
+        return $pdf->stream("${fileName}.pdf", array('Attachment' => false));
     }
 
     public function excel(Request $request)

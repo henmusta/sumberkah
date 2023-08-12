@@ -114,12 +114,12 @@
                     <td width="2%" class="text-center">{{$no++}}</td>
                     <td>{{$val->kode_invoice}}</td>
                     <td>{{$val->tgl_invoice}}</td>
-                    <td>{{$val->customer['name']}}</td>
+                    <td width="180px">{{$val->customer['name']}}</td>
                     <td  class="text-end">Rp. {{ number_format($val->total_harga,0,',','.')}}</td>
                     <td  class="text-end">Rp. {{ number_format($val->sisa_tagihan,0,',','.')}}</td>
                     <td>{{$val->tgl_jatuh_tempo}}</td>
                     <td>{{$status_payment}}</td>
-                    <td>{{ $val['createdby']->name ?? '' }} ( {{  \Carbon\Carbon::parse($val['created_at'])->format('d-m-Y H:i:s')  }} )</td>
+                    <td width="120px">{{ $val['createdby']->name ?? '' }} ( {{  \Carbon\Carbon::parse($val['created_at'])->format('d-m-Y H:i:s')  }} )</td>
                 </tr>
             @endforeach
         </tbody>

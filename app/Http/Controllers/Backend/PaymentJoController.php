@@ -296,7 +296,25 @@ class PaymentJoController extends Controller
                         $total_kasbon += $val['nominal_kasbon'];
                         if($val['nominal_kasbon'] > 0){
                             $kode =  $this->KodeKasbon(Carbon::parse($request['tgl_pembayaran'])->format('d M Y'));
-                            $kasbon = Kasbon::find($val['kasbon_id']);
+
+                            if($val['id'] == '' || $val['id'] == null || $val['id'] == 'undefined'){
+                                    $cek_opt_kasbon = Auth::user()->id;
+                            }else{
+                                if($val['kasbon_id'] != '' || $val['kasbon_id'] != null || $val['kasbon_id'] != 'undefined'){
+                                     // $optkasbon = Kasbon::findOrFail($val['kasbon_id']);
+
+                                    $kas_id = intval($val['kasbon_id']);
+                                    \DB::enableQueryLog();
+                                    $optkasbon = Kasbon::find(2334);
+                                    // dd( $optkasbon);
+                                    // $cek_opt_kasbon = $optkasbon['created_by'];
+                                    dd( $optkasbon,  DB::getQueryLog());
+                                }
+                            //    $cek_opt_kasbon = $kasboncreated_by'];
+                            }
+                     //     $cek_opt_kasbon =  ($val['id'] == '' || $val['id'] == null || $val['id'] == 'undefined') ? Auth::user()->id : $kasbon['created_by'] ;
+
+                            dd(  $cek_opt_kasbon);
                             $kasbon = Kasbon::updateOrCreate([
                                 'id' => $val['kasbon_id']
                             ],[
@@ -308,7 +326,7 @@ class PaymentJoController extends Controller
                                 'keterangan'=> $val['keterangan_kasbon'],
                                 'nominal'=> $val['nominal_kasbon'],
                                 'validasi' =>  '1',
-                                'created_by' => ($val['id'] == '' || $val['id'] == null || $val['id'] == 'undefined') ? Auth::user()->id :  $kasbon['created_by']
+                                'created_by' => ($cek_opt_kasbon == null) ?  $cek_opt_kasbon :  Auth::user()->id
                             ]);
                             $kasbon_id[] = $kasbon['id'];
 

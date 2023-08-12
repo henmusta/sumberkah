@@ -30,6 +30,7 @@ class Api_UsersController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request);
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'password' => 'required|between:6,255',
