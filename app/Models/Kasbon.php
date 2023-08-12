@@ -10,7 +10,7 @@ class Kasbon extends Model
     use HasFactory;
     public $timestamps = false;
     protected $table = 'kasbon';
-    protected $primaryKey = 'id';
+    protected $keyType = 'int';
     protected $fillable = [
       'driver_id',
       'kode_kasbon',

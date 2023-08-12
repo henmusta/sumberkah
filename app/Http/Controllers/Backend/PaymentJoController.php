@@ -290,6 +290,15 @@ class PaymentJoController extends Controller
                     $payment_id = array();
                     $kasbon_id = array();
                     foreach($request['payment'] as $val){
+                        $optkasbon = Kasbon::find($val['kasbon_id']);
+                        $cek_opt_kasbon = null;
+                        if($val['id'] == '' && $val['id'] == null && $val['id'] == 'undefined'){
+                            $cek_opt_kasbon = Auth::user()->id;
+                        }elseif($optkasbon != '' && $optkasbon != "null" && $optkasbon != 'undefined'){
+                          $cek_opt_kasbon = $optkasbon['created_by'];
+                        }
+                        // dd($cek_opt_kasbon);
+
                         $total_payment += $val['nominal'];
 
 
@@ -297,24 +306,10 @@ class PaymentJoController extends Controller
                         if($val['nominal_kasbon'] > 0){
                             $kode =  $this->KodeKasbon(Carbon::parse($request['tgl_pembayaran'])->format('d M Y'));
 
-                            if($val['id'] == '' || $val['id'] == null || $val['id'] == 'undefined'){
-                                    $cek_opt_kasbon = Auth::user()->id;
-                            }else{
-                                if($val['kasbon_id'] != '' || $val['kasbon_id'] != null || $val['kasbon_id'] != 'undefined'){
-                                     // $optkasbon = Kasbon::findOrFail($val['kasbon_id']);
 
-                                    $kas_id = intval($val['kasbon_id']);
-                                    \DB::enableQueryLog();
-                                    $optkasbon = Kasbon::find(2334);
-                                    // dd( $optkasbon);
-                                    // $cek_opt_kasbon = $optkasbon['created_by'];
-                                    dd( $optkasbon,  DB::getQueryLog());
-                                }
-                            //    $cek_opt_kasbon = $kasboncreated_by'];
-                            }
                      //     $cek_opt_kasbon =  ($val['id'] == '' || $val['id'] == null || $val['id'] == 'undefined') ? Auth::user()->id : $kasbon['created_by'] ;
 
-                            dd(  $cek_opt_kasbon);
+                            // dd(  );
                             $kasbon = Kasbon::updateOrCreate([
                                 'id' => $val['kasbon_id']
                             ],[
@@ -326,7 +321,7 @@ class PaymentJoController extends Controller
                                 'keterangan'=> $val['keterangan_kasbon'],
                                 'nominal'=> $val['nominal_kasbon'],
                                 'validasi' =>  '1',
-                                'created_by' => ($cek_opt_kasbon == null) ?  $cek_opt_kasbon :  Auth::user()->id
+                                'created_by' => $cek_opt_kasbon,
                             ]);
                             $kasbon_id[] = $kasbon['id'];
 
@@ -497,7 +492,7 @@ class PaymentJoController extends Controller
                         'joborder_id' =>  $joborder['id'],
                         'kode_kasbon'=>  $kasbon['kode_kasbon'] ?? $kode,
                         'driver_id' => $joborder['driver_id'],
-                        'tgl_kasbon'=>  $paymentjo['tgl_payment'] ?? $request['tgl_pembayaran'],
+                        'tgl_kasbon'=>  $request['tgl_pembayaran'],
                         'jenis'=> 'Potong Joborder',
                         'keterangan'=> $request['keterangan_kasbon'],
                         'nominal'=> $request['nominal_kasbon'],
