@@ -129,7 +129,7 @@
                     <td  class="text-end">Rp. {{ number_format($val->kredit,0,',','.')}}</td>
                     <td  class="text-end">Rp. {{ number_format($val->debit,0,',','.')}}</td>
                     <td  class="text-end">Rp. {{ number_format($val->new_saldo,0,',','.')}}</td>
-                    <td width="150px" class="text-end">{{$val->kasbon['createdby']->name}} ( {{\Carbon\Carbon::parse($val['kasbon']->created_at)->format('d-m-Y H:i:s')}} )</td>
+                    <td width="150px" class="text-end">{{$val->kasbon['createdby']->name ?? ''}} ( {{\Carbon\Carbon::parse($val['kasbon']->created_at)->format('d-m-Y H:i:s') ?? ''}} )</td>
                 </tr>
             @endforeach
 
