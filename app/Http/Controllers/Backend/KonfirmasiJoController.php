@@ -203,64 +203,61 @@ class KonfirmasiJoController extends Controller
                             ->when($create, function ($query, $create) {
                                 return $query->where('konfirmasi_joborder.status', '0');
                              });
-
-                            if ($request->filled('invoice_id')) {
-                                $data->where('konfirmasi_joborder.invoice_id', $invoice_id)->orWhere('konfirmasi_joborder.status', '0');
-                            }
-
-
-                            if ($request->filled('muatan_id')) {
-                                $data->where('joborder.muatan_id', $request['muatan_id']);
-                            }
+                                if ($request->filled('invoice_id')) {
+                                    $data->where('konfirmasi_joborder.invoice_id', $invoice_id)->orWhere('konfirmasi_joborder.status', '0');
+                                }
+                                if ($request->filled('muatan_id')) {
+                                    $data->where('joborder.muatan_id', $request['muatan_id']);
+                                }
 
 
-                            if ($request->filled('tipe')) {
-                                $data->where('rute.ritase_tonase', $request['tipe']);
-                            }
+                                if ($request->filled('tipe')) {
+                                    $data->where('rute.ritase_tonase', $request['tipe']);
+                                }
 
-                            if ($request->filled('jenismobil_id')) {
-                                $data->where('jenismobil_id', $request['jenismobil_id']);
-                            }
-                            if ($request->filled('mobil_id')) {
-                                $data->where('mobil_id', $request['mobil_id']);
-                            }
+                                if ($request->filled('jenismobil_id')) {
+                                    $data->where('jenismobil_id', $request['jenismobil_id']);
+                                }
+                                if ($request->filled('mobil_id')) {
+                                    $data->where('mobil_id', $request['mobil_id']);
+                                }
 
-                            if ($request->filled('rute_awal')) {
-                                $data->where('joborder.first_rute_id', $request['rute_awal']);
-                            }
+                                if ($request->filled('rute_awal')) {
+                                    $data->where('joborder.first_rute_id', $request['rute_awal']);
+                                }
 
-                            if ($request->filled('rute_akhir')) {
-                                $data->where('joborder.last_rute_id', $request['rute_akhir']);
-                            }
+                                if ($request->filled('rute_akhir')) {
+                                    $data->where('joborder.last_rute_id', $request['rute_akhir']);
+                                }
 
-                            if ($request->filled('id')) {
-                                // dd($request['id']);
-                                $data->whereIn('joborder.id', $request['id']);
-                            }
+                                if ($request->filled('id')) {
+                                    // dd($request['id']);
+                                    $data->whereIn('joborder.id', $request['id']);
+                                }
 
-                            if ($request->filled('tgl_awal_muat')) {
-                                    $data->whereDate('tgl_muat', '>=', $request['tgl_awal_muat']);
-                            }
-                            if ($request->filled('tgl_akhir_muat')) {
-                                 $data->whereDate('tgl_muat', '<=', $request['tgl_akhir_muat']);
-                            }
+                                if ($request->filled('tgl_awal_muat')) {
+                                        $data->whereDate('tgl_muat', '>=', $request['tgl_awal_muat']);
+                                }
+                                if ($request->filled('tgl_akhir_muat')) {
+                                    $data->whereDate('tgl_muat', '<=', $request['tgl_akhir_muat']);
+                                }
 
-                            if ($request->filled('tgl_awal_bongkar')) {
-                                $data->whereDate('tgl_bongkar', '>=', $request['tgl_awal_bongkar']);
-                            }
-                            if ($request->filled('tgl_akhir_bongkar')) {
-                                $data->whereDate('tgl_bongkar', '<=', $request['tgl_akhir_bongkar']);
-                            }
+                                if ($request->filled('tgl_awal_bongkar')) {
+                                    $data->whereDate('tgl_bongkar', '>=', $request['tgl_awal_bongkar']);
+                                }
+                                if ($request->filled('tgl_akhir_bongkar')) {
+                                    $data->whereDate('tgl_bongkar', '<=', $request['tgl_akhir_bongkar']);
+                                }
 
 
-                            if ($request->filled('customer_id')) {
-                                $data->where('konfirmasi_joborder.customer_id', $customer_id);
-                            }
+                                if ($request->filled('customer_id')) {
+                                    $data->where('konfirmasi_joborder.customer_id', $customer_id);
+                                }
 
-                            if ($request->filled('kode_joborder')) {
-                                $joborder = explode(',',$kode_joborder);
-                                $data->orwhereIn('konfirmasi_joborder.kode_joborder', $joborder);
-                            }
+                                if ($request->filled('kode_joborder')) {
+                                    $joborder = explode(',',$kode_joborder);
+                                    $data->orwhereIn('konfirmasi_joborder.kode_joborder', $joborder);
+                                }
                             $data->groupBy('joborder.id');
 
 

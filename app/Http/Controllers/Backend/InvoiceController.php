@@ -508,26 +508,12 @@ class InvoiceController extends Controller
                 ];
 
         $pdf =  PDF::loadView('backend.invoice.report',  compact('data'));
-        $pdf->setPaper('F4', 'potrait');
-        $fileName = 'Laporan-Payment_JO : '. $tgl_awal . '-SD-' .$tgl_akhir;
-
-
-
-        $x          = 100;
-        $y          = 100;
-        $text       = "{PAGE_NUM} of {PAGE_COUNT}";
+        $fileName = 'Laporan-Invoice : '. $tgl_awal . '-SD-' .$tgl_akhir;
+        $PAPER_F4 = array(0,0,609.4488,935.433);
+        $pdf->setPaper( $PAPER_F4, 'landscape');
+        $pdf->render();
         $font       = $pdf->getFontMetrics()->get_font('Helvetica', 'normal');
-        $size       = 10;
-        $color      = array(0,0,0);
-        $word_space = 0.0;
-        $char_space = 0.0;
-        $angle      = 0.0;
-
-        $pdf->getCanvas()->page_text(
-        $x, $y, $text, $font, $size, $color, $word_space, $char_space, $angle
-        );
-
-
+        $pdf->get_canvas()->page_text(33, 590, "Page: {PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(0,0,0));
         return $pdf->stream("${fileName}.pdf", array('Attachment' => false));
     }
 
@@ -665,7 +651,6 @@ class InvoiceController extends Controller
             return $query->whereDate('tgl_invoice', '<=', $tgl_akhir);
          })->where('status_payment', '!=', '2')->first();
         //   dd(response()->json($results['data']->sortByDesc('urut')));
-
         return response()->json($data);
 
     }

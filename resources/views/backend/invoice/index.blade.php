@@ -448,7 +448,6 @@ tr.group:hover {
      });
 
      $("#excel").click(function() {
-
         let params = new URLSearchParams({
             status_payment : $('#select2StatusPayment').find(':selected').val() || '',
             ppn : $('#select2Ppn').find(':selected').val() || '',

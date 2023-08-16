@@ -91,6 +91,7 @@
         @if($data['tgl_awal'] != null && $data['tgl_akhir'] != null)
         <h5  style=" text-align: center; margin-top:25px;margin-bottom: 0">TANGGAL : {{\Carbon\Carbon::parse($data['tgl_awal'])->format('d-m-Y')}} S/D {{\Carbon\Carbon::parse($data['tgl_akhir'])->format('d-m-Y')}} </h5>
         @endif
+        <p style=" text-align: center; margin-bottom: 0; font-size:8px;"> Print By : {{ Auth::user()->name ?? '' }} ( {{  \Carbon\Carbon::now()->format('d-m-Y H:i:s')  }} )</p>
     </div>
 
 
@@ -103,7 +104,7 @@
                 <th></th>
              </tr>
               <tr>
-                <th>Nama Driver</th>
+                <th width="150px">Nama Driver</th>
                 <th>Tanggal Transaksi</th>
                 <th>Kode Kasbon</th>
                 <th>Kode Gaji</th>
@@ -155,10 +156,6 @@
     </table>
 
 
-
-    <footer>
-        Page <span class="page-number"></span>
-    </footer>
 
 </body>
 </html>

@@ -88,6 +88,7 @@
         @if($data['tgl_awal'] != null && $data['tgl_akhir'] != null)
         <h5  style=" text-align: center; margin-top:25px;margin-bottom: 0">TANGGAL : {{\Carbon\Carbon::parse($data['tgl_awal'])->format('d-m-Y')}} S/D {{\Carbon\Carbon::parse($data['tgl_akhir'])->format('d-m-Y')}} </h5>
         @endif
+        <p style=" text-align: center; margin-bottom: 0; font-size:8px;"> Print By : {{ Auth::user()->name ?? '' }} ( {{  \Carbon\Carbon::now()->format('d-m-Y H:i:s')  }} )</p>
     </div>
 
 
@@ -136,9 +137,13 @@
     </table>
 
 
-    <footer>
-        Page <span class="page-number"></span>
-    </footer>
+    <script type="text/php">
+        if ( isset($pdf) ) {
+            $font       = $pdf->getFontMetrics()->get_font('Helvetica', 'normal');
+            $pdf->page_text(72, 18, "Header: {PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(0,0,0));
+        }
+    </script>
+
 
 
 </body>
