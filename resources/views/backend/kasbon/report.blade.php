@@ -129,7 +129,7 @@
                     <td>{{$val->jenis}}</td>
                     <td  class="text-end">Rp. {{ number_format($val->nominal,0,',','.')}}</td>
                     <td>{{$status}}</td>
-                    <td>{{$val['createdby']->name}} ( {{\Carbon\Carbon::parse($val->created_at)->format('d-m-Y H:i:s')}} )</td>
+                    <td>{{$val['createdby']->name ?? ''}} ( {{\Carbon\Carbon::parse($val->created_at)->format('d-m-Y H:i:s') ?? ''}} )</td>
                 </tr>
             @endforeach
         </tbody>
