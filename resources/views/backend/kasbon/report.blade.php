@@ -100,8 +100,8 @@
         <thead style="background-color: #fff !important; color:black;">
             <tr >
                 <th>No</th>
-                <th class="text-center">Tanggal Transaksi</th>
                 <th>Kode Kasbon</th>
+                <th class="text-center">Tanggal Transaksi</th>
                 <th>Driver</th>
                 <th>Transaksi</th>
                 <th>Nominal</th>
