@@ -120,12 +120,13 @@ class JoborderController extends Controller
                 $cek_delete =  $row->status_payment == '0' && $row->status_joborder == '0' ? $delete : '';
 
                 $cek_perm_validasi = $perm['edit'] == 'true' ? $cek_validasi : '';
-                // $cek_perm_konfirmasi_jo = $perm['edit'] == 'true' ? $cek_konfirmasi_jo : '';
+                $cek_perm_konfirmasi_jo = $perm['edit'] == 'true' ? $cek_konfirmasi_jo : '';
                 $cek_perm_edit = $perm['edit'] == 'true' ? $cek_edit : '';
                 $cek_perm_delete = $perm['delete'] == 'true' ? $cek_delete : '';
 
                 $cek_level_validasi = Auth::user()->roles()->first()->level == '1' && $row->penggajian_id == null && $row->invoice_id == null ? $cek_validasi : $cek_perm_validasi;
                 $cek_level_edit = Auth::user()->roles()->first()->level == '1' && $row->penggajian_id == null && $row->invoice_id == null ? $edit : $cek_perm_edit;
+                $cek_level_konfirmasi_jo = $row->penggajian_id == null && $row->invoice_id == null ? $cek_konfirmasi_jo : $cek_perm_konfirmasi_jo;
                 $cek_level_delete = Auth::user()->roles()->first()->level == '1' &&  $row->penggajian_id == null && $row->invoice_id == null ? $delete : $cek_perm_delete;
 
                 return '<div class="dropdown">
