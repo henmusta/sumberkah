@@ -6,7 +6,7 @@
 @page {
         size: F4 landscape;
         margin: 0;
-        margin: 5mm 5mm 5mm 5mm;
+        margin: 10mm 10mm 10mm 10mm;
     }
     body {
       font-family: Arial, sans-serif;
@@ -147,9 +147,6 @@
 
 
 
-    <footer>
-        Page <span class="page-number"></span>
-    </footer>
 
 </body>
 </html>

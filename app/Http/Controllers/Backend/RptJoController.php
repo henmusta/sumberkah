@@ -94,8 +94,12 @@ class RptJoController extends Controller
                 ];
 
         $pdf =  PDF::loadView('backend.rptjo.pdf',  compact('data'));
-        $pdf->setPaper('F4', 'landscape');
         $fileName = 'Laporan-Payment_JO : '. $tgl_awal . '-SD-' .$tgl_akhir;
+        $PAPER_F4 = array(0,0,609.4488,935.433);
+        $pdf->setPaper( $PAPER_F4, 'landscape');
+        $pdf->render();
+        $font       = $pdf->getFontMetrics()->get_font('Helvetica', 'normal');
+        $pdf->get_canvas()->page_text(33, 590, "Page: {PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(0,0,0));
         return $pdf->stream("${fileName}.pdf");
     }
 

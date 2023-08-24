@@ -7,7 +7,7 @@
         /* size: 21cm 15cm; */
         size: F4 landscape;
         margin: 0;
-        margin: 5mm 5mm 5mm 5mm;
+        margin: 10mm 10mm 10mm 10mm;
     }
     body {
       font-family: Arial, sans-serif;
@@ -146,9 +146,7 @@
         </tfoot>
     </table>
 
-    <footer>
-        Page <span class="page-number"></span>
-    </footer>
+
 
 
 
