@@ -278,7 +278,7 @@ class MutasiKasbonAllController extends Controller
                     $sheet->setCellValue('C' . $x, $val['kode_kasbon']);
                     $sheet->setCellValue('D' . $x, $val['gaji']['kode_gaji'] ?? '');
                     $sheet->setCellValue('E' . $x, $val['joborder']['kode_joborder'] ?? '');
-                    $sheet->setCellValue('F' . $x, $val['keterangan']);
+                    $sheet->setCellValue('F' . $x, $val['kasbon']['keterangan']  ?? '');
                     $sheet->setCellValue('G' . $x, $val['debit']);
                     $sheet->setCellValue('H' . $x, $val['kredit']);
                     $sheet->setCellValue('I' . $x, $val['new_saldo']);

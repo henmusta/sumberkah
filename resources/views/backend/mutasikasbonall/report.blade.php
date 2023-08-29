@@ -126,7 +126,7 @@
                     <td>{{$val->kode_kasbon}}</td>
                     <td>{{$val->gaji['kode_gaji'] ?? '-'}}</td>
                     <td>{{$val->joborder['kode_joborder'] ?? '-'}}</td>
-                    <td width="150px">{{$val->keterangan ?? ''}}</td>
+                    <td width="150px">{{$val->kasbon['keterangan'] ?? ''}}</td>
                     <td  class="text-end">Rp. {{ number_format($val->kredit,0,',','.')}}</td>
                     <td  class="text-end">Rp. {{ number_format($val->debit,0,',','.')}}</td>
                     <td  class="text-end">Rp. {{ number_format($val->new_saldo,0,',','.')}}</td>
