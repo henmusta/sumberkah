@@ -347,7 +347,7 @@ class MutasiKasbonController extends Controller
                     $sheet->setCellValue('F' . $x, $val['debit']);
                     $sheet->setCellValue('G' . $x, $val['kredit']);
                     $sheet->setCellValue('H' . $x, $val['new_saldo']);
-                    $sheet->setCellValue('I' . $x,  $val['kasbon']['createdby']->name . ' ( ' .date('d-m-Y', strtotime( $val['kasbon']['created_at'])) .' )');
+                    $sheet->setCellValue('J' . $x,  $val['kasbon']['createdby']->name ?? '' . ' ( ' .date('d-m-Y', strtotime( $val['kasbon']['created_at'])) .' )');
                     $x++;
             }
 
