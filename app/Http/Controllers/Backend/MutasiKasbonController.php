@@ -339,6 +339,8 @@ class MutasiKasbonController extends Controller
 
             $x = 6;
             foreach($data as $val){
+                    $user = isset($val['kasbon']['createdby']->name) ? $val['kasbon']['createdby']->name : '-' ;
+
                     $sheet->setCellValue('A' . $x, $val['tgl_kasbon']);
                     $sheet->setCellValue('B' . $x, $val['kode_kasbon']);
                     $sheet->setCellValue('C' . $x, $val['gaji']['kode_gaji'] ?? '');
@@ -347,7 +349,7 @@ class MutasiKasbonController extends Controller
                     $sheet->setCellValue('F' . $x, $val['debit']);
                     $sheet->setCellValue('G' . $x, $val['kredit']);
                     $sheet->setCellValue('H' . $x, $val['new_saldo']);
-                    $sheet->setCellValue('J' . $x,  $val['kasbon']['createdby']->name ?? '' . ' ( ' .date('d-m-Y', strtotime( $val['kasbon']['created_at'])) .' )');
+                    $sheet->setCellValue('I' . $x, $user. ' ( ' .date('d-m-Y H:i:s', strtotime( $val['kasbon']['created_at'])) .' )');
                     $x++;
             }
 
