@@ -20,7 +20,7 @@
                             </div>
                           </div>
                     </div>
-                    <input id="gaji_id" value="{{Request::segment(3)}}">
+                    <input type="hidden" id="gaji_id" value="{{Request::segment(3)}}">
                     <div class="card-body">
                          <div class="row">
                               <div class="col-md-6">
