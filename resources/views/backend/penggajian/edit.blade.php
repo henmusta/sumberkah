@@ -20,6 +20,7 @@
                             </div>
                           </div>
                     </div>
+                    <input id="gaji_id" value="{{Request::segment(3)}}">
                     <div class="card-body">
                          <div class="row">
                               <div class="col-md-6">
@@ -262,13 +263,14 @@ $(document).ready(function () {
             d.driver_id = $('#select2Driver').find(':selected').val();
             d.mobil_id = $('#select2Mobil').find(':selected').val();
             d.bulan_kerja = $('#bulan_kerja').val();
-            d.penggajian_id = $('#penggajian_id').val();
+            d.penggajian_id = $('#gaji_id').val();
           }
         },
 
         columns: [
             {
                 data:   "id",
+                orderable: false, searchable: false,
                 render: function ( data, type, row ) {
                     if ( type === 'display' ) {
                         return '<input type="checkbox" value="'+ data +'" class="editor-active">';
@@ -307,7 +309,19 @@ $(document).ready(function () {
         ],
         rowCallback: function ( row, data ) {
             console.log(data);
-            $('input.editor-active', row).prop( 'checked', data.penggajian_id != null );
+            $('input.editor-active', row).prop( 'checked', data.penggajian_id == $('#gaji_id').val() );
+           // $('input.editor-active', row).prop( 'checked', data.kode_joborder == joborder);
+            // $('input.editor-active', row).prop( 'checked', data.status_konfirmasi == 1 );
+            // let joborder = JSON.parse("[" + $('#kode_joborder').val() + "]");
+            // if( joborder != undefined || joborder.length > 0){
+            //     joborder.forEach(function(joborder) {
+            //         if(joborder == data.kode_joborder){
+            //             console.log(data.kode_joborder);
+            //             console.log(joborder);
+
+            //         }
+            //     });
+            // }
         }
       });
 
@@ -333,10 +347,6 @@ $(document).ready(function () {
         });
 
 
-
-        // var id = rows_selected_id.join(",");
-        // console.log(id);
-
         $.ajax({
                 url: "{{ route('backend.joborder.findkonfirmasijoborder') }}",
                 type: 'GET',
@@ -355,51 +365,13 @@ $(document).ready(function () {
                     $('#nominal_kasbon').prop('disabled', false);
                     $('#bonus').prop('disabled', false);
                     count_total();
-                    // console.log(joinedCities);
-                    // $('#tgl_joborder').val(data.joborder.tgl_joborder);
-                    // $('#driver_id').val(data.driver.name);
-                    // $('#nomor_plat').val(data.mobil.nomor_plat);
-                    // biaya_harga.set(data.rute.harga);
-                    // $('#customer_id').val(data.customer.name);
-                    // $('#muatan_id').val(data.muatan.name);
-                    // $('#first_rute_id').val(data.firstrute.name);
-                    // $('#last_rute_id').val(data.firstrute.name);
-                    // total_uang_jalan.set(data.joborder.total_uang_jalan);
 
                 }
          });
 
     });
 
-// select2TambahanPotongan.on('change', function (e) {
-//     var optionSelected = $("option:selected", this);
-//     var valueSelected = this.value;
-//     if(valueSelected != 'None'){
-//         console.log(valueSelected);
-//         $('#nominal_tambahan_potongan').prop("disabled", false);
-//     }else{
-//         console.log(valueSelected);
-//         $('#nominal_tambahan_potongan').prop('disabled', true);
-//     }
-//     tambahan_potongan.set(0);
-//     count_total();
-// });
 
-
-// select2Ppn.on('change', function (e) {
-//     var optionSelected = $("option:selected", this);
-//     var valueSelected = this.value;
-//     if(valueSelected != 'None'){
-//         console.log(valueSelected);
-//         $('#nominal_ppn').prop("disabled", false);
-//     }else{
-//         console.log(valueSelected);
-//         $('#nominal_ppn').prop('disabled', true);
-
-//     }
-//     nominal_ppn.set(0);
-//     count_total();
-// });
 
 
 
