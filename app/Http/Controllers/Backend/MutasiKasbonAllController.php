@@ -62,7 +62,7 @@ class MutasiKasbonAllController extends Controller
                 ->when($tgl_akhir, function ($query, $tgl_akhir) {
                     return $query->whereDate('tgl_kasbon', '<=', $tgl_akhir);
                 })
-                ->get();
+                ->groupBy('kasbon_jurnallog.kode_kasbon')->get();
                 // dd($get_data);
 
 
@@ -146,7 +146,7 @@ class MutasiKasbonAllController extends Controller
         })
         ->when($tgl_akhir, function ($query, $tgl_akhir) {
             return $query->whereDate('tgl_kasbon', '<=', $tgl_akhir);
-        })
+        })->groupBy('kasbon_jurnallog.kode_kasbon')
         ->get();
 
         if(count($get_data) > 0){
@@ -207,7 +207,7 @@ class MutasiKasbonAllController extends Controller
         })
         ->when($tgl_akhir, function ($query, $tgl_akhir) {
             return $query->whereDate('tgl_kasbon', '<=', $tgl_akhir);
-        })
+        })->groupBy('kasbon_jurnallog.kode_kasbon')
 
         ->get();
 
@@ -347,7 +347,7 @@ class MutasiKasbonAllController extends Controller
         })
         ->when($tgl_akhir, function ($query, $tgl_akhir) {
             return $query->whereDate('tgl_kasbon', '<=', $tgl_akhir);
-        })
+        })->groupBy('kasbon_jurnallog.kode_kasbon')
 
         ->get();
 
