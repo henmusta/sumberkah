@@ -498,7 +498,7 @@ class InvoiceController extends Controller
                 return $query->whereDate('tgl_invoice', '>=', $tgl_awal);
          })->when($tgl_akhir, function ($query, $tgl_akhir) {
             return $query->whereDate('tgl_invoice', '<=', $tgl_akhir);
-         })->get();
+         })->orderBy('kode_invoice', 'desc')->get();
 
 
                 $data = [

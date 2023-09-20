@@ -89,7 +89,7 @@ class PaymentJoController extends Controller
             </a>
             <div class="dropdown-menu" data-popper-placement="bottom-start" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(0px, 40px);">
                 '. $show.'
-                '. $cek_level_edit .'
+                '. $edit .'
                 '.  $cek_level_delete .'
                 '.  $print .'
             </div>

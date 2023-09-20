@@ -321,8 +321,6 @@ tr.group:hover {
             //     //     }
             //     // }
             // },
-
-
         ],
         responsive: true,
         scrollX: false,
