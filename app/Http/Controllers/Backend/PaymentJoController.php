@@ -156,7 +156,7 @@ class PaymentJoController extends Controller
                       'kode_kasbon'=> $kode,
                       'jenis'=> 'Potong Joborder',
                       'tgl_kasbon'=> $request['tgl_pembayaran'],
-                      'keterangan'=> $val_payment['keterangan'],
+                      'keterangan'=> $val_payment['keterangan_kasbon'],
                       'nominal'=> $val_payment['nominal_kasbon'],
                       'validasi' =>  '1',
                       'created_by' => Auth::user()->id
@@ -305,18 +305,14 @@ class PaymentJoController extends Controller
                         $total_kasbon += $val['nominal_kasbon'];
                         if($val['nominal_kasbon'] > 0){
                             $kode =  $this->KodeKasbon(Carbon::parse($request['tgl_pembayaran'])->format('d M Y'));
-
-
-                     //     $cek_opt_kasbon =  ($val['id'] == '' || $val['id'] == null || $val['id'] == 'undefined') ? Auth::user()->id : $kasbon['created_by'] ;
-
-                            // dd(  );
+                            $datakasbon = Kasbon::find($val['kasbon_id']);
                             $kasbon = Kasbon::updateOrCreate([
                                 'id' => $val['kasbon_id']
                             ],[
                                 'joborder_id' =>  $joborder['id'],
-                                'kode_kasbon'=>  $kasbon['kode_kasbon'] ?? $kode,
+                                'kode_kasbon'=>  $datakasbon['kode_kasbon'] ?? $kode,
                                 'driver_id' => $joborder['driver_id'],
-                                'tgl_kasbon'=>  $kasbon['tgl_kasbon'] ?? $request['tgl_pembayaran'],
+                                'tgl_kasbon'=>  $datakasbon['tgl_kasbon'] ?? $request['tgl_pembayaran'],
                                 'jenis'=> 'Potong Joborder',
                                 'keterangan'=> $val['keterangan_kasbon'],
                                 'nominal'=> $val['nominal_kasbon'],
@@ -325,7 +321,7 @@ class PaymentJoController extends Controller
                             ]);
                             $kasbon_id[] = $kasbon['id'];
 
-                             if(isset($kasbon['id'])){
+                             if(isset($kasbon)){
                                 $kasbonjurnallog = Kasbonjurnallog::updateOrCreate([
                                      'kasbon_id' => $kasbon['id']
                                 ],[
@@ -341,9 +337,10 @@ class PaymentJoController extends Controller
                                 ]);
                              }
 
+
                         }
 
-                    //    dd($val['keterangan_kasbon']);
+
                         $paymentjoborder = PaymentJo::find($val['id']);
 
                         $payment = PaymentJo::updateOrCreate([
@@ -361,14 +358,7 @@ class PaymentJoController extends Controller
                             'created_by' => ($val['id'] == '' || $val['id'] == null || $val['id'] == 'undefined') ? Auth::user()->id : $paymentjoborder['created_by']
                         ]);
                         $payment_id[] = $payment['id'];
-                        $cek_kasbon = Kasbon::where([
-                            ['joborder_id' , $joborder['id']],
-                        ])->whereNotIn('id', $kasbon_id);
 
-                        // $kasbon_driver = 0;
-                        if(isset($cek_kasbon)){
-                            $cek_kasbon->delete();
-                        }
 
                         $Driverlogkasbon = Driverlogkasbon::updateOrCreate([
                             'payment_joborder_id' => $payment['id']
@@ -377,6 +367,16 @@ class PaymentJoController extends Controller
                             'driver_id' => $joborder['driver_id'],
                             'nominal' =>  $val['nominal_kasbon']
                         ]);
+                    }
+
+                    $cek_kasbon = Kasbon::where([
+                        ['joborder_id' , $joborder['id']],
+                    ])->whereNotIn('id', $kasbon_id);
+
+                    // $kasbon_driver = 0;
+                    // dd($cek_kasbon->get());
+                    if(count($cek_kasbon->get()) > 0){
+                        $cek_kasbon->delete();
                     }
 
                     $driver = Driver::findOrFail($joborder['driver_id']);

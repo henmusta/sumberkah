@@ -65,8 +65,7 @@ class MutasiKasbonController extends Controller
                 })
                 ->when($driver_id, function ($query, $driver_id) {
                     return $query->where('driver_id', $driver_id);
-                })->groupBy('kasbon_jurnallog.kode_kasbon')
-                ->get();
+                })->get();
                 // dd($get_data);
 
 
@@ -197,7 +196,7 @@ class MutasiKasbonController extends Controller
         })
         ->when($driver_id, function ($query, $driver_id) {
             return $query->where('driver_id', $driver_id);
-        })->groupBy('kasbon_jurnallog.kode_kasbon')
+        })
         ->get();
 
         if(count($get_data) > 0){
@@ -263,7 +262,7 @@ class MutasiKasbonController extends Controller
         })
         ->when($driver_id, function ($query, $driver_id) {
             return $query->where('driver_id', $driver_id);
-        })->groupBy('kasbon_jurnallog.kode_kasbon')
+        })
         ->get();
 
         if(count($get_data) > 0){
@@ -415,7 +414,7 @@ class MutasiKasbonController extends Controller
         })
         ->when($driver_id, function ($query, $driver_id) {
             return $query->where('driver_id', $driver_id);
-        })->groupBy('kasbon_jurnallog.kode_kasbon')
+        })
         ->get();
 
         if(count($get_data) > 0){
