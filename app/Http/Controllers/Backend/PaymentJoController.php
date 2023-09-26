@@ -43,7 +43,7 @@ class PaymentJoController extends Controller
           'joborder' => $joborder,
         ];
         if ($request->ajax()) {
-          $data = PaymentJo::with('joborder');
+          $data = PaymentJo::selectRaw('payment_joborder.*')->with('joborder');
           if ($request->filled('id')) {
             $data->where('joborder_id', $request['id']);
         }
@@ -482,6 +482,7 @@ class PaymentJoController extends Controller
                 // $updatekasbon = null;
 
                 $kasbon = Kasbon::find($paymentjo['kasbon_id']);
+                // dd($paymentjo);
                 $kasbonjurnallog = Kasbonjurnallog::where('kasbon_id', $paymentjo['kasbon_id']);
                 if($request['nominal_kasbon'] > 0){
                     $kode =  $this->KodeKasbon(Carbon::parse($request['tgl_pembayaran'])->format('d M Y'));
@@ -511,7 +512,7 @@ class PaymentJoController extends Controller
                             'kode_kasbon'=>  $kasbon['kode_kasbon'],
                             'jenis'=>  $kasbon['jenis'],
                             'tgl_kasbon'=>  $kasbon['tgl_kasbon'],
-                            'keterangan'=> $kasbon['keterangan_kasbon'],
+                            'keterangan'=> $kasbon['keterangan'],
                             'debit'=> $kasbon['nominal'],
                             'kredit'=> '0'
                         ]);
@@ -537,6 +538,7 @@ class PaymentJoController extends Controller
                     // ]);
 
                 }else{
+                    $dd( $kasbon);
                     if(isset($kasbon['id'])){
                         $kasbon->delete();
                     }

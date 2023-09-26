@@ -137,7 +137,7 @@
 
                 <div class="col-12">
 
-                        <input type="hidden" id="id" name="id"  class="form-control text-end" />
+                        <input type="hidden" id="id" name="id" value=""  class="form-control text-end" />
                         <div class="table-responsive">
                             <table id="DatatableSingle" class="table " width="100%">
                                 <thead>
