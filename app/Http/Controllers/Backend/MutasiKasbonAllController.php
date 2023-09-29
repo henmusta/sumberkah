@@ -207,9 +207,7 @@ class MutasiKasbonAllController extends Controller
         })
         ->when($tgl_akhir, function ($query, $tgl_akhir) {
             return $query->whereDate('tgl_kasbon', '<=', $tgl_akhir);
-        })->groupBy('kasbon_jurnallog.kode_kasbon')
-
-        ->get();
+        })->groupBy('kasbon_jurnallog.kode_kasbon')->get();
 
         if(count($get_data) > 0){
             // dd( $get_data);
@@ -232,12 +230,11 @@ class MutasiKasbonAllController extends Controller
                     $get_data[$key]->new_saldo = $new_saldo;
                     // $get_data[$key]->saldo_awal = $new_saldo;
                 }
-
-         }
-            $data[0]['saldo_akhir'] =  end($data)->new_saldo;
-        }else{
-            $data[0]['saldo_akhir'] = $saldo_awal;
-        }
+            }
+                $data[0]['saldo_akhir'] =  end($data)->new_saldo;
+            }else{
+                $data[0]['saldo_akhir'] = $saldo_awal;
+            }
 
             $spreadsheet = new Spreadsheet();
             $sheet = $spreadsheet->getActiveSheet();

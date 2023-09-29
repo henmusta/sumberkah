@@ -511,13 +511,14 @@ class KasbonController extends Controller
          $x = 4;
          foreach($data as $val){
                 $status_validasi = $val['validasi'] == '0' ? 'Pending' : 'Acc';
+                $user = isset($val['kasbon']['createdby']->name) ? $val['kasbon']['createdby']->name : '-' ;
                  $sheet->setCellValue('A' . $x, $val['tgl_kasbon']);
                  $sheet->setCellValue('B' . $x, $val['kode_kasbon']);
                  $sheet->setCellValue('C' . $x, $val['driver']['name']);
                  $sheet->setCellValue('D' . $x, $val['jenis'] ?? '');
                  $sheet->setCellValue('E' . $x, $val['nominal'] ?? '');
                  $sheet->setCellValue('F' . $x, $status_validasi);
-                 $sheet->setCellValue('G' . $x, $val['createdby']->name . ' ( ' .date('d-m-Y', strtotime($val['created_at'])) .' )');
+                 $sheet->setCellValue('G' . $x, $user . ' ( ' .date('d-m-Y', strtotime($val['created_at'])) .' )');
                  $x++;
          }
       $cell   = count($data) + 4;
