@@ -538,6 +538,7 @@ class PaymentJoController extends Controller
                     // ]);
 
                 }else{
+
                     if(isset($kasbon['id'])){
                         $kasbon->delete();
                     }

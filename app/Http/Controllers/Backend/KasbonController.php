@@ -511,7 +511,7 @@ class KasbonController extends Controller
          $x = 4;
          foreach($data as $val){
                 $status_validasi = $val['validasi'] == '0' ? 'Pending' : 'Acc';
-                $user = isset($val['kasbon']['createdby']->name) ? $val['kasbon']['createdby']->name : '-' ;
+                $user = isset($val['createdby']->name) ? $val['createdby']->name : '-' ;
                  $sheet->setCellValue('A' . $x, $val['tgl_kasbon']);
                  $sheet->setCellValue('B' . $x, $val['kode_kasbon']);
                  $sheet->setCellValue('C' . $x, $val['driver']['name']);
