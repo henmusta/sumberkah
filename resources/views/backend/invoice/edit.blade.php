@@ -727,8 +727,11 @@ $(document).ready(function () {
             row_id.push(checkbox_value);
         });
         $.ajax({
+                headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
                 url: "{{ route('backend.konfirmasijo.findkonfirmasijo') }}",
-                type: 'GET',
+                type: 'POST',
                 data: {konfirmasijo_id:  row_id},
                 dataType: 'json', // added data type
                 success: function(res) {

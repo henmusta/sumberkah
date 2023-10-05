@@ -122,7 +122,7 @@ Route::middleware('auth:henmus')->group(function(){
             Route::resource('paymentjo', Backend\PaymentJoController::class);
 
             //KonfirmasiJo
-            Route::get('konfirmasijo/findkonfirmasijo', [Backend\KonfirmasiJoController::class, 'findkonfirmasijo'])->name('konfirmasijo.findkonfirmasijo');
+            Route::post('konfirmasijo/findkonfirmasijo', [Backend\KonfirmasiJoController::class, 'findkonfirmasijo'])->name('konfirmasijo.findkonfirmasijo');
             Route::get('konfirmasijo/datatablecekjo', [Backend\KonfirmasiJoController::class, 'datatablecekjo'])->name('konfirmasijo.datatablecekjo');
             Route::resource('konfirmasijo', Backend\KonfirmasiJoController::class);
 
