@@ -113,13 +113,15 @@ class BulananJoborderController extends Controller
             $html .= '<tbody>';
 
             $alldata = $getdata[$i]['alldata']->get();
+            $count = $getdata[$i]['alldata']->count();
             $total_uj=$sisa_uj = 0;
-            for($i = 0; $i < 100; $i++){
-                $status_payment = $alldata[$i]['status_payment'] == '0' ? 'Belum Bayar' : ($alldata[$i]['status_payment'] == '1' ? 'Progress Payment' : 'Lunas');
-                $status_jo = $alldata[$i]['status_joborder'] == '0' ? 'Ongoing' : 'Done';
+            $no = 1;
+            for($i = 0; $i < $count ; $i++){
+                $status_payment = $alldata[$i]->status_payment == '0' ? 'Belum Bayar' : ($alldata[$i]->status_payment == '1' ? 'Progress Payment' : 'Lunas');
+                $status_jo = $alldata[$i]->status_joborder == '0' ? 'Ongoing' : 'Done';
                 $html .= '
                 <tr>
-                    <td class="text-center">{{$no++}}</td>
+                    <td class="text-center">'.$no++.'</td>
                     <td><a href="'.route('backend.joborder.index').'?joborder_id='.$alldata[$i]->id.'" target="_blank">'.$alldata[$i]->kode_joborder.'</a></td>
                     <td>'. $alldata[$i]->tgl_joborder.'</td>
                     <td>'.$status_jo.'</td>
