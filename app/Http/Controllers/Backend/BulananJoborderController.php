@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Joborder;
 use Illuminate\Support\Facades\Auth;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -142,6 +143,7 @@ class BulananJoborderController extends Controller
            $html .= '</table>';
         }
 
+        // dd($html);
         // @php($no=1)
         // @php($getdata = $data['data'])
         // @for ($item = 0; $item < count($getdata); $item++)
@@ -228,7 +230,9 @@ class BulananJoborderController extends Controller
         $pdf->render();
         $font       = $pdf->getFontMetrics()->get_font('Helvetica', 'normal');
         $pdf->get_canvas()->page_text(33, 590, "Page: {PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(0,0,0));
-        return $pdf->stream("${fileName}.pdf");
+        Storage::put('public/pdf/invoice.pdf', $pdf->output());
+        return $pdf->download('invoice.pdf');
+        // $output = $pdf->output();
     }
 
     public function numrows($data, $sheet, $request, $spreadsheet){
