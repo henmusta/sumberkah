@@ -30,7 +30,7 @@ class BulananJoborderController extends Controller
         foreach($array as $key => $val){
             $bulan = Carbon::parse($val)->isoFormat('M');
             $tahun = Carbon::parse($request['tahun'])->isoFormat('Y');
-            $data[$key]['bulan'] = Carbon::createFromFormat('Y-m-d', $val)->isoFormat('MMMM YYYY');
+            $data[$key]['bulan'] = Carbon::parse($val)->isoFormat('MMMM YYYY');
             $data[$key]['alldata'] = Joborder::whereMonth('tgl_joborder', $bulan)
                                     ->whereYear('tgl_joborder', $tahun);
         }
