@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Storage;
 use App\Models\Joborder;
 use Illuminate\Support\Facades\Auth;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -115,25 +114,25 @@ class BulananJoborderController extends Controller
 
             $alldata = $getdata[$i]['alldata']->get();
             $total_uj=$sisa_uj = 0;
-            foreach($alldata as $val){
+            for($i = 0; $i < 100; $i++){
                 $status_payment = $alldata[$i]['status_payment'] == '0' ? 'Belum Bayar' : ($alldata[$i]['status_payment'] == '1' ? 'Progress Payment' : 'Lunas');
                 $status_jo = $alldata[$i]['status_joborder'] == '0' ? 'Ongoing' : 'Done';
                 $html .= '
                 <tr>
                     <td class="text-center">{{$no++}}</td>
-                    <td><a href="'.route('backend.joborder.index').'?joborder_id='.$val->id.'" target="_blank">'.$val->kode_joborder.'</a></td>
-                    <td>'.$val->tgl_joborder.'</td>
+                    <td><a href="'.route('backend.joborder.index').'?joborder_id='.$alldata[$i]->id.'" target="_blank">'.$alldata[$i]->kode_joborder.'</a></td>
+                    <td>'. $alldata[$i]->tgl_joborder.'</td>
                     <td>'.$status_jo.'</td>
-                    <td>'.$val->driver['name'].'</td>
-                    <td>'.$val->mobil['nomor_plat'].'</td>
-                    <td>'.$val->jenismobil['name'].'</td>
-                    <td>'.$val->customer['name'].'</td>
-                    <td>'.$val->muatan['name'].'</td>
-                    <td>'.$val->ruteawal['name'].'</td>
-                    <td>'.$val->ruteakhir['name'].'</td>
-                    <td class="text-end">Rp. '. number_format($val->total_uang_jalan,0,',','.').'</td>
+                    <td>'.$alldata[$i]->driver['name'].'</td>
+                    <td>'.$alldata[$i]->mobil['nomor_plat'].'</td>
+                    <td>'.$alldata[$i]->jenismobil['name'].'</td>
+                    <td>'.$alldata[$i]->customer['name'].'</td>
+                    <td>'.$alldata[$i]->muatan['name'].'</td>
+                    <td>'.$alldata[$i]->ruteawal['name'].'</td>
+                    <td>'.$alldata[$i]->ruteakhir['name'].'</td>
+                    <td class="text-end">Rp. '. number_format($alldata[$i]->total_uang_jalan,0,',','.').'</td>
                     <td>'.$status_payment.'</td>
-                    <td class="text-end">Rp. '. number_format($val->sisa_uang_jalan,0,',','.').'</td>
+                    <td class="text-end">Rp. '. number_format($alldata[$i]->sisa_uang_jalan,0,',','.').'</td>
                     <td width="5%">-</td>
                     <td>-</td>
                 </tr>';
@@ -143,7 +142,6 @@ class BulananJoborderController extends Controller
            $html .= '</table>';
         }
 
-        // dd($html);
         // @php($no=1)
         // @php($getdata = $data['data'])
         // @for ($item = 0; $item < count($getdata); $item++)
@@ -230,9 +228,7 @@ class BulananJoborderController extends Controller
         $pdf->render();
         $font       = $pdf->getFontMetrics()->get_font('Helvetica', 'normal');
         $pdf->get_canvas()->page_text(33, 590, "Page: {PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(0,0,0));
-        Storage::put('public/pdf/invoice.pdf', $pdf->output());
-        return $pdf->download('invoice.pdf');
-        // $output = $pdf->output();
+        return $pdf->stream("${fileName}.pdf");
     }
 
     public function numrows($data, $sheet, $request, $spreadsheet){
