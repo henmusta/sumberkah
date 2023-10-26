@@ -80,11 +80,13 @@
 
 
     @php($no=1)
-    @foreach ($data['data'] as $item)
+    @php($getdata = $data['data'])
+    @for ($item = 0; $item < count($getdata); $item++)
+    {{-- {{dd($getdata[$item]['bulan'])}} --}}
     <table id="pakettable">
         <thead style="background-color: #fff !important; color:black;">
             <tr>
-                <th width="10%" colspan="16" style="text-align: left !important">{{$item['bulan']}}</th>
+                <th width="10%" colspan="16" style="text-align: left !important">{{$getdata[$item]['bulan']}}</th>
             </tr>
         </thead>
         <thead style="background-color: #fff !important; color:black;">
@@ -109,30 +111,31 @@
         </thead>
         <tbody>
             @php($total_uj=$sisa_uj = 0)
-            @foreach ($item['alldata']->get() as $val)
-            @php($status_payment = $val['status_payment'] == '0' ? 'Belum Bayar' : ($val['status_payment'] == '1' ? 'Progress Payment' : 'Lunas'))
-            @php($status_jo = $val['status_joborder'] == '0' ? 'Ongoing' : 'Done')
-            @php($total_uj += $val->total_uang_jalan)
-            @php($sisa_uj += $val->sisa_uang_jalan)
+            @php($alldata = $getdata[$item]['alldata']->get())
+            @for ($i = 0; $i < count($alldata); $i++)
+            @php($status_payment = $alldata[$i]['status_payment'] == '0' ? 'Belum Bayar' : ($alldata[$i]['status_payment'] == '1' ? 'Progress Payment' : 'Lunas'))
+            @php($status_jo = $alldata[$i]['status_joborder'] == '0' ? 'Ongoing' : 'Done')
+            @php($total_uj += $alldata[$i]->total_uang_jalan)
+            @php($sisa_uj += $alldata[$i]->sisa_uang_jalan)
                 <tr>
                     <td width="2%" class="text-center">{{$no++}}</td>
-                    <td>{{$val->kode_joborder}}</td>
-                    <td>{{$val->tgl_joborder}}</td>
+                    <td>{{ $alldata[$i]['kode_joborder']}}</td>
+                    <td>{{ $alldata[$i]['tgl_joborder']}}</td>
                     <td width="20px">{{$status_jo}}</td>
-                    <td>{{$val->driver['name']}}</td>
-                    <td width="50px">{{$val->mobil['nomor_plat']}}</td>
-                    <td>{{$val->jenismobil['name']}}</td>
-                    <td>{{$val->customer['name']}}</td>
-                    <td>{{$val->muatan['name']}}</td>
-                    <td>{{$val->ruteawal['name']}}</td>
-                    <td>{{$val->ruteakhir['name']}}</td>
-                    <td  width="60px" class="text-end">Rp. {{ number_format($val->total_uang_jalan,0,',','.')}}</td>
+                    <td>{{ $alldata[$i]['driver']->name }}</td>
+                    <td width="50px">{{ $alldata[$i]['mobil']['nomor_plat']}}</td>
+                    <td>{{ $alldata[$i]['jenismobil']->name }}</td>
+                    <td>{{ $alldata[$i]['customer']->name }}</td>
+                    <td>{{ $alldata[$i]['muatan']->name }}</td>
+                    <td>{{ $alldata[$i]['ruteawal']->name }}</td>
+                    <td>{{ $alldata[$i]['ruteakhir']->name }}</td>
+                    <td  width="60px" class="text-end">Rp. {{ number_format( $alldata[$i]['total_uang_jalan'],0,',','.')}}</td>
                     <td>{{$status_payment}}</td>
-                    <td  class="text-end">Rp. {{ number_format($val->sisa_uang_jalan,0,',','.')}}</td>
-                    <td>{{$val->keterangan_joborder}}</td>
-                    <td>{{ $val['createdby']->name ?? '' }} ( {{  \Carbon\Carbon::parse($val['created_at'])->format('d-m-Y H:i:s')  }} )</td>
+                    <td  class="text-end">Rp. {{ number_format( $alldata[$i]['sisa_uang_jalan'],0,',','.')}}</td>
+                    <td>{{ $alldata[$i]['keterangan_joborder']}}</td>
+                    <td>{{ $alldata[$i]['createdby']->name ?? '' }} ( {{  \Carbon\Carbon::parse( $alldata[$i]['created_at'])->format('d-m-Y H:i:s')  }} )</td>
                 </tr>
-            @endforeach
+            @endfor
         </tbody>
         <tfoot>
             <tr>
@@ -145,6 +148,6 @@
              </tr>
         </tfoot>
     </table><br>
-    @endforeach
+    @endfor
 </body>
 </html>
