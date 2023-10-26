@@ -84,7 +84,7 @@ class Joborder extends Model
 
     public function gaji()
     {
-        return $this->belongsTo(Penggajian::class, 'penggajian_id')->with('createdby');
+        return $this->belongsTo(Penggajian::class, 'penggajian_id')->with('createdby', 'payment');
     }
 
 

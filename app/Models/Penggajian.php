@@ -45,6 +45,11 @@ class Penggajian extends Model
         return $this->hasMany(Joborder::class, 'penggajian_id');
     }
 
+    public function payment()
+    {
+      return $this->hasMany(PaymentGaji::class, 'penggajian_id');
+    }
+
     public function createdby()
     {
       return $this->belongsTo(User::class, 'created_by');

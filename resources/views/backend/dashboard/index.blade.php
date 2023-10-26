@@ -44,7 +44,15 @@
                         </a>
                     </li>
                     @endif
-
+                    @if(Auth::user()->can('backend-dashboard-status_jo') == 'true')
+                    @php($cek_ijin = Auth::user()->can('backend-dashboard-status_jo') == 'true' ? '' : 'active')
+                    <li class="nav-item waves-effect waves-light">
+                        <a class="nav-link {{$cek_ijin}}" data-bs-toggle="tab" href="#status-1" role="tab" aria-selected="false">
+                            <span class="d-block d-sm-none"><i class="far fa-envelope"></i></span>
+                            <span  style="font-size: 24px" class="d-none d-sm-block">STATUS JOBORDER</span>
+                        </a>
+                    </li>
+                    @endif
                 </ul>
 
                 <!-- Tab panes -->
@@ -55,37 +63,72 @@
 
 
                                 <div class="row">
-                                    <div class="col-12">
-                                        <div class="card">
-                                            <div class="card-header text-center">
-                                                <div class="alert alert-primary alert-dismissible fade show px-3 mb-0" role="alert">
-                                                    <h3 class="text-black">INFORMASI DRIVER</h3>
+                                    <div class="col-6">
+                                        <div class="card-body" style="border: 1px solid #fff; margin-top:10px">
+                                            <div class="text-center"  style="padding: 20px">
+                                                <h4 class="main-content-label mb-1">Berlaku Sim</h4>
+                                            </div>
+                                            <div class="row" style="padding-bottom: 10px">
+                                                <div class="col-sm-12 text-end">
+                                                    <div class="dt-buttons btn-group flex-wrap">
+                                                        <button id="excel" class="btn btn-secondary buttons-excel buttons-html5" onClick="excel('berlaku_sim')" tabindex="0" aria-controls="Datatable" type="button"><span>Excel</span></button>
+                                                        <button class="btn btn-secondary buttons-pdf buttons-html5" onClick="pdf('berlaku_sim')" tabindex="0" aria-controls="Datatable" type="button" id="pdf"><span>PDF</span></button>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="card-body">
-                                                <div class="text-center"  style="padding: 20px">
-                                                    <h4 class="main-content-label mb-1">Berlaku Sim</h4>
-                                                </div>
-                                                <div class="table-responsive">
-                                                    <table id="Datatablesim" class="table table-bordered border-bottom w-100" style="width:100%">
-                                                        <thead>
-                                                            <tr>
-                                                                <th width="5%">No</th>
-                                                                <th>Nama Lengkap</th>
-                                                                <th>No hp</th>
-                                                                <th>Tanggal Expired SIM</th>
-                                                                <th>Masa  Berlaku</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
+                                            <div class="table-responsive">
+                                                <table id="Datatablesim" class="table table-bordered border-bottom w-100" style="width:100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th width="5%">No</th>
+                                                            <th>Nama Lengkap</th>
+                                                            <th>No hp</th>
+                                                            <th>Tanggal Expired SIM</th>
+                                                            <th>Masa  Berlaku</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
 
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-
-
+                                                    </tbody>
+                                                </table>
                                             </div>
+
+
                                         </div>
+
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card-body" style="border: 1px solid #fff; margin-top:10px">
+                                            <div class="text-center"  style="padding: 20px">
+                                                <h4 class="main-content-label mb-1">Pajak 5 Tahun Kendaraan</h4>
+                                            </div>
+                                            <div class="row" style="padding-bottom: 10px">
+                                                <div class="col-sm-12 text-end">
+                                                    <div class="dt-buttons btn-group flex-wrap">
+                                                        <button id="excel" class="btn btn-secondary buttons-excel buttons-html5" onClick="excel('berlaku_pajak')" tabindex="0" aria-controls="Datatable" type="button"><span>Excel</span></button>
+                                                        <button class="btn btn-secondary buttons-pdf buttons-html5" onClick="pdf('berlaku_pajak')" tabindex="0" aria-controls="Datatable" type="button" id="pdf"><span>PDF</span></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="table-responsive">
+                                                <table id="Datatablepajak" class="table table-bordered border-bottom w-100" style="width:100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th width="5%">No</th>
+                                                            <th>No Polisi</th>
+                                                            <th>Tanggal Expired</th>
+                                                            <th>Masa  Berlaku</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+
+                                        </div>
+
                                     </div>
                                 </div>
                                 <div class="card">
@@ -100,6 +143,14 @@
                                             <div class="card-body" style="min-height: 915px; border: 1px solid #fff; margin-top:10px">
                                                 <div class="text-center"  style="padding: 20px">
                                                     <h4 class="main-content-label mb-1">Pajak 1 Tahun Kendaraan</h4>
+                                                </div>
+                                                <div class="row" style="padding-bottom: 10px">
+                                                    <div class="col-sm-12 text-end">
+                                                        <div class="dt-buttons btn-group flex-wrap">
+                                                            <button id="excel" class="btn btn-secondary buttons-excel buttons-html5"  onClick="excel('berlaku_stnk')"  tabindex="0" aria-controls="Datatable" type="button"><span>Excel</span></button>
+                                                            <button class="btn btn-secondary buttons-pdf buttons-html5" onClick="pdf('berlaku_stnk')" tabindex="0" aria-controls="Datatable" type="button" id="pdf"><span>PDF</span></button>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div class="table-responsive">
                                                     <table id="Datatablestnk" class="table table-bordered border-bottom w-100" style="width:100%">
@@ -122,6 +173,14 @@
                                             <div class="card-body" style="min-height: 915px; border: 1px solid #fff; margin-top:10px">
                                                 <div class="text-center"  style="padding: 20px">
                                                     <h4 class="main-content-label mb-1">KIR Kendaraan</h4>
+                                                </div>
+                                                <div class="row" style="padding-bottom: 10px">
+                                                    <div class="col-sm-12 text-end">
+                                                        <div class="dt-buttons btn-group flex-wrap">
+                                                            <button id="excel" class="btn btn-secondary buttons-excel buttons-html5" onClick="excel('berlaku_kir')"  tabindex="0" aria-controls="Datatable" type="button"><span>Excel</span></button>
+                                                            <button class="btn btn-secondary buttons-pdf buttons-html5" onClick="pdf('berlaku_kir')" tabindex="0" aria-controls="Datatable" type="button" id="pdf"><span>PDF</span></button>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div class="table-responsive">
                                                     <table id="Datatablekir" class="table table-bordered border-bottom w-100" style="width:100%">
@@ -148,6 +207,14 @@
                                                 <div class="text-center"  style="padding: 20px">
                                                     <h4 class="main-content-label mb-1">Ijin Usaha</h4>
                                                 </div>
+                                                <div class="row" style="padding-bottom: 10px">
+                                                    <div class="col-sm-12 text-end">
+                                                        <div class="dt-buttons btn-group flex-wrap">
+                                                            <button id="excel" class="btn btn-secondary buttons-excel buttons-html5" onClick="excel('berlaku_ijin_usaha')"  tabindex="0" aria-controls="Datatable" type="button"><span>Excel</span></button>
+                                                            <button class="btn btn-secondary buttons-pdf buttons-html5" onClick="pdf('berlaku_ijin_usaha')" tabindex="0" aria-controls="Datatable" type="button" id="pdf"><span>PDF</span></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 <div class="table-responsive">
                                                     <table id="Datatableijinusaha" class="table table-bordered border-bottom w-100" style="width:100%">
                                                         <thead>
@@ -170,6 +237,14 @@
                                                 <div class="text-center"  style="padding: 20px">
                                                     <h4 class="main-content-label mb-1">Ijin Bongkar Muat (BM) Kendaraan</h4>
                                                 </div>
+                                                <div class="row" style="padding-bottom: 10px">
+                                                    <div class="col-sm-12 text-end">
+                                                        <div class="dt-buttons btn-group flex-wrap">
+                                                            <button id="excel" class="btn btn-secondary buttons-excel buttons-html5" onClick="excel('berlaku_ijin_bongkar')" tabindex="0" aria-controls="Datatable" type="button"><span>Excel</span></button>
+                                                            <button class="btn btn-secondary buttons-pdf buttons-html5" onClick="pdf('berlaku_ijin_bongkar')" tabindex="0" aria-controls="Datatable" type="button" id="pdf"><span>PDF</span></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 <div class="table-responsive">
                                                     <table id="Datatablebm" class="table table-bordered border-bottom w-100" style="width:100%">
                                                         <thead>
@@ -189,37 +264,7 @@
 
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-3">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="card-body" style="border: 1px solid #fff; margin-top:10px">
-                                                    <div class="text-center"  style="padding: 20px">
-                                                        <h4 class="main-content-label mb-1">Pajak 5 Tahun Kendaraan</h4>
-                                                    </div>
-                                                    <div class="table-responsive">
-                                                        <table id="Datatablepajak" class="table table-bordered border-bottom w-100" style="width:100%">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th width="5%">No</th>
-                                                                    <th>No Polisi</th>
-                                                                    <th>Tanggal Expired</th>
-                                                                    <th>Masa  Berlaku</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
 
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-
-
-                                                </div>
-
-                                            </div>
-                                            <div class="col-3">
-                                            </div>
-                                        </div>
                                     </div>
 
 
@@ -240,52 +285,74 @@
                                                     <h3 class="text-black">SUPIR DAN KENDARAAN TIDAK JALAN</h3>
                                                 </div>
                                             </div>
-                                            <div class="card-body">
-                                                <div class="text-center"  style="padding: 20px">
-                                                    <h4 class="main-content-label mb-1">Supir</h4>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="card-body">
+                                                        <div class="text-center"  style="padding: 20px">
+                                                            <h4 class="main-content-label mb-1">Supir</h4>
 
+                                                        </div>
+                                                        <div class="row" style="padding-bottom: 10px">
+                                                            <div class="col-sm-12 text-end">
+                                                                <div class="dt-buttons btn-group flex-wrap">
+                                                                    <button id="excel" class="btn btn-secondary buttons-excel buttons-html5" onClick="excel('driver_tidak_jalan')"  tabindex="0" aria-controls="Datatable" type="button"><span>Excel</span></button>
+                                                                    <button class="btn btn-secondary buttons-pdf buttons-html5" onClick="pdf('driver_tidak_jalan')" tabindex="0" aria-controls="Datatable" type="button" id="pdf"><span>PDF</span></button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="table-responsive">
+                                                            <table id="Datatablesupirtj" class="table table-bordered border-bottom" style="width:100%">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th width="1%">No</th>
+                                                                        <th>Nama Lengkap</th>
+                                                                        <th>No hp</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="table-responsive">
-                                                    <table id="Datatablesupirtj" class="table table-bordered border-bottom" style="width:100%">
-                                                        <thead>
-                                                            <tr>
-                                                                <th width="1%">No</th>
-                                                                <th>Nama Lengkap</th>
-                                                                <th>No hp</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
+                                                <div class="col-6">
+                                                    <div class="card-body">
+                                                        <div class="text-center"  style="padding: 20px">
+                                                            <h4 class="main-content-label mb-1">Kendaraan</h4>
+                                                        </div>
+                                                        <div class="row" style="padding-bottom: 10px">
+                                                            <div class="col-sm-12 text-end">
+                                                                <div class="dt-buttons btn-group flex-wrap">
+                                                                    <button id="excel" class="btn btn-secondary buttons-excel buttons-html5" onClick="excel('kendaraan_tidak_jalan')"  tabindex="0" aria-controls="Datatable" type="button"><span>Excel</span></button>
+                                                                    <button class="btn btn-secondary buttons-pdf buttons-html5" onClick="pdf('kendaraan_tidak_jalan')" tabindex="0" aria-controls="Datatable" type="button" id="pdf"><span>PDF</span></button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
 
-                                                        </tbody>
-                                                    </table>
+                                                        <div class="table-responsive">
+                                                            <table id="Datatablemobiltj" class="table table-bordered border-bottom" style="width:100%">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th width="1%">No</th>
+                                                                        <th width="200px">Nomora Plat Polisi</th>
+                                                                        <th>Merek</th>
+                                                                        <th>Jenis</th>
+                                                                        <th>Dump</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+
+
+                                                    </div>
                                                 </div>
-
-
                                             </div>
-                                            <div class="card-body">
-                                                <div class="text-center"  style="padding: 20px">
-                                                    <h4 class="main-content-label mb-1">Kendaraan</h4>
-
-                                                </div>
-                                                <div class="table-responsive">
-                                                    <table id="Datatablemobiltj" class="table table-bordered border-bottom" style="width:100%">
-                                                        <thead>
-                                                            <tr>
-                                                                <th width="1%">No</th>
-                                                                <th>Nomor Plat Polisi</th>
-                                                                <th>Merek</th>
-                                                                <th>Jenis</th>
-                                                                <th>Dump</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-
-                                                        </tbody>
-                                                    </table>
-                                                </div>
 
 
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -295,49 +362,155 @@
                     @if(Auth::user()->can('backend-dashboard-invoice') == 'true')
                             @php($cek_ijin = Auth::user()->can('backend-dashboard-ijin') == 'true' || Auth::user()->can('backend-dashboard-operasional') == 'true' ? '' : 'active')
                         <div class="tab-pane {{$cek_ijin}}" id="messages-1" role="tabpanel" style="padding-top:20px">
+                            <div class="col-md-xl-12">
+                                <div class="mt-xl-0 mt-4">
+
+                                <div class="d-flex align-items-start">
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex gap-2 flex-wrap mb-3 text-center">
+                                            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample2" aria-expanded="true" aria-controls="multiCollapseExample2">Filter</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                    <div class="row">
+
+                                        <div class="col-md-12">
+                                            <div class="multi-collapse collapse show" id="multiCollapseExample2" style="">
+                                                <div class="card border shadow-none card-body text-muted mb-0">
+
+
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="mb-3">
+                                                                <label>Customer<span class="text-danger">*</span></label>
+                                                                <select id="select2Customer" style="width: 100% !important;" name="customer_id">
+                                                                </select>
+                                                              </div>
+                                                        </div>
+                                                        <div class="col-md-3 text-end" style="padding-top:30px;">
+                                                            <div class="d-flex justify-content-start">
+                                                                <a id="terapkan_filter" class="btn btn-success">
+                                                                    Terapkan Filter
+                                                                    <i class="fas fa-align-justify"></i>
+                                                                </a>
+                                                                <button  class="btn btn-danger" onClick="" id="refresh">Refresh</button>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3 text-end" style="padding-top:30px;">
+                                                            <div class="dt-buttons btn-group flex-wrap">
+                                                                <button onClick="excel('invoice')" id="excel" class="btn btn-secondary buttons-excel buttons-html5"  tabindex="0" aria-controls="Datatable" type="button"><span>Excel</span></button>
+                                                                <button onClick="pdf('invoice')" class="btn btn-secondary buttons-pdf buttons-html5"  tabindex="0" aria-controls="Datatable" type="button" id="pdf"><span>PDF</span></button>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </div>
+
+
+
+
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
                             <p class="mb-0">
                                 <div class="row">
-                                    <div class="col-12">
+
                                         <div class="card">
                                             <div class="card-header text-center">
                                                 <div class="alert alert-success alert-dismissible fade show px-3 mb-0" role="alert">
                                                     <h3 class="text-black">INVOICE JATUH TEMPO</h3>
                                                 </div>
+
                                             </div>
                                             <div class="card-body">
-                                                {{-- <div class="text-center"  style="padding: 20px">
-                                                    <h4 class="main-content-label mb-1">Berlaku Sim</h4>
-                                                </div> --}}
-                                                <div class="table-responsive">
-                                                    <table id="Datatableinvoice" class="table table-bordered border-bottom" style="width:100%">
-                                                        <thead>
-                                                            <tr>
-                                                                <th width="5%">No</th>
-                                                                <th>Kode Invoice</th>
-                                                                <th>Tanggal Invoice</th>
-                                                                <th>Customer</th>
-                                                                <th>Nominal Invoice</th>
-                                                                <th>Due Date</th>
+                                                <div class="row">
+                                                    <div class="col-2">
+                                                    </div>
+                                                    <div class="col-8">
+                                                    <div class="table-responsive">
+                                                        <table id="Datatableinvoice" class="table table-bordered border-bottom" style="width:100%">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th width="5%">No</th>
+                                                                    <th>Kode Invoice</th>
+                                                                    <th>Tanggal Invoice</th>
+                                                                    <th>Customer</th>
+                                                                    <th>Nominal Invoice</th>
+                                                                    <th>Due Date</th>
 
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
 
-                                                        </tbody>
-                                                    </table>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <div class="col-2">
+                                                    </div>
                                                 </div>
-
-
+                                            </div>
                                             </div>
                                         </div>
-                                    </div>
+
                                 </div>
                                 <div class="row">
+
                                     <div class="col-12">
                                         <div class="card">
                                             <div class="card-header text-center">
                                                 <div class="alert alert-danger alert-dismissible fade show px-3 mb-0" role="alert">
                                                     <h3 class="text-black">JOBORDER BELUM ADA INVOICE</h3>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-xl-12">
+                                                <div class="mt-xl-0 mt-4">
+
+                                                <div class="d-flex align-items-start">
+                                                    <div class="flex-grow-1">
+
+                                                    </div>
+                                                </div>
+
+                                                    <div class="row">
+
+                                                        <div class="col-md-12">
+                                                            <div class="multi-collapse collapse show" id="multiCollapseExample2" style="">
+                                                                <div class="card border shadow-none card-body text-muted mb-0">
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+
+                                                                        </div>
+                                                                        <div class="col-md-3 text-end" style="padding-top:30px;">
+
+                                                                        </div>
+                                                                        <div class="col-md-3 text-end" style="padding-top:30px;">
+                                                                            <div class="dt-buttons btn-group flex-wrap">
+                                                                                <button id="excel" class="btn btn-secondary buttons-excel buttons-html5"   onClick="excel('joborder')" tabindex="0" aria-controls="Datatable" type="button"><span>Excel</span></button>
+                                                                                <button class="btn btn-secondary buttons-pdf buttons-html5" onClick="pdf('joborder')" tabindex="0" aria-controls="Datatable" type="button" id="pdf"><span>PDF</span></button>
+                                                                            </div>
+                                                                        </div>
+
+
+                                                                    </div>
+
+
+
+
+
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="card-body">
@@ -371,11 +544,124 @@
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
 
 
                             </p>
                         </div>
+                    @endif
+                    @if(Auth::user()->can('backend-dashboard-status_jo') == 'true')
+                    @php($cek_ijin = Auth::user()->can('backend-dashboard-status_jo') == 'true' ? '' : 'active')
+                    <div class="tab-pane {{$cek_ijin}}" id="status-1" role="tabpanel" style="padding-top:20px">
+                        <div class="col-md-xl-12">
+                            <div class="mt-xl-0 mt-4">
+
+                            <div class="d-flex align-items-start">
+                                <div class="flex-grow-1">
+                                    <div class="d-flex gap-2 flex-wrap mb-3 text-center">
+                                        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample2" aria-expanded="true" aria-controls="multiCollapseExample2">Filter</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                                <div class="row">
+
+                                    <div class="col-md-12">
+                                        <div class="multi-collapse collapse show" id="multiCollapseExample2" style="">
+                                            <div class="card border shadow-none card-body text-muted mb-0">
+
+
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="mb-3">
+                                                            <label>Customer<span class="text-danger">*</span></label>
+                                                            <select id="select2CustomerStatus" style="width: 100% !important;" name="customer_id">
+                                                            </select>
+                                                          </div>
+                                                    </div>
+                                                    <div class="col-md-3 text-end" style="padding-top:30px;">
+                                                        <div class="d-flex justify-content-start">
+                                                            <a id="terapkan_filter_status" class="btn btn-success">
+                                                                Terapkan Filter
+                                                                <i class="fas fa-align-justify"></i>
+                                                            </a>
+                                                            <button  class="btn btn-danger" onClick="" id="refresh_status">Refresh</button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 text-end" style="padding-top:30px;">
+                                                        <div class="dt-buttons btn-group flex-wrap">
+                                                            <button id="excelstatys" onClick="excel('status_joborder')" class="btn btn-secondary buttons-excel buttons-html5"  tabindex="0" aria-controls="Datatable" type="button"><span>Excel</span></button>
+                                                            <button class="btn btn-secondary buttons-pdf buttons-html5" onClick="pdf('status_joborder')" tabindex="0" aria-controls="Datatable" type="button" id="pdfstatus"><span>PDF</span></button>
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+
+
+
+
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <p class="mb-0">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-header text-center">
+                                            <div class="alert alert-success alert-dismissible fade show px-3 mb-0" role="alert">
+                                                <h3 class="text-black">Status Joborder</h3>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            {{-- <div class="text-center"  style="padding: 20px">
+                                                <h4 class="main-content-label mb-1">Berlaku Sim</h4>
+                                            </div> --}}
+                                            <div class="table-responsive">
+                                                <table id="DatatableStatusJo" class="table table-bordered border-bottom" style="width:100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>No</th>
+                                                            <th>Kode Jo</th>
+                                                            <th>Tanggal Jo</th>
+                                                            <th>Driver</th>
+                                                            <th>Nopol</th>
+                                                            <th>Jenis Mobil</th>
+                                                            <th>Customer</th>
+                                                            <th>Rute Awal</th>
+                                                            <th>Rute Akhir</th>
+                                                            <th>Muatan</th>
+                                                            <th>Tonase</th>
+                                                            <th>Total UJ</th>
+                                                            <th>Kode Gaji</th>
+                                                            <th>Tanggal Pay Gaji</th>
+                                                            <th>Kode Invoice</th>
+                                                            <th>Tagihan</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </p>
+                    </div>
                     @endif
                 </div>
 
@@ -391,7 +677,8 @@
 
 
     </div>
-    <!-- container-fluid -->
+    <input type="hidden" id="urlpdf" value="{{ route('backend.dashboard.pdf') }}">
+    <input type="hidden" id="urlexcel" value="{{ route('backend.dashboard.excel') }}">
 </div>
 @endsection
 
@@ -456,7 +743,7 @@ div.dt-btn-container {
         ajax: {
             url: "{{ route('backend.dashboard.dtjo') }}",
             data: function (d) {
-            // d.status = $('#Select2Status').find(':selected').val();
+                d.customer_id = $('#select2Customer').find(':selected').val();
             }
         },
 
@@ -506,7 +793,7 @@ div.dt-btn-container {
         ajax: {
             url: "{{ route('backend.dashboard.dtinvoice') }}",
             data: function (d) {
-            // d.status = $('#Select2Status').find(':selected').val();
+                d.customer_id = $('#select2Customer').find(':selected').val();
             }
         },
 
@@ -530,6 +817,40 @@ div.dt-btn-container {
             }
             ],
         });
+
+    let select2Customer = $('#select2Customer');
+    select2Customer.select2({
+        dropdownParent: select2Customer.parent(),
+        searchInputPlaceholder: 'Cari Customer',
+        width: '100%',
+        placeholder: 'Pilih Customer',
+        ajax: {
+          url: "{{ route('backend.customer.select2') }}",
+          dataType: "json",
+          cache: true,
+          data: function (e) {
+            return {
+              q: e.term || '',
+              page: e.page || 1
+            }
+          },
+        },
+      }).on('select2:select', function (e) {
+            let data = e.params.data;s
+    });
+
+     $("#terapkan_filter").click(function() {
+        dataTablejo.draw();
+        dataTableinvoice.draw();
+      });
+
+      $("#refresh").click(function() {
+        $("#select2Customer").val("").trigger("change");
+        dataTablejo.draw();
+        dataTableinvoice.draw();
+      });
+
+
 
 
     }
@@ -638,7 +959,7 @@ div.dt-btn-container {
        ajax: {
          url: "{{ route('backend.dashboard.dtdriver') }}",
          data: function (d) {
-            d.berlaku_sim = 1;
+            d.type = 'berlaku_sim';
          }
        },
 
@@ -683,7 +1004,7 @@ div.dt-btn-container {
        ajax: {
         url: "{{ route('backend.dashboard.dtmobil') }}",
          data: function (d) {
-            d.berlaku_stnk = 1;
+            d.type = 'berlaku_stnk';
          }
        },
 
@@ -722,7 +1043,7 @@ div.dt-btn-container {
        ajax: {
          url: "{{ route('backend.dashboard.dtmobil') }}",
          data: function (d) {
-            d.berlaku_pajak = 1;
+            d.type = 'berlaku_pajak';
          }
        },
 
@@ -767,7 +1088,7 @@ div.dt-btn-container {
        ajax: {
          url: "{{ route('backend.dashboard.dtmobil') }}",
          data: function (d) {
-            d.berlaku_kir = 1;
+            d.type = 'berlaku_kir';
          }
        },
 
@@ -809,7 +1130,7 @@ div.dt-btn-container {
        ajax: {
          url: "{{ route('backend.dashboard.dtmobil') }}",
          data: function (d) {
-            d.berlaku_ijin_bongkar = 1;
+            d.type = 'berlaku_ijin_bongkar';
          }
        },
 
@@ -852,7 +1173,7 @@ div.dt-btn-container {
        ajax: {
          url: "{{ route('backend.dashboard.dtmobil') }}",
          data: function (d) {
-            d.berlaku_ijin_usaha = 1;
+            d.type = 'berlaku_ijin_usaha';
          }
        },
 
@@ -877,7 +1198,142 @@ div.dt-btn-container {
     }
 
 
+     let dataTableStatusJo = $('#DatatableStatusJo').DataTable({
+        dom: '<"dt-top-container"<l><"dt-center-in-div"f><"dt-btn-container"B>r>tip',
+        buttons: [
+            {
+                text: 'Refresh',
+                action: function ( e, dt, node, config ) {
+                    dataTableStatusJo.draw();
+                }
+            }
+        ],
+        responsive: true,
+       scrollX: false,
+       processing: true,
+       serverSide: true,
+       order: [[1, 'desc']],
+       lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+       pageLength: 10,
+       ajax: {
+         url: "{{ route('backend.dashboard.dtstatusjo') }}",
+         data: function (d) {
+            d.customerstatus_id = $('#select2CustomerStatus').find(':selected').val();
+         }
+       },
+
+       columns: [
+        {
+               data: "id", name:'id',className:'text-center',  width: "1%",
+               render: function (data, type, row, meta) {
+                   return meta.row + meta.settings._iDisplayStart + 1;
+               }
+         },
+         {data: 'kode_joborder', name: 'kode_joborder'},
+         {data: 'tgl_joborder', name: 'tgl_joborder'},
+         {data: 'driver.name', name: 'driver.name'},
+         {data: 'mobil.nomor_plat', name: 'mobil.nomor_plat'},
+         {data: 'jenismobil.name', name: 'jenismobil.name'},
+         {data: 'customer.name', name: 'customer.name'},
+         {data: 'ruteawal.name', name: 'ruteawal.name'},
+         {data: 'ruteakhir.name', name: 'ruteakhir.name'},
+         {data: 'muatan.name', name: 'muatan.name'},
+         {data: 'konfirmasijo.0.berat_muatan', name: 'konfirmasijo.0.berat_muatan'},
+         {data: 'total_uang_jalan', name: 'total_uang_jalan'},
+         {data: 'gaji.kode_gaji', name: 'gaji.kode_gaji'},
+         {data: 'gaji.payment.0.tgl_payment', name: 'gaji.payment.tgl_payment'},
+         {data: 'invoice.kode_invoice', name: 'invoice.kode_invoice'},
+         {data: 'invoice.total_harga', name: 'invoice.total_harga'},
+       ],
+       columnDefs: [
+        {
+            className: 'text-end',
+            targets: [11, 15],
+            render: $.fn.dataTable.render.number('.', ',', 0, '')
+        },
+        {
+            className: 'text-center',
+            targets: [10, 12,13,14]
+        },
+        {
+            targets:'_all',
+            defaultContent: "-",
+        },
+        {
+            targets: [10, 13],
+            orderable: false, searchable: false
+        }
+
+       ],
+     });
+
+     let select2CustomerStatus = $('#select2CustomerStatus');
+     select2CustomerStatus.select2({
+        dropdownParent: select2CustomerStatus.parent(),
+        searchInputPlaceholder: 'Cari Customer',
+        width: '100%',
+        placeholder: 'Pilih Customer',
+        ajax: {
+          url: "{{ route('backend.customer.select2') }}",
+          dataType: "json",
+          cache: true,
+          data: function (e) {
+            return {
+              q: e.term || '',
+              page: e.page || 1
+            }
+          },
+        },
+      }).on('select2:select', function (e) {
+            let data = e.params.data;
+    });
+
+
+    $("#terapkan_filter_status").click(function() {
+        dataTableStatusJo.draw();
+      });
+
+      $("#refresh_status").click(function() {
+        $("#select2CustomerStatus").val("").trigger("change");
+        dataTableStatusJo.draw();
+      });
+
+
+
+
+
+
+    //pdf excel
+
+
+
+
 
    });
+
+   function excel(type){
+        let params =  new URLSearchParams({
+           customer_id : $('#select2Customer').val() || '',
+           customerstatus_id : $('#select2CustomerStatus').val() || '',
+           status_jalan : '1',
+           type : type,
+        });
+
+        let url =  $('#urlexcel').val()+"?"+params.toString();
+        window.open(url, '_blank');
+    }
+
+
+   function pdf(type){
+        let params =  new URLSearchParams({
+           customer_id : $('#select2Customer').val() || '',
+           customerstatus_id : $('#select2CustomerStatus').val() || '',
+           status_jalan : '1',
+           type : type,
+        });
+
+        let url =  $('#urlpdf').val()+"?"+params.toString();
+        window.open(url, '_blank');
+    }
  </script>
 @endsection

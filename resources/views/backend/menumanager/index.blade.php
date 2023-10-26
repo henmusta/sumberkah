@@ -146,6 +146,13 @@
                                       <label class="form-check-label" for="modalCreateDelete">{{ isset($data->menu_permission_id) ? $data->menu_permission_id == 1 ? "Ijin Dan Document" : "Delete" : "delete"}}</label>
                                     </div>
                                   </div>
+                                  <div class="col-md-6" {{ isset($data->menu_permission_id) ? $data->menu_permission_id == 1 ? "" : "hidden" : "hidden"}}>
+                                    <div class="form-check mb-3">
+                                      <input class="form-check-input" name="permission[]" value="{{ isset($data->menu_permission_id) ? $data->menu_permission_id == 1 ? "status_jo" : "create" : "create"}}" type="checkbox"
+                                             _id="modalCreateCreate" {{ in_array( isset($data->menu_permission_id) ? $data->menu_permission_id == 1 ? "status_jo" : "create" : "create", ($permissions ?? array())) ? 'checked' : '' }}>
+                                      <label class="form-check-label" for="modalCreateCreate">{{isset($data->menu_permission_id) ? $data->menu_permission_id == 1 ? "Status Joborder" : "Create" : "create"}}</label>
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
                               <div class="card-footer d-flex justify-content-end">
@@ -225,7 +232,7 @@
           cache: true,
           data: function (e) {
             return {
-                parent_false: true,
+                // parent_false: true,
               q: e.term || '',
               page: e.page || 1
             }

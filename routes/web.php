@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Backend as Backend;
+use App\Http\Controllers\DatePickerController;
 use App\Http\Controllers\Api as Api;
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +19,7 @@ use App\Http\Controllers\Api as Api;
 Route::get('/', function () {
     return redirect()->route('backend.login');
 });
-
+Route::resource('datepicker', DatePickerController::class);
 Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 Route::prefix('backend')->name('backend.')->group(function () {
     Route::get('/', [LoginController::class, 'showLoginForm']);
@@ -48,7 +49,11 @@ Route::middleware('auth:henmus')->group(function(){
       Route::post('menu/changeHierarchy', [Backend\MenuManagerController::class, 'changeHierarchy'])->name('menu.changeHierarchy');
       Route::resource('settings', Backend\SettingsController::class);
 
+            Route::get('dashboard/pdf', [Backend\DashboardController::class, 'pdf'])->name('dashboard.pdf');
+            Route::get('dashboard/excel', [Backend\DashboardController::class, 'excel'])->name('dashboard.excel');
+
             Route::get('dashboard/dtjo', [Backend\DashboardController::class, 'dtjo'])->name('dashboard.dtjo');
+            Route::get('dashboard/dtstatusjo', [Backend\DashboardController::class, 'dtstatusjo'])->name('dashboard.dtstatusjo');
             Route::get('dashboard/dtinvoice', [Backend\DashboardController::class, 'dtinvoice'])->name('dashboard.dtinvoice');
             Route::get('dashboard/dtmobil', [Backend\DashboardController::class, 'dtmobil'])->name('dashboard.dtmobil');
             Route::get('dashboard/dtdriver', [Backend\DashboardController::class, 'dtdriver'])->name('dashboard.dtdriver');
@@ -115,6 +120,12 @@ Route::middleware('auth:henmus')->group(function(){
             Route::get('joborder/select2', [Backend\JoborderController::class, 'select2'])->name('joborder.select2');
             Route::put('joborder/validasi', [Backend\JoborderController::class, 'validasi'])->name('joborder.validasi');
             Route::resource('joborder', Backend\JoborderController::class);
+
+            //JoborderBulanan
+            Route::get('bulananjoborder/excel', [Backend\BulananJoborderController::class, 'excel'])->name('bulananjoborder.excel');
+            Route::get('bulananjoborder/pdf', [Backend\BulananJoborderController::class, 'pdf'])->name('bulananjoborder.pdf');
+            Route::post('bulananjoborder/getreport', [Backend\BulananJoborderController::class, 'getreport'])->name('bulananjoborder.getreport');
+            Route::resource('bulananjoborder', Backend\BulananJoborderController::class);
 
             //PaymentJo
             Route::put('paymentjo/updatesingle', [Backend\PaymentJoController::class, 'updatesingle'])->name('paymentjo.updatesingle');

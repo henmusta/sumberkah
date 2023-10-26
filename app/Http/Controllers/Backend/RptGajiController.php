@@ -21,6 +21,7 @@ class RptGajiController extends Controller
 {
     use ResponseStatus;
 
+
     function __construct()
     {
         $this->middleware('can:backend-rptgaji-list', ['only' => ['index']]);

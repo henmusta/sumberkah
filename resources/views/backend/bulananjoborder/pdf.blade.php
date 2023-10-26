@@ -3,8 +3,9 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
   <style>
 
-    @page {
-        size: F4 landscape;
+@page {
+        /* size: 21cm 15cm; */
+        /* size: landscape; */
         margin: 0;
         margin: 10mm 10mm 10mm 10mm;
     }
@@ -14,33 +15,25 @@
       /* height: 50% !important; */
     }
 
-    .text-end{
-        text-align: right !important;
+    table {page-break-before:auto !important;}
+    .cover{
+
     }
 
 
+    .text-end{
+        text-align: right !important;
+    }
     .headertable{
         width: 100%;
         padding: 50px;
     }
 
-           footer {
-                /* Place the footer at the bottom of each page */
-                position: fixed;
-                left: 0;
-                right: 0;
-                bottom: 0;
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
 
-                /* Any other appropriate styling */
-                color: #070808;
-                font-size: 10px;
-                font-weight: bold;
-            }
-
-            /* Show current page number via CSS counter feature */
-            .page-number:before {
-                content: counter(page);
-            }
 
     .headertable,
       .headertable th, .headertable td {
@@ -81,18 +74,21 @@
 <body>
 
     <div class="header" style="padding-bottom: 20px;">
-        <h3  style=" text-align: center; margin-top:25px;margin-bottom: 0">Laporan Joborder</h3>
-        @if($data['tgl_awal'] != null && $data['tgl_akhir'] != null)
-        <h5  style=" text-align: center; margin-top:25px;margin-bottom: 0">TANGGAL : {{\Carbon\Carbon::parse($data['tgl_awal'])->format('d-m-Y')}} S/D {{\Carbon\Carbon::parse($data['tgl_akhir'])->format('d-m-Y')}} </h5>
-        @endif
+        <h3  style=" text-align: center; margin-top:25px;margin-bottom: 0">Laporan Bulanan Joborder</h3>
         <p style=" text-align: center; margin-bottom: 0; font-size:8px;"> Print By : {{ Auth::user()->name ?? '' }} ( {{  \Carbon\Carbon::now()->format('d-m-Y H:i:s')  }} )</p>
     </div>
 
 
-
+    @php($no=1)
+    @foreach ($data['data'] as $item)
     <table id="pakettable">
-        <thead style="background-color: #fff !important; color:black; ">
-            <tr >
+        <thead style="background-color: #fff !important; color:black;">
+            <tr>
+                <th width="10%" colspan="16" style="text-align: left !important">{{$item['bulan']}}</th>
+            </tr>
+        </thead>
+        <thead style="background-color: #fff !important; color:black;">
+            <tr>
                 <th>No</th>
                 <th class="text-center">Id JO</th>
                 <th>Tanggal</th>
@@ -112,10 +108,12 @@
             </tr>
         </thead>
         <tbody>
-            @php($no=1)
-            @foreach ($data['jo'] as $val)
+            @php($total_uj=$sisa_uj = 0)
+            @foreach ($item['alldata']->get() as $val)
             @php($status_payment = $val['status_payment'] == '0' ? 'Belum Bayar' : ($val['status_payment'] == '1' ? 'Progress Payment' : 'Lunas'))
             @php($status_jo = $val['status_joborder'] == '0' ? 'Ongoing' : 'Done')
+            @php($total_uj += $val->total_uang_jalan)
+            @php($sisa_uj += $val->sisa_uang_jalan)
                 <tr>
                     <td width="2%" class="text-center">{{$no++}}</td>
                     <td>{{$val->kode_joborder}}</td>
@@ -133,23 +131,20 @@
                     <td  class="text-end">Rp. {{ number_format($val->sisa_uang_jalan,0,',','.')}}</td>
                     <td>{{$val->keterangan_joborder}}</td>
                     <td>{{ $val['createdby']->name ?? '' }} ( {{  \Carbon\Carbon::parse($val['created_at'])->format('d-m-Y H:i:s')  }} )</td>
-                   </tr>
+                </tr>
             @endforeach
         </tbody>
         <tfoot>
             <tr>
                 <th colspan="11"style="text-align:right">Total: </th>
-                <th class="text-end" id="">Rp. {{ number_format($data['jo']->sum('total_uang_jalan'),0,',','.')}}</th>
+                <th class="text-end" id="">Rp. {{ number_format($total_uj,0,',','.')}}</th>
                 <th></th>
-                <th class="text-end" id="">Rp. {{ number_format($data['jo']->sum('sisa_uang_jalan'),0,',','.')}}</th>
-                <th></th>
-                <th></th>
+                <th class="text-end" id="">Rp. {{ number_format($sisa_uj,0,',','.')}}</th>
+                <th width="5%"></th>
+                <th width="5%"></th>
              </tr>
         </tfoot>
-    </table>
-
-
-
+    </table><br>
+    @endforeach
 </body>
 </html>
-
