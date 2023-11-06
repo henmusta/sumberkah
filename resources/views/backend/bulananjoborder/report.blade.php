@@ -78,13 +78,13 @@
     @php($no=1)
     @foreach ($data['data'] as $item)
     <table id="pakettable">
-
-        <thead style="background-color: #fff !important; color:black;">
-             <tr>
-                <th colspan="14" class="text-left">{{$item['bulan']}}</th>
-                <th width="5%"></th>
+        <thead  style="background-color: #fff !important; color:black;" width="100%">
+            <tr>
+                <th colspan="15" class="text-left">{{$item['bulan']}}</th>
             </tr>
-            <tr >
+        </thead>
+        <thead style="background-color: #fff !important; color:black;">
+            <tr>
                 <th width="2%">No</th>
                 <th width="5%" class="text-center">Id JO</th>
                 <th width="5%">Tanggal</th>

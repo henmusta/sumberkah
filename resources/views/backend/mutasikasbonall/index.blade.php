@@ -54,6 +54,18 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="col-md-4">
+                                                <div class="mb-3">
+                                                    <label>Jenis Transaksi<span class="text-danger">*</span></label>
+                                                    <select id="select2Jenis" style="width: 100% !important;" class="js-example-basic-multiple" multiple="multiple" name="jenis">
+                                                        <option value=""></option>
+                                                        <option value="Pembayaran">Pembayaran</option>
+                                                        <option value="Pengajuan">Pengajuan</option>
+                                                        <option value="Potong Gaji">Potong Gaji</option>
+                                                        <option value="Potong Joborder">Potong Joborder</option>
+                                                    </select>
+                                                </div>
+                                            </div>
 
                                             <div class="col-md-2 text-end" style="padding-top:30px;">
                                                 <a id="terapkan_filter" class="btn btn-success">
@@ -186,6 +198,19 @@ function printDiv(divName) {
 
     $(document).ready(function () {
 
+        let select2Jenis = $('#select2Jenis');
+        select2Jenis.select2({
+        dropdownParent:select2Jenis.parent(),
+        searchInputPlaceholder: 'Cari Jenis Transaksi',
+        width: '100%',
+        allowClear: true,
+        placeholder: 'Pilih Jenis Transaksi',
+
+      }).on('select2:select', function (e) {
+            let data = e.params.data;
+            console.log(data.id);
+      });
+
         $('#tgl_awal, #tgl_akhir').flatpickr({
             dateFormat: "Y-m-d"
          });
@@ -194,7 +219,8 @@ function printDiv(divName) {
                     let params = new URLSearchParams({
 
                         tgl_awal : $('#tgl_awal').val(),
-                        tgl_akhir : $('#tgl_akhir').val()
+                        tgl_akhir : $('#tgl_akhir').val(),
+                        jenis : $('#select2Jenis').val()
                     });
 
                     let url = "{{ route('backend.mutasikasbonall.excel') }}?" +params.toString();
@@ -204,7 +230,8 @@ function printDiv(divName) {
         $("#pdf").click(function() {
                     let params = new URLSearchParams({
                         tgl_awal : $('#tgl_awal').val(),
-                        tgl_akhir : $('#tgl_akhir').val()
+                        tgl_akhir : $('#tgl_akhir').val(),
+                        jenis : $('#select2Jenis').val()
                     });
 
                     let url = "{{ route('backend.mutasikasbonall.pdf') }}?" +params.toString();
@@ -253,6 +280,7 @@ function printDiv(divName) {
           data: function (d) {
             d.tgl_awal = $('#tgl_awal').val();
             d.tgl_akhir = $('#tgl_akhir').val();
+            d.jenis = $('#select2Jenis').val();
           }
         },
 
@@ -265,9 +293,37 @@ function printDiv(divName) {
         //   },
           {data: 'driver.name', name: 'driver.name'},
           {data: 'tgl_kasbon', name: 'tgl_kasbon'},
-          {data: 'kode_kasbon', name: 'kode_kasbon'},
-          {data: 'gaji.kode_gaji', name: 'joborder.kode_gaji'},
-          {data: 'joborder.kode_joborder', name: 'joborder.kode_joborder'},
+          {
+               data: "kode_kasbon", name:'kode_kasbon',className:'text-center',  width: "1%",
+               render: function (data, type, row, meta) {
+                let kode = '-';
+                if(data !== null){
+                    kode = '<a target="_blank" href="{{ route('backend.kasbon.index') }}?kasbon_id='+row.kasbon_id+'">'+data+'</a>';
+                }
+                   return kode;
+               }
+          },
+          {
+               data: "gaji.kode_gaji", name:'gaji.kode_gaji',className:'text-center',  width: "1%",
+               render: function (data, type, row, meta) {
+                let kode = '-';
+                if(row.gaji !== null){
+                    kode = '<a target="_blank" href="{{ route('backend.penggajian.index') }}?penggajian_id='+row.gaji.id+'">'+data+'</a>';
+                }
+                   return kode;
+               }
+          },
+          {
+               data: "joborder.kode_joborder", name:'joborder.kode_joborder',className:'text-center',  width: "1%",
+               render: function (data, type, row, meta) {
+                let kode = '-';
+                if(row.joborder !== null){
+                    kode = '<a target="_blank" href="{{ route('backend.joborder.index') }}?joborder_id='+row.joborder.id+'">'+data+'</a>';
+                }
+                   return kode;
+               }
+          },
+
           {data: 'keterangan', name: 'keterangan'},
           {data: 'debit', name: 'debit'},
           {data: 'kredit', name: 'kredit'},
@@ -291,29 +347,29 @@ function printDiv(divName) {
         footerCallback: function (row, data, start, end, display) {
 
 
-            // console.log();
-            // DataSet1.Tables(0).Rows(4).Item(0) = "Updated Company Name";
-            var api = this.api();
+            // // console.log();
+            // // DataSet1.Tables(0).Rows(4).Item(0) = "Updated Company Name";
+            // var api = this.api();
 
-            // Remove the formatting to get integer data for summation
-            var intVal = function (i) {
-                return typeof i === 'string' ? i.replace(/[\$,]/g, '') * 1 : typeof i === 'number' ? i : 0;
-            };
+            // // Remove the formatting to get integer data for summation
+            // var intVal = function (i) {
+            //     return typeof i === 'string' ? i.replace(/[\$,]/g, '') * 1 : typeof i === 'number' ? i : 0;
+            // };
 
-            // Total over all pages
-            total_debit = api
-                .column(6)
-                .data()
-                .reduce(function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0);
+            // // Total over all pages
+            // total_debit = api
+            //     .column(6)
+            //     .data()
+            //     .reduce(function (a, b) {
+            //         return intVal(a) + intVal(b);
+            //     }, 0);
 
-            total_kredit = api
-                .column(7)
-                .data()
-                .reduce(function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0);
+            // total_kredit = api
+            //     .column(7)
+            //     .data()
+            //     .reduce(function (a, b) {
+            //         return intVal(a) + intVal(b);
+            //     }, 0);
 
             // Total over this page
             // pageTotal = api
@@ -325,7 +381,7 @@ function printDiv(divName) {
 
             console.log( total_debit);
 
-            // // Update footer
+            // Update footer
             // $(api.column(7).footer()).html('$' + pageTotal + ' ( $' + total + ' total)');
         },
       });
@@ -340,10 +396,11 @@ function printDiv(divName) {
 
             let tgl_awal = $('#tgl_awal').val();
             let tgl_akhir = $('#tgl_akhir').val();
+            let jenis = $('#select2Jenis').val();
          $.ajax({
                 url: "{{ route('backend.mutasikasbonall.ceksaldo') }}",
                 type: 'GET',
-                data: { tgl_awal: tgl_awal, tgl_akhir: tgl_akhir},
+                data: { tgl_awal: tgl_awal, tgl_akhir: tgl_akhir, jenis: jenis},
                 dataType: 'json', // added data type
                 success: function(res) {
 

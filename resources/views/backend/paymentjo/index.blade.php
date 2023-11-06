@@ -34,7 +34,7 @@
                             <div class="multi-collapse collapse show" id="multiCollapseExample2" style="">
                                 <div class="card border shadow-none card-body text-muted mb-0">
                                     <div class="row">
-                                        <div class="col-md-8">
+                                        <div class="col-md-3">
                                             <div class="mb-3">
                                                 <label>Id Joborder<span class="text-danger">*</span></label>
                                                 <select id="select2Joborder" style="width: 100% !important;" name="joborder_id">
@@ -42,11 +42,26 @@
                                                 </select>
                                               </div>
                                         </div>
-                                        <div class="col-md-4 text-end" style="padding-top:30px;">
+                                        <div class="col-md-3">
+                                            <div class="mb-3">
+                                                <label>Nopol<span class="text-danger">*</span></label>
+                                                <select id="select2Mobil" style="width: 100% !important;" name="nopol">
+                                                </select>
+                                              </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="mb-3">
+                                                <label>Driver<span class="text-danger">*</span></label>
+                                                <select id="select2Driver" style="width: 100% !important;" name="driver">
+                                                </select>
+                                              </div>
+                                        </div>
+                                        <div class="col-md-3 text-end" style="padding-top:30px;">
                                             <a id="terapkan_filter" class="btn btn-success">
                                                 Terapkan Filter
                                                 <i class="fas fa-align-justify"></i>
                                             </a>
+                                            <button  class="btn btn-danger" onClick="window.location.reload();">Refresh</button>
                                         </div>
 
                                     </div>
@@ -90,6 +105,7 @@
     </div>
 </div>
  {{--Modal--}}
+
 
 
 
@@ -206,6 +222,54 @@ tr.group:hover {
             allowInput: true
          });
 
+    let select2Mobil = $('#select2Mobil');
+    select2Mobil.select2({
+        dropdownParent:   select2Mobil.parent(),
+        searchInputPlaceholder: 'Cari Mobil',
+        width: '100%',
+        placeholder: 'Pilih Mobil',
+        ajax: {
+          url: "{{ route('backend.mobil.select2') }}",
+          dataType: "json",
+          cache: true,
+          data: function (e) {
+            return {
+            //   status_jalan: 1,
+              q: e.term || '',
+              page: e.page || 1
+            }
+          },
+        },
+      }).on('select2:select', function (e) {
+            let data = e.params.data;
+    });
+
+    let select2Driver = $('#select2Driver');
+    select2Driver.select2({
+        dropdownParent:  select2Driver.parent(),
+        searchInputPlaceholder: 'Cari Driver',
+        width: '100%',
+        placeholder: 'Pilih Driver',
+        ajax: {
+          url: "{{ route('backend.driver.select2') }}",
+          dataType: "json",
+          cache: true,
+          data: function (e) {
+            return {
+              validasi: 1,
+              status_aktif: 1,
+            //   status_jalan: 1,
+              q: e.term || '',
+              page: e.page || 1
+            }
+          },
+        },
+      }).on('select2:select', function (e) {
+            let data = e.params.data;
+            console.log(data.id);
+      });
+
+
         let select2Joborder = $('#select2Joborder');
         const currenciesOptions = {
             caretPositionOnFocus: "start",
@@ -240,6 +304,8 @@ tr.group:hover {
           url: "{{ route('backend.paymentjo.index') }}",
           data: function (d) {
             d.id = $('#select2Joborder').find(':selected').val();
+            d.nopol = $('#select2Mobil').find(':selected').val();
+            d.driver = $('#select2Driver').find(':selected').val();
           }
         },
 
@@ -263,13 +329,28 @@ tr.group:hover {
                         }
                     })
                     // console.log();
+                    let driver = rows.data()[0].joborder.driver.name;
+                    let mobil = rows.data()[0].joborder.mobil.nomor_plat;
                     let kode = '<a class="btn-sm btn-info" href="{{ route('backend.joborder.index') }}?joborder_id='+rows.data()[0].joborder_id+'">'+group+'</a>';
                     let url = (rows.data()[0].joborder.status_payment < 2) ? '<a class="btn btn-primary" href="paymentjo/' + rows.data()[0].joborder_id+ '/edit">Update Pembayaran</a>' : '<span class="badge bg-pill  bg-success">Lunas</span>';
                     let status = (rows.data()[0].joborder.status_payment == 2 && rows.data()[0].joborder.status_joborder == 1) ? '<span class="badge bg-pill  bg-success">Done</span>' : (rows.data()[0].joborder.status_payment < 2 ) ? '' : '<span class="badge bg-pill  bg-warning">Ongoing</span>';
                     let sisa_tagihan_uang_jalan =  $.fn.dataTable.render.number('.', ',', 0, '').display(rows.data()[0].joborder.sisa_uang_jalan);
                     let potongan_kasbon =  $.fn.dataTable.render.number('.', ',', 0, '').display(rows.data()[0].joborder.total_kasbon);
+
+                    let header_html = '<table width="100%">'+
+                                            '<tr>'+
+                                                '<th style="padding:2px; border:none" width="80px">'+kode+'</th>'+
+                                                '<th style="padding:2px; border:none" width="150px">NOPOL : '+mobil+'</th>'+
+                                                '<th style="padding:2px; border:none" width="200">DRIVER :'+driver+'</th>'+
+                                                '<th style="padding:2px; border:none" width="150px">JUMLAH BAYAR :'+rows.count()+'</th>'+
+                                                '<th style="padding:2px; border:none" width="200px">POTONG UJ : <span style="display: inline-block; min-width: 100px;">'+potongan_kasbon+'</span></th>'+
+                                                '<th style="padding:2px; border:none" width="150px">SISA UJ : '+sisa_tagihan_uang_jalan+'</th>'+
+                                                '<th class="float-end" style="padding:2px; border:none">'+url+status+'</th>'+
+                                            '<tr>'+
+                                        '</table>';
+
                     return $('<tr/>')
-                    .append('<td colspan="7"><div class="float-start">' + kode + ' | JUMLAH BAYAR : (' + rows.count() + ') | POTONGAN UANG JALAN : <span style="display: inline-block; min-width: 100px;">' + potongan_kasbon + '</span> | SISA UANG JALAN : ' + sisa_tagihan_uang_jalan +' </div><div class="float-end">'+url+'</div><div class="float-end">'+status+'</div></td>')
+                    .append('<td colspan="7">'+header_html+'</td>')
                     .attr('data-name', group)
                     .toggleClass('collapsed', collapsed);
                }

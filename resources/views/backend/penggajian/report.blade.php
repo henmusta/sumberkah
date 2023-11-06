@@ -102,12 +102,14 @@
             <tr >
                 <th>No</th>
                 <th class="text-center">Kode Gaji</th>
-                <th>Tanggal Gaji</th>
+                <th>Tanggal Slip Gaji</th>
                 <th>Driver</th>
                 <th>No Polisi</th>
                 <th>Bulan Kerja</th>
+                <th>Gaji Pokok</th>
+                <th>Bonus</th>
+                <th>Potongan Kasbon</th>
                 <th>Total Gaji</th>
-                <th>Sisa Gaji</th>
                 <th>Status</th>
                 <th width="150px">Operator (Waktu)</th>
             </tr>
@@ -131,10 +133,11 @@
                     <td>{{$val['driver']->name}}</td>
                     <td>{{$val['mobil']->nomor_plat}}</td>
                     <td>{{ \Carbon\Carbon::parse($val->bulan_kerja)->isoFormat('MMMM Y')}}</td>
+                    <td  class="text-end">Rp. {{ number_format($val->sub_total,0,',','.')}}</td>
+                    <td  class="text-end">Rp. {{ number_format($val->bonus,0,',','.')}}</td>
+                    <td  class="text-end">Rp. {{ number_format($val->nominal_kasbon,0,',','.')}}</td>
                     <td  class="text-end">Rp. {{ number_format($val->total_gaji,0,',','.')}}</td>
-                    <td  class="text-end">Rp. {{ number_format($val->sisa_gaji,0,',','.')}}</td>
                     <td  class="text-center">{{$status_payment}}</td>
-
                     <td>{{$val['createdby']->name}} ( {{\Carbon\Carbon::parse($val->created_at)->format('d-m-Y H:i:s')}} )</td>
                 </tr>
             @endforeach
@@ -142,8 +145,10 @@
         <tfoot>
             <tr>
                 <th colspan="6"style="text-align:right">Total: </th>
+                <th class="text-end" id="">Rp. {{ number_format($data['gaji']->sum('sub_total'),0,',','.')}}</th>
+                <th class="text-end" id="">Rp. {{ number_format($data['gaji']->sum('bonus'),0,',','.')}}</th>
+                <th class="text-end" id="">Rp. {{ number_format($data['gaji']->sum('nominal_kasbon'),0,',','.')}}</th>
                 <th class="text-end" id="">Rp. {{ number_format($data['gaji']->sum('total_gaji'),0,',','.')}}</th>
-                <th class="text-end" id="">Rp. {{ number_format($data['gaji']->sum('sisa_gaji'),0,',','.')}}</th>
                 <th></th>
                 <th></th>
              </tr>

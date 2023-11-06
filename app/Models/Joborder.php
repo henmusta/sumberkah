@@ -39,6 +39,91 @@ class Joborder extends Model
       'updated_by'
     ];
 
+    protected static function booted(): void
+    {
+        static::created(function (Joborder $joborder) {
+            $driver       = $joborder->driver()->first();
+            $mobil       = $joborder->mobil()->first();
+            $st_driver    = Driver::selectRaw('driver.`id` AS id,
+                                               SUM(IF(status_joborder = "1", 0, 1)) AS count_jo')
+                                               ->Join('joborder', 'joborder.driver_id', '=', 'driver.id')
+                                               ->where('driver.id', $driver->id)
+                                               ->groupBy('driver.id')->first();
+
+            $st_mobil    = Mobil::selectRaw('mobil.`id` AS id,
+                                               SUM(IF(status_joborder = "1", 0, 1)) AS count_jo')
+                                               ->Join('joborder', 'joborder.mobil_id', '=', 'mobil.id')
+                                               ->where('mobil.id', $mobil->id)
+                                               ->groupBy('mobil.id')->first();
+
+            $sj_driver    = Driver::where('id', $driver->id)->first();
+            $balance_driver =  $st_driver['count_jo'] > 0 ? 1 : 0;
+            $sj_driver->status_jalan  = $balance_driver;
+            $sj_driver->save();
+
+            $sj_mobil    = Mobil::where('id', $mobil->id)->first();
+            $balance_mobil =  $st_mobil['count_jo'] > 0 ? 1 : 0;
+            $sj_mobil->status_jalan  = $balance_mobil;
+            $sj_mobil->save();
+        });
+
+        static::updated(function (Joborder $joborder) {
+            $driver       = $joborder->driver()->first();
+            // dd($driver);
+            $mobil       = $joborder->mobil()->first();
+            $st_driver    = Driver::selectRaw('driver.`id` AS id,
+                                               SUM(IF(status_joborder = "1", 0, 1)) AS count_jo')
+                                               ->Join('joborder', 'joborder.driver_id', '=', 'driver.id')
+                                               ->where('driver.id', $driver->id)
+                                               ->groupBy('driver.id')->first();
+
+            $st_mobil    = Mobil::selectRaw('mobil.`id` AS id,
+                                               SUM(IF(status_joborder = "1", 0, 1)) AS count_jo')
+                                               ->Join('joborder', 'joborder.mobil_id', '=', 'mobil.id')
+                                               ->where('mobil.id', $mobil->id)
+                                               ->groupBy('mobil.id')->first();
+
+            $sj_driver    = Driver::where('id', $driver->id)->first();
+            $balance_driver =  $st_driver['count_jo'] > 0 ? 1 : 0;
+            // dd( $balance_driver);
+            $sj_driver->status_jalan  = $balance_driver;
+            $sj_driver->save();
+
+            $sj_mobil    = Mobil::where('id', $mobil->id)->first();
+            $balance_mobil =  $st_mobil['count_jo'] > 0 ? 1 : 0;
+            $sj_mobil->status_jalan  = $balance_mobil;
+            $sj_mobil->save();
+        });
+
+        static::deleted(function (Joborder $joborder) {
+            $driver       = $joborder->driver()->first();
+            $mobil       = $joborder->mobil()->first();
+            $st_driver    = Driver::selectRaw('driver.`id` AS id,
+                                               SUM(IF(status_joborder = "1", 0, 1)) AS count_jo')
+                                               ->Join('joborder', 'joborder.driver_id', '=', 'driver.id')
+                                               ->where('driver.id', $driver->id)
+                                               ->groupBy('driver.id')->first();
+
+            $st_mobil    = Mobil::selectRaw('mobil.`id` AS id,
+                                               SUM(IF(status_joborder = "1", 0, 1)) AS count_jo')
+                                               ->Join('joborder', 'joborder.mobil_id', '=', 'mobil.id')
+                                               ->where('mobil.id', $mobil->id)
+                                               ->groupBy('mobil.id')->first();
+
+            $sj_driver    = Driver::where('id', $driver->id)->first();
+            $balance_driver =  $st_driver['count_jo'] > 0 ? 1 : 0;
+            $sj_driver->status_jalan  = $balance_driver;
+            $sj_driver->save();
+
+            $sj_mobil    = Mobil::where('id', $mobil->id)->first();
+            $balance_mobil =  $st_mobil['count_jo'] > 0 ? 1 : 0;
+            $sj_mobil->status_jalan  = $balance_mobil;
+            $sj_mobil->save();
+        });
+
+    }
+
+
     public function customer()
     {
       return $this->belongsTo(Customer::class, 'customer_id');

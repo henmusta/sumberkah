@@ -220,14 +220,14 @@ class JoborderController extends Controller
 
 
                   if(isset($data['id'])){
-                    $driver = Driver::findOrFail($request['driver_id']);
-                    $driver->update([
-                        'status_jalan'  => '1',
-                    ]);
-                    $mobil = Mobil::findOrFail($request['mobil_id']);
-                    $mobil->update([
-                        'status_jalan'  => '1',
-                    ]);
+                    // $driver = Driver::findOrFail($request['driver_id']);
+                    // $driver->update([
+                    //     'status_jalan'  => '1',
+                    // ]);
+                    // $mobil = Mobil::findOrFail($request['mobil_id']);
+                    // $mobil->update([
+                    //     'status_jalan'  => '1',
+                    // ]);
                   }
               DB::commit();
               $response = response()->json($this->responseStore(true, route('backend.joborder.index')));
@@ -305,14 +305,14 @@ class JoborderController extends Controller
         try {
             $data = Joborder::find($id);
             if(isset($data['id'])){
-                $driver = Driver::findOrFail($data['driver_id']);
-                $driver->update([
-                    'status_jalan'  => '0',
-                ]);
-                $mobil = Mobil::findOrFail($data['mobil_id']);
-                $mobil->update([
-                    'status_jalan'  => '0',
-                ]);
+                // $driver = Driver::findOrFail($data['driver_id']);
+                // $driver->update([
+                //     'status_jalan'  => '0',
+                // ]);
+                // $mobil = Mobil::findOrFail($data['mobil_id']);
+                // $mobil->update([
+                //     'status_jalan'  => '0',
+                // ]);
             }
             // $kode =  $this->KodeJoborder(Carbon::now()->format('d M Y'));
             // $kode =  $data['tgl_joborder'] != $request['tgl_joborder'] ?
@@ -342,14 +342,14 @@ class JoborderController extends Controller
                 'updated_by' => Auth::user()->id,
             ]);
 
-            $driver = Driver::findOrFail($request['driver_id']);
-            $driver->update([
-                'status_jalan'  => '1',
-            ]);
-            $mobil = Mobil::findOrFail($request['mobil_id']);
-            $mobil->update([
-                'status_jalan'  => '1',
-            ]);
+            // $driver = Driver::findOrFail($request['driver_id']);
+            // $driver->update([
+            //     'status_jalan'  => '1',
+            // ]);
+            // $mobil = Mobil::findOrFail($request['mobil_id']);
+            // $mobil->update([
+            //     'status_jalan'  => '1',
+            // ]);
           DB::commit();
           $response = response()->json($this->responseStore(true, route('backend.joborder.index')));
 

@@ -132,24 +132,24 @@ class KonfirmasiJoController extends Controller
                                 'status_joborder' => 1
                             ]);
 
-                            $cek_sj_driver = Joborder::where('driver_id',$joborder['driver_id'])->where('status_joborder', '0')->get();
-                            $cek_sj_mobil = Joborder::where('mobil_id',$joborder['mobil_id'])->where('status_joborder', '0')->get();
+                        //     $cek_sj_driver = Joborder::where('driver_id',$joborder['driver_id'])->where('status_joborder', '0')->get();
+                        //     $cek_sj_mobil = Joborder::where('mobil_id',$joborder['mobil_id'])->where('status_joborder', '0')->get();
 
 
 
-                            $driver = Driver::findOrFail($joborder['driver_id']);
-                            $cek_status_jalan_driver = count($cek_sj_driver) <= '1' ? '0' : '1';
-                           // dd($cek_status_jalan_driver,  count($cek_sj_driver));
+                        //     $driver = Driver::findOrFail($joborder['driver_id']);
+                        //     $cek_status_jalan_driver = count($cek_sj_driver) <= '1' ? '0' : '1';
+                        //    // dd($cek_status_jalan_driver,  count($cek_sj_driver));
 
-                        //    dd( $cek_status_jalan_driver);
-                            $driver->update([
-                                'status_jalan'  =>  $cek_status_jalan_driver,
-                            ]);
-                            $mobil = Mobil::findOrFail($joborder['mobil_id']);
-                            $cek_status_jalan_mobil = count($cek_sj_mobil) <= '1' ? '0' : '1';
-                            $mobil->update([
-                                'status_jalan'  =>  $cek_status_jalan_mobil,
-                            ]);
+                        // //    dd( $cek_status_jalan_driver);
+                        //     $driver->update([
+                        //         'status_jalan'  =>  $cek_status_jalan_driver,
+                        //     ]);
+                        //     $mobil = Mobil::findOrFail($joborder['mobil_id']);
+                        //     $cek_status_jalan_mobil = count($cek_sj_mobil) <= '1' ? '0' : '1';
+                        //     $mobil->update([
+                        //         'status_jalan'  =>  $cek_status_jalan_mobil,
+                        //     ]);
                       }
                   DB::commit();
                   }

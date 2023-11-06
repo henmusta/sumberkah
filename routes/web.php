@@ -121,6 +121,18 @@ Route::middleware('auth:henmus')->group(function(){
             Route::put('joborder/validasi', [Backend\JoborderController::class, 'validasi'])->name('joborder.validasi');
             Route::resource('joborder', Backend\JoborderController::class);
 
+            //bulanandriverkasbon
+            Route::get('bulanandriverjo/excel', [Backend\BulananDriverJoController::class, 'excel'])->name('bulanandriverjo.excel');
+            Route::get('bulanandriverjo/pdf', [Backend\BulananDriverJoController::class, 'pdf'])->name('bulanandriverjo.pdf');
+            Route::post('bulanandriverjo/getreport', [Backend\BulananDriverJoController::class, 'getreport'])->name('bulanandriverjo.getreport');
+            Route::resource('bulanandriverjo', Backend\BulananDriverJoController::class);
+
+            //bulanannopol
+            Route::get('bulanannopoljo/excel', [Backend\BulananNopolJoController::class, 'excel'])->name('bulanannopoljo.excel');
+            Route::get('bulanannopoljo/pdf', [Backend\BulananNopolJoController::class, 'pdf'])->name('bulanannopoljo.pdf');
+            Route::post('bulanannopoljo/getreport', [Backend\BulananNopolJoController::class, 'getreport'])->name('bulanannopoljo.getreport');
+            Route::resource('bulanannopoljo', Backend\BulananNopolJoController::class);
+
             //JoborderBulanan
             Route::get('bulananjoborder/excel', [Backend\BulananJoborderController::class, 'excel'])->name('bulananjoborder.excel');
             Route::get('bulananjoborder/pdf', [Backend\BulananJoborderController::class, 'pdf'])->name('bulananjoborder.pdf');
@@ -145,6 +157,7 @@ Route::middleware('auth:henmus')->group(function(){
 
             Route::resource('kasbon', Backend\KasbonController::class);
 
+            Route::resource('invoicecustom', Backend\InvoiceCustomController::class);
 
             //Invoice
             Route::get('invoice/sisapayment', [Backend\InvoiceController::class, 'sisapayment'])->name('invoice.sisapayment');
@@ -154,11 +167,48 @@ Route::middleware('auth:henmus')->group(function(){
             Route::get('invoice/select2', [Backend\InvoiceController::class, 'select2'])->name('invoice.select2');
             Route::resource('invoice', Backend\InvoiceController::class);
 
+            //BulananInvoice
+            Route::get('bulananinvoice/excel', [Backend\BulananInvoiceController::class, 'excel'])->name('bulananinvoice.excel');
+            Route::get('bulananinvoice/pdf', [Backend\BulananInvoiceController::class, 'pdf'])->name('bulananinvoice.pdf');
+            Route::post('bulananinvoice/getreport', [Backend\BulananInvoiceController::class, 'getreport'])->name('bulananinvoice.getreport');
+            Route::resource('bulananinvoice', Backend\BulananInvoiceController::class);
+
+
+            //BulananInvoice
+            Route::get('bulanancustomerinvoice/excel', [Backend\BulananCustomerInvoiceController::class, 'excel'])->name('bulanancustomerinvoice.excel');
+            Route::get('bulanancustomerinvoice/pdf', [Backend\BulananCustomerInvoiceController::class, 'pdf'])->name('bulanancustomerinvoice.pdf');
+            Route::post('bulanancustomerinvoice/getreport', [Backend\BulananCustomerInvoiceController::class, 'getreport'])->name('bulanancustomerinvoice.getreport');
+            Route::resource('bulanancustomerinvoice', Backend\BulananCustomerInvoiceController::class);
 
             //PaymentInvoice
             Route::put('paymentinvoice/updatesingle', [Backend\PaymentInvoiceController::class, 'updatesingle'])->name('paymentinvoice.updatesingle');
             Route::resource('paymentinvoice', Backend\PaymentInvoiceController::class);
 
+            //BulananNopolGaji
+            Route::get('bulanannopolgaji/excel', [Backend\BulananNopolGajiController::class, 'excel'])->name('bulanannopolgaji.excel');
+            Route::get('bulanannopolgaji/pdf', [Backend\BulananNopolGajiController::class, 'pdf'])->name('bulanannopolgaji.pdf');
+            Route::post('bulanannopolgaji/getreport', [Backend\BulananNopolGajiController::class, 'getreport'])->name('bulanannopolgaji.getreport');
+            Route::resource('bulanannopolgaji', Backend\BulananNopolGajiController::class);
+
+
+            //BulananKasbon
+            Route::get('bulanangaji/excel', [Backend\BulananGajiController::class, 'excel'])->name('bulanangaji.excel');
+            Route::get('bulanangaji/pdf', [Backend\BulananGajiController::class, 'pdf'])->name('bulanangaji.pdf');
+            Route::post('bulanangaji/getreport', [Backend\BulananGajiController::class, 'getreport'])->name('bulanangaji.getreport');
+            Route::resource('bulanangaji', Backend\BulananGajiController::class);
+
+            //bulanandriverkasbon
+            Route::get('bulanandriverkasbon/excel', [Backend\BulananDriverKasbonController::class, 'excel'])->name('bulanandriverkasbon.excel');
+            Route::get('bulanandriverkasbon/pdf', [Backend\BulananDriverKasbonController::class, 'pdf'])->name('bulanandriverkasbon.pdf');
+            Route::post('bulanandriverkasbon/getreport', [Backend\BulananDriverKasbonController::class, 'getreport'])->name('bulanandriverkasbon.getreport');
+            Route::resource('bulanandriverkasbon', Backend\BulananDriverKasbonController::class);
+
+
+            //bulanankasbon
+            Route::get('bulanankasbon/excel', [Backend\BulananKasbonController::class, 'excel'])->name('bulanankasbon.excel');
+            Route::get('bulanankasbon/pdf', [Backend\BulananKasbonController::class, 'pdf'])->name('bulanankasbon.pdf');
+            Route::post('bulanankasbon/getreport', [Backend\BulananKasbonController::class, 'getreport'])->name('bulanankasbon.getreport');
+            Route::resource('bulanankasbon', Backend\BulananKasbonController::class);
 
             //Penggajian
             Route::get('penggajian/sisapayment', [Backend\PenggajianController::class, 'sisapayment'])->name('penggajian.sisapayment');

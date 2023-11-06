@@ -19,6 +19,13 @@
                             </div>
                             @if(Auth::user()->can('backend-invoice-create') == 'true')
                             <div class="flex-shrink-0">
+                                <a class="btn btn-primary " href="{{ route('backend.invoicecustom.create') }}">
+                                    Tambah Invoice Custom
+                                    <i class="fas fa-plus"></i>
+                                </a>
+                            </div>
+                            <div style="padding: 10px"></div>
+                            <div class="flex-shrink-0">
                                 <a class="btn btn-primary " href="{{ route('backend.invoice.create') }}">
                                     Tambah
                                     <i class="fas fa-plus"></i>

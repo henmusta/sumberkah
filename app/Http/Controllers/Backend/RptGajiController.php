@@ -140,12 +140,14 @@ class RptGajiController extends Controller
             $sheet->setCellValue('E'.$rows5, 'No Polisi');
             $sheet->setCellValue('F'.$rows5, 'Periode Gaji');
             $sheet->setCellValue('G'.$rows5, 'Jenis Pembayaran');
-            $sheet->setCellValue('H'.$rows5, 'Nominal Pembayaran');
-            $sheet->setCellValue('I'.$rows5, 'Sisa Pembayaran');
-            $sheet->setCellValue('J'.$rows5, 'Total Gaji');
-            $sheet->setCellValue('K'.$rows5, 'Operator (Waktu)');
+            $sheet->setCellValue('H'.$rows5, 'Gaji');
+            $sheet->setCellValue('I'.$rows5, 'Bonus');
+            $sheet->setCellValue('J'.$rows5, 'Kasbon');
+            $sheet->setCellValue('K'.$rows5, 'Total Gaji');
+            $sheet->setCellValue('L'.$rows5, 'Kode Kasbon');
+            $sheet->setCellValue('M'.$rows5, 'Operator (Waktu)');
 
-            for($col = 'A'; $col !== 'L'; $col++){$sheet->getColumnDimension($col)->setAutoSize(true);}
+            for($col = 'A'; $col !== 'N'; $col++){$sheet->getColumnDimension($col)->setAutoSize(true);}
 
             // $list = $pajak->get();
             // // $first = $pajak->first();
@@ -160,10 +162,12 @@ class RptGajiController extends Controller
                     $sheet->setCellValue('E' . $x, $val['penggajian']->mobil['nomor_plat']);
                     $sheet->setCellValue('F' . $x, Carbon::parse($val['penggajian']->bulan_kerja)->isoFormat('MMMM Y'));
                     $sheet->setCellValue('G' . $x, $val['jenis_payment'] ?? '');
-                    $sheet->setCellValue('H' . $x, $val['nominal']);
-                    $sheet->setCellValue('I' . $x, $val['penggajian']->sisa_gaji);
-                    $sheet->setCellValue('J' . $x, $val['penggajian']->total_gaji);
-                    $sheet->setCellValue('K' . $x, $val['penggajian']->createdby['name'] . ' ( ' .date('d-m-Y', strtotime($val['penggajian']->created_at)) .' )');
+                    $sheet->setCellValue('H' . $x, $val['penggajian']->sub_total);
+                    $sheet->setCellValue('I' . $x, $val['penggajian']->bonus);
+                    $sheet->setCellValue('J' . $x, $val['penggajian']->nominal_kasbon);
+                    $sheet->setCellValue('K' . $x, $val['penggajian']->total_gaji);
+                    $sheet->setCellValue('L' . $x, isset($val['penggajian']->kasbon) ? $val['penggajian']->kasbon['kode_kasbon'] : '-');
+                    $sheet->setCellValue('M' . $x, $val['penggajian']->createdby['name'] . ' ( ' .date('d-m-Y', strtotime($val['penggajian']->created_at)) .' )');
                     $x++;
             }
 
@@ -172,6 +176,7 @@ class RptGajiController extends Controller
             $spreadsheet->getActiveSheet()->getStyle('H6:H'.$cell)->getNumberFormat()->setFormatCode('#,##0');
             $spreadsheet->getActiveSheet()->getStyle('I6:I'.$cell)->getNumberFormat()->setFormatCode('#,##0');
             $spreadsheet->getActiveSheet()->getStyle('J6:J'.$cell)->getNumberFormat()->setFormatCode('#,##0');
+            $spreadsheet->getActiveSheet()->getStyle('K6:K'.$cell)->getNumberFormat()->setFormatCode('#,##0');
 
 
             // $cell_tk = $cell + 1;
@@ -182,7 +187,7 @@ class RptGajiController extends Controller
             $spreadsheet->setActiveSheetIndex(0)->setCellValue('H'.$cell, '=SUM(H5:H' . $cell . ')');
             $spreadsheet->setActiveSheetIndex(0)->setCellValue('I'.$cell, '=SUM(I5:I' . $cell . ')');
             $spreadsheet->setActiveSheetIndex(0)->setCellValue('J'.$cell, '=SUM(J5:J' . $cell . ')');
-
+            $spreadsheet->setActiveSheetIndex(0)->setCellValue('K'.$cell, '=SUM(K5:K' . $cell . ')');
 
       $writer = new Xlsx($spreadsheet);
       $filename = 'Laporan Payment Gaji';

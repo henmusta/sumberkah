@@ -37,16 +37,27 @@ class PaymentJoController extends Controller
         $page_breadcrumbs = [
           ['url' => '#', 'title' => "Data Payment Joborder"],
         ];
-
+        $nopol = $request['nopol'];
+        $driver = $request['driver'];
         $joborder = Joborder::find($request['joborder_id']);
         $data = [
           'joborder' => $joborder,
         ];
         if ($request->ajax()) {
-          $data = PaymentJo::selectRaw('payment_joborder.*')->with('joborder');
-          if ($request->filled('id')) {
-            $data->where('joborder_id', $request['id']);
-        }
+          $data = PaymentJo::selectRaw('payment_joborder.*')->with('joborder')
+                  ->leftJoin('joborder', 'joborder.id', '=', 'payment_joborder.joborder_id');
+
+                      if ($request->filled('driver')) {
+                        $data->where('driver_id', $request['driver']);
+                      }
+
+                      if ($request->filled('nopol')) {
+                        $data->where('mobil_id', $request['nopol']);
+                      }
+
+                      if ($request->filled('id')) {
+                        $data->where('joborder_id', $request['id']);
+                      }
 
           return DataTables::of($data)
           ->addColumn('action', function ($row) {
@@ -73,7 +84,7 @@ class PaymentJoController extends Controller
             ];
 
 
-
+            // dd($row->joborder->status_payment);
             $cek_edit =  $row->joborder->status_payment != '2'  ? $edit : '';
             $cek_delete =  $row->joborder->status_payment != '2' ? $delete : '';
 
@@ -95,6 +106,7 @@ class PaymentJoController extends Controller
             </div>
         </div>';
 
+
         })
             // ->addColumn('action', function ($row) {
             //     $show = '<a href="' . route('backend.driver.show', $row->id) . '" class="dropdown-item">Detail</a>';
@@ -105,6 +117,7 @@ class PaymentJoController extends Controller
             ->make(true);
         }
 
+        // dd($data);
         return view('backend.paymentjo.index', compact('config', 'page_breadcrumbs', 'data'));
     }
 

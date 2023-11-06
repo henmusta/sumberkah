@@ -79,6 +79,12 @@
                                 <td  style="font-weight:bold">{{$data['penggajian']['keterangan_gaji'] ?? ''}}</td>
                             </tr>
 
+                            <tr>
+                                <td style="width: 300px; ">Tanggal Payment</td>
+                                <td style="width: 2px; padding-right: 10px">:</td>
+                                <td  style="font-weight:bold"> {{ isset($data['penggajian']['payment'][0]->tgl_payment) ? \Carbon\Carbon::parse($data['penggajian']['payment'][0]->tgl_payment)->format('d-m-Y')  : ''}}</td>
+                            </tr>
+
                         </table>
                     </div>
                 </div>
@@ -155,6 +161,14 @@
                                             <th class="text-end"> Rp. {{ number_format($data['penggajian']['total_gaji'],0,',','.')}}</th>
                                         </tr>
                                     </tfoot>
+                                </tfoot>
+                            </table>
+                            <table>
+                                <tfoot style=" border: none;" >
+                                    @php($terbilang = Riskihajar\Terbilang\Facades\Terbilang::make($data['penggajian']['total_gaji'], ' rupiah')  ?? '' )
+                                    <tr style=" border: none;">
+                                        <th style=" border: none;" class="text-left" colspan="14">Terbilang = #   {{ucwords($terbilang)}} #</th>
+                                    </tr>
                                 </tfoot>
                             </table>
                         </div>

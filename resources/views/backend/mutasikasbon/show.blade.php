@@ -218,7 +218,7 @@ function printDiv(divName) {
             $('#cek_name').val(data.text)
             console.log(data.id);
     });
-    $("#excel").click(function() {
+        $("#excel").click(function() {
                     let params = new URLSearchParams({
                         driver_id :  select2Driver.find(':selected').val(),
                         tgl_awal : $('#tgl_awal').val(),
@@ -294,9 +294,36 @@ function printDiv(divName) {
         //         }
         //   },
           {data: 'tgl_kasbon', name: 'tgl_kasbon'},
-          {data: 'kode_kasbon', name: 'kode_kasbon'},
-          {data: 'gaji.kode_gaji', name: 'joborder.kode_gaji'},
-          {data: 'joborder.kode_joborder', name: 'joborder.kode_joborder'},
+             {
+               data: "kode_kasbon", name:'kode_kasbon',className:'text-center',  width: "1%",
+               render: function (data, type, row, meta) {
+                let kode = '-';
+                if(data !== null){
+                    kode = '<a target="_blank" href="{{ route('backend.kasbon.index') }}?kasbon_id='+row.kasbon_id+'">'+data+'</a>';
+                }
+                   return kode;
+               }
+          },
+          {
+               data: "gaji.kode_gaji", name:'gaji.kode_gaji',className:'text-center',  width: "1%",
+               render: function (data, type, row, meta) {
+                let kode = '-';
+                if(row.gaji !== null){
+                    kode = '<a target="_blank" href="{{ route('backend.penggajian.index') }}?penggajian_id='+row.gaji.id+'">'+data+'</a>';
+                }
+                   return kode;
+               }
+          },
+          {
+               data: "joborder.kode_joborder", name:'joborder.kode_joborder',className:'text-center',  width: "1%",
+               render: function (data, type, row, meta) {
+                let kode = '-';
+                if(row.joborder !== null){
+                    kode = '<a target="_blank" href="{{ route('backend.joborder.index') }}?joborder_id='+row.joborder.id+'">'+data+'</a>';
+                }
+                   return kode;
+               }
+          },
           {data: 'keterangan', name: 'keterangan'},
           {data: 'debit', name: 'debit'},
           {data: 'kredit', name: 'kredit'},
@@ -322,37 +349,37 @@ function printDiv(divName) {
 
             // console.log();
             // DataSet1.Tables(0).Rows(4).Item(0) = "Updated Company Name";
-            var api = this.api();
+            // var api = this.api();
 
-            // Remove the formatting to get integer data for summation
-            var intVal = function (i) {
-                return typeof i === 'string' ? i.replace(/[\$,]/g, '') * 1 : typeof i === 'number' ? i : 0;
-            };
+            // // Remove the formatting to get integer data for summation
+            // var intVal = function (i) {
+            //     return typeof i === 'string' ? i.replace(/[\$,]/g, '') * 1 : typeof i === 'number' ? i : 0;
+            // };
 
-            // Total over all pages
-            total_debit = api
-                .column(5)
-                .data()
-                .reduce(function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0);
-
-            total_kredit = api
-                .column(6)
-                .data()
-                .reduce(function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0);
-
-            // Total over this page
-            // pageTotal = api
-            //     .column(5, { page: 'current' })
+            // // Total over all pages
+            // total_debit = api
+            //     .column(5)
             //     .data()
             //     .reduce(function (a, b) {
             //         return intVal(a) + intVal(b);
             //     }, 0);
 
-            console.log( total_debit);
+            // total_kredit = api
+            //     .column(6)
+            //     .data()
+            //     .reduce(function (a, b) {
+            //         return intVal(a) + intVal(b);
+            //     }, 0);
+
+            // // Total over this page
+            // // pageTotal = api
+            // //     .column(5, { page: 'current' })
+            // //     .data()
+            // //     .reduce(function (a, b) {
+            // //         return intVal(a) + intVal(b);
+            // //     }, 0);
+
+            // console.log( total_debit);
 
             // // Update footer
             // $(api.column(7).footer()).html('$' + pageTotal + ' ( $' + total + ' total)');

@@ -13,9 +13,9 @@
             <div class="card-body" id="printableArea">
                 <div class="invoice-title">
                     <h6 class="main-content-label mb-1">{{ $config['page_title'] ?? '' }}</h6>
-                    <div class="mb-4">
+                    {{-- <div class="mb-4">
                            <img  src="{{URL::to('storage/images/logo/'.Setting::get_setting()->icon)}}" alt="logo" height="50">
-                    </div>
+                    </div> --}}
                     <div class="text-muted">
                         {{ \Carbon\Carbon::parse($data['driver']['created_at'])->isoFormat('dddd, D MMMM Y')}}
                         {{-- {{ $data['legislasi']['created_at'] ?? '' }} --}}
@@ -63,8 +63,12 @@
                                         <td class="text-left">{{ $data['driver']['tgl_sim'] ?? '' }}</td>
                                     </tr>
                                     <tr class="">
-                                        <th class="text-left">Tanggal Aktif Supir</th>
-                                        <td class="text-left">{{ $data['driver']['tgl_aktif'] ?? '' }}</td>
+                                        <th class="text-left">Tgl Registrasi</th>
+                                        <td class="text-left"> {{ \Carbon\Carbon::parse($data['driver']['created_at'])->format('d-m-Y')}}</td>
+                                    </tr>
+                                    <tr class="">
+                                        <th class="text-left">Tgl Perubahan Status</th>
+                                        <td class="text-left">{{ \Carbon\Carbon::parse($data['driver']['tgl_aktif'])->format('d-m-Y')}} </td>
                                     </tr>
                                 </thead>
                                 <tbody>

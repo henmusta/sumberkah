@@ -69,7 +69,7 @@
                                                 <div class="mb-3">
                                                     <label>Nomor Bon<span class="text-danger">*</span></label>
                                                     <select id="select2Kasbon" style="width: 100% !important;" name="kasbon_id">
-
+                                                        <option value="{{ $data['kasbon']['id'] ?? '' }}"> {{$data['kasbon']['kode_kasbon'] ?? '' }}</option>
                                                     </select>
                                                   </div>
                                             </div>
@@ -136,9 +136,11 @@
                                 <th class="text-center">Tanggal Transaksi</th>
                                 <th>Kode Kasbon</th>
                                 <th>Driver</th>
-                                <th>JenisTransaksi</th>
+                                <th>Kode Joborder</th>
+                                <th>Kode Gaji</th>
+                                <th>Transaksi</th>
                                 <th>Nominal</th>
-                                <th>Status</th>
+                                {{-- <th>Status</th> --}}
                                 <th width="8%">Aksi</th>
                               </tr>
                         </thead>
@@ -381,35 +383,56 @@
           {data: 'tgl_kasbon', name: 'tgl_kasbon'},
           {data: 'kode_kasbon', name: 'kode_kasbon'},
           {data: 'driver.name', name: 'driver.name'},
+        //   {data: 'joborder.kode_joborder', name: 'joborder.kode_joborder'},
+          {
+               data: "joborder.kode_joborder", name:'joborder.kode_joborder',className:'text-center',  width: "1%",
+               render: function (data, type, row, meta) {
+                let kode = '-';
+                if(row.joborder !== null){
+                    kode = '<a target="_blank" href="{{ route('backend.joborder.index') }}?joborder_id='+row.joborder.id+'">'+data+'</a>';
+                }
+                   return kode;
+               }
+          },
+          {
+               data: "penggajian.kode_gaji", name:'penggajian.kode_gaji',className:'text-center',  width: "1%",
+               render: function (data, type, row, meta) {
+                let kode = '-';
+                if(row.penggajian !== null){
+                    kode = '<a target="_blank" href="{{ route('backend.penggajian.index') }}?penggajian_id='+row.penggajian.id+'">'+data+'</a>';
+                }
+                   return kode;
+               }
+          },
           {data: 'jenis', name: 'jenis'},
           {data: 'nominal', name: 'nominal'},
-          {data: 'validasi', name: 'validasi'},
+        //   {data: 'validasi', name: 'validasi'},
           {data: 'action', name: 'action', orderable: false, searchable: false},
         ],
         columnDefs: [
-            {
+        //     {
+        //     className: 'dt-center',
+        //     targets: 7,
+        //     render: function (data, type, full, meta) {
+        //       let status = {
+        //         0: {'title': 'Pending', 'class': ' bg-warning'},
+        //         1: {'title': 'Acc', 'class': ' bg-success'},
+        //       };
+        //       if (typeof status[data] === 'undefined') {
+        //         return data;
+        //       }
+        //       return '<span class="badge bg-pill' + status[data].class + '">' + status[data].title +
+        //         '</span>';
+        //     },
+        //   },
+          {
             className: 'dt-center',
             targets: 5,
             render: function (data, type, full, meta) {
               let status = {
-                0: {'title': 'Pending', 'class': ' bg-warning'},
-                1: {'title': 'Acc', 'class': ' bg-success'},
-              };
-              if (typeof status[data] === 'undefined') {
-                return data;
-              }
-              return '<span class="badge bg-pill' + status[data].class + '">' + status[data].title +
-                '</span>';
-            },
-          },
-          {
-            className: 'dt-center',
-            targets: 3,
-            render: function (data, type, full, meta) {
-              let status = {
                 'Pengajuan': {'title': 'Pengajuan', 'class': ' bg-warning'},
                 'Potong Gaji': {'title': 'Potong Gaji', 'class': ' bg-info'},
-                'Potong Joborder': {'title': 'Potong Joborder', 'class': ' bg-info'},
+                'Potong Joborder': {'title': 'Potong Joborder', 'class': ' bg-primary'},
                 'Pembayaran': {'title': 'Pembayaran', 'class': ' bg-success'},
               };
               if (typeof status[data] === 'undefined') {
@@ -420,10 +443,13 @@
             },
           },
           {
-            targets: [4],
+            targets: [6],
             render: $.fn.dataTable.render.number('.', ',', 0, '')
-          }
-
+          },
+          {
+            targets:'_all',
+            defaultContent: "-",
+          },
         ],
       });
       $("#terapkan_filter").click(function() {

@@ -18,10 +18,12 @@ class Penggajian extends Model
       'bulan_kerja',
       'sub_total',
       'bonus',
+      'kasbon_id',
       'nominal_kasbon',
       'total_gaji',
       'sisa_gaji',
       'keterangan_gaji',
+      'keterangan_kasbon',
       'total_payment',
       'status_payment',
       'created_by',
@@ -33,6 +35,11 @@ class Penggajian extends Model
     public function driver()
     {
       return $this->belongsTo(Driver::class, 'driver_id');
+    }
+
+    public function kasbon()
+    {
+      return $this->belongsTo(Kasbon::class, 'kasbon_id');
     }
 
     public function mobil()

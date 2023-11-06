@@ -30,6 +30,25 @@ class KonfirmasiJo extends Model
       'updated_by',
     ];
 
+    // protected static function booted(): void
+    // {
+    //     static::created(function (Joborder $joborder) {
+    //         $driver       = $joborder->driver()->first();
+    //         $st_driver    = Driver::selectRaw('driver.`id` AS id,
+    //                                            SUM(IF(status_joborder = "1", 0, 1)) AS count_jo')
+    //                                            ->Join('joborder', 'joborder.driver_id', '=', 'driver.id')
+    //                                            ->where('driver.id', $driver->id)
+    //                                            ->groupBy('driver.id')->first();
+
+    //         $status_jalan    = Driver::where('id', $driver->id)->first();
+    //         $balance =  $st_driver['count_jo'] > 0 ? 1 : 0;
+    //         $status_jalan->status_jalan  = $balance;
+    //         $status_jalan->save();
+    //     });
+    // }
+
+
+
     public function customer()
     {
       return $this->belongsTo(Customer::class, 'customer_id');
@@ -37,7 +56,7 @@ class KonfirmasiJo extends Model
 
     public function joborder()
     {
-      return $this->belongsTo(Joborder::class, 'joborder_id')->with('mobil', 'ruteawal', 'ruteakhir', 'muatan', 'rute');
+      return $this->belongsTo(Joborder::class, 'joborder_id')->with('mobil', 'ruteawal', 'ruteakhir', 'muatan', 'rute', 'driver');
     }
 
 

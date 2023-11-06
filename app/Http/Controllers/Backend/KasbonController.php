@@ -38,8 +38,13 @@ class KasbonController extends Controller
         $page_breadcrumbs = [
           ['url' => '#', 'title' => "Data Kasbon"],
         ];
+        // dd($request['kasbon_id']);
+        $kasbon = Kasbon::find($request['kasbon_id']);
+        $data = [
+            'kasbon' => $kasbon,
+          ];
         if ($request->ajax()) {
-          $data = Kasbon::with('driver','joborder');
+          $data = Kasbon::with('driver','joborder','penggajian');
             if ($request->filled('jenis')) {
                 $data->where('jenis', $request['jenis']);
             }
@@ -89,7 +94,7 @@ class KasbonController extends Controller
             ->make(true);
         }
 
-        return view('backend.kasbon.index', compact('config', 'page_breadcrumbs'));
+        return view('backend.kasbon.index', compact('config', 'page_breadcrumbs', 'data'));
     }
 
 
@@ -126,10 +131,21 @@ class KasbonController extends Controller
                     'tgl_kasbon'=> $request['tgl_kasbon'],
                     'keterangan'=> $request['keterangan'],
                     'nominal'=> $request['nominal'],
-                    'validasi' => '0',
+                    'validasi' => $request['validasi'],
                     'created_by' => Auth::user()->id
                   ]);
-
+                  DB::commit();
+                //   dd( $request);
+                  if($request['validasi'] == '1'){
+                    $validasi = new Request([
+                        'id' =>  $data['id'],
+                        'nominal' =>  $data['nominal'],
+                        'validasi' =>  $data['validasi'],
+                    ]);
+                    // dd( $test);
+                    $this->validasi( $validasi);
+                    $response = response()->json($this->responseStore(true, route('backend.kasbon.index')));
+                  }
                 //   if(isset($data['id']) && $request['jenis'] == "Pembayaran" ){
 
                 //         $cek_jurnal  = $request['jenis'] == "Pembayaran" ? 'debit' : 'kredit';
@@ -150,8 +166,8 @@ class KasbonController extends Controller
                 //         ]);
                 //   }
 
-              DB::commit();
-              $response = response()->json($this->responseStore(true, route('backend.kasbon.index')));
+
+
             } catch (Throwable $throw) {
               dd($throw);
               DB::rollBack();
@@ -183,23 +199,20 @@ class KasbonController extends Controller
 
     public function validasi(Request $request)
     {
-        // dd( $request);
+
           $validator = Validator::make($request->all(), [
             'id' => 'required',
             'nominal' => 'required'
           ]);
+        //   dd( $request);
         //   dd($request['file']);
           if ($validator->passes()) {
             $data = Kasbon::find($request['id']);
             DB::beginTransaction();
             try {
                   $driver = Driver::findOrFail($data['driver_id']);
-
-
-                //   if();
                   $cek_jurnal  = $data['jenis'] == "Pembayaran" ? 'debit' : 'kredit';
                   if($request['validasi'] == "1" ){
-
                     if($data['jenis'] == 'Pengajuan'){
                         $total_kasbon = ($driver['kasbon'] + $request['nominal']) ;
                     }else{
@@ -465,7 +478,8 @@ class KasbonController extends Controller
         $tgl_awal = $request['tgl_awal'];
         $tgl_akhir = $request['tgl_akhir'];
         // dd( $validasi);
-        $data = Kasbon::with('driver','joborder', 'createdby')
+
+        $data = Kasbon::with('driver','joborder', 'penggajian','createdby')
          ->when( $jenis, function ($query, $jenis) {
             return $query->where('jenis2', $jenis);
          })
@@ -484,7 +498,7 @@ class KasbonController extends Controller
             return $query->whereDate('tgl_kasbon', '<=', $tgl_akhir);
          })->get();
 
-        //  dd( $validasi);
+        //  dd($data);
 
 
 
@@ -502,12 +516,14 @@ class KasbonController extends Controller
          $sheet->setCellValue('A'.$rows3, 'Tanggal Transaksi');
          $sheet->setCellValue('B'.$rows3, 'Kode Kasbon');
          $sheet->setCellValue('C'.$rows3, 'Driver');
-         $sheet->setCellValue('D'.$rows3, 'Transaksi');
-         $sheet->setCellValue('E'.$rows3, 'Nominal');
-         $sheet->setCellValue('F'.$rows3, 'Status');
-         $sheet->setCellValue('G'.$rows3, 'Operator (Waktu)');
+         $sheet->setCellValue('D'.$rows3, 'Kode Joborder');
+         $sheet->setCellValue('E'.$rows3, 'Kode Gaji');
+         $sheet->setCellValue('F'.$rows3, 'Transaksi');
+         $sheet->setCellValue('G'.$rows3, 'Nominal');
+        //  $sheet->setCellValue('H'.$rows3, 'Status');
+         $sheet->setCellValue('H'.$rows3, 'Operator (Waktu)');
 
-         for($col = 'A'; $col !== 'H'; $col++){$sheet->getColumnDimension($col)->setAutoSize(true);}
+         for($col = 'A'; $col !== 'I'; $col++){$sheet->getColumnDimension($col)->setAutoSize(true);}
          $x = 4;
          foreach($data as $val){
                 $status_validasi = $val['validasi'] == '0' ? 'Pending' : 'Acc';
@@ -515,22 +531,24 @@ class KasbonController extends Controller
                  $sheet->setCellValue('A' . $x, $val['tgl_kasbon']);
                  $sheet->setCellValue('B' . $x, $val['kode_kasbon']);
                  $sheet->setCellValue('C' . $x, $val['driver']['name']);
-                 $sheet->setCellValue('D' . $x, $val['jenis'] ?? '');
-                 $sheet->setCellValue('E' . $x, $val['nominal'] ?? '');
-                 $sheet->setCellValue('F' . $x, $status_validasi);
-                 $sheet->setCellValue('G' . $x, $user . ' ( ' .date('d-m-Y', strtotime($val['created_at'])) .' )');
+                 $sheet->setCellValue('D' . $x, isset($val['joborder']) ? $val['joborder']['kode_joborder'] : '-');
+                 $sheet->setCellValue('E' . $x, isset($val['penggajian']) ? $val['penggajian']['kode_gaji'] : '-');
+                 $sheet->setCellValue('F' . $x, $val['jenis'] ?? '');
+                 $sheet->setCellValue('G' . $x, $val['nominal'] ?? '');
+                //  $sheet->setCellValue('H' . $x, $status_validasi);
+                 $sheet->setCellValue('H' . $x, $user . ' ( ' .date('d-m-Y', strtotime($val['created_at'])) .' )');
                  $x++;
          }
       $cell   = count($data) + 4;
 
       $spreadsheet->setActiveSheetIndex(0)->setCellValue('A'.$cell, 'Total :');
-      $spreadsheet->getActiveSheet()->mergeCells( 'A' . $cell . ':D' . $cell . '');
+      $spreadsheet->getActiveSheet()->mergeCells( 'A' . $cell . ':F' . $cell . '');
       $spreadsheet->getActiveSheet()->getStyle('A'.$cell)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
 
 
-      $spreadsheet->getActiveSheet()->getStyle('E3:E'.$cell)->getNumberFormat()->setFormatCode('#,##0');
+      $spreadsheet->getActiveSheet()->getStyle('G3:G'.$cell)->getNumberFormat()->setFormatCode('#,##0');
 
-      $spreadsheet->setActiveSheetIndex(0)->setCellValue('E'.$cell, '=SUM(E3:E' . $cell . ')');
+      $spreadsheet->setActiveSheetIndex(0)->setCellValue('G'.$cell, '=SUM(G3:G' . $cell . ')');
 
       $writer = new Xlsx($spreadsheet);
       $filename = 'Laporan Kasbon';

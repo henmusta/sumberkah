@@ -17,6 +17,7 @@
             <input type="hidden" id="cek_ijin" value="{{Auth::user()->can('backend-dashboard-ijin')}}">
             <input type="hidden" id="cek_operasional" value="{{Auth::user()->can('backend-dashboard-operasional')}}">
             <input type="hidden" id="cek_invoice" value="{{Auth::user()->can('backend-dashboard-invoice')}}">
+            <input type="hidden" id="cek_status" value="{{Auth::user()->can('backend-dashboard-status_jo')}}">
                 <ul class="nav nav-pills nav-justified" role="tablist">
                     @if(Auth::user()->can('backend-dashboard-ijin') == 'true')
                     <li class="nav-item waves-effect waves-light">
@@ -719,6 +720,7 @@ div.dt-btn-container {
     let cek_ijin = $('#cek_ijin').val();
     let cek_operasional = $('#cek_operasional').val();
     let cek_invoice = $('#cek_invoice').val();
+    let cek_status = $('#cek_status').val();
 
 
     //invoice
@@ -754,7 +756,13 @@ div.dt-btn-container {
                     return meta.row + meta.settings._iDisplayStart + 1;
                 }
             },
-            {data: 'kode_joborder', name: 'kode_joborder'},
+            {
+               data: "kode_joborder", name:'kode_joborder',className:'text-center',  width: "1%",
+               render: function (data, type, row, meta) {
+                   let kode = '<a target="_blank" href="{{ route('backend.joborder.index') }}?joborder_id='+row.id+'">'+data+'</a>';
+                   return kode;
+               }
+            },
             {data: 'driver.name', name: 'driver.name'},
             {data: 'mobil.nomor_plat', name: 'mobil.nomor_plat'},
             {data: 'jenismobil.name', name: 'jenismobil.name'},
@@ -804,7 +812,13 @@ div.dt-btn-container {
                     return meta.row + meta.settings._iDisplayStart + 1;
                 }
             },
-            {data: 'kode_invoice', name: 'kode_invoice'},
+            {
+               data: "kode_invoice", name:'kode_invoice',className:'text-center',  width: "1%",
+               render: function (data, type, row, meta) {
+                   let kode = '<a target="_blank" href="{{ route('backend.invoice.index') }}?invoice_id='+row.id+'">'+data+'</a>';
+                   return kode;
+               }
+            },
             {data: 'tgl_invoice', name: 'tgl_invoice'},
             {data: 'customer.name', name: 'customer.name'},
             {data: 'total_harga', name: 'total_harga', class: 'text-end'},
@@ -1197,8 +1211,8 @@ div.dt-btn-container {
 
     }
 
-
-     let dataTableStatusJo = $('#DatatableStatusJo').DataTable({
+    if(cek_status == '1'){
+        let dataTableStatusJo = $('#DatatableStatusJo').DataTable({
         dom: '<"dt-top-container"<l><"dt-center-in-div"f><"dt-btn-container"B>r>tip',
         buttons: [
             {
@@ -1229,7 +1243,13 @@ div.dt-btn-container {
                    return meta.row + meta.settings._iDisplayStart + 1;
                }
          },
-         {data: 'kode_joborder', name: 'kode_joborder'},
+         {
+               data: "kode_joborder", name:'kode_joborder',className:'text-center',  width: "1%",
+               render: function (data, type, row, meta) {
+                   let kode = '<a target="_blank" href="{{ route('backend.joborder.index') }}?joborder_id='+row.id+'">'+data+'</a>';
+                   return kode;
+               }
+         },
          {data: 'tgl_joborder', name: 'tgl_joborder'},
          {data: 'driver.name', name: 'driver.name'},
          {data: 'mobil.nomor_plat', name: 'mobil.nomor_plat'},
@@ -1266,6 +1286,8 @@ div.dt-btn-container {
 
        ],
      });
+    }
+
 
      let select2CustomerStatus = $('#select2CustomerStatus');
      select2CustomerStatus.select2({
@@ -1289,7 +1311,7 @@ div.dt-btn-container {
     });
 
 
-    $("#terapkan_filter_status").click(function() {
+      $("#terapkan_filter_status").click(function() {
         dataTableStatusJo.draw();
       });
 

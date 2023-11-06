@@ -69,8 +69,13 @@
                                 <th>Tanggal Konfirmasi</th>
                                 <th>Tanggal Muat</th>
                                 <th>Tanggal Bongkar</th>
+                                <th>Nopol</th>
+                                <th>Nama Supir</th>
+                                <th>Rute Awal</th>
+                                <th>Rute Akhir</th>
                                 <th>Biaya Lain</th>
-                                <th>Berat Muatan Ritase/Kg/Ton</th>
+                                <th>Satuan</th>
+                                <th>Berat Muatan</th>
                                 {{-- <th>Tipe Muatan</th> --}}
                                 <th>Keterangan</th>
                                 {{-- <th width="8%">Aksi</th> --}}
@@ -152,19 +157,24 @@ tr.group:hover {
           {data: 'tgl_konfirmasi', name: 'tgl_konfirmasi'},
           {data: 'tgl_muat', name: 'tgl_muat'},
           {data: 'tgl_bongkar', name: 'tgl_bongkar'},
+          {data: 'joborder.mobil.nomor_plat', name: 'joborder.mobil.nomor_plat'},
+          {data: 'joborder.driver.name', name: 'joborder.driver.name'},
+          {data: 'joborder.ruteawal.name', name: 'joborder.ruteawal.name'},
+          {data: 'joborder.ruteakhir.name', name: 'joborder.ruteakhir.name'},
           {data: 'konfirmasi_biaya_lain', name: 'konfirmasi_biaya_lain'},
+          {data: 'joborder.rute.ritase_tonase', name: 'joborder.rute.ritase_tonase'},
           {data: 'berat_muatan', name: 'berat_muatan'},
-        //   {data: 'tipe', name: 'tipe'},
+
           {data: 'keterangan_konfirmasi', name: 'keterangan_konfirmasi'},
         ],
 
         columnDefs: [
           {
-            targets: [4],
+            targets: [8],
             render: $.fn.dataTable.render.number('.', ',', 0, '')
           },
           {
-            targets: [5],
+            targets: [10],
             render: function (data, type, full, meta) {
                 let dta = data % 1;
                 let cek = (dta == 0 ) ? 0 : 3;

@@ -89,9 +89,9 @@
     <div class="header" style="padding-bottom: 20px;">
         <h3  style=" text-align: center; margin-top:25px;margin-bottom: 0">Laporan Kasbon</h3>
         @if($data['tgl_awal'] != null && $data['tgl_akhir'] != null)
-        <h5  style=" text-align: center; margin-top:25px;margin-bottom: 0">TANGGAL : {{\Carbon\Carbon::parse($data['tgl_awal'])->format('d-m-Y')}} S/D {{\Carbon\Carbon::parse($data['tgl_akhir'])->format('d-m-Y')}} </h5>
+ <p style=" text-align: center; margin-bottom: 0; font-size:8px;"> Print By : {{ Auth::user()->name ?? '' }} ( {{  \Carbon\Carbon::now()->format('d-m-Y H:i:s')  }} )</p>        <h5  style=" text-align: center; margin-top:25px;margin-bottom: 0">TANGGAL : {{\Carbon\Carbon::parse($data['tgl_awal'])->format('d-m-Y')}} S/D {{\Carbon\Carbon::parse($data['tgl_akhir'])->format('d-m-Y')}} </h5>
         @endif
-        <p style=" text-align: center; margin-bottom: 0; font-size:8px;"> Print By : {{ Auth::user()->name ?? '' }} ( {{  \Carbon\Carbon::now()->format('d-m-Y H:i:s')  }} )</p>
+
     </div>
 
 
@@ -103,9 +103,11 @@
                 <th>Kode Kasbon</th>
                 <th class="text-center">Tanggal Transaksi</th>
                 <th>Driver</th>
+                <th>Kode Joborder</th>
+                <th>Kode Gaji</th>
                 <th>Transaksi</th>
                 <th>Nominal</th>
-                <th>Status</th>
+                {{-- <th>Status</th> --}}
                 <th width="150px">Operator (Waktu)</th>
             </tr>
         </thead>
@@ -114,31 +116,25 @@
             @foreach ($data['kasbon'] as $val)
             @php($status = $val['validasi'] == '0' ? 'Pending' : 'Acc'))
                 <tr>
-
-                    {{-- {data: 'tgl_kasbon', name: 'tgl_kasbon'},
-                    {data: 'kode_kasbon', name: 'kode_kasbon'},
-                    {data: 'driver.name', name: 'driver.name'},
-                    {data: 'jenis', name: 'jenis'},
-                    {data: 'nominal', name: 'nominal'},
-                    {data: 'validasi', name: 'validasi'}, --}}
-
                     <td width="2%" class="text-center">{{$no++}}</td>
                     <td>{{$val->kode_kasbon}}</td>
                     <td>{{$val->tgl_kasbon}}</td>
                     <td>{{$val->driver['name']}}</td>
+                    <td>{{isset($val->joborder) ? $val->joborder['kode_joborder'] : '-'}}</td>
+                    <td>{{isset($val->penggajian) ? $val->penggajian['kode_gaji'] : '-'}}</td>
                     <td>{{$val->jenis}}</td>
                     <td  class="text-end">Rp. {{ number_format($val->nominal,0,',','.')}}</td>
-                    <td>{{$status}}</td>
+                    {{-- <td>{{$status}}</td> --}}
                     <td>{{$val['createdby']->name ?? ''}} ( {{\Carbon\Carbon::parse($val->created_at)->format('d-m-Y H:i:s') ?? ''}} )</td>
                 </tr>
             @endforeach
         </tbody>
         <tfoot>
             <tr>
-                <th colspan="5"style="text-align:right">Total: </th>
+                <th colspan="7"style="text-align:right">Total: </th>
                 <th class="text-end" id="">Rp. {{ number_format($data['kasbon']->sum('nominal'),0,',','.')}}</th>
                 <th></th>
-                <th></th>
+                {{-- <th></th> --}}
              </tr>
         </tfoot>
     </table>

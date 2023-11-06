@@ -64,6 +64,10 @@
                                     <input type="text" id="nominal_kasbon" value="{{$data['gaji']['nominal_kasbon'] }}" name="nominal_kasbon"  class="form-control" disabled/>
                                 </div>
                                 <div class="mb-3">
+                                    <label>Keterangan Kasbon<span class="text-danger"></span></label>
+                                    <textarea type="text" id="keterangan_kasbon" value="" name="keterangan_kasbon"  class="form-control">{{$data['gaji']['keterangan_kasbon'] }}</textarea>
+                                </div>
+                                <div class="mb-3">
                                     <label>bonus<span class="text-danger"></span></label>
                                     <input type="text" id="bonus" value="{{$data['gaji']['bonus'] }}" name="bonus"  class="form-control" disabled/>
                                 </div>

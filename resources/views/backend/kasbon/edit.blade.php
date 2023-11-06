@@ -72,6 +72,14 @@
                                  </div>
                            </div>
                         </div>
+                        <div class="row" hidden="true">
+                            <div class="mb-3">
+                                 <label>Validasi<span class="text-danger">*</span></label>
+                                 <select id="select2Validasi" style="width: 100% !important;" name="validasi">
+                                    <option value="1">Acc</option>
+                                 </select>
+                              </div>
+                        </div>
 
                     </div>
 

@@ -132,7 +132,7 @@
                 <input type="text" name="name" class="form-control" placeholder="Masukan Name" disabled/>
               </div>
               <div class="mb-3">
-                <label>Tanggal Aktif/NonAktif<span class="text-danger"></span></label>
+                <label>Tanggal Perubahan Status<span class="text-danger"></span></label>
                 <input type="text" id="tgl_aktif" name="tgl_aktif" class="form-control" placeholder="Masukan Tanggal"/>
               </div>
             <div class="mb-3">

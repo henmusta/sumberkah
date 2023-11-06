@@ -117,7 +117,13 @@
                 </tr>
             @endforeach
         </tbody>
-
+        <tfoot>
+            <tr>
+                <th colspan="4"style="text-align:right">Total: </th>
+                <th class="text-end" id="">Rp. {{ number_format($data['data']->sum('total_harga'),0,',','.')}}</th>
+                <th style="text-align:right"></th>
+             </tr>
+        </tfoot>
 
     </table>
 

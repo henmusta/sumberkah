@@ -22,6 +22,6 @@ class PaymentGaji extends Model
 
     public function penggajian()
     {
-      return $this->belongsTo(Penggajian::class, 'penggajian_id')->with('createdby', 'driver', 'mobil');
+      return $this->belongsTo(Penggajian::class, 'penggajian_id')->with('createdby', 'driver', 'mobil', 'kasbon');
     }
 }

@@ -32,11 +32,12 @@ class DashboardController extends Controller
 
 
         //  dd($invoice_data->get());
+        // dd($customerstatus_id);
          $joborderstatus_data = Joborder::with('customer','ruteawal','ruteakhir','muatan','mobil', 'driver', 'rute', 'jenismobil', 'konfirmasijo', 'invoice', 'gaji')
          ->when($customerstatus_id, function ($query,  $customerstatus_id) {
              return  $query->where('joborder.customer_id',  $customerstatus_id);
          });
-
+        //  DD($joborderstatus_data );
          $joborder_data = Joborder::selectRaw('joborder.*, konfirmasi_joborder.tgl_konfirmasi')
          ->leftJoin('konfirmasi_joborder','konfirmasi_joborder.joborder_id', '=', 'joborder.id')
          ->with('customer','ruteawal','ruteakhir','muatan','mobil', 'driver', 'rute', 'jenismobil','konfirmasijo')

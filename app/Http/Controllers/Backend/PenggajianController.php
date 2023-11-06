@@ -181,6 +181,7 @@ class PenggajianController extends Controller
                         'total_gaji'  => $total_gaji,
                         'sisa_gaji'  => $total_gaji,
                         'keterangan_gaji' => $request['keterangan_gaji'],
+                        'keterangan_kasbon' => $request['keterangan_kasbon'],
                         'status_payment' => '0',
                         'created_by' => Auth::user()->id,
                       ]);
@@ -210,7 +211,7 @@ class PenggajianController extends Controller
                                 'kode_kasbon'=> $kode_gaji,
                                 'jenis'=> 'Potong Gaji',
                                 'tgl_kasbon'=> $request['tgl_gaji'],
-                                'keterangan'=> 'Pembayaran Bon Kode Slip Gaji '.$data['kode_gaji'],
+                                'keterangan'=> $request['keterangan_kasbon'],
                                 'nominal'=> $request['nominal_kasbon'],
                                 'validasi' =>  '1',
                                 'created_by' => Auth::user()->id
@@ -248,6 +249,10 @@ class PenggajianController extends Controller
                                     'keterangan'=> $kasbon['keterangan'],
                                     'debit'=> $kasbon['nominal'],
                                     'kredit'=> '0'
+                                ]);
+
+                                $data->update([
+                                    'kasbon_id' =>   $kasbon['id']
                                 ]);
 
                                 // dd($kasbonjurnallog);
@@ -290,9 +295,9 @@ class PenggajianController extends Controller
           ['url' => route('backend.penggajian.index'), 'title' => "Detail Penggajian"],
           ['url' => '#', 'title' => "Detail Invoice"],
         ];
-        $penggajian = Penggajian::with('driver', 'mobil', 'joborder')->findOrFail($id);
+        $penggajian = Penggajian::with('driver', 'mobil', 'joborder', 'payment')->findOrFail($id);
         $konfirmasiJo = KonfirmasiJo::with('joborder')->where('penggajian_id',  $penggajian['id'])->orderBy('kode_joborder', 'asc')->get();
-        // dd( $invoice['joborder'][0]['muatan']);
+        // dd( $penggajian['payment']);
         $data = [
           'penggajian' => $penggajian,
           'konfirmasijo' => $konfirmasiJo,
@@ -440,7 +445,7 @@ class PenggajianController extends Controller
                         'driver_id' => $request['driver_id'],
                         'tgl_kasbon'=>  $cek_kasbon_id['tgl_kasbon'] ?? $request['tgl_gaji'],
                         'jenis'=> 'Potong Gaji',
-                        'keterangan'=> $cek_kasbon_id['keterangan'] ?? 'Pembayaran Bon Kode Slip Gaji '.$data['kode_gaji'],
+                        'keterangan'=> $request['keterangan_kasbon'],
                         'nominal'=> $request['nominal_kasbon'],
                         'validasi' =>  '1',
                         'created_by' => Auth::user()->id
@@ -466,30 +471,6 @@ class PenggajianController extends Controller
 
 
 
-                    // if($kasbon->first()){
-                    //     $kasbon->update([
-                    //         'tgl_kasbon'=> $request['tgl_gaji'],
-                    //         'nominal'=> $request['nominal_kasbon'],
-                    //     ]);
-                    //     $update_kasbon = $kasbon->first();
-
-                    //     $kasbonjurnallog = Kasbonjurnallog::where('kasbon_id',  $update_kasbon['id']);
-
-                    //     if($kasbonjurnallog->first()){
-                    //         $kasbonjurnallog->update([
-                    //             'tgl_kasbon'=>  $update_kasbon['tgl_kasbon'],
-                    //             'keterangan'=> $update_kasbon['keterangan'],
-                    //             'debit'=> $request['nominal_kasbon'],
-                    //             'kredit'=> '0'
-                    //         ]);
-                    //     }
-
-
-
-                    // }
-                    // dd( );
-
-
                     if($kasbon->first()){
                         $driver_total_kasbon = 0;
                         $count_total_kasbon = $driverlogkasbon['nominal'] + $driver['kasbon'];
@@ -502,6 +483,7 @@ class PenggajianController extends Controller
                             $driverlogkasbon->update([
                                 'nominal'=> $request['nominal_kasbon']
                             ]);
+
 
                         }
 
@@ -541,7 +523,9 @@ class PenggajianController extends Controller
                     'nominal_kasbon' => $request['nominal_kasbon'],
                     'total_gaji'  => $total_gaji,
                     'sisa_gaji'  => $total_gaji,
+                    'kasbon_id' =>   $kasbon['id'],
                     'keterangan_gaji' => $request['keterangan_gaji'],
+                    'keterangan_kasbon' => $request['keterangan_kasbon'],
                     'updated_by' => Auth::user()->id,
                     'status_payment' => '0'
                 ]);
@@ -764,12 +748,12 @@ class PenggajianController extends Controller
 
 
          $sheet->setCellValue('A1', 'Laporan Gaji');
-         $spreadsheet->getActiveSheet()->mergeCells('A1:I1');
+         $spreadsheet->getActiveSheet()->mergeCells('A1:K1');
          $spreadsheet->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
 
          if($request['tgl_awal'] != null && $request['tgl_akhir'] != null){
-            $spreadsheet->getActiveSheet()->mergeCells('A2:I2');
+            $spreadsheet->getActiveSheet()->mergeCells('A2:K2');
             $sheet->setCellValue('A2', 'Tanggal : '. date('d-m-Y', strtotime($request['tgl_awal'])) .' S/D '. date('d-m-Y', strtotime($request['tgl_akhir'])));
             $spreadsheet->getActiveSheet()->getStyle('A2')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
          }
@@ -777,16 +761,18 @@ class PenggajianController extends Controller
 
          $rows3 = 3;
          $sheet->setCellValue('A'.$rows3, 'Kode Gaji');
-         $sheet->setCellValue('B'.$rows3, 'Tanggal Gaji');
+         $sheet->setCellValue('B'.$rows3, 'Tanggal Slip Gaji');
          $sheet->setCellValue('C'.$rows3, 'Driver');
          $sheet->setCellValue('D'.$rows3, 'No Polisi');
          $sheet->setCellValue('E'.$rows3, 'Bulan Kerja');
-         $sheet->setCellValue('F'.$rows3, 'Total Gaji');
-         $sheet->setCellValue('g'.$rows3, 'Sisa Gaji');
-         $sheet->setCellValue('H'.$rows3, 'Status');
-         $sheet->setCellValue('I'.$rows3, 'Operator (Waktu)');
+         $sheet->setCellValue('F'.$rows3, 'Gaji Pokok');
+         $sheet->setCellValue('G'.$rows3, 'Bonus');
+         $sheet->setCellValue('H'.$rows3, 'Potongan Kasbon');
+         $sheet->setCellValue('I'.$rows3, 'Total Gaji');
+         $sheet->setCellValue('J'.$rows3, 'Status');
+         $sheet->setCellValue('K'.$rows3, 'Operator (Waktu)');
 
-         for($col = 'A'; $col !== 'J'; $col++){$sheet->getColumnDimension($col)->setAutoSize(true);}
+         for($col = 'A'; $col !== 'L'; $col++){$sheet->getColumnDimension($col)->setAutoSize(true);}
          $x = 4;
          foreach($data as $val){
                  $status_payment = $val['status_payment'] == '0' ? 'Belum Bayar' : ($val['status_payment'] == '1' ? 'Progress Payment' : 'Lunas');
@@ -795,10 +781,12 @@ class PenggajianController extends Controller
                  $sheet->setCellValue('C' . $x, $val['driver']['name']);
                  $sheet->setCellValue('D' . $x, $val['mobil']['nomor_plat'] ?? '');
                  $sheet->setCellValue('E' . $x, $val['bulan_kerja']  ?? '');
-                 $sheet->setCellValue('F' . $x, $val['total_gaji']  ?? '');
-                 $sheet->setCellValue('G' . $x, $val['sisa_gaji']  ?? '');
-                 $sheet->setCellValue('H' . $x, $status_payment);
-                 $sheet->setCellValue('I' . $x, $val['createdby']->name . ' ( ' .date('d-m-Y', strtotime($val['created_at'])) .' )');
+                 $sheet->setCellValue('F' . $x, $val['sub_total']  ?? '');
+                 $sheet->setCellValue('G' . $x, $val['bonus']  ?? '');
+                 $sheet->setCellValue('H' . $x, $val['nominal_kasbon']  ?? '');
+                 $sheet->setCellValue('I' . $x, $val['total_gaji']  ?? '');
+                 $sheet->setCellValue('J' . $x, $status_payment);
+                 $sheet->setCellValue('K' . $x, $val['createdby']->name . ' ( ' .date('d-m-Y', strtotime($val['created_at'])) .' )');
                  $x++;
          }
       $cell   = count($data) + 4;
@@ -813,7 +801,11 @@ class PenggajianController extends Controller
       $spreadsheet->getActiveSheet()->getStyle('G3:G'.$cell)->getNumberFormat()->setFormatCode('#,##0');
       $spreadsheet->setActiveSheetIndex(0)->setCellValue('G'.$cell, '=SUM(G3:G' . $cell . ')');
 
+      $spreadsheet->getActiveSheet()->getStyle('H3:H'.$cell)->getNumberFormat()->setFormatCode('#,##0');
+      $spreadsheet->setActiveSheetIndex(0)->setCellValue('H'.$cell, '=SUM(H3:H' . $cell . ')');
 
+      $spreadsheet->getActiveSheet()->getStyle('I3:I'.$cell)->getNumberFormat()->setFormatCode('#,##0');
+      $spreadsheet->setActiveSheetIndex(0)->setCellValue('I'.$cell, '=SUM(I3:I' . $cell . ')');
 
       $writer = new Xlsx($spreadsheet);
       $filename = 'Laporan Gaji';

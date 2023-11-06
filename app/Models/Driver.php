@@ -35,5 +35,26 @@ class Driver extends Model
       'darurat_ref'
     ];
 
+    // protected static function booted(): void
+    // {
+    //     static::created(function (Driver $driver) {
+    //         $driver       = $driver->item()->first();
+    //         $st_driver    = Driver::selectRaw('driver.`id` AS id,
+    //                                            SUM(IF(status_joborder = "1", 0, 1)) AS count_jo')
+    //                                            ->Join('joborder', 'joborder.driver_id', '=', 'driver.id')
+    //                                            ->where('driver.id', $driver->id)
+    //                                            ->groupBy('driver.id');
+    //         $status_jalan    = Driver::where('id', $driver->id)->first();
+    //         $balance =  $st_driver['count_jo'] > 0 ? 1 : 0;
+    //         $status_jalan->status_jalan  = $balance;
+    //         $status_jalan->save();
+    //     });
+    // }
+
+
+    public function getkasbon()
+    {
+      return $this->hasMany(Kasbon::class);
+    }
 
 }

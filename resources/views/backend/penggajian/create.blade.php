@@ -42,7 +42,7 @@
                                         <input type="text" id="bulan_kerja"  value="{{ \Carbon\Carbon::now()->format('Y-m') }}" name="bulan_kerja"  class="form-control"/>
                                        </div>
                                        <div class="mb-3">
-                                        <label>Keterangan<span class="text-danger"></span></label>
+                                        <label>Keterangan Gaji<span class="text-danger"></span></label>
                                         <textarea type="text" id="keterangan_gaji" value="" name="keterangan_gaji"  class="form-control"></textarea>
                                        </div>
                               </div>
@@ -60,6 +60,10 @@
                                     <label>Bayar Kasbon<span class="text-danger"></span></label>
                                     <input type="text" id="nominal_kasbon" value="0" name="nominal_kasbon"  class="form-control" disabled/>
                                 </div>
+                                <div class="mb-3">
+                                    <label>Keterangan Kasbon<span class="text-danger"></span></label>
+                                    <textarea type="text" id="keterangan_kasbon" value="" name="keterangan_kasbon"  class="form-control"></textarea>
+                                   </div>
                                 <div class="mb-3">
                                     <label>bonus<span class="text-danger"></span></label>
                                     <input type="text" id="bonus" value="0" name="bonus"  class="form-control" disabled/>

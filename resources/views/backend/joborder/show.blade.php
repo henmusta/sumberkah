@@ -122,23 +122,25 @@
                                     @endif
                                     <tr class="">
                                         <th class="text-left">Status Pembayaran</th>
-                                        <th class="text-left"><span class="badge bg-pill {{$class}}">{{$text}}</span> </th>
+                                        <th colspan="2" class="text-left"><span class="badge bg-pill {{$class}}">{{$text}}</span> </th>
                                     </tr>
                                     <tr class="">
                                         <th class="text-left">Pembuat Joborder</th>
-                                        <th class="text-left">{{ $data['joborder']['createdby']['name'] ?? '' }}  {{ $data['joborder']['created_at'] ?? '' }} </th>
+                                        <th colspan="2" class="text-left">{{ $data['joborder']['createdby']['name'] ?? '' }}  {{ $data['joborder']['created_at'] ?? '' }} </th>
                                     </tr>
                                     <tr class="">
                                         <th class="text-left">Penutup Joborder</th>
-                                        <th class="text-left">{{ $data['joborder']['konfirmasijo'][0]['createdby']['name'] ?? '' }}  {{ $data['joborder']['konfirmasijo'][0]['created_at'] ?? '' }} </th>
+                                        <th colspan="2" class="text-left">{{ $data['joborder']['konfirmasijo'][0]['createdby']['name'] ?? '' }}  {{ $data['joborder']['konfirmasijo'][0]['created_at'] ?? '' }} </th>
                                     </tr>
                                     <tr class="">
                                         <th class="text-left">Pembuat Slip Gaji</th>
                                         <th class="text-left">{{ $data['joborder']['gaji']['createdby']['name'] ?? '' }}  {{ $data['joborder']['gaji']['created_at'] ?? '' }} </th>
+                                        <th><a target="_blank" href="{{ route('backend.penggajian.index') }}?penggajian_id={{$data['joborder']['gaji']['id'] ?? ''}}"> {{ $data['joborder']['gaji']['kode_gaji'] ?? '' }}</a></th>
                                     </tr>
                                     <tr class="">
                                         <th class="text-left">Pembuat Invoice</th>
                                         <th class="text-left">{{ $data['joborder']['invoice']['createdby']['name'] ?? '' }}  {{ $data['joborder']['invoice']['created_at'] ?? '' }} </th>
+                                        <th><a target="_blank" href="{{ route('backend.invoice.index') }}?invoice_id={{$data['joborder']['invoice']['id']  ?? ''}}"> {{ $data['joborder']['invoice']['kode_invoice'] ?? '' }}</a></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -166,6 +168,7 @@
                                         <th>Jenis Payment</th>
                                         <th>Keterangan</th>
                                         <th>Keterangan Kasbon</th>
+                                        <th>Kode Kasbon</th>
                                         <th>Nominal</th>
                                         <th>Nominal Kasbon</th>
                                       </tr>
@@ -176,8 +179,8 @@
                                         <tr>
                                             <td>{{$val->jenis_payment}}</td>
                                             <td>{{$val->keterangan}}</td>
-                                            <td>{{$val->keterangan_kasbon}}</td>
-
+                                            <td>{{$val->keterangan_kasbon}} </td>
+                                            <td><a target="_blank" href="{{ route('backend.kasbon.index') }}?kasbon_id={{$val->kasbon_id  ?? ''}}"> {{ $val->kasbon['kode_kasbon'] ?? '' }}</a> </td>
                                             <td class="text-end"> Rp. {{ number_format($val->nominal,0,',','.')}}</td>
                                             <td class="text-end"> Rp. {{ number_format($val->nominal_kasbon,0,',','.')}}</td>
                                         </tr>
@@ -185,7 +188,7 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th class="text-end" colspan="3">Total Payment</th>
+                                        <th class="text-end" colspan="4">Total Payment</th>
                                         <th class="text-end">Rp. {{number_format($data['joborder']['payment']->SUM('nominal'),0,',','.')}}</th>
                                         <th class="text-end">Rp. {{number_format($data['joborder']['payment']->SUM('nominal_kasbon'),0,',','.')}}</th>
                                     </tr>

@@ -25,7 +25,7 @@ class PaymentJo extends Model
 
     public function joborder()
     {
-      return $this->belongsTo(Joborder::class, 'joborder_id')->with('createdby');
+      return $this->belongsTo(Joborder::class, 'joborder_id')->with('customer','ruteawal','ruteawal','ruteakhir','muatan','mobil', 'driver', 'rute', 'jenismobil', 'createdby');
     }
 
     public function kasbon()

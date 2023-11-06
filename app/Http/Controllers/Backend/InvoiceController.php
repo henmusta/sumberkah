@@ -38,8 +38,6 @@ class InvoiceController extends Controller
           ['url' => '#', 'title' => "Data Invoice"],
         ];
 
-
-
         $invoice = Invoice::with('customer')->find($request['invoice_id']);
         $belum_bayar = Invoice::selectRaw('sum(sisa_tagihan) as belum_bayar')->where('status_payment', '!=', '2')->first();
         $data = [

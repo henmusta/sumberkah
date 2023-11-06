@@ -139,12 +139,14 @@
                         <thead>
                             <tr>
                                 <th class="text-center">Kode Gaji</th>
-                                <th>Tanggal Gaji</th>
+                                <th>Tanggal Slip Gaji</th>
                                 <th>Driver</th>
                                 <th>No Polisi</th>
                                 <th>Bulan Kerja</th>
+                                <th>Gaji Pokok</th>
+                                <th>Bonus</th>
+                                <th>Potong Kasbon</th>
                                 <th>Total Gaji</th>
-                                <th>Sisa Gaji</th>
                                 <th>Status</th>
                                 <th width="8%">Aksi</th>
                               </tr>
@@ -339,8 +341,10 @@ tr.group:hover {
           {data: 'driver.name', name: 'driver.name'},
           {data: 'mobil.nomor_plat', name: 'mobil.nomor_plat'},
           {data: 'bulan_kerja', name: 'bulan_kerja'},
+          {data: 'sub_total', name: 'sub_total'},
+          {data: 'bonus', name: 'bonus'},
+          {data: 'nominal_kasbon', name: 'nominal_kasbon'},
           {data: 'total_gaji', name: 'total_gaji'},
-          {data: 'sisa_gaji', name: 'sisa_gaji'},
           {data: 'status_payment', name: 'status_payment'},
           {data: 'action', name: 'action', orderable: false, searchable: false},
         ],
@@ -348,7 +352,7 @@ tr.group:hover {
         columnDefs: [
 
           {
-            targets: [5, 6],
+            targets: [5, 6, 7, 8],
             className: 'text-end',
             render: $.fn.dataTable.render.number('.', ',', 0, '')
           },
@@ -356,7 +360,7 @@ tr.group:hover {
 
           {
             className: 'dt-center',
-            targets: 7,
+            targets: 9,
             render: function (data, type, full, meta) {
               let status = {
                 0: {'title': 'Belum Bayar', 'class': ' bg-danger'},
@@ -366,13 +370,6 @@ tr.group:hover {
               if (typeof status[data] === 'undefined') {
                 return data;
               }
-            //   let url;
-            //   if(data > 0){
-            //     url = '';
-            //   }else{
-            //     url = '';
-            //   }
-
 
               return '<a><span class="badge bg-pill' + status[data].class + '">' + status[data].title +
                 '</span></a>';

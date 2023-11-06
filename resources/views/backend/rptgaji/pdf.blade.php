@@ -108,18 +108,22 @@
                 <th width="80px">No polisi</th>
                 <th>Periode Gaji</th>
                 <th>Jenis Pembayaran</th>
-                <th>Nominal Pembayaran</th>
-                <th>Sisa Pembayaran</th>
+                <th>Gaji</th>
+                <th>Bonus</th>
+                <th>Kasbon</th>
                 <th>Total Gaji</th>
+                <th>Kode Kasbon</th>
                 <th width="150px">Operator (Waktu)</th>
             </tr>
         </thead>
         <tbody>
             @php($no=1)
-            @php($sisa_gaji = $total_gaji = 0)
+            @php($bonus = $kasbon = $gaji = $total = 0)
             @foreach ($data['payment'] as $val)
-                @php($sisa_gaji += $val['penggajian']->sisa_gaji)
-                @php($total_gaji += $val['penggajian']->total_gaji)
+                @php($gaji += $val['penggajian']->sub_total)
+                @php($bonus += $val['penggajian']->bonus)
+                @php($kasbon += $val['penggajian']->nominal_kasbon)
+                @php($total += $val['penggajian']->total_gaji)
                 <tr>
                     <td width="2%" class="text-center">{{$no++}}</td>
                     <td>{{$val->tgl_payment}}</td>
@@ -128,9 +132,11 @@
                     <td>{{$val['penggajian']->mobil['nomor_plat']}}</td>
                     <td>{{ \Carbon\Carbon::parse($val['penggajian']['bulan_kerja'])->isoFormat('MMMM Y')}}</td>
                     <td>{{$val->jenis_payment}}</td>
-                    <td  class="text-end">Rp. {{ number_format($val->nominal,0,',','.')}}</td>
-                    <td  class="text-end">Rp. {{ number_format($val['penggajian']->sisa_gaji,0,',','.')}}</td>
+                    <td  class="text-end">Rp. {{ number_format($val['penggajian']->sub_total,0,',','.')}}</td>
+                    <td  class="text-end">Rp. {{ number_format($val['penggajian']->bonus,0,',','.')}}</td>
+                    <td  class="text-end">Rp. {{ number_format($val['penggajian']->nominal_kasbon,0,',','.')}}</td>
                     <td  class="text-end">Rp. {{ number_format($val['penggajian']->total_gaji,0,',','.')}}</td>
+                    <td  class="text-end">{{ isset($val['penggajian']->kasbon) ? $val['penggajian']->kasbon['kode_kasbon'] : '-'}}</td>
                     <td>{{$val['penggajian']->createdby['name']}} ( {{\Carbon\Carbon::parse($val['penggajian']->created_at)->format('d-m-Y H:i:s')}} )</td>
                    </tr>
             @endforeach
@@ -138,9 +144,11 @@
         <tfoot>
             <tr>
                 <th colspan="7"style="text-align:right">Total: </th>
-                <th class="text-end" id="">Rp. {{ number_format($data['payment']->sum('nominal'),0,',','.')}}</th>
-                <th class="text-end" id="">Rp. {{ number_format($sisa_gaji,0,',','.')}}</th>
-                <th class="text-end" id="">Rp. {{ number_format($total_gaji,0,',','.')}}</th>
+                <th class="text-end" id="">Rp. {{ number_format($gaji,0,',','.')}}</th>
+                <th class="text-end" id="">Rp. {{ number_format($bonus,0,',','.')}}</th>
+                <th class="text-end" id="">Rp. {{ number_format($kasbon,0,',','.')}}</th>
+                <th class="text-end" id="">Rp. {{ number_format($total,0,',','.')}}</th>
+                <th></th>
                 <th></th>
              </tr>
         </tfoot>
