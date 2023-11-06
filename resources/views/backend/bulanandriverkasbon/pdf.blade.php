@@ -123,7 +123,7 @@
             <th></th>
          </tr>
     </tfoot>
-    </table><br><br>
+    </table><br>
     @endforeach
 
 

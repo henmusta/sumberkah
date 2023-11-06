@@ -130,7 +130,7 @@
         <th></th>
         <th></th>
      </tr>
-    </table><br><br>
+    </table><br>
     @endforeach
 </body>
 </html>
