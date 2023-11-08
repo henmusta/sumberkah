@@ -83,7 +83,7 @@
 
     @php($no=1)
     @foreach ($data['data'] as $key => $item)
-    @php($count = count($data['data']) - 1);
+    @php($count = count($data['data']) - 1)
     @php($cek = count($item['alldata']->get()) > 5 && $key != $count  ?  'page-break-after: always !important;' : '')
     <table id="pakettable" style="{{$cek}}">
         <thead  style="background-color: #fff !important; color:black;" width="100%">
