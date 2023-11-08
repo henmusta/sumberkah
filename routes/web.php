@@ -83,6 +83,8 @@ Route::middleware('auth:henmus')->group(function(){
             Route::resource('mobilrincian', Backend\MobilRincianController::class);
 
             //driver
+            Route::get('driver/excel', [Backend\DriverController::class, 'excel'])->name('driver.excel');
+            Route::get('driver/pdf', [Backend\DriverController::class, 'pdf'])->name('driver.pdf');
             Route::put('driver/aktivasi', [Backend\DriverController::class, 'aktivasi'])->name('driver.aktivasi');
             Route::put('driver/validasi', [Backend\DriverController::class, 'validasi'])->name('driver.validasi');
             Route::get('driver/select2', [Backend\DriverController::class, 'select2'])->name('driver.select2');

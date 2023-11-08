@@ -153,6 +153,26 @@
                                       <label class="form-check-label" for="modalCreateCreate">{{isset($data->menu_permission_id) ? $data->menu_permission_id == 1 ? "Status Joborder" : "Create" : "create"}}</label>
                                     </div>
                                   </div>
+
+
+
+                                  <div class="col-md-6" {{ isset($data->menu_permission_id) ? $data->menu_permission_id == 47 ? "" : "hidden" : "hidden"}}>
+                                    <div class="form-check mb-3">
+                                      <input class="form-check-input" name="permission[]" value="{{ isset($data->menu_permission_id) ? $data->menu_permission_id == 47 ? "konfirmasi_jo" : "" : ""}}" type="checkbox"
+                                             _id="modalCreateCreate" {{ in_array( isset($data->menu_permission_id) ? $data->menu_permission_id == 47 ? "konfirmasi_jo" : "" : "", ($permissions ?? array())) ? 'checked' : '' }}>
+                                      <label class="form-check-label" for="modalCreateCreate">{{isset($data->menu_permission_id) ? $data->menu_permission_id == 47 ? "Konfirmasi Joborder" : "" : ""}}</label>
+                                    </div>
+                                  </div>
+
+
+                                  <div class="col-md-6" {{ isset($data->menu_permission_id) ? $data->menu_permission_id == 47 ? "" : "hidden" : "hidden"}}>
+                                    <div class="form-check mb-3">
+                                      <input class="form-check-input" name="permission[]" value="{{ isset($data->menu_permission_id) ? $data->menu_permission_id == 47 ? "konfirmasi_batal" : "" : ""}}" type="checkbox"
+                                             _id="modalCreateCreate" {{ in_array( isset($data->menu_permission_id) ? $data->menu_permission_id == 47 ? "konfirmasi_batal" : "" : "", ($permissions ?? array())) ? 'checked' : '' }}>
+                                      <label class="form-check-label" for="modalCreateCreate">{{isset($data->menu_permission_id) ? $data->menu_permission_id == 47 ? "Pembatalan Konfirmasi" : "" : ""}}</label>
+                                    </div>
+                                  </div>
+
                                 </div>
                               </div>
                               <div class="card-footer d-flex justify-content-end">

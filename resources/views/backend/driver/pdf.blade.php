@@ -5,7 +5,6 @@
 
 @page {
         /* size: 21cm 15cm; */
-
         margin: 0;
         margin: 10mm 10mm 20mm 10mm;
     }
@@ -87,35 +86,35 @@
 <body>
 
     <div class="header" style="padding-bottom: 20px;">
-        <h3  style=" text-align: center; margin-top:25px;margin-bottom: 0">Dashboard Kendaraan Tidak Jalan</h3>
-        <p style=" text-align: center; margin-bottom: 0; font-size:8px;"> Print By : {{ Auth::user()->name ?? '' }} ( {{  \Carbon\Carbon::now()->format('d-m-Y H:i:s')  }} )</p>
+        <h3  style=" text-align: center; margin-top:25px;margin-bottom: 0">Data Driver</h3>
     </div>
-
-
 
     <table id="pakettable">
         <thead style="background-color: #fff !important; color:black;">
-            <tr >
-                <th>No</th>
-                <th width="200px">Nomor Plat Polisi</th>
-                <th>Merek</th>
-                <th>Jenis</th>
-                <th>Dump</th>
+            <tr>
+                <th>Nama Lengkap</th>
+                <th>Nama Panggilan</th>
+                <th>No hp</th>
+                <th class="text-center">Tgl Registrasi</th>
+                <th class="text-center">Tgl Perubahan Status</th>
+                <th>Status aktif</th>
             </tr>
         </thead>
         <tbody>
             @php($no=1)
-            @foreach ($data['data'] as $val)
+            @foreach ($data['driver'] as $val)
+            @php($status_jalan = $val['status_jalan'] == '0' ? 'Tidak Jalan' : 'Jalan')
+            @php($status_aktif = $val['status_aktif'] == '0' ? 'Tidak Aktif' : 'Aktif')
                 <tr>
-                    <td width="2%" class="text-center">{{$no++}}</td>
-                    <td class="text-center">{{$val['nomor_plat']}}</td>
-                    <td class="text-center">{{$val['merkmobil']['name']}}</td>
-                    <td class="text-center">{{$val['jenismobil']['name']}}</td>
-                    <td class="text-center">{{$val['dump']}}</td>
+                    <td>{{$val->name}}</td>
+                    <td>{{$val->panggilan}}</td>
+                    <td>{{$val->telp}}</td>
+                    <td class="text-center">{{ \Carbon\Carbon::parse($val['created_at'])->format('d-m-Y')}}</td>
+                    <td class="text-center">{{ \Carbon\Carbon::parse($val['tgl_aktif'])->format('d-m-Y')}}</td>
+                    <td>{{$status_aktif}}</td>
                 </tr>
             @endforeach
         </tbody>
-
     </table>
 
 

@@ -97,9 +97,9 @@
         <thead style="background-color: #fff !important; color:black;">
             <tr >
                 <th>No</th>
-                <th>Kode Invoice</th>
+                <th width="50px">Kode Invoice</th>
                 <th>Tanggal Invoice</th>
-                <th>Customer</th>
+                <th width="200px">Customer</th>
                 <th>Nominal Invoice</th>
                 <th>Due Date</th>
             </tr>

@@ -27,6 +27,7 @@ class Invoice extends Model
       'status_payment',
       'total_harga',
       'created_by',
+      'jenis',
       'updated_by',
     ];
 

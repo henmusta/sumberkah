@@ -436,17 +436,6 @@ $(document).ready(function () {
                         $('#btn_simpan').prop('disabled', false);
                     }
 
-                    // // console.log(get_nominal);
-                    // // console.log(total_uang_jalan.getNumber());
-                    // // console.log(total_bon.getNumber());
-
-                    // if(get_nominal > get_total_uang_jalan){
-
-
-                    // }else{
-                    //     $('#btn_simpan').prop('disabled', false);
-
-                    // }
                     $('#Datatable').trigger('changeTotalItem');
                 });
 

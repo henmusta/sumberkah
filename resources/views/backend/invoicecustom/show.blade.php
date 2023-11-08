@@ -29,47 +29,13 @@
                 <div class="row" style="">
                     <div class="col-12">
                         <table>
-                            <tr>
-                                <td style="width: 300px; ">Customer</td>
-                                <td style="width: 2px; padding-right: 10px">:</td>
-                                <td style="font-weight:bold">{{$data['invoice']['customer']['name'] ?? ''}}</td>
-                            </tr>
-                            <tr>
-                                <td style="width: 300px; ">Nomor Invoice</td>
-                                <td style="width: 2px; padding-right: 10px">:</td>
-                                <td  style="font-weight:bold">{{$data['invoice']['kode_invoice'] ?? ''}}</td>
-                            </tr>
+
                             <tr>
                                 <td style="width: 300px; ">Tanggal Invoice</td>
                                 <td style="width: 2px; padding-right: 10px">:</td>
                                 <td  style="font-weight:bold">    {{ \Carbon\Carbon::parse($data['invoice']['tgl_invoice'])->format('d-m-Y')}}</td>
                             </tr>
-                            <tr>
-                                <td style="width: 300px; ">Batas Pembayaran</td>
-                                <td style="width: 2px; padding-right: 10px">:</td>
-                                <td  style="font-weight:bold">{{$data['invoice']['payment_hari'] ?? ''}} Hari ({{\Carbon\Carbon::parse($data['invoice']['tgl_jatuh_tempo'])->format('d-m-Y')}})</td>
-                            </tr>
-                            <tr>
-                                <td style="width: 300px; ">Muatan</td>
-                                <td style="width: 2px; padding-right: 10px">:</td>
-                                <td  style="font-weight:bold">{{$data['invoice']['joborder'][0]['muatan']['name'] ?? ''}}</td>
-                            </tr>
-                            @if( $data['invoice']['status_payment'] == '2')
-                                @php($class =  'bg-success')
-                                @php($text =  'Lunas')
-                            @elseif ( $data['invoice']['status_payment'] == '1')
-                                @php($class =  'bg-warning')
-                                @php($text =  'Belum Lunas')
-                            @else
-                                @php($class = 'bg-danger')
-                                @php($text =  'Belum Bayar')
-                            @endif
 
-                            {{-- <tr>
-                                <td style="width: 300px;">Status Pembayaran</td>
-                                <td style="width: 2px; padding-right: 10px">:</td>
-                                <td  style="font-weight:bold"><span class="badge bg-pill {{$class}}">{{$text}}</span> </td>
-                            </tr> --}}
                             <tr>
                                 <td style="width: 300px; ">Keterangan</td>
                                 <td style="width: 2px; padding-right: 10px">:</td>
@@ -86,97 +52,40 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center">No</th>
-                                        <th>Kode Joborder</th>
-                                        <th>Tanggal Muat</th>
-                                        <th>Tanggal Bongkar</th>
-                                        <th>Nomor Polisi</th>
-                                        <th>Dari</th>
-                                        <th>Ke</th>
-                                        @php($colspan_1 = '8')
-                                        @php($colspan_2 = '9')
-                                        @if($data['invoice']['joborder'][0]['rute']['ritase_tonase'] != 'Ritase')
-                                        <th>Total Muatan</th>
-                                            @php($colspan_1 = '9')
-                                            @php($colspan_2 = '10')
-                                        @endif
-                                        <th>Harga</th>
-                                        <th>Total</th>
+                                        <th>Keterangan</th>
+                                        <th class="text-center" width="150px">Harga</th>
                                       </tr>
                                 </thead>
                                 <tbody>
                                     @php($no=1)
-                                    @foreach ($data['konfirmasijo'] as $val)
+                                    @foreach ($data['detail'] as $val)
                                         <tr>
                                             <td width="2%" class="text-center">{{$no++}}</td>
-                                            <td>{{$val->kode_joborder}}</td>
-                                            <td>{{$val->tgl_muat}}</td>
-                                            <td>{{$val->tgl_bongkar}}</td>
-                                            <td>{{$val->joborder['mobil']['nomor_plat']}}</td>
-                                            <td>{{$val->joborder['ruteawal']['name']}}</td>
-                                            <td>{{$val->joborder['ruteakhir']['name']}}</td>
-                                            @if($val->joborder['rute']['ritase_tonase'] != 'Ritase')
-                                                 @php($cek_bm = fmod($val->berat_muatan, 1) != 0 ? 3 : 0)
-                                                 <td>{{number_format($val->berat_muatan, $cek_bm,',','.')}}</td>
-                                            @endif
-                                            <td class="text-end"> Rp.
-                                                @php($cek_thr = fmod($val->joborder['rute']['harga'], 1) != 0 ? 3 : 0)
-                                                {{ number_format($val->joborder['rute']['harga'],$cek_thr,',','.')}}</td>
-                                            <td class="text-end"> Rp.
-
-                                                {{ number_format(ceil($val->total_harga),0,',','.')}}</td>
-                                           </tr>
+                                            <td>{{$val->keterangan}}</td>
+                                            <td class="text-end">{{number_format(ceil($val->nominal),0 ,',','.')}}</td>
+                                        </tr>
                                     @endforeach
                                 </tbody>
-                                @if($data['invoice']['tambahan_potongan'] != 'None')
-                                <tr style="page-break-inside:avoid;">
-                                    <th class="text-end" colspan="{{$colspan_1}}">{{$data['invoice']['tambahan_potongan']}} Harga</th>
-                                    <th class="text-end">Rp. {{number_format($data['invoice']['nominal_tambahan_potongan'],0,',','.')}}</th>
-                                </tr>
-                                @endif
-                                <tr style="page-break-inside:avoid;">
-                                    @php($sub_total = $data['invoice']['total_harga'] - $data['invoice']['nominal_ppn'] )
-                                    <th class="text-end" colspan="{{$colspan_1}}">Total</th>
-                                    <th class="text-end">Rp.
-
-                                        {{number_format(ceil($sub_total),0,',','.')}}</th>
-                                </tr>
-                                <tr style="page-break-inside:avoid;">
-                                    <th class="text-end" colspan="{{$colspan_1}}">PPN 11%</th>
-                                    <th class="text-end">Rp.
-
-                                        {{number_format(ceil($data['invoice']['nominal_ppn']),0,',','.')}}</th>
-                                </tr>
-                                <tr style="page-break-inside:avoid;">
-                                    <th class="text-end" colspan="{{$colspan_1}}">Grand Total</th>
-                                    <th class="text-end">Rp.
-
-                                        {{number_format(ceil($data['invoice']['total_harga']),0 ,',','.')}}</th>
-                                </tr>
-                                {{-- <tr style="page-break-inside:avoid;">
-                                    <td colspan="9">Total</td>
-                                    <td>a</td>
-                                </tr>
-                                <tr style="page-break-inside:avoid;">
-                                    <td colspan="9">Total</td>
-                                    <td>a</td>
-                                </tr>
-                                <tr style="page-break-inside:avoid;">
-                                    <td colspan="9">Total</td>
-                                    <td>a</td>
-                                </tr>
-                                <tr style="page-break-inside:avoid;">
-                                    <td colspan="9">Total</td>
-                                    <td>a</td>
-                                </tr>
-                                <tfoot style="overflow: hidden;">
-
-                                </tfoot> --}}
+                                <tfoot>
+                                        <tr>
+                                            <td colspan="2" class="text-end">Jumlah</td>
+                                            <td class="text-end" width="100px">{{number_format(ceil($data['invoice']['sub_total']),0 ,',','.')}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" class="text-end">{{$data['invoice']['ppn'] == 'Iya' ? 'PPN 11%' : 'NONE'}}</td>
+                                            <td class="text-end">{{number_format(ceil($data['invoice']['nominal_ppn']),0 ,',','.')}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" class="text-end">Total</td>
+                                            <td class="text-end">{{number_format(ceil($data['invoice']['total_harga']),0 ,',','.')}}</td>
+                                        </tr>
+                                </tfoot>
                             </table>
                             <table>
                                 <tfoot style=" border: none;" >
                                     @php($terbilang = Riskihajar\Terbilang\Facades\Terbilang::make($data['invoice']['total_harga'], ' rupiah')  ?? '' )
                                     <tr style=" border: none;">
-                                        <th style=" border: none;" class="text-left" colspan="{{$colspan_2}}">Terbilang = #   {{ucwords($terbilang)}} #</th>
+                                        <th style=" border: none;" class="text-left" colspan="3">Terbilang = #   {{ucwords($terbilang)}} #</th>
                                     </tr>
                                 </tfoot>
                             </table>

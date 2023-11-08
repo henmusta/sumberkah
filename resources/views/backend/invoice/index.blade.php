@@ -363,6 +363,10 @@ tr.group:hover {
 
         columnDefs: [
           {
+            targets:'_all',
+            defaultContent: "-",
+          },
+          {
             targets: [3, 4],
             render: $.fn.dataTable.render.number('.', ',', 0, '')
           },

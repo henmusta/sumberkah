@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Helpers\FileUpload;
 use App\Http\Controllers\Controller;
 use App\Models\Mobil;
+use Carbon\Carbon;
 use App\Models\Joborder;
 use App\Models\Driver;
 use Illuminate\Support\Facades\Auth;
@@ -12,7 +13,10 @@ use App\Traits\ResponseStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Yajra\DataTables\Facades\DataTables;
+use PDF;
 use Throwable;
 
 
@@ -368,5 +372,69 @@ class DriverController extends Controller
           return $response;
     }
 
+    public function pdf(Request $request)
+    {
+
+        $data = Driver::query();
+
+
+
+                $data = [
+                    'driver' => $data->get(),
+                ];
+
+        $pdf =  PDF::loadView('backend.driver.pdf',  compact('data'));
+        $PAPER_F4 = array(0,0,609.4488,935.433);
+        $pdf->setPaper( $PAPER_F4, 'potrait');
+        $pdf->render();
+        $font       = $pdf->getFontMetrics()->get_font('Helvetica', 'normal');
+        $fileName = 'Driver';
+        $pdf->get_canvas()->page_text(33, 900, "Page: {PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(0,0,0));
+        return $pdf->stream("${fileName}.pdf");
+    }
+
+
+    public function excel(Request $request)
+    {
+
+            $spreadsheet = new Spreadsheet();
+            $sheet = $spreadsheet->getActiveSheet();
+         $data = Driver::query();
+
+         $sheet->setCellValue('A1', 'DATA DRIVER');
+         $spreadsheet->getActiveSheet()->mergeCells('A1:F1');
+         $spreadsheet->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+
+         $rows3 = 3;
+         $sheet->setCellValue('A'.$rows3, 'Nama Lengkap');
+         $sheet->setCellValue('B'.$rows3, 'Nama Panggilan');
+         $sheet->setCellValue('C'.$rows3, 'No Hp');
+         $sheet->setCellValue('D'.$rows3, 'Tgl Registrasi');
+         $sheet->setCellValue('E'.$rows3, 'Tgl Perubahan Status');
+         $sheet->setCellValue('F'.$rows3, 'Status aktif');
+
+         for($col = 'A'; $col !== 'G'; $col++){$sheet->getColumnDimension($col)->setAutoSize(true);}
+         $x = 4;
+         foreach($data->get() as $val){
+                 $status_aktif = $val['status_aktif'] == '0' ? 'Tidak Aktif' : 'Aktif';
+                 $sheet->setCellValue('A' . $x, $val['name']);
+                 $sheet->setCellValue('B' . $x, $val['panggilan']);
+                 $sheet->setCellValue('C' . $x, $val['telp']);
+                 $sheet->setCellValue('D' . $x, Carbon::parse($val['created_at'])->format('d-m-Y') ?? '');
+                 $sheet->setCellValue('E' . $x, Carbon::parse($val['tgl_aktif'])->format('d-m-Y') ?? '');
+                 $sheet->setCellValue('F' . $x, $status_aktif ?? '');
+                 $x++;
+         }
+      $cell   = count($data->get()) + 4;
+
+      $writer = new Xlsx($spreadsheet);
+      $filename = 'Data Driver';
+      header('Content-Type: application/vnd.ms-excel');
+      header('Content-Disposition: attachment;filename="' . $filename . '.xlsx"');
+      header('Cache-Control: max-age=0');
+      $writer->save('php://output');
+
+    }
 
 }

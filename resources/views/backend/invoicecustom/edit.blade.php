@@ -6,7 +6,7 @@
       <div class="card">
         <div class="row row-sm">
             <div class="col-12">
-                <form id="formUpdate" action="{{ route('backend.invoice.update', Request::segment(3)) }}" autocomplete="off">
+                <form id="formUpdate" action="{{ route('backend.invoicecustom.update', Request::segment(3)) }}" autocomplete="off">
                     <meta name="csrf-token" content="{{ csrf_token() }}">
                     @method('PUT')
                     <div class="card-header">
@@ -20,267 +20,87 @@
                             </div>
                           </div>
                     </div>
-
                     <div class="card-body">
-                         <div class="row">
+                        <div class="row">
                               <div class="col-md-6">
-                                <input id="invoice_id" name="invoice_id" type="hidden" value="{{$data['invoice']['id']}}">
-                                    <div class="mb-3">
-                                       <label>Customer<span class="text-danger">*</span></label>
-                                       <select id="select2Customer" style="width: 100% !important;" name="customer_id">
-                                           <option value="{{ $data['invoice']['customer']['id'] }}"> {{$data['invoice']['customer']['name'] }}</option>
-                                       </select>
-                                     </div>
+                                   <div class="mb-3">
+                                      <label>Tanggal Invoice<span class="text-danger">*</span></label>
+                                      <input type="text" id="tgl_invoice" value="{{ $data['invoice']['tgl_invoice'] }}" name="tgl_invoice"  class="form-control"/>
+                                    </div>
                               </div>
-
-                                <div class="col-md-6">
-                                     <div class="mb-3">
-                                        <label>Tanggal Invoice<span class="text-danger">*</span></label>
-                                        <input type="text" id="tgl_invoice" value="{{ $data['invoice']['tgl_invoice'] }}" name="tgl_invoice"   class="form-control"/>
-                                      </div>
-                                </div>
-                          </div>
-
-
-                          <div class="row">
                               <div class="col-md-6">
                                   <div class="mb-3">
-                                    <label>Payment (Hari)<span class="text-danger">*</span></label>
-                                    <input type="text" id="payment_hari" value="{{ $data['invoice']['payment_hari'] }}" name="payment_hari"  class="form-control" readonly/>
-                                  </div>
-                                  <div class="mb-3">
-                                    <label for="activeSelect">Pilih Tambahan / Potongan<span class="text-danger">*</span></label>
-                                    <select class="form-select" id="select2TambahanPotongan" name="tambahan_potongan">
-                                      <option value="None" {{ $data['invoice']['tambahan_potongan'] == 'None' ? 'selected' : NULL }}>None</option>
-                                      <option value="Tambahan" {{ $data['invoice']['tambahan_potongan'] == 'Tambahan' ? 'selected' : NULL }}>Tambahan</option>
-                                      <option value="Potongan" {{ $data['invoice']['tambahan_potongan'] == 'Potongan' ? 'selected' : NULL }}>Potongan</option>
-                                    </select>
-                                  </div>
-                                  <div class="mb-3">
-                                    <label>Nominal Potongan Tambahan<span class="text-danger">*</span></label>
-                                    <input type="text" value="{{ $data['invoice']['nominal_tambahan_potongan'] }}" id="nominal_tambahan_potongan"  name="nominal_tambahan_potongan"  class="form-control" disabled/>
-                                  </div>
-                                  <div class="mb-3">
-                                    <label>Total Tonase<span class="text-danger">*</span></label>
-                                    <input type="text" value="{{ $data['invoice']['total_tonase'] }}" id="total_tonase"  name="total_tonase"  class="form-control" readonly/>
-                                  </div>
-
-                                  <div class="mb-3">
-                                    <label>Keterangan<span class="text-danger"></span></label>
-                                    <textarea type="text" id="keterangan_invoice" value="" name="keterangan_invoice"  class="form-control">{{ $data['invoice']['keterangan_invoice'] }}</textarea>
-                                  </div>
+                                      <label>Keterangan Invoice<span class="text-danger"></span></label>
+                                      <textarea type="text" id="keterangan_invoice" value="" name="keterangan_invoice"  class="form-control">{{ $data['invoice']['keterangan_invoice'] }}</textarea>
+                                   </div>
                               </div>
+                        </div>
+                  </div>
 
-                                <div class="col-md-6">
-                                      <div class="mb-3">
-                                        <label>Sub Total<span class="text-danger">*</span></label>
-                                        <input type="text" id="sub_total" value="{{ $data['invoice']['sub_total'] }}" name="sub_total" readonly  class="form-control"/>
+                  <div class="card-body">
+                      <div class="table-responsive">
+                          <table id="Datatable" class="table table-bordered border-bottom w-100" style="width:100%">
+                              <thead>
+                                  <tr>
+                                      <th>Keterangan</th>
+                                      <th width="30%">Jumlah</th>
+                                      <th></th>
+                                  </tr>
+                              </thead>
+                             <tbody></tbody>
+                             <tfoot>
+                              <tr>
+                                  <th colspan="3" style="text-align: end !important;">
+                                      <div class="btn-group">
+                                          <button id="plus_payment" type="button" class="btn btn-sm btn-outline-secondary btn-add-row"><i class="fa fa-plus"></i></button>
                                       </div>
-                                      <div class="mb-3">
-                                        <label for="activeSelect">Pilih PPN<span class="text-danger">*</span></label>
-                                        <select class="form-select" id="select2Ppn" name="ppn">
-                                            <option value="Tidak" {{ $data['invoice']['Tidak'] == 0 ? 'selected' : NULL }}>Tidak</option>
+                                  </th>
+                              </tr>
+                              <tr>
+                                  <th  class="text-end" class="text-right"><label>Jumlah<span class="text-danger"></span></label></th>
+                                      <th>
+                                          <input id="sub_total" name="sub_total" style="font-size: 12px; color:black;" class="form-control text-end">
+                                      </th>
+                                  <th></th>
+                             </tr>
+                              <tr>
+                                       <th class="text-end" class="text-end">
+                                          <div class="d-flex justify-content-end">
+                                              <select class="form-select text-end" id="select2Ppn" name="ppn" style="width: 20%">
+                                                <option value="Tidak" {{ $data['invoice']['Tidak'] == 0 ? 'selected' : NULL }}>Tidak</option>
                                           <option value="Iya" {{ $data['invoice']['Iya'] == 0 ? 'selected' : NULL }}>Iya</option>
-
-                                        </select>
-                                      </div>
-                                      <div class="mb-3">
-                                        <label>PPN 11%<span class="text-danger">*</span></label>
-                                        <input type="text" id="nominal_ppn" value="{{ $data['invoice']['nominal_ppn'] }}" name="nominal_ppn"  class="form-control" readonly/>
-                                      </div>
-                                      <div class="mb-3">
-                                        <label>Grand Total<span class="text-danger">*</span></label>
-                                        <input type="text" id="total_harga" value="{{ $data['invoice']['total_harga'] }}" name="total_harga"  class="form-control" readonly/>
-                                      </div>
-
-                                      {{-- <div class="mb-3">
-                                        <label>Kode Joborder<span class="text-danger">*</span></label>
-                                        <textarea type="text" id="kode_joborder" value="" name="kode_joborder"  class="form-control" readonly></textarea>
-                                      </div> --}}
-                                </div>
-                          </div>
-                    </div>
-
-
-
-
-                    <div  class="card-footer">
-                        <div class="col-md-xl-12">
-                            <div class="mt-xl-0 mt-4">
-                                <div class="d-flex align-items-start">
-                                    <div class="flex-grow-1">
-                                        <div class="d-flex gap-2 flex-wrap mb-3 text-center">
-                                            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample2" aria-expanded="true" aria-controls="multiCollapseExample2">Filter</button>
-                                        </div>
-                                    </div>
-                                    <div class="flex-shrink-0">
-                                        <div class="d-flex justify-content-end">
-                                            <button id="get_jo" type="button" class="btn btn-success me-2">
-                                                Konfirmasi JO
-                                            </button>
-                                            <button id="btn_simpan" type="button" class="btn btn-secondary me-2" onclick="window.history.back();">
-                                              Cancel
-                                            </button>
-                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                              </select>
                                           </div>
-                                    </div>
-                                </div>
 
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="multi-collapse collapse" id="multiCollapseExample2" style="">
-                                            <div class="card border shadow-none card-body text-muted mb-0">
+                                       </th>
+                                          <th>
+                                              <input id="nominal_ppn" name="nominal_ppn" style="font-size: 12px; color:black;" class="form-control text-end" readonly>
+                                          </th>
+                                      <th></th>
+                              </tr>
 
-                                                <div class="row">
-                                                    <div class="col-md-3">
-                                                        <div class="mb-3">
-                                                            <label>Id Joborder<span class="text-danger">*</span></label>
-                                                            <select id="select2Joborder" style="width: 100% !important;" name="joborder_id" name="joborder_id[]" multiple="multiple">
-
-                                                            </select>
-                                                          </div>
-
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <div class="mb-3">
-                                                            <label for="activeSelect">Ritase/Tonase/Kilogram <span class="text-danger">*</span></label>
-                                                            <select class="form-select" id="select2Tipe" name="tipe">
-                                                              <option value=""></option>
-                                                              <option value="Ritase">Ritase</option>
-                                                              <option value="Tonase">Tonase</option>
-                                                              <option value="Kilogram">Kilogram</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <div class="mb-3">
-                                                            <label>Nomor Plat Polisi<span class="text-danger">*</span></label>
-                                                            <select id="select2Mobil" style="width: 100% !important;" name="mobil_id">
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <div class="mb-3">
-                                                            <label>Muatan<span class="text-danger">*</span></label>
-                                                            <select id="select2Muatan" style="width: 100% !important;" name="muatan_id">
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="mb-3">
-                                                            <label>Tanggal Muat</label>
-                                                            <div class=" input-group mb-3">
-                                                                <input type="text" id="tgl_awal_muat" class="form-control datePicker"
-                                                                        placeholder="Tanggal Awal" value=""
-                                                                       />
-                                                                <span class="input-group-text" id="basic-addon2">S/D</span>
-                                                                <input type="text" id="tgl_akhir_muat" class="form-control datePicker"
-                                                                        placeholder="Tanggal Akhir" value=""
-                                                                        />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-6">
-                                                        <div class="mb-3">
-                                                            <label>Tanggal Bongkar</label>
-                                                            <div class=" input-group mb-3">
-                                                                <input type="text" id="tgl_awal_bongkar" class="form-control datePicker"
-                                                                        placeholder="Tanggal Awal" value=""
-                                                                       />
-                                                                <span class="input-group-text" id="basic-addon2">S/D</span>
-                                                                <input type="text" id="tgl_akhir_bongkar" class="form-control datePicker"
-                                                                        placeholder="Tanggal Akhir" value=""
-                                                                        />
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                              <tr>
+                                  <th  class="text-end"  class="text-right"><label>Total Sisa Gaji<span class="text-danger"></span></label></th>
+                                      <th>
+                                          <input id="total_harga" name="total_harga" style="font-size: 12px; color:black;" class="form-control text-end" readonly>
+                                      </th>
+                                  <th></th>
+                              </tr>
+                          </tfoot>
+                          </table>
+                      </div>
 
 
+                  </div>
 
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                        <div class="mb-3">
-                                                            <label>Rute Awal<span class="text-danger">*</span></label>
-                                                            <select id="select2Firstrute" style="width: 100% !important;" name="first_rute_id">
-                                                            </select>
-                                                        </div>
-
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="mb-3">
-                                                            <label>Rute Akhir<span class="text-danger">*</span></label>
-                                                            <select id="select2Lastrute" style="width: 100% !important;" name="last_rute_id">
-                                                            </select>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-4 text-end" style="padding-top:30px;">
-                                                        <div class="d-flex justify-content-start">
-                                                            {{-- <a id="terapkan_filter" class="btn btn-success">
-                                                                Terapkan Filter
-                                                                <i class="fas fa-align-justify"></i>
-                                                            </a> --}}
-                                                            <a  class="btn btn-danger" id="reset">Refresh</a>
-                                                        </div>
-
-                                                    </div>
-
-                                                </div>
-
-
-
-
-
-
-
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                  <div class="flex-shrink-0">
+                      <div class="d-flex justify-content-end">
+                          <button type="button" class="btn btn-secondary me-2" onclick="window.history.back();">
+                            Cancel
+                          </button>
+                          <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
-
-                        <div class="col-md-xl-12">
-                            <div class="mb-3">
-                                <label>Kode Joborder<span class="text-danger">*</span></label>
-                                <textarea type="text" id="kode_joborder" value="" name="kode_joborder"  class="form-control" readonly></textarea>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table id="Datatable" class="table table-bordered border-bottom w-100" style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th class="text-center">Pilih</th>
-                                        <th class="text-center">Kode Joborder</th>
-                                        <th>Tgl Muat</th>
-                                        <th>Tgl Bongkar</th>
-                                        <th>Plat Nomor</th>
-                                        <th>Muatan</th>
-                                        <th>Alamat Awal (Dari)</th>
-                                        <th>Alamat Akhir (Dari)</th>
-                                        <th>Tonase</th>
-                                        <th>Harga</th>
-                                        <th>Total Harga</th>
-                                        {{-- <th width="8%">Aksi</th> --}}
-                                      </tr>
-                                </thead>
-                                <tbody>
-
-                                </tbody>
-                            </table>
-                        </div>
-
-
-                    </div>
+                  </div>
 
 
                   </form>
@@ -310,173 +130,8 @@
 
 $(document).ready(function () {
 
-    $('#tgl_awal_muat, #tgl_akhir_muat, #tgl_awal_bongkar, #tgl_akhir_bongkar').flatpickr({
-            dateFormat: "Y-m-d",
-            allowInput: true
-         });
 
-        let select2Mobil = $('#select2Mobil');
-        let select2Joborder = $('#select2Joborder');
-
-        let select2Firstrute = $('#select2Firstrute');
-        let select2Lastrute = $('#select2Lastrute');
-        let select2Muatan = $('#select2Muatan');
-        let select2Tipe = $('#select2Tipe');
-
-        select2Firstrute.select2({
-        dropdownParent: select2Firstrute.parent(),
-        searchInputPlaceholder: 'Cari Alamat Rute',
-        allowClear: true,
-        width: '100%',
-        placeholder: 'Pilih Alamat Awal (Dari)',
-        ajax: {
-          url: "{{ route('backend.alamatrute.select2') }}",
-          dataType: "json",
-          cache: true,
-          data: function (e) {
-            return {
-              q: e.term || '',
-              page: e.page || 1
-            }
-          },
-        },
-        }).on('select2:select', function (e) {
-            let data = e.params.data;
-            console.log(data.id);
-    });
-
-    select2Lastrute.select2({
-        dropdownParent: select2Lastrute.parent(),
-        searchInputPlaceholder: 'Cari Alamat Rute',
-        allowClear: true,
-        width: '100%',
-        placeholder: 'Pilih Alamat Akhir (Ke)',
-        ajax: {
-          url: "{{ route('backend.alamatrute.select2') }}",
-          dataType: "json",
-          cache: true,
-          data: function (e) {
-            return {
-              q: e.term || '',
-              page: e.page || 1
-            }
-          },
-        },
-       }).on('select2:select', function (e) {
-            let data = e.params.data;
-            console.log(data.id);
-    });
-
-    select2Muatan.select2({
-        dropdownParent: select2Muatan.parent(),
-        searchInputPlaceholder: 'Cari Muatan',
-        allowClear: true,
-        width: '100%',
-        placeholder: 'Pilih Muatan',
-        ajax: {
-          url: "{{ route('backend.muatan.select2') }}",
-          dataType: "json",
-          cache: true,
-          data: function (e) {
-            return {
-              q: e.term || '',
-              page: e.page || 1
-            }
-          },
-        },
-      }).on('select2:select', function (e) {
-            let data = e.params.data;
-            console.log(data.id);
-    });
-
-
-
-
-
-    select2Tipe.select2({
-        dropdownParent: select2Tipe.parent(),
-        searchInputPlaceholder: 'Cari Tipe',
-        width: '100%',
-        allowClear: true,
-        placeholder: 'select Tipe',
-
-      }).on('select2:select', function (e) {
-            let data = e.params.data;
-       //     select2Mobil.empty().trigger('change');
-    });
-
-
-    select2Mobil.select2({
-        dropdownParent:   select2Mobil.parent(),
-        searchInputPlaceholder: 'Cari Mobil',
-        width: '100%',
-        allowClear: true,
-        placeholder: 'Pilih Mobil',
-        ajax: {
-          url: "{{ route('backend.mobil.select2') }}",
-          dataType: "json",
-          cache: true,
-          data: function (e) {
-            return {
-              q: e.term || '',
-              page: e.page || 1
-            }
-          },
-        },
-      }).on('select2:select', function (e) {
-            let data = e.params.data;
-            // select2Customer.empty().trigger('change');
-    });
-
-    select2Joborder.select2({
-        dropdownParent:  select2Joborder.parent(),
-        searchInputPlaceholder: 'Cari Job Order',
-        width: '100%',
-        allowClear: true,
-        placeholder: 'Pilih Job Order',
-        ajax: {
-          url: "{{ route('backend.joborder.select2') }}",
-          dataType: "json",
-          cache: true,
-          data: function (e) {
-            return {
-                // konfirmasi_joborder: 2,
-              q: e.term || '',
-              page: e.page || 1
-            }
-          },
-        },
-      }).on('select2:select', function (e) {
-            let data = e.params.data;
-            console.log(data);
-      });
-
-
-
-    const currenciesOptions = {
-            caretPositionOnFocus: "start",
-            currencySymbol: "Rp. ",
-            unformatOnSubmit: true,
-            allowDecimalPadding: true,
-            decimalCharacter : ',',
-            digitGroupSeparator : '.',
-            decimalPlaces: 0,
-            modifyValueOnWheel: false,
-            minimumValue: 0
-    };
-
-    const currenciesOptionsInt = {
-           caretPositionOnFocus: "start",
-            currencySymbol: "Rp. ",
-            unformatOnSubmit: true,
-            allowDecimalPadding: true,
-            decimalCharacter : ',',
-            digitGroupSeparator : '.',
-            decimalPlaces: 0,
-            modifyValueOnWheel: false,
-            minimumValue: 0
-    };
-
+        let select2Ppn = $('#select2Ppn');
 
 
     const currenciesOptionsDecimal = {
@@ -490,322 +145,114 @@ $(document).ready(function () {
             modifyValueOnWheel: false,
             minimumValue: 0
     };
-    const   nominal_ppn =new AutoNumeric('#nominal_ppn',currenciesOptions),
-            tambahan_potongan =new AutoNumeric('#nominal_tambahan_potongan',currenciesOptions),
-            sub_total =new AutoNumeric('#sub_total',currenciesOptions),
-            total_harga = new AutoNumeric('#total_harga',currenciesOptions);
 
 
+    const  sub_total = new AutoNumeric('#sub_total',currenciesOptionsDecimal),
+        nominal_ppn = new AutoNumeric('#nominal_ppn',currenciesOptionsDecimal),
+        total_harga = new AutoNumeric('#total_harga',currenciesOptionsDecimal);
 
-    $('#tgl_invoice').flatpickr({
-       dateFormat: "Y-m-d"
-    });
 
-    let select2Customer = $('#select2Customer');
-    let select2Ppn = $('#select2Ppn');
-    let select2TambahanPotongan = $('#select2TambahanPotongan');
-
-//     select2TambahanPotongan.on('change', function (e) {
-//     // var optionSelected = $("option:selected", this);
-
-//     tambahan_potongan.set(0);
-//     count_total();
-// });
-
-    select2TambahanPotongan.select2({
-        dropdownParent: select2TambahanPotongan.parent(),
-        searchInputPlaceholder: 'Cari Potongan Tambahan',
-        width: '100%',
-        placeholder: 'Pilih Potongan Tambahan',
-      }).on('select2:select', function (e) {
-            let data = e.params.data;
-      });
-
-    var cekvalueSelected = select2TambahanPotongan.val();
-    if(cekvalueSelected != 'None'){
-        console.log(cekvalueSelected);
-        $('#nominal_tambahan_potongan').prop("disabled", false);
-    }else{
-        console.log(cekvalueSelected);
-        $('#nominal_tambahan_potongan').prop('disabled', true);
-    }
-
-      select2Ppn.select2({
+        select2Ppn.select2({
         dropdownParent: select2Ppn.parent(),
         searchInputPlaceholder: 'Cari Pilihan Ppn',
-        width: '100%',
+        width: '20%',
         placeholder: 'Pilih Ppn',
-      }).on('select2:select', function (e) {
-            // let data = e.params.data;
-            // console.log(data.id);
-            // if(data)
-      });
-
-
-
-    select2Customer.select2({
-        dropdownParent: select2Customer.parent(),
-        searchInputPlaceholder: 'Cari Customer',
-        width: '100%',
-        placeholder: 'Pilih Customer'
-      });
-
-
-     function get_jo(id){
-         $.ajax({
-                url: "{{ route('backend.joborder.findjoborder') }}",
-                type: 'GET',
-                data: {customer_id:  id},
-                dataType: 'json', // added data type
-                success: function(res) {
-                    let data = res;
-                    console.log(data);
-                    // $('#tgl_joborder').val(data.joborder.tgl_joborder);
-                    // $('#driver_id').val(data.driver.name);
-                    // $('#nomor_plat').val(data.mobil.nomor_plat);
-                    // biaya_harga.set(data.rute.harga);
-                    // $('#customer_id').val(data.customer.name);
-                    // $('#muatan_id').val(data.muatan.name);
-                    // $('#first_rute_id').val(data.firstrute.name);
-                    // $('#last_rute_id').val(data.firstrute.name);
-                    // total_uang_jalan.set(data.joborder.total_uang_jalan);
-
-                }
-         });
-     }
-
-
-    let dataTable = $('#Datatable').DataTable({
-        select: {
-            style: 'os',
-            selector: 'td:not(:last-child)' // no row selection on last column
-        },
-        responsive: true,
-        scrollX: false,
-        processing: true,
-        searching: false,
-        serverSide: true,
-        order: [[0, 'desc']],
-        lengthMenu: [[50, -1], [50, "All"]],
-        pageLength: 50,
-        ajax: {
-          url: "{{ route('backend.konfirmasijo.datatablecekjo') }}",
-          data: function (d) {
-            d.customer_id = $('#select2Customer').find(':selected').val();
-            d.invoice_id = $('#invoice_id').val();
-            d.tipe = $('#select2Tipe').find(':selected').val();
-            d.mobil_id = $('#select2Mobil').find(':selected').val();
-            d.muatan_id = $('#select2Muatan').find(':selected').val();
-            d.id = $('#select2Joborder').val();
-            d.rute_awal = $('#select2Firstrute').find(':selected').val();
-            d.rute_akhir = $('#select2Lastrute').find(':selected').val();
-            d.tgl_awal_muat = $('#tgl_awal_muat').val();
-            d.tgl_akhir_muat = $('#tgl_akhir_muat').val();
-            d.tgl_awal_bongkar = $('#tgl_awal_bongkar').val();
-            d.tgl_akhir_bongkar = $('#tgl_akhir_bongkar').val();
-            d.kode_joborder = $('#kode_joborder').val();
-          }
-        },
-
-        columns: [
-        //   {data: 'id', className: 'text-center', name: 'id',orderable: false, searchable: false,},
-          {
-                data:   "konfirmasi_id",
-                orderable: false, searchable: false,
-                render: function ( data, type, row ) {
-                    if ( type === 'display' ) {
-                        return '<input type="checkbox" value="'+ data +'" class="editor-active">';
-                    }
-                    return data;
-                },
-                className: "dt-body-center"
-          },
-          {data: 'kode_joborder', name: 'kode_joborder'},
-          {data: 'tgl_muat', name: 'tgl_muat'},
-          {data: 'tgl_bongkar', name: 'tgl_bongkar'},
-          {data: 'mobil.nomor_plat', name: 'mobil.nomor_plat'},
-          {data: 'muatan.name', name: 'muatan.name'},
-          {data: 'ruteawal.name', name: 'ruteawal.name'},
-          {data: 'ruteakhir.name', name: 'ruteakhir.name'},
-          {data: 'berat_muatan', name: 'berat_muatan'},
-          {data: 'rute.harga', name: 'rute.harga'},
-          {data: 'total_harga', name: 'total_harga'},
-
-        //   {data: 'tgl_bongkar', name: 'jenis_payment'},
-        //   {data: 'konfirmasi_biaya_lain', name: 'konfirmasi_biaya_lain'},
-        //   {data: 'keterangan_konfirmasi', name: 'keterangan_konfirmasi'},
-        ],
-
-        columnDefs: [
-            {
-            targets: [8, 9],
-            render: function (data, type, full, meta) {
-                let dta = data % 1;
-                let cek = (dta == 0 ) ? 0 : 3;
-                return   $.fn.dataTable.render.number('.', ',', cek, '').display(data);
-            }
-          },
-
-          {
-            targets: [10],
-            render: function (data, type, full, meta) {
-                // console.log();
-                let dta = parseFloat(data).toFixed();
-                return   $.fn.dataTable.render.number('.', ',', 0, '').display(dta);
-                // return dta;
-            }
-          },
-
-
-        //   {
-        //     targets: 0,
-        //     orderable: false, searchable: false,
-        //     render: function(data, type, row, meta){
-        //         var checkbox = $("<input/>",{
-        //             "type": "checkbox"
-        //         });
-        //         // console.log(row.status);
-        //         if(row.status === "1"){
-        //             checkbox.attr("checked", "checked");
-        //             checkbox.addClass("dt-checkboxes");
-        //         }else{
-        //             checkbox.addClass("dt-checkboxes");
-        //         }
-        //         return checkbox.prop("outerHTML")
-        //     },
-        //     data: 0,
-        //     checkboxes: {
-        //         selectRow: true
-        //     },
-        //   }
-        ],
-        rowCallback: function ( row, data ) {
-            $('input.editor-active', row).prop( 'checked', data.status_konfirmasi == 1 );
-            let joborder = JSON.parse("[" + $('#kode_joborder').val() + "]");
-            if( joborder != undefined || joborder.length > 0){
-                joborder.forEach(function(joborder) {
-                    if(joborder == data.kode_joborder){
-                        console.log(data.kode_joborder);
-                        console.log(joborder);
-                        $('input.editor-active', row).prop( 'checked', data.kode_joborder == joborder);
-                    }
-                });
-            }
-        }
-      });
-
-
-      $("#reset").click(function() {
-        $("#select2Mobil, #select2Joborder, #select2Firstrute, #select2Lastrute, #select2Muatan").empty().trigger('change');
-        $("#select2Tipe, #tgl_awal_muat, #tgl_akhir_muat, #tgl_awal_bongkar, #tgl_akhir_bongkar").val('');
-
-      });
-
-
-
-        $("#select2Mobil, #select2Joborder, #select2Firstrute, #select2Lastrute, #select2Muatan, #select2Tipe, #tgl_awal_muat, #tgl_akhir_muat, #tgl_awal_bongkar, #tgl_akhir_bongkar").on('change', function (e) {
-            dataTable.draw();
-        });
-
-      $('#get_jo').on('click', function(e) {
-
-        var oTable = $('#Datatable').dataTable();
-        var rowcollection =  oTable.$(".editor-active:checked", {"page": "all"});
-        var row_id = [];
-        var form = this;
-        $("input[name^=konfirmasijoid]").remove();
-        rowcollection.each(function(index, elem){
-            console.log(elem);
-            var checkbox_value = $(elem).val();
-
-            $(form).append(
-                $('<input>')
-                .attr('type', 'hidden')
-                .attr('name', 'konfirmasijoid[]')
-                .val(checkbox_value)
-            );
-            row_id.push(checkbox_value);
-        });
-        $.ajax({
-                headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                url: "{{ route('backend.konfirmasijo.findkonfirmasijo') }}",
-                type: 'POST',
-                data: {konfirmasijo_id:  row_id},
-                dataType: 'json', // added data type
-                success: function(res) {
-                    let data = res;
-                    console.log(data);
-                    const kode_joborder =  data.kode_joborder;
-                    const JoinedKode = kode_joborder.join();
-                    console.log(JoinedKode);
-
-                    $('#kode_joborder').val(JoinedKode);
-                    sub_total.set(data.sum_total_harga);
-                    let dta = data.sum_beratmuatan % 1;
-                    if(dta == 0){
-                        const total_tonase_int =new AutoNumeric('#total_tonase',currenciesOptionsInt);
-                        total_tonase_int.set(data.sum_beratmuatan);
-                    }else{
-                        const total_tonase_float =new AutoNumeric('#total_tonase',currenciesOptionsDecimal);
-                        total_tonase_float.set(data.sum_beratmuatan);
-                    }
-
-
-                    total_harga.set(data.sum_total_harga);
-                    // $('#payment_hari').prop('disabled', false);
-                    count_total();
-                    // console.log(joinedCities);
-                    // $('#tgl_joborder').val(data.joborder.tgl_joborder);
-                    // $('#driver_id').val(data.driver.name);
-                    // $('#nomor_plat').val(data.mobil.nomor_plat);
-                    // biaya_harga.set(data.rute.harga);
-                    // $('#customer_id').val(data.customer.name);
-                    // $('#muatan_id').val(data.muatan.name);
-                    // $('#first_rute_id').val(data.firstrute.name);
-                    // $('#last_rute_id').val(data.firstrute.name);
-                    // total_uang_jalan.set(data.joborder.total_uang_jalan);
-
-                }
-         });
-
-
-
+    }).on('select2:select', function (e) {
+        $('#Datatable').trigger('changeTotalItem');
     });
 
-select2TambahanPotongan.on('change', function (e) {
-    var optionSelected = $("option:selected", this);
-    var valueSelected = this.value;
-    if(valueSelected != 'None'){
-        console.log(valueSelected);
-        $('#nominal_tambahan_potongan').prop("disabled", false);
-    }else{
-        console.log(valueSelected);
-        $('#nominal_tambahan_potongan').prop('disabled', true);
-    }
-    tambahan_potongan.set(0);
-    count_total();
-});
+    var dummy = [
+            // {  jenis_pembayaran: '', keterangan : '', keterangan_kasbon : '', nominal : 0, nominal_kasbon : 0, id:'' }
+        ]
 
+        $('#Datatable').on('changeTotalItem',	function(){
+        let jumlah  = 0;
+        //    let total_nominal_kasbon  = 0;
+        //    let for_sisa_uang_jalan = 0;
+            $(this).find('[id^="num_nominal"]').each(function(){
+                jumlah += AutoNumeric.getNumber(this);
+            });
+            sub_total.set(jumlah);
+            ppn =  0;
+            if($('#select2Ppn').find(':selected').val() == 'Iya'){
+                ppn =  jumlah * 0.11;
+            }
+            total = jumlah + ppn;
+            nominal_ppn.set(ppn);
+            total_harga.set(total);
+        });
 
-select2Ppn.on('change', function (e) {
-    var optionSelected = $("option:selected", this);
-    var valueSelected = this.value;
-    if(valueSelected != 'None'){
-        console.log(valueSelected);
-        $('#nominal_ppn').prop("disabled", false);
-    }else{
-        console.log(valueSelected);
-        $('#nominal_ppn').prop('disabled', true);
+    const tablePembayaran = $('#Datatable').DataTable({
+            // responsive: true,
+            paging		: false,
+            searching 	: false,
+            ordering 	: false,
+            info 		: false,
+            data 		:  <?= isset($data['invoicedetail']) ? json_encode($data['invoicedetail']) : 'dummy' ;?>,
+            columns : [
+                {
+                    data 		: 'keterangan',
+                    className 	: 'text-left',
+                    width 		: '70%',
+                    render 		: function ( columnData, type, rowData, meta ) {
+                        let cek_ket = (columnData == null) ? '' : columnData;
+                        return String(`
+                            <input name="detail[`+ meta.row +`][id]" type="hidden" value="`+ rowData.id +`" >
+                            <input id="keterangan` + meta.row + `" class="form-control" value="`+ cek_ket +`" name="detail[`+ meta.row +`][keterangan]" data-column="keterangan" >
+                        `).trim();
+                    }
+                },
+                {
+                    data 		: 'nominal',
+                    className 	: 'text-right',
+                    width 		: '150px',
+                    render 		: function ( columnData, type, rowData, meta ) {
+                        return String(`
+                            <input id="num_nominal` + meta.row + `" class="form-control text-end" style="width: 250px;" value="`+ columnData +`" name="detail[`+ meta.row +`][nominal]" required data-column="nominal" >
+                        `).trim();
+                    }
+                },
+                {
+                    data 		: 'id',
+                    width 		: '10px',
+                    className 	: 'text-center',
+                    render 		: function ( columnData, type, rowData, meta ) {
+                        return String(`
+                            <button type="button" id="id_` + meta.row + `" class="btn btn-sm btn-outline-secondary btn-delete-row"><i class="fa fa-minus"></i></button>
+                        `).trim();
+                    }
+                }
+            ],
+            initComplete : function(settings, json){
+                let api = this.api();
+                $(api.table().footer()).find('.btn-add-row').click(function(){
+                    api.row.add({ keterangan: '',  nominal : 0}).draw();
+                });
+            },
+            createdRow : function( row, data, index ){
+                new AutoNumeric.multiple($(row).find('[id^="num"]').get(),currenciesOptionsDecimal);
+            },
+            rowCallback : function( row, data, displayNum, displayIndex, index ){
+                let api = this.api();
 
-    }
-    nominal_ppn.set(0);
-    count_total();
-});
+                $(row).find('#id_'+ index).click(function(){
+                    api.row($(this).closest("tr").get(0)).remove().draw();
+                });
 
+                $(row).find('#num_nominal' + index).keyup(function(){
+                    console.log('a')
+                    $('#Datatable').trigger('changeTotalItem');
+                });
+            },
+            drawCallback : function( settings ){
+                $('#Datatable').trigger('changeTotalItem');
+            }
+    });
 
-
+    $('#tgl_invoice').flatpickr({
+    dateFormat: "Y-m-d",
+    allowInput: true
+    });
 
 
     $("#formUpdate").submit(function (e) {

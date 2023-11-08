@@ -50,7 +50,7 @@ class DashboardController extends Controller
           $status_jalan =  $request['status_jalan'];
           $type =  $request['type'];
           $driver_data = Driver::where('validasi', '1')
-          ->when( $status_jalan, function ($query,   $status_jalan) {
+           ->when( $status_jalan, function ($query,   $status_jalan) {
              return  $query->where('status_jalan', '!=', $status_jalan);
            })->when( $type == 'berlaku_sim', function ($query,   $type) {
              return  $query->whereRaw('DATEDIFF(NOW(),tgl_sim) > -45');
@@ -320,7 +320,6 @@ class DashboardController extends Controller
       }
     }
 
-
     public function dtstatusjo(Request $request)
     {
       if ($request->ajax()) {
@@ -448,7 +447,6 @@ class DashboardController extends Controller
         // foreach($data->get() as $val){
         //     dd($val);
         // }
-
 
 
         $data = [

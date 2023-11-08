@@ -89,7 +89,7 @@
                 <th>Jenis Pembayaran</th>
                 <th>Nominal Pembayaran</th>
                 <th>Nominal Kasbon</th>
-                <th>Nominal Kasbon</th>
+                <th>Kode Kasbon</th>
                 <th width="200px">Keterangan Kasbon</th>
                 <th>Operator (Waktu)</th>
             </tr>
@@ -108,7 +108,12 @@
                     <td>{{$val->jenis_payment}}</td>
                     <td  class="text-end">Rp. {{ number_format($val->nominal,0,',','.')}}</td>
                     <td  class="text-end">Rp. {{ number_format($val->nominal_kasbon,0,',','.')}}</td>
-                    <td>{{isset($val->kasbon) ? $val->kasbon['kode_kasbon'] : '-'}}</td>
+                    @if(isset($val->kasbon))
+                    <td> <a href="{{ route('backend.kasbon.index') }}?kasbon_id={{$val['kasbon']->id}}" target="_blank">{{$val['kasbon']->kode_kasbon}}</a></td>
+                    @else
+                    <td>-</td>
+                    @endif
+
                     <td>{{$val->keterangan_kasbon}}</td>
                     <td>{{$val['joborder']->createdby['name']}} ( {{\Carbon\Carbon::parse($val['joborder']->created_at)->format('d-m-Y H:i:s')}} )</td>
                    </tr>

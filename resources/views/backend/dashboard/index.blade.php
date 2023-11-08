@@ -795,7 +795,7 @@ div.dt-btn-container {
         scrollX: false,
         processing: true,
         serverSide: true,
-        order: [[0, 'desc']],
+        order: [[5, 'asc']],
         lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
         pageLength: 10,
         ajax: {
@@ -1212,7 +1212,7 @@ div.dt-btn-container {
     }
 
     if(cek_status == '1'){
-        let dataTableStatusJo = $('#DatatableStatusJo').DataTable({
+    let dataTableStatusJo = $('#DatatableStatusJo').DataTable({
         dom: '<"dt-top-container"<l><"dt-center-in-div"f><"dt-btn-container"B>r>tip',
         buttons: [
             {
@@ -1222,19 +1222,19 @@ div.dt-btn-container {
                 }
             }
         ],
-        responsive: true,
-       scrollX: false,
-       processing: true,
-       serverSide: true,
-       order: [[1, 'desc']],
-       lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
-       pageLength: 10,
-       ajax: {
-         url: "{{ route('backend.dashboard.dtstatusjo') }}",
-         data: function (d) {
-            d.customerstatus_id = $('#select2CustomerStatus').find(':selected').val();
-         }
-       },
+            responsive: true,
+        scrollX: false,
+        processing: true,
+        serverSide: true,
+        order: [[1, 'desc']],
+        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        pageLength: 10,
+        ajax: {
+            url: "{{ route('backend.dashboard.dtstatusjo') }}",
+            data: function (d) {
+                d.customerstatus_id = $('#select2CustomerStatus').find(':selected').val();
+            }
+        },
 
        columns: [
         {
@@ -1286,7 +1286,18 @@ div.dt-btn-container {
 
        ],
      });
+
+
+     $("#terapkan_filter_status").click(function() {
+        dataTableStatusJo.draw();
+      });
+
+      $("#refresh_status").click(function() {
+        $("#select2CustomerStatus").val("").trigger("change");
+        dataTableStatusJo.draw();
+      });
     }
+
 
 
      let select2CustomerStatus = $('#select2CustomerStatus');
@@ -1311,14 +1322,6 @@ div.dt-btn-container {
     });
 
 
-      $("#terapkan_filter_status").click(function() {
-        dataTableStatusJo.draw();
-      });
-
-      $("#refresh_status").click(function() {
-        $("#select2CustomerStatus").val("").trigger("change");
-        dataTableStatusJo.draw();
-      });
 
 
 
@@ -1334,10 +1337,14 @@ div.dt-btn-container {
    });
 
    function excel(type){
+        let st_jalan = null;
+        if(type == 'driver_tidak_jalan' || type == 'kendaraan_tidak_jalan'){
+            st_jalan = '1';
+        }
         let params =  new URLSearchParams({
            customer_id : $('#select2Customer').val() || '',
            customerstatus_id : $('#select2CustomerStatus').val() || '',
-           status_jalan : '1',
+           status_jalan : st_jalan,
            type : type,
         });
 
@@ -1347,10 +1354,14 @@ div.dt-btn-container {
 
 
    function pdf(type){
+        let st_jalan = null;
+        if(type == 'driver_tidak_jalan' || type == 'kendaraan_tidak_jalan'){
+            st_jalan = '1';
+        }
         let params =  new URLSearchParams({
            customer_id : $('#select2Customer').val() || '',
            customerstatus_id : $('#select2CustomerStatus').val() || '',
-           status_jalan : '1',
+           status_jalan : st_jalan,
            type : type,
         });
 

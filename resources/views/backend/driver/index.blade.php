@@ -19,8 +19,13 @@
                             Tambah
                             <i class="fas fa-plus"></i>
                         </a>
+                        <div class="dt-buttons btn-group flex-wrap">
+                            <button id="excel" class="btn btn-secondary buttons-excel buttons-html5"  tabindex="0" aria-controls="Datatable" type="button"><span>Excel</span></button>
+                            <button class="btn btn-secondary buttons-pdf buttons-html5"  tabindex="0" aria-controls="Datatable" type="button" id="pdf"><span>PDF</span></button>
+                        </div>
                         @endif
                     </div>
+
                 </div>
 
             </div>
@@ -304,7 +309,22 @@
       });
 
 
+    $("#excel").click(function() {
 
+            let params = new URLSearchParams({
+
+            });
+
+            window.location.href = "{{ route('backend.driver.excel') }}?" +params.toString()
+     });
+
+     $("#pdf").click(function() {
+            let params = new URLSearchParams({
+
+            });
+        let url = "{{ route('backend.driver.pdf') }}?" +params.toString()
+        window.open(url, '_blank');
+     });
 
 
       $("#formUpdateValidasi").submit(function(e){
