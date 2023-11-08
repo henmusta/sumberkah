@@ -121,7 +121,7 @@ class JoborderController extends Controller
                 $cek_edit =  $row->status_payment == '0' && $row->status_joborder == '0' ? $edit : '';
                 $cek_delete =  $row->status_payment == '0' && $row->status_joborder == '0' ? $delete : '';
 
-                $cek_perm_validasi = $perm['pembatalan'] == 'true' ? $cek_level_validasi : '';
+                $cek_perm_validasi = $perm['pembatalan'] == 'true' ? $cek_validasi : '';
                 $cek_perm_konfirmasi_jo = $perm['konfirmasi'] == 'true' ? $cek_konfirmasi_jo : '';
                 $cek_perm_edit = $perm['edit'] == 'true' ? $cek_edit : '';
                 $cek_perm_delete = $perm['delete'] == 'true' ? $cek_delete : '';
