@@ -167,6 +167,8 @@ Route::middleware('auth:henmus')->group(function(){
 
             Route::resource('invoicecustom', Backend\InvoiceCustomController::class);
 
+            Route::resource('activitylog', Backend\ActivityLogController::class);
+
             //Invoice
             Route::get('invoice/sisapayment', [Backend\InvoiceController::class, 'sisapayment'])->name('invoice.sisapayment');
             Route::get('invoice/excel', [Backend\InvoiceController::class, 'excel'])->name('invoice.excel');

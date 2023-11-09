@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Driver extends Model
 {
+    use HasFactory, LogsActivity;
     public $timestamps = false;
     protected $table = 'driver';
     protected $fillable = [
@@ -35,21 +38,38 @@ class Driver extends Model
       'darurat_ref'
     ];
 
-    // protected static function booted(): void
-    // {
-    //     static::created(function (Driver $driver) {
-    //         $driver       = $driver->item()->first();
-    //         $st_driver    = Driver::selectRaw('driver.`id` AS id,
-    //                                            SUM(IF(status_joborder = "1", 0, 1)) AS count_jo')
-    //                                            ->Join('joborder', 'joborder.driver_id', '=', 'driver.id')
-    //                                            ->where('driver.id', $driver->id)
-    //                                            ->groupBy('driver.id');
-    //         $status_jalan    = Driver::where('id', $driver->id)->first();
-    //         $balance =  $st_driver['count_jo'] > 0 ? 1 : 0;
-    //         $status_jalan->status_jalan  = $balance;
-    //         $status_jalan->save();
-    //     });
-    // }
+    protected static $recordEvents = ['deleted', 'updated'];
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+                ->logOnly([
+                    'name',
+                    'kasbon',
+                    'alamat',
+                    'telp',
+                    'keterangan_driver',
+                    'ktp',
+                    'sim',
+                    'panggilan',
+                    'tempat_lahir',
+                    'tgl_lahir',
+                    'image_foto',
+                    'image_sim',
+                    'image_ktp',
+                    'tgl_sim',
+                    'status_aktif',
+                    'tgl_aktif',
+                    'tgl_nonaktif',
+                    'validasi',
+                    'darurat_name',
+                    'darurat_telp',
+                    'darurat_ref'
+                  ])
+                ->setDescriptionForEvent(fn(string $eventName) => "Modul Driver {$eventName}")
+                ->dontLogIfAttributesChangedOnly(['status_jalan',  'kasbon', 'validasi'])
+                ->useLogName('Driver');
+    }
+
 
 
     public function getkasbon()

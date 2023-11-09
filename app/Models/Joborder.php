@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Joborder extends Model
 {
+    use HasFactory, LogsActivity;
     public $timestamps = false;
     protected $table = 'joborder';
     protected $fillable = [
@@ -35,9 +38,51 @@ class Joborder extends Model
       'total_payment',
       'sisa_uang_jalan',
       'status_payment',
+      'kode_joborder',
       'created_by',
       'updated_by'
     ];
+
+    protected static $recordEvents = ['deleted', 'updated'];
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+                ->logOnly([
+                    'kode_joborder',
+                    'kode_rute',
+                    'rute_id',
+                    'tgl_joborder',
+                    'driver_id',
+                    'jenismobil_id',
+                    'mobil_id',
+                    'customer_id',
+                    'muatan_id',
+                    'first_rute_id',
+                    'last_rute_id',
+                    'uang_jalan',
+                    'biaya_lain',
+                    'tambahan_potongan',
+                    'keterangan_joborder',
+                    'status_joborder',
+                    'total_uang_jalan',
+                    'total_kasbon',
+                    'total_payment',
+                    'sisa_uang_jalan',
+                  ])
+                ->setDescriptionForEvent(fn(string $eventName) => "Modul Customer {$eventName}")
+                ->dontLogIfAttributesChangedOnly([
+                    'invoice_id',
+                    'kode_invoice',
+                    'penggajian_id',
+                    'kode_gaji',
+                    'status_payment',
+                    'total_uang_jalan',
+                    'total_kasbon',
+                    'total_payment',
+                ])
+                ->useLogName('Joborder');
+    }
+
 
     protected static function booted(): void
     {
@@ -69,7 +114,6 @@ class Joborder extends Model
 
         static::updated(function (Joborder $joborder) {
             $driver       = $joborder->driver()->first();
-            // dd($driver);
             $mobil       = $joborder->mobil()->first();
             $st_driver    = Driver::selectRaw('driver.`id` AS id,
                                                SUM(IF(status_joborder = "1", 0, 1)) AS count_jo')
