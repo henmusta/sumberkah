@@ -22,13 +22,21 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                              <div class="col-md-6">
+                              <div class="col-md-4">
                                    <div class="mb-3">
                                       <label>Tanggal Invoice<span class="text-danger">*</span></label>
                                       <input type="text" id="tgl_invoice" value="{{ $data['invoice']['tgl_invoice'] }}" name="tgl_invoice"  class="form-control"/>
                                     </div>
                               </div>
-                              <div class="col-md-6">
+                              <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label>Customer<span class="text-danger">*</span></label>
+                                    <select id="select2Customer" style="width: 100% !important;" name="customer_id">
+                                        <option value="{{ $data['invoice']['customer']['id'] }}"> {{$data['invoice']['customer']['name'] }}</option>
+                                    </select>
+                                  </div>
+                            </div>
+                              <div class="col-md-4">
                                   <div class="mb-3">
                                       <label>Keterangan Invoice<span class="text-danger"></span></label>
                                       <textarea type="text" id="keterangan_invoice" value="" name="keterangan_invoice"  class="form-control">{{ $data['invoice']['keterangan_invoice'] }}</textarea>
@@ -254,6 +262,26 @@ $(document).ready(function () {
     allowInput: true
     });
 
+    let select2Customer = $('#select2Customer');
+    select2Customer.select2({
+        dropdownParent: select2Customer.parent(),
+        searchInputPlaceholder: 'Cari Customer',
+        width: '100%',
+        placeholder: 'Pilih Customer',
+        ajax: {
+          url: "{{ route('backend.customer.select2') }}",
+          dataType: "json",
+          cache: true,
+          data: function (e) {
+            return {
+              q: e.term || '',
+              page: e.page || 1
+            }
+          },
+        },
+      }).on('select2:select', function (e) {
+            let data = e.params.data;
+      });
 
     $("#formUpdate").submit(function (e) {
         e.preventDefault();
@@ -305,21 +333,6 @@ $(document).ready(function () {
           }
         });
       });
-
-        $('#select2Customer').on('change', function (e) {
-             dataTable.draw();
-             $('#payment_hari').val('');
-             $('#select2TambahanPotongan').val('None').trigger('change');
-             $('#nominal_tambahan_potongan').val('');
-             $('#total_tonase').val('');
-             $('#keterangan_invoice').val('');
-             $('#sub_total').val('');
-             $('#select2Ppn').val('None').trigger('change');
-             $('#nominal_ppn').val('');
-             $('#total_harga').val('');
-             $('#kode_joborder').val('');
-        });
-
 
 
 

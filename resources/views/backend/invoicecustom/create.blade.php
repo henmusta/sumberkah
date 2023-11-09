@@ -23,13 +23,21 @@
 
                     <div class="card-body">
                           <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                      <div class="mb-3">
                                         <label>Tanggal Invoice<span class="text-danger">*</span></label>
                                         <input type="text" id="tgl_invoice" value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" name="tgl_invoice"  class="form-control"/>
                                       </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label>Customer<span class="text-danger">*</span></label>
+                                        <select id="select2Customer" style="width: 100% !important;" name="customer_id">
+
+                                        </select>
+                                      </div>
+                                </div>
+                                <div class="col-md-4">
                                     <div class="mb-3">
                                         <label>Keterangan Invoice<span class="text-danger"></span></label>
                                         <textarea type="text" id="keterangan_invoice" value="" name="keterangan_invoice"  class="form-control"></textarea>
@@ -81,7 +89,7 @@
                                 </tr>
 
                                 <tr>
-                                    <th  class="text-end"  class="text-right"><label>Total Sisa Gaji<span class="text-danger"></span></label></th>
+                                    <th  class="text-end"  class="text-right"><label>Grand Total<span class="text-danger"></span></label></th>
                                         <th>
                                             <input id="total_harga" name="total_harga" style="font-size: 12px; color:black;" class="form-control text-end" readonly>
                                         </th>
@@ -131,6 +139,7 @@
 $(document).ready(function () {
 
     let select2Ppn = $('#select2Ppn');
+
 
 
     const currenciesOptionsDecimal = {
@@ -251,6 +260,27 @@ $(document).ready(function () {
        allowInput: true
     });
 
+    let select2Customer = $('#select2Customer');
+    select2Customer.select2({
+        dropdownParent: select2Customer.parent(),
+        searchInputPlaceholder: 'Cari Customer',
+        width: '100%',
+        placeholder: 'Pilih Customer',
+        ajax: {
+          url: "{{ route('backend.customer.select2') }}",
+          dataType: "json",
+          cache: true,
+          data: function (e) {
+            return {
+              q: e.term || '',
+              page: e.page || 1
+            }
+          },
+        },
+      }).on('select2:select', function (e) {
+            let data = e.params.data;
+      });
+
 $("#formStore").submit(function (e) {
         e.preventDefault();
         let form = $(this);
@@ -299,19 +329,19 @@ $("#formStore").submit(function (e) {
         });
       });
 
-        $('#select2Customer').on('change', function (e) {
-             dataTable.draw();
-             $('#payment_hari').val('');
-             $('#select2TambahanPotongan').val('None').trigger('change');
-             $('#nominal_tambahan_potongan').val('');
-             $('#total_tonase').val('');
-             $('#keterangan_invoice').val('');
-             $('#sub_total').val('');
-             $('#select2Ppn').val('None').trigger('change');
-             $('#nominal_ppn').val('');
-             $('#total_harga').val('');
-             $('#kode_joborder').val('');
-        });
+        // $('#select2Customer').on('change', function (e) {
+        //      dataTable.draw();
+        //      $('#payment_hari').val('');
+        //      $('#select2TambahanPotongan').val('None').trigger('change');
+        //      $('#nominal_tambahan_potongan').val('');
+        //      $('#total_tonase').val('');
+        //      $('#keterangan_invoice').val('');
+        //      $('#sub_total').val('');
+        //      $('#select2Ppn').val('None').trigger('change');
+        //      $('#nominal_ppn').val('');
+        //      $('#total_harga').val('');
+        //      $('#kode_joborder').val('');
+        // });
 
 
 

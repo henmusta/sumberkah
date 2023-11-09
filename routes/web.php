@@ -129,6 +129,12 @@ Route::middleware('auth:henmus')->group(function(){
             Route::post('bulanandriverjo/getreport', [Backend\BulananDriverJoController::class, 'getreport'])->name('bulanandriverjo.getreport');
             Route::resource('bulanandriverjo', Backend\BulananDriverJoController::class);
 
+
+            //bulanandrivergaji
+            Route::get('bulanandrivergaji/excel', [Backend\BulananDriverGajiController::class, 'excel'])->name('bulanandrivergaji.excel');
+            Route::get('bulanandrivergaji/pdf', [Backend\BulananDriverGajiController::class, 'pdf'])->name('bulanandrivergaji.pdf');
+            Route::post('bulanandrivergaji/getreport', [Backend\BulananDriverGajiController::class, 'getreport'])->name('bulanandrivergaji.getreport');
+            Route::resource('bulanandrivergaji', Backend\BulananDriverGajiController::class);
             //bulanannopol
             Route::get('bulanannopoljo/excel', [Backend\BulananNopolJoController::class, 'excel'])->name('bulanannopoljo.excel');
             Route::get('bulanannopoljo/pdf', [Backend\BulananNopolJoController::class, 'pdf'])->name('bulanannopoljo.pdf');

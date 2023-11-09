@@ -431,9 +431,10 @@ class PenggajianController extends Controller
             $total_gaji = $request['sub_total'] + $request['bonus'] - $request['nominal_kasbon'];
             $bulan_keja =$request['bulan_kerja'].'-01';
             if($total_gaji > 0){
-                $kasbon = Kasbon::where('penggajian_id', $data['id']);
+                $kasbon = Kasbon::where('penggajian_id', $data['id'])->first();
                 $driverlogkasbon = Driverlogkasbon::where('penggajian_id', $data['id'])->first();
                 $driver = Driver::findOrFail($request['driver_id']);
+
                 if($request['nominal_kasbon'] > 0){
                     $cek_kasbon_id = $kasbon->first();
                     $kode_gaji =  $this->KodeKasbon(Carbon::parse($request['tgl_gaji'])->format('d M Y'));
@@ -499,7 +500,10 @@ class PenggajianController extends Controller
 
 
                 }else{
-                    $kasbon->delete();
+                    if(isset($kasbon['id'])){
+                        $kasbon->delete();
+                    }
+
                     $count_total_kasbon = $driverlogkasbon['nominal'] + $driver['kasbon'];
                     $driver_total_kasbon = $count_total_kasbon - $request['nominal_kasbon'];
                     $driver->update([
@@ -509,7 +513,7 @@ class PenggajianController extends Controller
                         'nominal'=> $request['nominal_kasbon']
                     ]);
                 }
-
+                $kasbon_id = isset($kasbon['id']) ? $kasbon['id'] : null;
                 $kode =  $this->KodeGaji(Carbon::parse($request['tgl_gaji'])->format('d M Y'));
                 $kode_update =  $data['tgl_gaji'] != $request['tgl_gaji'] ? $kode : $data['kode_gaji'];
                 $data->update([
@@ -523,7 +527,7 @@ class PenggajianController extends Controller
                     'nominal_kasbon' => $request['nominal_kasbon'],
                     'total_gaji'  => $total_gaji,
                     'sisa_gaji'  => $total_gaji,
-                    'kasbon_id' =>   $kasbon['id'],
+                    'kasbon_id' =>   $kasbon_id,
                     'keterangan_gaji' => $request['keterangan_gaji'],
                     'keterangan_kasbon' => $request['keterangan_kasbon'],
                     'updated_by' => Auth::user()->id,

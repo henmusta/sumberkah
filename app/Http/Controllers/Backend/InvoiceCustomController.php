@@ -59,7 +59,7 @@ class InvoiceCustomController extends Controller
                   $data = Invoice::create([
                     'tgl_invoice'  => $request['tgl_invoice'],
                     'kode_invoice' =>  $kode,
-                    'customer_id' =>  '19',
+                    'customer_id' =>  $request['customer_id'],
                     'ppn'  => $request['ppn'],
                     'nominal_ppn'  => $request['nominal_ppn'],
                     'sub_total'  => $request['sub_total'],
@@ -163,6 +163,7 @@ class InvoiceCustomController extends Controller
                   $invoice->update([
                     'tgl_invoice'  => $request['tgl_invoice'],
                     'kode_invoice' => $cek_kode,
+                    'customer_id' =>  $request['customer_id'],
                     'ppn'  => $request['ppn'],
                     'nominal_ppn'  => $request['nominal_ppn'],
                     'sub_total'  => $request['sub_total'],
