@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Activitylog;
+use App\Models\ActivityLog;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\ResponseStatus;
