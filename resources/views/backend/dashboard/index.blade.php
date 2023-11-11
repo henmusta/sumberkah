@@ -454,7 +454,7 @@
                                                             </tbody>
                                                             <tfoot>
                                                                 <tr>
-                                                                    <th colspan="4" class="text-end">Total :</th>
+                                                                    <th colspan="4" style="text-align:end !important">Total :</th>
                                                                     <th  class="text-end"  id="sum_nominal"></th>
                                                                     <th></th>
                                                                 </tr>
@@ -660,7 +660,7 @@
                                                     </tbody>
                                                     <tfoot>
                                                         <tr>
-                                                            <th colspan="11" class="text-end">Total :</th>
+                                                            <th colspan="11" style="text-align:end !important">Total :</th>
                                                             <th  class="text-end" ></th>
                                                             <th></th>
                                                             <th  class="text-end" ></th>
