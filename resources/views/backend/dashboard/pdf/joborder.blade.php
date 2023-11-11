@@ -87,7 +87,7 @@
 <body>
 
     <div class="header" style="padding-bottom: 20px;">
-        <h3  style=" text-align: center; margin-top:25px;margin-bottom: 0">Dashboard Status Joborder</h3>
+        <h3  style=" text-align: center; margin-top:25px;margin-bottom: 0">Dashboard Joborder belum ada invoice </h3>
         <p style=" text-align: center; margin-bottom: 0; font-size:8px;"> Print By : {{ Auth::user()->name ?? '' }} ( {{  \Carbon\Carbon::now()->format('d-m-Y H:i:s')  }} )</p>
     </div>
 

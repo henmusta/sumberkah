@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Kasbon extends Model
 {
@@ -25,6 +27,27 @@ class Kasbon extends Model
       'updated_by'
     ];
 
+    protected static $recordEvents = ['deleted', 'updated'];
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+                ->logOnly([
+                    'driver_id',
+                    'kode_kasbon',
+                    'jenis',
+                    'tgl_kasbon',
+                    'keterangan',
+                    'nominal',
+                    'joborder_id',
+                    'penggajian_id',
+                    'validasi',
+                  ])
+                ->setDescriptionForEvent(fn(string $eventName) => "Modul Kasbon {$eventName}")
+                // ->dontLogIfAttributesChangedOnly([
+
+                // ])
+                ->useLogName('Kasbon');
+    }
 
     public function driver()
     {

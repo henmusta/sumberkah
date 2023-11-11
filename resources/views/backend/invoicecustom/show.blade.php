@@ -29,7 +29,11 @@
                 <div class="row" style="">
                     <div class="col-12">
                         <table>
-
+                            <tr>
+                                <td style="width: 300px; ">Customer</td>
+                                <td style="width: 2px; padding-right: 10px">:</td>
+                                <td  style="font-weight:bold">{{$data['invoice']['customer']['name'] ?? ''}}</td>
+                            </tr>
                             <tr>
                                 <td style="width: 300px; ">Tanggal Invoice</td>
                                 <td style="width: 2px; padding-right: 10px">:</td>
@@ -37,7 +41,7 @@
                             </tr>
 
                             <tr>
-                                <td style="width: 300px; ">Keterangan</td>
+                                <td style="width: 300px; ">Keterangan Invoice</td>
                                 <td style="width: 2px; padding-right: 10px">:</td>
                                 <td  style="font-weight:bold">{{$data['invoice']['keterangan_invoice'] ?? ''}}</td>
                             </tr>

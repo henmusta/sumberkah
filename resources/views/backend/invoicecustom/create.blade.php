@@ -149,7 +149,7 @@ $(document).ready(function () {
             allowDecimalPadding: true,
             decimalCharacter : ',',
             digitGroupSeparator : '.',
-            decimalPlaces: 3,
+            decimalPlaces: 0,
             modifyValueOnWheel: false,
             minimumValue: 0
     };

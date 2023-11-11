@@ -109,7 +109,7 @@
                     <td width="2%" class="text-center">{{$no++}}</td>
                     <td class="text-left">{{$val['name']}}</td>
                     <td class="text-center">{{$val['telp']}}</td>
-                    <td class="text-center">{!!$val['exp_sim']!!}</td>
+                    <td class="text-center">{!!$val['dif_sim']!!}</td>
                 </tr>
             @endforeach
         </tbody>

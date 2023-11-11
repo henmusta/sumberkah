@@ -452,6 +452,13 @@
                                                             <tbody>
 
                                                             </tbody>
+                                                            <tfoot>
+                                                                <tr>
+                                                                    <th colspan="4" class="text-end">Total :</th>
+                                                                    <th  class="text-end"  id="sum_nominal"></th>
+                                                                    <th></th>
+                                                                </tr>
+                                                            </tfoot>
                                                         </table>
                                                     </div>
                                                     <div class="col-2">
@@ -538,6 +545,7 @@
                                                         <tbody>
 
                                                         </tbody>
+
                                                     </table>
                                                 </div>
 
@@ -650,6 +658,16 @@
                                                     <tbody>
 
                                                     </tbody>
+                                                    <tfoot>
+                                                        <tr>
+                                                            <th colspan="11" class="text-end">Total :</th>
+                                                            <th  class="text-end" ></th>
+                                                            <th></th>
+                                                            <th  class="text-end" ></th>
+                                                            <th></th>
+                                                            <th  class="text-end" ></th>
+                                                        </tr>
+                                                    </tfoot>
                                                 </table>
                                             </div>
 
@@ -782,6 +800,27 @@ div.dt-btn-container {
 
 
         let dataTableinvoice = $('#Datatableinvoice').DataTable({
+            footerCallback: function ( row, rowData, start, end, display ) {
+            var api = this.api(), rowData;
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '')*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+
+            var sum = api
+                .column( 4 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            $( api.column( 4 ).footer() ).html(
+               $.fn.dataTable.render.number( ',', '.', 0, '' ).display(sum)
+            );
+            // console.log(tot);
+         },
             dom: '<"dt-top-container"<l><"dt-center-in-div"f><"dt-btn-container"B>r>tip',
         buttons: [
             {
@@ -1213,6 +1252,40 @@ div.dt-btn-container {
 
     if(cek_status == '1'){
     let dataTableStatusJo = $('#DatatableStatusJo').DataTable({
+        footerCallback: function ( row, rowData, start, end, display ) {
+            var api = this.api(), rowData;
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '')*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+
+           var sum_total = api
+                .column( 11 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+           var sum_invoice = api
+                .column( 15 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+
+
+            $( api.column( 11 ).footer() ).html(
+               $.fn.dataTable.render.number( ',', '.', 0, '' ).display(sum_total)
+            );
+
+            $( api.column( 15 ).footer() ).html(
+               $.fn.dataTable.render.number( ',', '.', 0, '' ).display(sum_invoice)
+            );
+            // console.log(tot);
+        },
         dom: '<"dt-top-container"<l><"dt-center-in-div"f><"dt-btn-container"B>r>tip',
         buttons: [
             {
@@ -1260,9 +1333,28 @@ div.dt-btn-container {
          {data: 'muatan.name', name: 'muatan.name'},
          {data: 'konfirmasijo.0.berat_muatan', name: 'konfirmasijo.0.berat_muatan'},
          {data: 'total_uang_jalan', name: 'total_uang_jalan'},
-         {data: 'gaji.kode_gaji', name: 'gaji.kode_gaji'},
+         {
+               data: "gaji.kode_gaji", name:'gaji.kode_gaji',className:'text-center',  width: "1%",
+               render: function (data, type, row, meta) {
+                let kode = '-';
+                if(row.gaji !== null){
+                    kode = '<a target="_blank" href="{{ route('backend.penggajian.index') }}?penggajian_id='+row.gaji.id+'">'+data+'</a>';
+                }
+                   return kode;
+               }
+          },
          {data: 'gaji.payment.0.tgl_payment', name: 'gaji.payment.tgl_payment'},
-         {data: 'invoice.kode_invoice', name: 'invoice.kode_invoice'},
+        //  {data: 'invoice.kode_invoice', name: 'invoice.kode_invoice'},
+          {
+               data: "gaji.kode_invoice", name:'gaji.kode_gaji',className:'text-center',  width: "1%",
+               render: function (data, type, row, meta) {
+                let kode = '-';
+                if(row.gaji !== null){
+                    kode = '<a target="_blank" href="{{ route('backend.penggajian.index') }}?penggajian_id='+row.gaji.id+'">'+data+'</a>';
+                }
+                   return kode;
+               }
+          },
          {data: 'invoice.total_harga', name: 'invoice.total_harga'},
        ],
        columnDefs: [
@@ -1276,7 +1368,11 @@ div.dt-btn-container {
             targets: [10, 12,13,14]
         },
         {
-            targets:'_all',
+            targets: [15],
+            defaultContent: "0",
+        },
+        {
+            targets:[10,12,13,14],
             defaultContent: "-",
         },
         {

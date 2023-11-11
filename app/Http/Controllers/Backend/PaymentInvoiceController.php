@@ -224,21 +224,19 @@ class PaymentInvoiceController extends Controller
                         $payment = PaymentInvoice::updateOrCreate([
                             'id' => $val['id']
                         ],[
-                            // 'joborder_id' => $joborder['id'],
-                            // 'kode_joborder' => $joborder['kode_joborder'],
-                            // 'tgl_payment' => $request['tgl_pembayaran'],
-                            // 'jenis_payment' => $val['jenis_pembayaran'],
-                            // 'keterangan' => $val['keterangan'],
-                            // 'nominal' => $val['nominal'],
                             'invoice_id' =>  $invoice['id'],
                             'kode_invoice' => $invoice['kode_invoice'],
                             'tgl_payment' => $paymentinvoice['tgl_payment'] ?? $request['tgl_pembayaran'],
-                            'nominal' => $val['nominal'],
+                            'nominal' => number_format($val['nominal'], 3, '.', ''),
                             'jenis_payment' => $val['jenis_pembayaran'],
                             'keterangan' => $val['keterangan'],
                             'created_by' => ($val['id'] == '' || $val['id'] == null || $val['id'] == 'undefined') ? Auth::user()->id : $paymentinvoice['created_by']
                         ]);
                         $payment_id[] = $payment['id'];
+
+                        if(!$payment->wasRecentlyCreated && !$payment->wasChanged()){
+                            $payment->disableLogging();
+                        }
                     }
                     // dd($payment_id );
                     $cek_payment = PaymentInvoice::where([

@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
+
 use PDF;
 
 use Throwable;
@@ -364,12 +365,42 @@ class PaymentJoController extends Controller
                             'kode_joborder' => $joborder['kode_joborder'],
                             'tgl_payment' => $paymentjoborder['tgl_payment'] ?? $request['tgl_pembayaran'],
                             'jenis_payment' => $val['jenis_pembayaran'],
-                            'nominal_kasbon' => $val['nominal_kasbon'],
+                            'nominal_kasbon' => number_format($val['nominal_kasbon'], 3, '.', ''),
                             'keterangan' => $val['keterangan'],
                             'keterangan_kasbon' => $val['keterangan_kasbon'],
-                            'nominal' => $val['nominal'],
+                            'nominal' => number_format($val['nominal'], 3, '.', ''),
                             'created_by' => ($val['id'] == '' || $val['id'] == null || $val['id'] == 'undefined') ? Auth::user()->id : $paymentjoborder['created_by']
                         ]);
+
+                        // dd($payment->wasChanged());
+                        // if(!$payment->wasRecentlyCreated && $payment->wasChanged()){
+                        //     // updateOrCreate performed an update
+                        //     // dd($payment->isDirty());
+                        // }
+
+                        if(!$payment->wasRecentlyCreated && !$payment->wasChanged()){
+                            $payment->disableLogging();
+                        }
+
+                        // if($payment->wasRecentlyCreated){
+                        //    // updateOrCreate performed create
+                        // }
+
+                        // if ($payment->isDirty()) {
+                        //     $changedAttributes = $payment->getDirty();
+                        //     dd($changedAttributes);
+                        // } else {
+                        //     $changedAttributes = $payment->getDirty();
+                        //     dd($changedAttributes);
+                        // }
+
+
+
+
+
+
+
+
                         $payment_id[] = $payment['id'];
 
 

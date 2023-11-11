@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Rute extends Model
 {
+    use HasFactory, LogsActivity;
     public $timestamps = false;
     protected $table = 'rute';
     protected $fillable = [
@@ -23,8 +26,34 @@ class Rute extends Model
       'validasi',
       'validasi_delete',
       'keterangan',
-      1
     ];
+
+    protected static $recordEvents = ['deleted', 'updated'];
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+                ->logOnly([
+                    'kode_rute',
+                    'customer_id',
+                    'first_rute_id',
+                    'last_rute_id',
+                    'muatan_id',
+                    'jenismobil_id',
+                    'gaji',
+                    'uang_jalan',
+                    'ritase_tonase',
+                    'harga',
+                    'keterangan',
+                    'validasi',
+                    'validasi_delete',
+                  ])
+                ->setDescriptionForEvent(fn(string $eventName) => "Modul Penggajian {$eventName}")
+                // ->dontLogIfAttributesChangedOnly([
+
+                // ])
+                ->useLogName('Penggajian');
+    }
+
 
     public function customer()
     {

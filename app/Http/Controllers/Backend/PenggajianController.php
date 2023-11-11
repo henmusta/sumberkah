@@ -169,6 +169,7 @@ class PenggajianController extends Controller
                   if($total_gaji < 0){
                     $response = response()->json($this->responseStore(true, 'Total Gaji Salah', route('backend.penggajian.create')));
                   }else{
+                    // dd($request['kode_joborder']);
                     $data = Penggajian::create([
                         'kode_gaji'  => $kode,
                         'tgl_gaji'  => $request['tgl_gaji'],
@@ -181,6 +182,7 @@ class PenggajianController extends Controller
                         'total_gaji'  => $total_gaji,
                         'sisa_gaji'  => $total_gaji,
                         'keterangan_gaji' => $request['keterangan_gaji'],
+                        'kode_joborder' => $request['kode_joborder'],
                         'keterangan_kasbon' => $request['keterangan_kasbon'],
                         'status_payment' => '0',
                         'created_by' => Auth::user()->id,
@@ -251,6 +253,7 @@ class PenggajianController extends Controller
                                     'kredit'=> '0'
                                 ]);
 
+                                // dd($kasbon['id']);
                                 $data->update([
                                     'kasbon_id' =>   $kasbon['id']
                                 ]);
@@ -528,6 +531,7 @@ class PenggajianController extends Controller
                     'total_gaji'  => $total_gaji,
                     'sisa_gaji'  => $total_gaji,
                     'kasbon_id' =>   $kasbon_id,
+                    'kode_joborder' =>  $request['kode_joborder'],
                     'keterangan_gaji' => $request['keterangan_gaji'],
                     'keterangan_kasbon' => $request['keterangan_kasbon'],
                     'updated_by' => Auth::user()->id,

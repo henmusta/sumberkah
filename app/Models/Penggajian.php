@@ -4,13 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Penggajian extends Model
 {
+    use HasFactory, LogsActivity;
     public $timestamps = false;
     protected $table = 'penggajian';
     protected $fillable = [
       'joborder_id',
+      'kasbon_id',
       'kode_gaji',
       'tgl_gaji',
       'driver_id',
@@ -26,11 +30,42 @@ class Penggajian extends Model
       'keterangan_kasbon',
       'total_payment',
       'status_payment',
+      'kode_joborder',
       'created_by',
       'updated_by',
     ];
 
-
+    protected static $recordEvents = ['deleted', 'updated'];
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+                ->logOnly([
+                    'joborder_id',
+                    'kode_gaji',
+                    'tgl_gaji',
+                    'driver_id',
+                    'mobil_id',
+                    'kasbon_id',
+                    'bulan_kerja',
+                    'sub_total',
+                    'bonus',
+                    'kasbon_id',
+                    'nominal_kasbon',
+                    'total_gaji',
+                    'kode_joborder',
+                    'keterangan_gaji',
+                    'keterangan_kasbon',
+                    // 'total_payment',
+                    // 'status_payment',
+                  ])
+                ->setDescriptionForEvent(fn(string $eventName) => "Modul Penggajian {$eventName}")
+                ->dontLogIfAttributesChangedOnly([
+                    'status_payment',
+                    'total_payment',
+                    'sisa_gaji',
+                ])
+                ->useLogName('Penggajian');
+    }
 
     public function driver()
     {

@@ -229,12 +229,16 @@ class PaymentGajiController extends Controller
                             'penggajian_id' =>  $penggajian['id'],
                             'kode_gaji' => $penggajian['kode_gaji'],
                             'tgl_payment' => $payment_gaji['tgl_payment'] ?? $request['tgl_pembayaran'],
-                            'nominal' => $val['nominal'],
+                            'nominal' => number_format($val['nominal'], 3, '.', ''),
                             'jenis_payment' => $val['jenis_pembayaran'],
                             'keterangan' => $val['keterangan'],
                             'created_by' => ($val['id'] == '' || $val['id'] == null || $val['id'] == 'undefined') ? Auth::user()->id : $payment_gaji['created_by']
                         ]);
                         $payment_id[] = $payment['id'];
+
+                        if(!$payment->wasRecentlyCreated && !$payment->wasChanged()){
+                            $payment->disableLogging();
+                        }
                     }
                     // dd($payment_id );
                     $cek_payment = PaymentGaji::where([

@@ -34,7 +34,7 @@
 
 
                                         <div class="row">
-                                            <div class="col-md-3">
+                                            <div class="col-md-4">
                                                 <div class="mb-3">
                                                     <label>Driver<span class="text-danger">*</span></label>
                                                     <select id="select2Driver" style="width: 100% !important;" name="driver_id">
@@ -42,7 +42,7 @@
                                                   </div>
 
                                             </div>
-                                            <div class="col-md-3">
+                                            <div class="col-md-4">
                                                 <div class="mb-3">
                                                     <label>Status Transaksi<span class="text-danger">*</span></label>
                                                     <select id="select2Jenis" style="width: 100% !important;" name="Jenis">
@@ -54,7 +54,7 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="col-md-3">
+                                            <div class="col-md-3"  hidden>
                                                 <div class="mb-3">
                                                     <label>Status Validasi<span class="text-danger">*</span></label>
                                                     <select id="select2ValidasiFilter" style="width: 100% !important;" name="validasi">
@@ -65,7 +65,7 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="col-md-3">
+                                            <div class="col-md-4">
                                                 <div class="mb-3">
                                                     <label>Nomor Bon<span class="text-danger">*</span></label>
                                                     <select id="select2Kasbon" style="width: 100% !important;" name="kasbon_id">

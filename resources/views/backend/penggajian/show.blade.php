@@ -147,15 +147,15 @@
                                             <th class="text-end"> Rp. {{ number_format($biaya_lain,0,',','.')}}</th>
                                             <th class="text-end"> Rp. {{ number_format($gaji,0,',','.')}}</th>
                                         </tr>
-
-                                        <tr>
-                                            <th class="text-end" colspan="13">Potong Kasbon</th>
-                                            <th class="text-end"> Rp. {{ number_format($data['penggajian']['nominal_kasbon'],0,',','.')}}</th>
-                                        </tr>
                                         <tr>
                                             <th class="text-end" colspan="13">Bonus</th>
                                             <th class="text-end"> Rp. {{ number_format($data['penggajian']['bonus'],0,',','.')}}</th>
                                         </tr>
+                                        <tr>
+                                            <th class="text-end" colspan="13">Potong Kasbon</th>
+                                            <th class="text-end"> Rp. {{ number_format($data['penggajian']['nominal_kasbon'],0,',','.')}}</th>
+                                        </tr>
+
                                         <tr>
                                             <th class="text-end" colspan="13">Total</th>
                                             <th class="text-end"> Rp. {{ number_format($data['penggajian']['total_gaji'],0,',','.')}}</th>

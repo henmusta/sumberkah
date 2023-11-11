@@ -218,7 +218,7 @@ class KasbonController extends Controller
                     }else{
                         $total_kasbon = ($driver['kasbon'] - $request['nominal']) ;
                     }
-
+                    // dd($total_kasbon);
                     $kasbonjurnallog = Kasbonjurnallog::create([
                         'kasbon_id' =>   $data['id'],
                         'joborder_id' =>  $data['joborder_id'],
@@ -307,22 +307,34 @@ class KasbonController extends Controller
             $status = $request['jenis'] == 'Pembayaran' ? '1' : '0';
             $driver = Driver::findOrFail($request['driver_id']);
             $total_kasbon = 0;
-            if($request['jenis'] == "Pembayaran" ){
-                $total_kasbon = $driver['kasbon'] - $request['nominal'];
-                $total_kasbon = $driver['kasbon'] - $request['nominal'];
-                $driver->update([
-                    'kasbon'=> $total_kasbon,
-                ]);
-                $datalog->update([
-                    'driver_id' => $request['driver_id'],
-                    'jenis'=> $request['jenis'],
-                    'tgl_kasbon'=> $request['tgl_kasbon'],
-                    'keterangan'=> $request['keterangan'],
-                    'debit'=> $data['nominal']
-                ]);
-
-
+            if($data['jenis'] == 'Pengajuan'){
+                $total_kasbon = ($driver['kasbon'] + $request['nominal']) ;
+            }else{
+                $total_kasbon = ($driver['kasbon'] - $request['nominal']) ;
             }
+
+            $driver->update([
+                'kasbon'=> $total_kasbon,
+            ]);
+            $datalog->update([
+                'driver_id' => $request['driver_id'],
+                'jenis'=> $request['jenis'],
+                'tgl_kasbon'=> $request['tgl_kasbon'],
+                'keterangan'=> $request['keterangan'],
+                'debit'=> $data['nominal']
+            ]);
+
+
+            // if($request['jenis'] == "Pembayaran" ){
+            //     $total_kasbon = $driver['kasbon'] - $request['nominal'];
+
+            // }else{
+            //     $validasi = new Request([
+            //         'id' =>  $data['id'],
+            //         'nominal' =>  $data['nominal'],
+            //         'validasi' =>  $data['validasi'],
+            //     ]);
+            // }
 
 
             if( $total_kasbon < 0){

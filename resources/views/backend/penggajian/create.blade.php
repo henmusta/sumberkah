@@ -81,7 +81,7 @@
                           <div class="row">
                             <div class="mb-3">
                                 <label>Kode Joborder<span class="text-danger">*</span></label>
-                                <textarea type="text" id="kode_joborder" value="" name="kode_joborder"  class="form-control" disabled></textarea>
+                                <textarea type="text" id="kode_joborder" value="" name="kode_joborder"  class="form-control" readonly></textarea>
                               </div>
                           </div>
                     </div>

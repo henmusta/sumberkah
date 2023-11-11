@@ -117,7 +117,9 @@
                     <td  class="text-end">Rp. {{ number_format($val['penggajian']->bonus,0,',','.')}}</td>
                     <td  class="text-end">Rp. {{ number_format($val['penggajian']->nominal_kasbon,0,',','.')}}</td>
                     <td  class="text-end">Rp. {{ number_format($val['penggajian']->total_gaji,0,',','.')}}</td>
-                    <td  class="text-end">{{ isset($val['penggajian']->kasbon) ? $val['penggajian']->kasbon['kode_kasbon'] : '-'}}</td>
+                    @php($kode = isset($val['penggajian']->kasbon) ? route('backend.kasbon.index').'?kasbon_id='.$val['penggajian']->id : null)
+                    <td class="text-end"><a {{ isset($kode) ? 'href='.$kode.' target=_blank' : 'disabled'}}>{{ isset($val['penggajian']->kasbon) ? $val['penggajian']->kasbon['kode_kasbon'] : '-'}}</td>
+                    {{-- <td  class="text-end">{{ isset($val['penggajian']->kasbon) ? "<a href="route('backend.kasbon.index')'?kasbon_id='$val['penggajian']->id"></a>" : '-'}}</td> --}}
                     <td>{{$val['penggajian']->createdby['name']}} ( {{\Carbon\Carbon::parse($val['penggajian']->created_at)->format('d-m-Y H:i:s')}} )</td>
                 </tr>
             @endforeach

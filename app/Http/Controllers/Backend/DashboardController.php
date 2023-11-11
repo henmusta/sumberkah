@@ -476,6 +476,7 @@ class DashboardController extends Controller
         $cek = $this->data($request);
         $type = $request['type'];
         // dd($type);
+        // dd($type);
         $lastcolumn = 'D';
         switch($type){
             case $type == 'berlaku_sim':
@@ -580,8 +581,9 @@ class DashboardController extends Controller
 
 
             foreach($data as $val){
+                // dd($val);
                 $sheet->setCellValue('A' . $x, $no++);
-                $sheet->setCellValue('B' . $x, $val['namor_plat']);
+                $sheet->setCellValue('B' . $x, $val['nomor_plat']);
                 $sheet->setCellValue('C' . $x, $val['merkmobil']['name'] ?? '');
                 $sheet->setCellValue('D' . $x, $val['jenismobil']['name'] ?? '');
                 $sheet->setCellValue('E' . $x, $val['dump'] ?? '');

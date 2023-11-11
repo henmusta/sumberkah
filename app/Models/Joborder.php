@@ -66,19 +66,19 @@ class Joborder extends Model
                     'status_joborder',
                     'total_uang_jalan',
                     'total_kasbon',
-                    'total_payment',
-                    'sisa_uang_jalan',
+                    // 'total_payment',
+                    // 'sisa_uang_jalan',
                   ])
-                ->setDescriptionForEvent(fn(string $eventName) => "Modul Customer {$eventName}")
+                ->setDescriptionForEvent(fn(string $eventName) => "Modul Joborder {$eventName}")
                 ->dontLogIfAttributesChangedOnly([
                     'invoice_id',
                     'kode_invoice',
                     'penggajian_id',
                     'kode_gaji',
                     'status_payment',
-                    'total_uang_jalan',
                     'total_kasbon',
                     'total_payment',
+                    'sisa_uang_jalan',
                 ])
                 ->useLogName('Joborder');
     }

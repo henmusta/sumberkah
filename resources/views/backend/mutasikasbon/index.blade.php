@@ -47,11 +47,11 @@
                                                     <label>Filter Tanggal</label>
                                                     <div class=" input-group mb-3">
                                                         <input type="text" id="tgl_awal" class="form-control datePicker"
-                                                                placeholder="Tanggal Awal"  value="{{ \Carbon\Carbon::now()->startOfYear()->format('Y-m-d') }}"
+                                                                placeholder="Tanggal Awal"  value=""
                                                                />
                                                         <span class="input-group-text" id="basic-addon2">S/D</span>
                                                         <input type="text" id="tgl_akhir" class="form-control datePicker"
-                                                                placeholder="Tanggal Akhir"  value="{{ \Carbon\Carbon::now()->lastOfYear()->format('Y-m-d') }}"
+                                                                placeholder="Tanggal Akhir"  value=""
                                                                 />
                                                     </div>
                                                 </div>

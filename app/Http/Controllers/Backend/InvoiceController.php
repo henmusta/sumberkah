@@ -207,6 +207,7 @@ class InvoiceController extends Controller
                     'sisa_tagihan'  => $request['total_harga'],
                     'keterangan_invoice'  => $request['keterangan_invoice'],
                     'created_by' => Auth::user()->id,
+                    'kode_joborder'  => $request['kode_joborder'],
                     // 'konfirmasijoid'  => $request['konfirmasijoid'],
                   ]);
 
@@ -281,6 +282,7 @@ class InvoiceController extends Controller
                 'total_harga'  => $request['total_harga'],
                 'sisa_tagihan'  => $request['total_harga'],
                 'keterangan_invoice'  => $request['keterangan_invoice'],
+                'kode_joborder'  => $request['kode_joborder'],
                 'updated_by' => Auth::user()->id,
             ]);
 
