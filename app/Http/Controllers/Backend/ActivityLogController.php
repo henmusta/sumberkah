@@ -25,7 +25,12 @@ class ActivityLogController extends Controller
         ];
         if ($request->ajax()) {
             $data = Activitylog::query();
-
+            if ($request->filled('tgl_awal')) {
+                $data->whereDate('created_at', '>=', $request['tgl_awal']);
+            }
+            if ($request->filled('tgl_akhir')) {
+                $data->whereDate('created_at', '<=', $request['tgl_akhir']);
+            }
             return DataTables::of($data)
                 ->editColumn('tanggal', function ($row) {
                     return Carbon::parse($row->created_at)->format('Y-m-d');

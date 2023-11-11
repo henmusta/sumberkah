@@ -143,8 +143,8 @@
           url: "{{ route('backend.activitylog.index') }}",
           data: function (d) {
             // d.status =  select2Status.find(':selected').val();
-            // d.tgl_awal = $('#tgl_awal').val();
-            // d.tgl_akhir = $('#tgl_akhir').val();
+            d.tgl_awal = $('#tgl_awal').val();
+            d.tgl_akhir = $('#tgl_akhir').val();
           }
         },
 
