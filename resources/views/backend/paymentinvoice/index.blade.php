@@ -216,7 +216,7 @@ tr.group:hover {
       const bsEdit = new bootstrap.Modal(modalEdit);
       var collapsedGroups = {};
       let dataTable = $('#Datatable').DataTable({
-        responsive: true,
+        // responsive: true,
         scrollX: false,
         processing: true,
         serverSide: true,

@@ -10,8 +10,6 @@
                 <h5 class="card-title mb-3">Table {{ $config['page_title'] }}</h5>
                 <div class="mt-xl-0 mt-4">
                     <div class="d-flex align-items-start">
-
-
                         <div class="flex-grow-1">
                             <div class="col-xl-12">
                                 <div class="d-flex gap-2 flex-wrap mb-3 text-center">
@@ -80,7 +78,7 @@
 
             </div>
             <div class="card-body">
-                <div class="table">
+                <div class="table-responsive">
                     <table id="Datatable" class="table table-bordered border-bottom w-100" style="width:100%">
                         <thead>
                             <tr>
@@ -293,7 +291,7 @@ tr.group:hover {
       const bsEdit = new bootstrap.Modal(modalEdit);
       var collapsedGroups = {};
       let dataTable = $('#Datatable').DataTable({
-        responsive: true,
+        // responsive: true,
         scrollX: false,
         processing: true,
         serverSide: true,

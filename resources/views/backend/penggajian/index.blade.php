@@ -3,12 +3,15 @@
 @section('title') {{ $config['page_title'] }} @endsection
 
 @section('content')
-<div class="page-content">
-    <div class="container-fluid">
+<div  class="page-content">
+    <div id="fluid" class="container-fluid full">
         <div class="card">
             <div class="card-header mb-3">
-                <h5 class="card-title mb-3">Table {{ $config['page_title'] }}</h5>
-
+                <div class="card-header text-center">
+                    <h2 class="">{{ $config['page_title'] }}</h2>
+                </div>
+                <button id="fullscreen-button" hidden="true"><i class="fas fa-expand"></i></button>
+                <button id="compress-button"><i class="fas fa-compress"></i></button>
                 <div class="col-md-xl-12">
                     <div class="mt-xl-0 mt-4">
 

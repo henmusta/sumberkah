@@ -53,7 +53,7 @@ class DashboardController extends Controller
            ->when( $status_jalan, function ($query,   $status_jalan) {
              return  $query->where('status_jalan', '!=', $status_jalan);
            })->when( $type == 'berlaku_sim', function ($query,   $type) {
-             return  $query->whereRaw('DATEDIFF(NOW(),tgl_sim) > -45');
+             return  $query->whereRaw('DATEDIFF(NOW(),tgl_sim) > -45')->orderBy('tgl_sim','asc');
            })->get();
 
         //    $driver_data = array();
@@ -96,15 +96,15 @@ class DashboardController extends Controller
            ->when( $status_jalan_mobil, function ($query,  $status_jalan_mobil) {
             return  $query->where('status_jalan', '!=', $status_jalan_mobil);
           })->when(  $type == 'berlaku_stnk' , function ($query,   $type ) {
-            return  $query->whereRaw('DATEDIFF(NOW(),berlaku_stnk) > -45');
-          })->when(  $type == 'berlaku_pakak' , function ($query,   $type ) {
-            return  $query->whereRaw('DATEDIFF(NOW(),berlaku_pajak) > -45');
+            return  $query->whereRaw('DATEDIFF(NOW(),berlaku_stnk) > -45')->orderBy('berlaku_stnk','asc');
+          })->when(  $type == 'berlaku_pajak' , function ($query,   $type ) {
+            return  $query->whereRaw('DATEDIFF(NOW(),berlaku_pajak) > -45')->orderBy('berlaku_pajak','asc');
           })->when(  $type == 'berlaku_kir' , function ($query,   $type ) {
-            return  $query->whereRaw('DATEDIFF(NOW(),berlaku_kir) > -45');
+            return  $query->whereRaw('DATEDIFF(NOW(),berlaku_kir) > -45')->orderBy('berlaku_kir','asc');
           })->when(  $type == 'berlaku_ijin_bongkar' , function ($query,   $type ) {
-            return  $query->whereRaw('DATEDIFF(NOW(),berlaku_ijin_bongkar) > -45');
+            return  $query->whereRaw('DATEDIFF(NOW(),berlaku_ijin_bongkar) > -45')->orderBy('berlaku_ijin_bongkar','asc');
           })->when( $type == 'berlaku_ijin_usaha', function ($query,   $type ) {
-            return  $query->whereRaw('DATEDIFF(NOW(),berlaku_ijin_usaha) > -45');
+            return  $query->whereRaw('DATEDIFF(NOW(),berlaku_ijin_usaha) > -45')->orderBy('berlaku_ijin_usaha','asc');
           })->get();
 
 
@@ -448,7 +448,6 @@ class DashboardController extends Controller
         //     dd($val);
         // }
 
-
         $data = [
             'data' => $data,
         ];
@@ -538,6 +537,7 @@ class DashboardController extends Controller
             case $type == 'status_joborder':
                 $data = $cek['dtstjoborder'];
                 $fileName = 'Dashboard-Status-Joborder ';
+                $lastcolumn = 'Q';
                 break;
 
         }
@@ -674,9 +674,10 @@ class DashboardController extends Controller
             $sheet->setCellValue('K'.$rows3, 'Tonase');
             $sheet->setCellValue('L'.$rows3, 'Total UJ');
             $sheet->setCellValue('M'.$rows3, 'Kode Gaji');
-            $sheet->setCellValue('N'.$rows3, 'Tanggal Pay Gaji');
-            $sheet->setCellValue('O'.$rows3, 'Kode Invoice');
-            $sheet->setCellValue('P'.$rows3, 'Total Tagihan Invoice');
+            $sheet->setCellValue('N'.$rows3, 'Kode Gaji');
+            $sheet->setCellValue('O'.$rows3, 'Tanggal Pay Gaji');
+            $sheet->setCellValue('P'.$rows3, 'Kode Invoice');
+            $sheet->setCellValue('Q'.$rows3, 'Total Tagihan Invoice');
 
             foreach($data->get() as $val){
 
@@ -693,9 +694,10 @@ class DashboardController extends Controller
                 $sheet->setCellValue('K' . $x, $val->konfirmasijo[0]['berat_muatan'] ?? '');
                 $sheet->setCellValue('L' . $x, $val['total_uang_jalan'] ?? '0');
                 $sheet->setCellValue('M' . $x, $val['gaji']['kode_gaji'] ?? '');
-                $sheet->setCellValue('N' . $x, $val['gaji']->payment[0]['tgl_payment'] ?? '');
-                $sheet->setCellValue('O' . $x, $val['invoice']['kode_invoice'] ?? '');
-                $sheet->setCellValue('P' . $x, $val['invoice']['total_harga']  ?? '0');
+                $sheet->setCellValue('N' . $x, $val['gaji']['total_gaji'] ?? '');
+                $sheet->setCellValue('O' . $x, $val['gaji']->payment[0]['tgl_payment'] ?? '');
+                $sheet->setCellValue('P' . $x, $val['invoice']['kode_invoice'] ?? '');
+                $sheet->setCellValue('Q' . $x, $val['invoice']['total_harga']  ?? '0');
                 $x++;
            }
 
@@ -709,8 +711,11 @@ class DashboardController extends Controller
            $spreadsheet->getActiveSheet()->getStyle('L4:L'.$cell)->getNumberFormat()->setFormatCode('#,##0');
            $spreadsheet->setActiveSheetIndex(0)->setCellValue('L'.$cell, '=SUM(L3:L' . $cell . ')');
 
-           $spreadsheet->getActiveSheet()->getStyle('P4:P'.$cell)->getNumberFormat()->setFormatCode('#,##0');
-           $spreadsheet->setActiveSheetIndex(0)->setCellValue('P'.$cell, '=SUM(P3:P' . $cell . ')');
+           $spreadsheet->getActiveSheet()->getStyle('N4:N'.$cell)->getNumberFormat()->setFormatCode('#,##0');
+           $spreadsheet->setActiveSheetIndex(0)->setCellValue('N'.$cell, '=SUM(N3:N' . $cell . ')');
+
+           $spreadsheet->getActiveSheet()->getStyle('Q4:Q'.$cell)->getNumberFormat()->setFormatCode('#,##0');
+           $spreadsheet->setActiveSheetIndex(0)->setCellValue('Q'.$cell, '=SUM(Q3:Q' . $cell . ')');
         }
 
 

@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="page-content">
-    <div id="dashboard" class="container-fluid full">
+    <div id="fluid" class="container-fluid full">
         {{-- <h5 class="card-title mb-3">{{ $config['page_title'] }}</h5> --}}
         <div class="card">
             <div class="card-header text-center">
@@ -64,7 +64,7 @@
 
 
                                 <div class="row">
-                                    <div class="col-6">
+                                    <div class="col-md-6">
                                         <div class="card-body" style="border: 1px solid #fff; margin-top:10px">
                                             <div class="text-center"  style="padding: 20px">
                                                 <h4 class="main-content-label mb-1">Berlaku Sim</h4>
@@ -336,7 +336,7 @@
                                                                 <thead>
                                                                     <tr>
                                                                         <th width="1%">No</th>
-                                                                        <th width="200px">Nomora Plat Polisi</th>
+                                                                        <th width="200px">Nomor Plat Polisi</th>
                                                                         <th>Merek</th>
                                                                         <th>Jenis</th>
                                                                         <th>Dump</th>
@@ -650,6 +650,7 @@
                                                             <th>Tonase</th>
                                                             <th>Total UJ</th>
                                                             <th>Kode Gaji</th>
+                                                            <th>Gaji</th>
                                                             <th>Tanggal Pay Gaji</th>
                                                             <th>Kode Invoice</th>
                                                             <th>Tagihan</th>
@@ -664,7 +665,8 @@
                                                             <th  class="text-end" ></th>
                                                             <th></th>
                                                             <th  class="text-end" ></th>
-                                                            <th></th>
+                                                            <th ></th>
+                                                            <th ></th>
                                                             <th  class="text-end" ></th>
                                                         </tr>
                                                     </tfoot>
@@ -753,7 +755,7 @@ div.dt-btn-container {
                 }
             }
         ],
-        responsive: true,
+        // responsive: true,
         scrollX: false,
         processing: true,
         serverSide: true,
@@ -830,7 +832,7 @@ div.dt-btn-container {
                 }
             }
         ],
-        responsive: true,
+        // responsive: true,
         scrollX: false,
         processing: true,
         serverSide: true,
@@ -919,7 +921,7 @@ div.dt-btn-container {
                 }
             }
         ],
-       responsive: true,
+    //    responsive: true,
        scrollX: false,
        processing: true,
        serverSide: true,
@@ -1002,7 +1004,7 @@ div.dt-btn-container {
                 }
             }
         ],
-       responsive: true,
+    //    responsive: true,
        scrollX: false,
        processing: true,
        serverSide: true,
@@ -1047,7 +1049,7 @@ div.dt-btn-container {
                 }
             }
         ],
-       responsive: true,
+    //    responsive: true,
        scrollX: false,
        processing: true,
        serverSide: true,
@@ -1086,7 +1088,7 @@ div.dt-btn-container {
                 }
             }
         ],
-        responsive: true,
+        // responsive: true,
        scrollX: false,
        processing: true,
        serverSide: true,
@@ -1131,7 +1133,7 @@ div.dt-btn-container {
                 }
             }
         ],
-        responsive: true,
+        // responsive: true,
        scrollX: false,
        processing: true,
        serverSide: true,
@@ -1173,7 +1175,7 @@ div.dt-btn-container {
                 }
             }
         ],
-        responsive: true,
+        // responsive: true,
        scrollX: false,
        processing: true,
        serverSide: true,
@@ -1216,7 +1218,7 @@ div.dt-btn-container {
                 }
             }
         ],
-        responsive: true,
+        // responsive: true,
        scrollX: false,
        processing: true,
        serverSide: true,
@@ -1268,8 +1270,15 @@ div.dt-btn-container {
                     return intVal(a) + intVal(b);
                 }, 0 );
 
+            var sum_gaji = api
+                .column( 13 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
            var sum_invoice = api
-                .column( 15 )
+                .column( 16 )
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
@@ -1281,7 +1290,11 @@ div.dt-btn-container {
                $.fn.dataTable.render.number( ',', '.', 0, '' ).display(sum_total)
             );
 
-            $( api.column( 15 ).footer() ).html(
+            $( api.column( 13 ).footer() ).html(
+               $.fn.dataTable.render.number( ',', '.', 0, '' ).display(sum_gaji)
+            );
+
+            $( api.column( 16 ).footer() ).html(
                $.fn.dataTable.render.number( ',', '.', 0, '' ).display(sum_invoice)
             );
             // console.log(tot);
@@ -1295,7 +1308,7 @@ div.dt-btn-container {
                 }
             }
         ],
-            responsive: true,
+            // responsive: true,
         scrollX: false,
         processing: true,
         serverSide: true,
@@ -1332,7 +1345,7 @@ div.dt-btn-container {
          {data: 'ruteakhir.name', name: 'ruteakhir.name'},
          {data: 'muatan.name', name: 'muatan.name'},
          {data: 'konfirmasijo.0.berat_muatan', name: 'konfirmasijo.0.berat_muatan'},
-         {data: 'total_uang_jalan', name: 'total_uang_jalan'},
+         {data: 'total_uang_jalan', name: 'total_uang_jalan', width: '80px'},
          {
                data: "gaji.kode_gaji", name:'gaji.kode_gaji',className:'text-center',  width: "1%",
                render: function (data, type, row, meta) {
@@ -1343,36 +1356,37 @@ div.dt-btn-container {
                    return kode;
                }
           },
+         {data: 'gaji.total_gaji', name: 'gaji.total_gaji', width: '80px'},
          {data: 'gaji.payment.0.tgl_payment', name: 'gaji.payment.tgl_payment'},
         //  {data: 'invoice.kode_invoice', name: 'invoice.kode_invoice'},
           {
-               data: "gaji.kode_invoice", name:'gaji.kode_gaji',className:'text-center',  width: "1%",
+               data: "invoice.kode_invoice", name:'invoice.kode_invoice',className:'text-center',  width: "1%",
                render: function (data, type, row, meta) {
                 let kode = '-';
-                if(row.gaji !== null){
-                    kode = '<a target="_blank" href="{{ route('backend.penggajian.index') }}?penggajian_id='+row.gaji.id+'">'+data+'</a>';
+                if(row.invoice !== null){
+                    kode = '<a target="_blank" href="{{ route('backend.invoice.index') }}?invoice_id='+row.invoice.id+'">'+data+'</a>';
                 }
                    return kode;
                }
           },
-         {data: 'invoice.total_harga', name: 'invoice.total_harga'},
+         {data: 'invoice.total_harga', name: 'invoice.total_harga', width: '80px'},
        ],
        columnDefs: [
         {
             className: 'text-end',
-            targets: [11, 15],
+            targets: [11, 13, 16],
             render: $.fn.dataTable.render.number('.', ',', 0, '')
         },
         {
             className: 'text-center',
-            targets: [10, 12,13,14]
+            targets: [10, 12, 14]
         },
         {
-            targets: [15],
+            targets: [16, 13],
             defaultContent: "0",
         },
         {
-            targets:[10,12,13,14],
+            targets:[10,12,15, 14],
             defaultContent: "-",
         },
         {

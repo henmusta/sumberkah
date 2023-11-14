@@ -150,13 +150,13 @@
             $("#fullscreen-button").click(function() {
                 $( "#fullscreen-button" ).prop('hidden', true);
                 $( "#compress-button" ).prop('hidden', false);
-                $("#dashboard").addClass( 'full');
+                $("#fluid").addClass( 'full');
             });
 
             $("#compress-button").click(function() {
                 $( "#fullscreen-button" ).prop('hidden', false);
                 $("#compress-button" ).prop('hidden', true);
-                $("#dashboard").removeClass( 'full');
+                $("#fluid").removeClass( 'full');
             });
 
 

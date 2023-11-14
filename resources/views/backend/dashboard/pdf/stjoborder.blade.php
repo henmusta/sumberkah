@@ -109,6 +109,7 @@
                 <th>Tonase</th>
                 <th>Total UJ</th>
                 <th>Kode Gaji</th>
+                <th>Gaji</th>
                 <th>Tanggal Pay Gaji</th>
                 <th>Kode Invoice</th>
                 <th>Total Tagihan Invoice</th>
@@ -116,10 +117,15 @@
         </thead>
         <tbody>
             @php($no=1)
-            @php($total_invoice=0)
-            @foreach ($data['data']->get() as $val)
+            @php($total_invoice= $total_gaji = 0)
+            @foreach ($data['data']->get() as $key => $val)
             @if (isset($val['invoice']['total_harga']))
-                @php($total_invoice += $val['invoice']['total_harga']);
+                @if(isset($val['gaji']['total_gaji']))
+                     @php($total_invoice += $val['invoice']['total_harga']);
+                @endif
+                @if(isset($val['gaji']['total_gaji']))
+                     @php($total_gaji += $val['gaji']['total_gaji']);
+                @endif
             @endif
                 <tr>
                     <td width="2%" class="text-center">{{$no++}}</td>
@@ -132,13 +138,18 @@
                     <td class="text-left">{{$val['ruteawal']['name'] ?? ''}}</td>
                     <td class="text-left">{{$val['ruteakhir']['name'] ?? ''}}</td>
                     <td class="text-left">{{$val['muatan']['name'] ?? ''}}</td>
-                    @php($cek_bm = fmod($val->konfirmasijo[0]['berat_muatan'], 1) != 0 ? 3 : 0)
+                    @if(isset($val->konfirmasijo[0]['berat_muatan']))
+                       @php($cek_bm = fmod($val->konfirmasijo[0]['berat_muatan'], 1) != 0 ? 3 : 0)
+                    @else
+                       @php($cek_bm =  0)
+                    @endif
                     <td class="text-center">{{isset($val->konfirmasijo[0]['berat_muatan']) ? number_format($val->konfirmasijo[0]['berat_muatan'], $cek_bm,',','.') : '-'}}</td>
                     <th class="text-end" id="">Rp. {{ isset($val['total_uang_jalan']) ? number_format($val['total_uang_jalan'],0,',','.') : '0'}}</th>
                     <td class="text-left">{{$val['gaji']['kode_gaji'] ?? ''}}</td>
+                    <th class="text-end" id="">Rp. {{ isset($val['gaji']['total_gaji']) ? number_format($val['gaji']['total_gaji'],0,',','.') : ''}}</th>
                     <td class="text-left">{{$val['gaji']->payment[0]['tgl_payment'] ?? ''}}</td>
                     <td class="text-left">{{$val['invoice']['kode_invoice'] ?? ''}}</td>
-                    <th class="text-end" id="">Rp. {{ isset($val['total_uang_jalan']) ? number_format($val['invoice']['total_harga'],0,',','.') : ''}}</th>
+                    <th class="text-end" id="">Rp. {{ isset($val['invoice']['total_harga']) ? number_format($val['invoice']['total_harga'],0,',','.') : ''}}</th>
                 </tr>
             @endforeach
         </tbody>
@@ -146,7 +157,9 @@
             <tr>
                 <th colspan="11"style="text-align:right">Total: </th>
                 <th class="text-end" id="">Rp. {{ number_format($data['data']->sum('total_uang_jalan'),0,',','.')}}</th>
-                <th colspan="3"style="text-align:right"></th>
+                <th></th>
+                <th class="text-end" id="">Rp. {{ number_format($total_gaji,0,',','.')}}</th>
+                <th colspan="2"style="text-align:right"></th>
                 <th class="text-end" id="">Rp. {{ number_format($total_invoice,0,',','.')}}</th>
              </tr>
         </tfoot>

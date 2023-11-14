@@ -14,55 +14,66 @@ use Yajra\DataTables\Facades\DataTables;
 
 class SettingsController extends Controller
 {
+    // use ResponseStatus;
+    // public function index(Request $request)
+    // {
+    //     $config['page_title'] = "Settings Logo";
+    //     $page_breadcrumbs = [
+    //       ['url' => '#', 'title' => "Daftar Settings Logo"],
+    //     ];
+
+    //     if ($request->ajax()) {
+    //         $data = Settings::query();
+    //         return DataTables::of($data)
+    //           ->addIndexColumn()
+    //           ->addColumn('action', function ($row) {
+
+    //             return '<div class="dropdown">
+    //                         <a href="#" class="btn btn-secondary" data-bs-toggle="dropdown">
+    //                             Aksi <i class="mdi mdi-chevron-down"></i>
+    //                         </a>
+
+    //                         <div class="dropdown-menu" data-popper-placement="bottom-start" >
+    //                         <a class="dropdown-item" href="settings/' . $row->id . '/edit">Ubah</a>
+    //                         </div>
+    //                     </div>';
+    //           })->editColumn('icon', function (Settings $Settings) {
+    //             $data = asset('assets/img/profile-photos/1.png');
+    //             if(isset($Settings->icon)){
+    //              $data =  asset("/storage/images/logo/$Settings->icon");
+    //             }
+    //             return '<img class="rounded-circle" src="'.$data.'"alt="photo" style="width:75px; height: 75px;">';
+    //           }) ->editColumn('sidebar_logo', function (Settings $Settings) {
+    //             $data = asset('assets/img/profile-photos/1.png');
+    //             if(isset($Settings->sidebar_logo)){
+    //              $data =  asset("/storage/images/logo/$Settings->sidebar_logo");
+    //             }
+    //             return '<img class="rounded-circle" src="'.$data.'"alt="photo" style="width:75px; height: 75px;">';
+    //           })->editColumn('favicon', function (Settings $Settings) {
+    //             $data = asset('assets/img/profile-photos/1.png');
+    //             if(isset($Settings->favicon)){
+    //              $data =  asset("/storage/images/logo/$Settings->favicon");
+    //             }
+    //             return '<img class="rounded-circle" src="'.$data.'"alt="photo" style="width:75px; height: 75px;">';
+    //           })
+
+    //           ->rawColumns(['icon','sidebar_logo','favicon', 'action'])
+    //           ->make(true);
+    //       }
+    //     return view('backend.settings.index', compact('config', 'page_breadcrumbs'));
+    // }
     use ResponseStatus;
-    public function index(Request $request)
+    public function index()
     {
-        $config['page_title'] = "Settings Logo";
+        $config['page_title'] = " Settings";
+
         $page_breadcrumbs = [
-          ['url' => '#', 'title' => "Daftar Settings Logo"],
+          ['url' => '#', 'title' => "Settings"],
         ];
+        $data = Settings::first();
 
-        if ($request->ajax()) {
-            $data = Settings::query();
-            return DataTables::of($data)
-              ->addIndexColumn()
-              ->addColumn('action', function ($row) {
-
-                return '<div class="dropdown">
-                            <a href="#" class="btn btn-secondary" data-bs-toggle="dropdown">
-                                Aksi <i class="mdi mdi-chevron-down"></i>
-                            </a>
-
-                            <div class="dropdown-menu" data-popper-placement="bottom-start" >
-                            <a class="dropdown-item" href="settings/' . $row->id . '/edit">Ubah</a>
-                            </div>
-                        </div>';
-              })->editColumn('icon', function (Settings $Settings) {
-                $data = asset('assets/img/profile-photos/1.png');
-                if(isset($Settings->icon)){
-                 $data =  asset("/storage/images/logo/$Settings->icon");
-                }
-                return '<img class="rounded-circle" src="'.$data.'"alt="photo" style="width:75px; height: 75px;">';
-              }) ->editColumn('sidebar_logo', function (Settings $Settings) {
-                $data = asset('assets/img/profile-photos/1.png');
-                if(isset($Settings->sidebar_logo)){
-                 $data =  asset("/storage/images/logo/$Settings->sidebar_logo");
-                }
-                return '<img class="rounded-circle" src="'.$data.'"alt="photo" style="width:75px; height: 75px;">';
-              })->editColumn('favicon', function (Settings $Settings) {
-                $data = asset('assets/img/profile-photos/1.png');
-                if(isset($Settings->favicon)){
-                 $data =  asset("/storage/images/logo/$Settings->favicon");
-                }
-                return '<img class="rounded-circle" src="'.$data.'"alt="photo" style="width:75px; height: 75px;">';
-              })
-
-              ->rawColumns(['icon','sidebar_logo','favicon', 'action'])
-              ->make(true);
-          }
-        return view('backend.settings.index', compact('config', 'page_breadcrumbs'));
+        return view('backend.settings.index', compact('page_breadcrumbs', 'config', 'data'));
     }
-
 
     public function edit($id)
     {

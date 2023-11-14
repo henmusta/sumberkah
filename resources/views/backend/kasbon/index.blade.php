@@ -3,11 +3,15 @@
 @section('title') {{ $config['page_title'] }} @endsection
 
 @section('content')
-<div class="page-content">
+<div id="fluid" class="page-content">
     <div class="container-fluid">
         <div class="card">
             <div class="card-header mb-3">
-                <h5 class="card-title mb-3">Table {{ $config['page_title'] }}</h5>
+                <div class="card-header text-center">
+                    <h2 class="">{{ $config['page_title'] }}</h2>
+                </div>
+                <button id="fullscreen-button" hidden="true"><i class="fas fa-expand"></i></button>
+                <button id="compress-button"><i class="fas fa-compress"></i></button>
                 <div class="col-md-xl-12">
                     <div class="mt-xl-0 mt-4">
 
@@ -129,7 +133,7 @@
 
             </div>
             <div class="card-body">
-                <div class="table">
+                <div class="table-responsive">
                     <table id="Datatable" class="table table-bordered border-bottom w-100" style="width:100%">
                         <thead>
                             <tr>
@@ -354,7 +358,7 @@
       let modalValidasi = document.getElementById('modalValidasi');
       const bsValidasi = new bootstrap.Modal(modalValidasi);
       let dataTable = $('#Datatable').DataTable({
-        responsive: true,
+        // responsive: true,
         scrollX: false,
         processing: true,
         serverSide: true,

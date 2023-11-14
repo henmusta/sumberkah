@@ -31,46 +31,38 @@ class MutasiKasbonAllController extends Controller
     }
 
     public function data(Request $request, $type){
+        $jenis = ($type == 'post' || $type == 'saldo') ? $request['jenis'] :  explode(',',  $request['jenis']);
+        // $driver_id =$request['driver_id'];
+        $tgl_awal = date('Y-m-d', strtotime($request['tgl_awal']));
+        $tgl_akhir =  date('Y-m-d', strtotime($request['tgl_akhir']));
 
-        // dd($request['jenis']);
-       // $jenis = $request['jenis'];
-            $jenis = ($type == 'post' || $type == 'saldo') ? $request['jenis'] :  explode(',',  $request['jenis']);
+        $total_debit_awal = $total_kredit_awal =   $total_debit = $total_kredit = $saldo_awal = $saldo_akhir = 0;
+        $data = array();
+        $get_saldo_awal =  Kasbonjurnallog::whereDate('tgl_kasbon', '<',  $tgl_awal)
+        ->when($jenis, function ($query, $jenis) {
+            return $query->whereIn('jenis',  $jenis);
+        })->get();
+        foreach($get_saldo_awal as $key => $i){
+            $total_debit_awal += $i['debit'];
+            $total_kredit_awal += $i['kredit'];
+        }
+        $saldo_awal = $total_kredit_awal - $total_debit_awal;
 
-            $tgl_awal = date('Y-m-d', strtotime($request['tgl_awal']));
-            $tgl_akhir =  date('Y-m-d', strtotime($request['tgl_akhir']));
-            $total_debit_awal = $total_kredit_awal =   $total_debit = $total_kredit = $saldo_awal = $saldo_akhir = 0;
-            $data = array();
-            $get_saldo_awal =  Kasbonjurnallog::
-            when($jenis, function ($query, $jenis) {
-                return $query->whereIn('jenis',  $jenis);
-            })
-            ->whereDate('tgl_kasbon', '<',  $tgl_awal)->get();
-
-            foreach($get_saldo_awal as $key => $i){
-                $total_debit_awal += $i['debit'];
-                $total_kredit_awal += $i['kredit'];
-            }
-            $saldo_awal = $total_kredit_awal - $total_debit_awal;
-
-            // dd($type);
-
-            $get_data = Kasbonjurnallog::when($jenis, function ($query, $jenis) {
-                return $query->whereIn('jenis',  $jenis);
-            })->selectRaw('kasbon_jurnallog.*')->with('driver','joborder', 'gaji')
+            $get_data = Kasbonjurnallog::selectRaw('kasbon_jurnallog.*')->with('driver','joborder', 'gaji')
             ->when($tgl_awal, function ($query, $tgl_awal) {
                 return $query->whereDate('tgl_kasbon', '>=',  $tgl_awal);
             })
             ->when($tgl_akhir, function ($query, $tgl_akhir) {
                 return $query->whereDate('tgl_kasbon', '<=', $tgl_akhir);
-            })
-            ->groupBy('kasbon_jurnallog.kode_kasbon')->get();
-            // dd(count($get_data));
+            })->groupBy('kasbon_jurnallog.kode_kasbon')->get();
+
             if(count($get_data) > 0){
                 foreach($get_data as $key => $val){
                     $total_debit += $val['debit'];
                     $total_kredit += $val['kredit'];
                     $data[] = $val;
                     $get_data[$key]['saldo'] =  $val['kredit'] - $val['debit'];
+
                     $new_saldo = $saldo_awal;
                     if ($key == 0) {
                         $new_saldo = $new_saldo + (float)$get_data[0]->saldo;
@@ -82,15 +74,14 @@ class MutasiKasbonAllController extends Controller
                     }
 
              }
-                if($type != 'post'){
-                    $data[0]['saldo_akhir'] =  end($data)->new_saldo;
-                }
+             if($type != 'post'){
+                $data[0]['saldo_akhir'] =  end($data)->new_saldo;
+              }
             }else{
                 if($type != 'post'){
                     $data[0]['saldo_akhir'] = $saldo_awal;
                 }
             }
-
             if($type != 'post'){
                 $alldata = $data;
                 $data = [
@@ -102,8 +93,98 @@ class MutasiKasbonAllController extends Controller
                 ];
             }
 
-            return  $data;
+            // if($type != 'post'){
+            //     $alldata = $data;
+            //     $data = [
+            //         'data' => $alldata,
+            //         'saldo_awal' => $saldo_awal,
+            //         'total_debit' => $total_debit,
+            //         'total_kredit' =>  $total_kredit,
+            //         'saldo_akhir' => $data[0]['saldo_akhir']
+            //     ];
+            // }
+        return $data;
     }
+    // public function data(Request $request, $type){
+
+    //     // dd($request['jenis']);
+    //    // $jenis = $request['jenis'];
+    //         // if($type == 'post' || $type == 'pdf' || $type == 'excel'){
+
+
+    //         // }
+
+
+    //         $jenis = ($type == 'post' || $type == 'saldo') ? $request['jenis'] :  explode(',',  $request['jenis']);
+    //         // dd($jenis);
+    //         $tgl_awal = date('Y-m-d', strtotime($request['tgl_awal']));
+    //         $tgl_akhir =  date('Y-m-d', strtotime($request['tgl_akhir']));
+    //         $total_debit_awal = $total_kredit_awal =   $total_debit = $total_kredit = $saldo_awal = $saldo_akhir = 0;
+    //         $data = array();
+    //         $get_saldo_awal =  Kasbonjurnallog::
+    //         when($jenis, function ($query, $jenis) {
+    //             return $query->whereIn('jenis',  $jenis);
+    //         })
+    //         ->whereDate('tgl_kasbon', '<',  $tgl_awal)->get();
+
+    //         foreach($get_saldo_awal as $key => $i){
+    //             $total_debit_awal += $i['debit'];
+    //             $total_kredit_awal += $i['kredit'];
+    //         }
+    //         $saldo_awal = $total_kredit_awal - $total_debit_awal;
+
+    //         $get_data = Kasbonjurnallog::when($jenis, function ($query, $jenis) {
+    //             return $query->whereIn('jenis',  $jenis);
+    //         })->selectRaw('kasbon_jurnallog.*')->with('driver','joborder', 'gaji')
+    //         ->when($tgl_awal, function ($query, $tgl_awal) {
+    //             return $query->whereDate('tgl_kasbon', '>=',  $tgl_awal);
+    //         })
+    //         ->when($tgl_akhir, function ($query, $tgl_akhir) {
+    //             return $query->whereDate('tgl_kasbon', '<=', $tgl_akhir);
+    //         })
+    //         ->groupBy('kasbon_jurnallog.kode_kasbon')->get();
+    //         // dd(count($get_data));
+    //         if(count($get_data) > 0){
+    //             foreach($get_data as $key => $val){
+    //                 $total_debit += $val['debit'];
+    //                 $total_kredit += $val['kredit'];
+    //                 $data[] = $val;
+    //                 $get_data[$key]['saldo'] =  $val['kredit'] - $val['debit'];
+    //                 $new_saldo = $saldo_awal;
+    //                 if ($key == 0) {
+    //                     $new_saldo = $new_saldo + (float)$get_data[0]->saldo;
+    //                     $get_data[0]->new_saldo = $new_saldo;
+    //                 }
+    //                 else{
+    //                     $new_saldo = (float)$get_data[$key-1]->new_saldo + (float)$get_data[$key]->saldo;
+    //                     $get_data[$key]->new_saldo = $new_saldo;
+    //                 }
+
+    //          }
+    //             if($type != 'post'){
+    //                 $data[0]['saldo_akhir'] =  end($data)->new_saldo;
+    //             }
+    //         }else{
+    //             if($type != 'post'){
+    //                 $data[0]['saldo_akhir'] = $saldo_awal;
+    //             }
+    //         }
+
+    //         if($type != 'post'){
+    //             $alldata = $data;
+    //             $data = [
+    //                 'data' => $alldata,
+    //                 'saldo_awal' => $saldo_awal,
+    //                 'total_debit' => $total_debit,
+    //                 'total_kredit' =>  $total_kredit,
+    //                 'saldo_akhir' => $data[0]['saldo_akhir']
+    //             ];
+    //         }
+
+    //         // return  $data;
+
+    //         dd($data);
+    // }
 
 
     public function index(Request $request)
@@ -250,9 +331,18 @@ class MutasiKasbonAllController extends Controller
         $type = 'pdf';
         $data = $this->data($request, $type);
 
-
-
-                $data = [
+        if($type != 'pdf'){
+            $data = [
+                'data' =>  $data,
+                'tgl_awal' => $request['tgl_awal'],
+                'tgl_akhir' => $request['tgl_akhir'],
+            ];
+            $route = 'backend.mutasikasbonall.report';
+            $name = 'Laporan-Mutasi-Kasbon-Keseluruhan : ';
+            $y = 590;
+            $oriented = 'potrait';
+        }else{
+            $data = [
                     'mutasikasbonall' => $data['data'],
                     'saldo_awal' => $data['saldo_awal'],
                     'saldo_akhir' =>  $data['saldo_akhir'],
@@ -260,15 +350,35 @@ class MutasiKasbonAllController extends Controller
                     'total_kredit' =>$data['total_kredit'],
                     'tgl_awal' => $request['tgl_awal'],
                     'tgl_akhir' => $request['tgl_akhir'],
-                ];
+            ];
 
-        $pdf =  PDF::loadView('backend.mutasikasbonall.report',  compact('data'));
+            $route = 'backend.mutasikasbonall.report';
+            $name = 'Laporan-Mutasi-Kasbon-Keseluruhan : ';
+            $y = 590;
+            $oriented = 'potrait';
+        }
+
+
+                // $data = [
+                //     'mutasikasbonall' => $data['data'],
+                //     'saldo_awal' => $data['saldo_awal'],
+                //     'saldo_akhir' =>  $data['saldo_akhir'],
+                //     'total_debit' =>  $data['total_debit'],
+                //     'total_kredit' =>$data['total_kredit'],
+                //     'tgl_awal' => $request['tgl_awal'],
+                //     'tgl_akhir' => $request['tgl_akhir'],
+                // ];
+
+
+                // dd($data['data']);
+
+        $pdf =  PDF::loadView($route,  compact('data'));
         $PAPER_F4 = array(0,0,609.4488,935.433);
-        $pdf->setPaper( $PAPER_F4, 'landscape');
+        $pdf->setPaper( $PAPER_F4,  $oriented);
         $pdf->render();
         $font  = $pdf->getFontMetrics()->get_font('Helvetica', 'normal');
-        $pdf->get_canvas()->page_text(33, 590, "Page: {PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(0,0,0));
-        $fileName = 'Laporan-MutasiKasbon : '. $request['tgl_awal'] . '-SD-' .$request['tgl_akhir'];
+        $pdf->get_canvas()->page_text(33,$y, "Page: {PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(0,0,0));
+        $fileName = $name.' : '. $request['tgl_awal'] . '-SD-' .$request['tgl_akhir'];
         return $pdf->stream("${fileName}.pdf");
     }
 }
