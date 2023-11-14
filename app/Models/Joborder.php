@@ -63,7 +63,7 @@ class Joborder extends Model
                     'biaya_lain',
                     'tambahan_potongan',
                     'keterangan_joborder',
-                    'status_joborder',
+                    // 'status_joborder',
                     'total_uang_jalan',
                     'total_kasbon',
                     // 'total_payment',
@@ -73,6 +73,7 @@ class Joborder extends Model
                 ->dontLogIfAttributesChangedOnly([
                     'invoice_id',
                     'kode_invoice',
+                    'status_joborder',
                     'penggajian_id',
                     'kode_gaji',
                     'status_payment',
