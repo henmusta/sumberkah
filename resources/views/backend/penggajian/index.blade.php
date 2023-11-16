@@ -150,6 +150,7 @@
                                 <th>Bonus</th>
                                 <th>Potong Kasbon</th>
                                 <th>Total Gaji</th>
+                                <th>Payment Gaji</th>
                                 <th>Status</th>
                                 <th width="8%">Aksi</th>
                               </tr>
@@ -348,12 +349,16 @@ tr.group:hover {
           {data: 'bonus', name: 'bonus'},
           {data: 'nominal_kasbon', name: 'nominal_kasbon'},
           {data: 'total_gaji', name: 'total_gaji'},
+          {data: 'payment.0.tgl_payment', name: 'payment.0.tgl_payment',orderable: false, searchable: false},
           {data: 'status_payment', name: 'status_payment'},
           {data: 'action', name: 'action', orderable: false, searchable: false},
         ],
 
         columnDefs: [
-
+            {
+            targets:[9],
+            defaultContent: "-",
+           },
           {
             targets: [5, 6, 7, 8],
             className: 'text-end',
@@ -363,7 +368,7 @@ tr.group:hover {
 
           {
             className: 'dt-center',
-            targets: 9,
+            targets: 10,
             render: function (data, type, full, meta) {
               let status = {
                 0: {'title': 'Belum Bayar', 'class': ' bg-danger'},

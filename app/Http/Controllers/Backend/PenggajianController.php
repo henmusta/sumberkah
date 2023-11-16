@@ -50,7 +50,7 @@ class PenggajianController extends Controller
         if ($request->ajax()) {
             $month = date("m",strtotime($request['bulan_kerja']));
             $year = date("Y",strtotime($request['bulan_kerja']));
-          $data = Penggajian::selectRaw('penggajian.*')->with('driver', 'mobil');
+          $data = Penggajian::selectRaw('penggajian.*')->with('driver', 'mobil', 'payment');
             if ($request->filled('status_payment')) {
                  $data->where('status_payment', $request['status_payment']);
             }

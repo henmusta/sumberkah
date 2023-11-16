@@ -22,7 +22,14 @@ class BulananDriverGajiController extends Controller
 {
     function data(Request $request, $type){
         $bulan = ($type == 'post') ?   $request['bulan'] :  explode(',',  $request['bulan']);
-        $driver =  ($type == 'post') ?   $request['driver_id'] :  explode(',',  $request['driver_id']);
+        $cek_driver =  ($type == 'post') ?   $request['driver_id'] :  explode(',',  $request['driver_id']);
+
+
+        if(isset($driver)){
+            $driver = $cek_driver;
+        }else{
+            $driver = Driver::selectRaw('id')->get();
+        }
 
         foreach($bulan as $i => $item){
            $cek_bl[] =  Carbon::parse($item)->isoFormat('MMMM');
@@ -32,11 +39,14 @@ class BulananDriverGajiController extends Controller
         $cek_bulan_id = implode(',',$cek_bl_id);
         $data = array();
         foreach($driver as $key => $val){
-            $get_driver = Driver::findOrFail($val);
+            // dd($val['id']);
+            $id = isset($val['id']) ? $val['id'] : $val;
+            // dd($id);
+            $get_driver = Driver::findOrFail($id);
             $tahun = Carbon::parse($request['tahun'])->isoFormat('Y');
             $data[$key]['driver'] = $get_driver['name'].','.$cek_bulan;
             $data[$key]['alldata'] = Penggajian::whereRaw('MONTH(tgl_gaji) IN ('. $cek_bulan_id.')')
-            ->whereYear('tgl_gaji', $tahun)->where('driver_id', $val);
+            ->whereYear('tgl_gaji', $tahun)->where('driver_id', $id);
         }
         return $data;
     }

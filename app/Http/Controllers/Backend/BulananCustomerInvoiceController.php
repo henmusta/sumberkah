@@ -24,7 +24,13 @@ class BulananCustomerInvoiceController extends Controller
 {
     function data(Request $request, $type){
         $bulan = ($type == 'post') ?   $request['bulan'] :  explode(',',  $request['bulan']);
-        $customer =  ($type == 'post') ?   $request['customer_id'] :  explode(',',  $request['customer_id']);
+        $cek_customer =  ($type == 'post') ?   $request['customer_id'] :  explode(',',  $request['customer_id']);
+
+        if(isset($driver)){
+            $customer = $cek_customer;
+        }else{
+            $customer = Customer::selectRaw('id')->get();
+        }
 
         foreach($bulan as $i => $item){
            $cek_bl[] =  Carbon::parse($item)->isoFormat('MMMM');
@@ -34,11 +40,12 @@ class BulananCustomerInvoiceController extends Controller
         $cek_bulan_id = implode(',',$cek_bl_id);
         $data = array();
         foreach($customer as $key => $val){
-            $get_customer = Customer::findOrFail($val);
+            $id = isset($val['id']) ? $val['id'] : $val;
+            $get_customer = Customer::findOrFail($id);
             $tahun = Carbon::parse($request['tahun'])->isoFormat('Y');
             $data[$key]['customer'] = $get_customer['name'].','.$cek_bulan;
             $data[$key]['alldata'] = Invoice::whereRaw('MONTH(tgl_invoice) IN ('. $cek_bulan_id.')')
-            ->whereYear('tgl_invoice', $tahun)->where('customer_id', $val);
+            ->whereYear('tgl_invoice', $tahun)->where('customer_id', $id);
         }
         return $data;
     }

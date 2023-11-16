@@ -102,8 +102,8 @@
        </thead>
 
        <tbody>
+        @php($total  = 0)
             @foreach ($item['alldata']->get() as $val)
-            @php($total  = 0)
             @php($status_payment = $val['status_payment'] == '0' ? 'Belum Bayar' : ($val['status_payment'] == '1' ? 'Progress Payment' : 'Lunas'))
             @php($total += $val->nominal)
             <tr>

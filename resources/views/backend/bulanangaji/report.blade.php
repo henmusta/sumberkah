@@ -71,7 +71,7 @@
 <body>
 
     <div class="header" style="padding-bottom: 20px;">
-        <h3  style=" text-align: center; margin-top:25px;margin-bottom: 0">Laporan Payment Joborder</h3>
+        <h3  style=" text-align: center; margin-top:25px;margin-bottom: 0">Laporan Bulanan Gaji</h3>
     </div>
     @foreach ($data['data'] as $item)
     <table id="pakettable" width="100%">

@@ -50,7 +50,7 @@
                             <tr>
                                 <td style="width: 300px; ">Jenis Transaksi</td>
                                 <td style="width: 2px; padding-right: 10px">:</td>
-                                <td  style="font-weight:bold">{{$data['kasbon']['jenis'] ?? ''}}</td>
+                                <td  style="font-weight:bold">{{$data['kasbon']['jenis'] ?? ''}} <a href="{{ route('backend.joborder.index') }}?joborder_id={{$data['kasbon']['joborder']['id']}}" target="_blank">{{$data['kasbon']['joborder']['kode_joborder']}}</a></td>
                             </tr>
                             <tr>
                                 <td style="width: 300px; ">Nominal</td>

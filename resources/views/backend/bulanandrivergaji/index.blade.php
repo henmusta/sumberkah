@@ -52,7 +52,7 @@
                                                     <i class="fas fa-align-justify"></i>
                                                 </a>
                                             </div>
-                                            <div id="cetak" class="col-md-2 text-end" style="padding-top:30px;">
+                                            <div id="cetak" class="col-md-2 text-end" style="padding-top:30px;" hidden="true">
                                                 <div class="dt-buttons btn-group flex-wrap">
                                                     <button id="excel" class="btn btn-secondary buttons-excel buttons-html5"  tabindex="0" aria-controls="Datatable" type="button"><span>Excel</span></button>
                                                     <button class="btn btn-secondary buttons-pdf buttons-html5"  tabindex="0" aria-controls="Datatable" type="button" id="pdf"><span>PDF</span></button>

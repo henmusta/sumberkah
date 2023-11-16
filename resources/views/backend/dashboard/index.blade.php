@@ -1356,7 +1356,8 @@ div.dt-btn-container {
                    return kode;
                }
           },
-         {data: 'gaji.total_gaji', name: 'gaji.total_gaji', width: '80px'},
+        //  {data: 'gaji.total_gaji', name: 'gaji.total_gaji', width: '80px'},
+         {data: 'rute.gaji', name: 'rute.gaji', width: '80px'},
          {data: 'gaji.payment.0.tgl_payment', name: 'gaji.payment.tgl_payment'},
         //  {data: 'invoice.kode_invoice', name: 'invoice.kode_invoice'},
           {
@@ -1369,7 +1370,8 @@ div.dt-btn-container {
                    return kode;
                }
           },
-         {data: 'invoice.total_harga', name: 'invoice.total_harga', width: '80px'},
+          {data: 'konfirmasijo.total_harga', name: 'konfirmasijo.total_harga', width: '80px'},
+        //  {data: 'invoice.total_harga', name: 'invoice.total_harga', width: '80px'},
        ],
        columnDefs: [
         {
