@@ -74,11 +74,17 @@
                                 <td style="font-weight:bold"> {{ \Carbon\Carbon::parse($data['penggajian']['bulan_kerja'])->isoFormat('MMMM Y')}}</td>
                             </tr>
                             <tr>
-                                <td style="width: 300px; ">Keterangan</td>
+                                <td style="width: 300px; ">Keterangan Gaji</td>
                                 <td style="width: 2px; padding-right: 10px">:</td>
                                 <td  style="font-weight:bold">{{$data['penggajian']['keterangan_gaji'] ?? ''}}</td>
                             </tr>
-
+                            @if(isset($data['penggajian']['kasbon']['kode_kasbon']))
+                            <tr>
+                                <td style="width: 300px; ">Keterangan Kasbon</td>
+                                <td style="width: 2px; padding-right: 10px">:</td>
+                                <td  style="font-weight:bold">{{$data['penggajian']['kasbon']['keterangan'] ?? ''}}</td>
+                            </tr>
+                            @endif
                             <tr>
                                 <td style="width: 300px; ">Tanggal Payment</td>
                                 <td style="width: 2px; padding-right: 10px">:</td>

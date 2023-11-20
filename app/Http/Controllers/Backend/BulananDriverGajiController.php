@@ -42,11 +42,17 @@ class BulananDriverGajiController extends Controller
             // dd($val['id']);
             $id = isset($val['id']) ? $val['id'] : $val;
             // dd($id);
-            $get_driver = Driver::findOrFail($id);
+
             $tahun = Carbon::parse($request['tahun'])->isoFormat('Y');
-            $data[$key]['driver'] = $get_driver['name'].','.$cek_bulan;
-            $data[$key]['alldata'] = Penggajian::whereRaw('MONTH(tgl_gaji) IN ('. $cek_bulan_id.')')
+
+            $cek_driver = Penggajian::whereRaw('MONTH(tgl_gaji) IN ('. $cek_bulan_id.')')
             ->whereYear('tgl_gaji', $tahun)->where('driver_id', $id);
+            if(count($cek_driver->get()) > 0){
+                $get_driver = Driver::findOrFail($id);
+                $data[$key]['driver'] = $get_driver['name'].','.$cek_bulan;
+                $data[$key]['alldata'] =  $cek_driver;
+            }
+
         }
         return $data;
     }

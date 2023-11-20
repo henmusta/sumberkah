@@ -47,11 +47,11 @@ class Rute extends Model
                     'validasi',
                     'validasi_delete',
                   ])
-                ->setDescriptionForEvent(fn(string $eventName) => "Modul Penggajian {$eventName}")
+                ->setDescriptionForEvent(fn(string $eventName) => "Modul Rute {$eventName}")
                 // ->dontLogIfAttributesChangedOnly([
 
                 // ])
-                ->useLogName('Penggajian');
+                ->useLogName('Rute');
     }
 
 

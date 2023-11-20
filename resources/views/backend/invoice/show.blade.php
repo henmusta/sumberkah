@@ -122,7 +122,6 @@
                                                 @php($cek_thr = fmod($val->joborder['rute']['harga'], 1) != 0 ? 3 : 0)
                                                 {{ number_format($val->joborder['rute']['harga'],$cek_thr,',','.')}}</td>
                                             <td class="text-end"> Rp.
-
                                                 {{ number_format(ceil($val->total_harga),0,',','.')}}</td>
                                            </tr>
                                     @endforeach

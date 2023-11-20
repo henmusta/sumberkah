@@ -1313,7 +1313,7 @@ div.dt-btn-container {
         processing: true,
         serverSide: true,
         order: [[1, 'desc']],
-        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        lengthMenu: [[10, 25, 50, 100, 200, -1], [10, 25, 50, 100, 200, "All"]],
         pageLength: 10,
         ajax: {
             url: "{{ route('backend.dashboard.dtstatusjo') }}",
@@ -1370,7 +1370,7 @@ div.dt-btn-container {
                    return kode;
                }
           },
-          {data: 'konfirmasijo.total_harga', name: 'konfirmasijo.total_harga', width: '80px'},
+          {data: 'konfirmasijo.0.total_harga', name: 'konfirmasijo.0.total_harga', width: '80px'},
         //  {data: 'invoice.total_harga', name: 'invoice.total_harga', width: '80px'},
        ],
        columnDefs: [
@@ -1392,7 +1392,7 @@ div.dt-btn-container {
             defaultContent: "-",
         },
         {
-            targets: [10, 13],
+            targets: [10, 13, 15, 16, 14, 12 ],
             orderable: false, searchable: false
         }
 
