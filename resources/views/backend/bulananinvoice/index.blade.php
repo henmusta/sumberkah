@@ -145,33 +145,38 @@
 
         $("#terapkan_filter").click(function() {
             var url = document.getElementById("report-url").value;
-            var data = {
-                tahun : $('#select2Tahun').val() || '',
-                bulan : $('#select2Bulan').val() || '',
-            };
-            console.log(data);
-            let btnSubmit = $("#terapkan_filter");
-            let btnSubmitHtml = btnSubmit.html();
-            $.ajax({
-                beforeSend: function () {
-                    btnSubmit.addClass("disabled").html("<span aria-hidden='true' class='spinner-border spinner-border-sm' role='status'></span> Loading ...").prop("disabled", "disabled");
-                },
-                cache: false,
-                processData: false,
-                contentType: 'application/json',
-                type: "POST",
-                url: url,
-                data: JSON.stringify(data),
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(res) {
-                    btnSubmit.removeClass("disabled").html(btnSubmitHtml).removeAttr("disabled");
-                    console.log(res);
-                    $("#report").html(res);
-                    $("#cetak").prop('hidden', false);
-                }
-            });
+            if( $('#select2Bulan').val() == null){
+                toastr.error('Pilihan Bulan Wajib Diisi', 'Notif !');
+            }else{
+                var data = {
+                    tahun : $('#select2Tahun').val() || '',
+                    bulan : $('#select2Bulan').val() || '',
+                };
+                console.log(data);
+                let btnSubmit = $("#terapkan_filter");
+                let btnSubmitHtml = btnSubmit.html();
+                $.ajax({
+                    beforeSend: function () {
+                        btnSubmit.addClass("disabled").html("<span aria-hidden='true' class='spinner-border spinner-border-sm' role='status'></span> Loading ...").prop("disabled", "disabled");
+                    },
+                    cache: false,
+                    processData: false,
+                    contentType: 'application/json',
+                    type: "POST",
+                    url: url,
+                    data: JSON.stringify(data),
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(res) {
+                        btnSubmit.removeClass("disabled").html(btnSubmitHtml).removeAttr("disabled");
+                        console.log(res);
+                        $("#report").html(res);
+                        $("#cetak").prop('hidden', false);
+                    }
+                });
+            }
+
         });
 
         $("#pdf").click(function() {

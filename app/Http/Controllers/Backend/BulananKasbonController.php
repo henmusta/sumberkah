@@ -105,32 +105,36 @@ class BulananKasbonController extends Controller
            $sheet->setCellValue('A'. $item['header_row'], 'Tanggal Transaksi');
            $sheet->setCellValue('B'. $item['header_row'], 'Kode Kasbon');
            $sheet->setCellValue('C'. $item['header_row'], 'Driver');
-           $sheet->setCellValue('D'. $item['header_row'], 'Jenis Transaksi');
-           $sheet->setCellValue('E'. $item['header_row'], 'Nominal');
-           $sheet->setCellValue('F'. $item['header_row'], 'Operator (Waktu)');
+           $sheet->setCellValue('D'. $item['header_row'], 'Kode Joborder');
+           $sheet->setCellValue('E'. $item['header_row'], 'Kode Gaji');
+           $sheet->setCellValue('F'. $item['header_row'], 'Transaksi');
+           $sheet->setCellValue('G'. $item['header_row'], 'Nominal');
+           $sheet->setCellValue('H'. $item['header_row'], 'Operator (Waktu)');
 
 
-       for($col = 'A'; $col !== 'G'; $col++){$sheet->getColumnDimension($col)->setAutoSize(true);}
+       for($col = 'A'; $col !== 'I'; $col++){$sheet->getColumnDimension($col)->setAutoSize(true);}
            $x = $item['body_row_start'];
            foreach($item['alldata']->get() as $val){
                    $user = isset($val['createdby']->name) ? $val['createdby']->name : '-' ;
                    $sheet->setCellValue('A' . $x, $val['tgl_kasbon']);
                    $sheet->setCellValue('B' . $x, $val['kode_kasbon']);
                    $sheet->setCellValue('C' . $x, $val['driver']['name'] ?? '');
-                   $sheet->setCellValue('D' . $x, $val['jenis'] ?? '');
-                   $sheet->setCellValue('E' . $x, $val['nominal'] ?? '');
-                   $sheet->setCellValue('F' . $x, $user . ' ( ' .date('d-m-Y', strtotime($val['created_at'])) .' )');
+                   $sheet->setCellValue('D' . $x, $val['joborder']['kode_joborder'] ?? '');
+                   $sheet->setCellValue('E' . $x, $val['penggajian']['kode_gaji'] ?? '');
+                   $sheet->setCellValue('F' . $x, $val['jenis'] ?? '');
+                   $sheet->setCellValue('G' . $x, $val['nominal'] ?? '');
+                   $sheet->setCellValue('H' . $x, $user . ' ( ' .date('d-m-Y', strtotime($val['created_at'])) .' )');
                    $x ++;
            }
            $cell   = $item['footer_row'];
            $bs = $item['body_row_start'];
            $spreadsheet->setActiveSheetIndex(0)->setCellValue('A'.$cell, 'Total :');
-           $spreadsheet->getActiveSheet()->mergeCells( 'A' . $cell . ':D' . $cell . '');
+           $spreadsheet->getActiveSheet()->mergeCells( 'A' . $cell . ':F' . $cell . '');
            $spreadsheet->getActiveSheet()->getStyle('A'.$cell)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
 
-           $spreadsheet->getActiveSheet()->getStyle('E'. $bs.':E'.$cell)->getNumberFormat()->setFormatCode('#,##0');
+           $spreadsheet->getActiveSheet()->getStyle('G'. $bs.':G'.$cell)->getNumberFormat()->setFormatCode('#,##0');
 
-           $spreadsheet->setActiveSheetIndex(0)->setCellValue('E'.$cell, '=SUM(E'.  $bs .':E' . $cell . ')');
+           $spreadsheet->setActiveSheetIndex(0)->setCellValue('G'.$cell, '=SUM(G'.  $bs .':G' . $cell . ')');
        }
 
 

@@ -25,8 +25,9 @@ class BulananDriverKasbonController extends Controller
 
       function data(Request $request, $type){
         $bulan = ($type == 'post') ?   $request['bulan'] :  explode(',',  $request['bulan']);
-        $cek_driver =  ($type == 'post') ?   $request['driver_id'] :  explode(',',  $request['driver_id']);
-        if(isset($driver)){
+        //$cek_driver =  ($type == 'post') ?   $request['driver_id'] :  explode(',',  $request['driver_id']);
+        $cek_driver =  ($type == 'post') ?   $request['driver_id'] : (isset( $request['driver_id'][0]) ? explode(',',  $request['driver_id']) : null);
+        if(isset($cek_driver)){
             $driver = $cek_driver;
         }else{
             $driver = Driver::selectRaw('id')->get();
@@ -38,14 +39,21 @@ class BulananDriverKasbonController extends Controller
         $cek_bulan = implode(' - ', $cek_bl);
         $cek_bulan_id = implode(',',$cek_bl_id);
         $data = array();
+        $i = 0;
         foreach($driver as $key => $val){
             $id = isset($val['id']) ? $val['id'] : $val;
-            $get_driver = Driver::findOrFail($id) ;
+
             // $bulan = Carbon::parse($request['bulan'])->isoFormat('M');
             $tahun = Carbon::parse($request['tahun'])->isoFormat('Y');
-            $data[$key]['driver'] = $get_driver['name'].','.$cek_bulan;
-            $data[$key]['alldata'] = Kasbon::whereRaw('MONTH(tgl_kasbon) IN ('. $cek_bulan_id.')')
+            $cek_driver = Kasbon::whereRaw('MONTH(tgl_kasbon) IN ('. $cek_bulan_id.')')
             ->whereYear('tgl_kasbon', $tahun)->where('driver_id', $id);
+            if(count($cek_driver->get()) > 0){
+                $count_key = $i++;
+                $get_driver = Driver::findOrFail($id) ;
+                $data[$key]['driver'] = $get_driver['name'].','.$cek_bulan;
+                $data[$key]['alldata'] = $cek_driver;
+            }
+
         }
         return $data;
     }
@@ -139,40 +147,45 @@ class BulananDriverKasbonController extends Controller
     }
 
 
-   public function numrowsdata($data, $sheet, $spreadsheet){
+    public function numrowsdata($data, $sheet, $spreadsheet){
 
-       foreach($data as $key => $item){
-           $sheet->setCellValue('A'. $item['header_row_first'], $item['driver']);
-           $sheet->setCellValue('A'. $item['header_row'], 'Tanggal Transaksi');
-           $sheet->setCellValue('B'. $item['header_row'], 'Kode Kasbon');
-           $sheet->setCellValue('C'. $item['header_row'], 'Driver');
-           $sheet->setCellValue('D'. $item['header_row'], 'Jenis Transaksi');
-           $sheet->setCellValue('E'. $item['header_row'], 'Nominal');
-
-
-       for($col = 'A'; $col !== 'E'; $col++){$sheet->getColumnDimension($col)->setAutoSize(true);}
-           $x = $item['body_row_start'];
-           foreach($item['alldata']->get() as $val){
-                   $sheet->setCellValue('A' . $x, $val['tgl_kasbon']);
-                   $sheet->setCellValue('B' . $x, $val['kode_kasbon']);
-                   $sheet->setCellValue('C' . $x, $val['driver']['name'] ?? '');
-                   $sheet->setCellValue('D' . $x, $val['jenis'] ?? '');
-                   $sheet->setCellValue('E' . $x, $val['nominal'] ?? '');
-                   $x ++;
-           }
-           $cell   = $item['footer_row'];
-           $bs = $item['body_row_start'];
-           $spreadsheet->setActiveSheetIndex(0)->setCellValue('A'.$cell, 'Total :');
-           $spreadsheet->getActiveSheet()->mergeCells( 'A' . $cell . ':D' . $cell . '');
-           $spreadsheet->getActiveSheet()->getStyle('A'.$cell)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
-
-           $spreadsheet->getActiveSheet()->getStyle('E'. $bs.':E'.$cell)->getNumberFormat()->setFormatCode('#,##0');
-
-           $spreadsheet->setActiveSheetIndex(0)->setCellValue('E'.$cell, '=SUM(E'.  $bs .':E' . $cell . ')');
-       }
+        foreach($data as $key => $item){
+            $sheet->setCellValue('A'. $item['header_row_first'], $item['driver']);
+            $sheet->setCellValue('A'. $item['header_row'], 'Tanggal Transaksi');
+            $sheet->setCellValue('B'. $item['header_row'], 'Kode Kasbon');
+            $sheet->setCellValue('C'. $item['header_row'], 'Driver');
+            $sheet->setCellValue('D'. $item['header_row'], 'Kode Joborder');
+            $sheet->setCellValue('E'. $item['header_row'], 'Kode Gaji');
+            $sheet->setCellValue('F'. $item['header_row'], 'Transaksi');
+            $sheet->setCellValue('G'. $item['header_row'], 'Nominal');
+            $sheet->setCellValue('H'. $item['header_row'], 'Operator (Waktu)');
 
 
-   }
+        for($col = 'A'; $col !== 'I'; $col++){$sheet->getColumnDimension($col)->setAutoSize(true);}
+            $x = $item['body_row_start'];
+            foreach($item['alldata']->get() as $val){
+                    $user = isset($val['createdby']->name) ? $val['createdby']->name : '-' ;
+                    $sheet->setCellValue('A' . $x, $val['tgl_kasbon']);
+                    $sheet->setCellValue('B' . $x, $val['kode_kasbon']);
+                    $sheet->setCellValue('C' . $x, $val['driver']['name'] ?? '');
+                    $sheet->setCellValue('D' . $x, $val['joborder']['kode_joborder'] ?? '');
+                    $sheet->setCellValue('E' . $x, $val['penggajian']['kode_gaji'] ?? '');
+                    $sheet->setCellValue('F' . $x, $val['jenis'] ?? '');
+                    $sheet->setCellValue('G' . $x, $val['nominal'] ?? '');
+                    $sheet->setCellValue('H' . $x, $user . ' ( ' .date('d-m-Y', strtotime($val['created_at'])) .' )');
+                    $x ++;
+            }
+            $cell   = $item['footer_row'];
+            $bs = $item['body_row_start'];
+            $spreadsheet->setActiveSheetIndex(0)->setCellValue('A'.$cell, 'Total :');
+            $spreadsheet->getActiveSheet()->mergeCells( 'A' . $cell . ':F' . $cell . '');
+            $spreadsheet->getActiveSheet()->getStyle('A'.$cell)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
+            $spreadsheet->getActiveSheet()->getStyle('G'. $bs.':G'.$cell)->getNumberFormat()->setFormatCode('#,##0');
+            $spreadsheet->setActiveSheetIndex(0)->setCellValue('G'.$cell, '=SUM(G'.  $bs .':G' . $cell . ')');
+        }
+
+
+    }
 
 
 

@@ -24,8 +24,8 @@ class BulananNopolJoController extends Controller
 
     function data(Request $request, $type){
         $bulan = ($type == 'post') ?   $request['bulan'] :  explode(',',  $request['bulan']);
-        $cek_mobil =  ($type == 'post') ?   $request['mobil_id'] :  explode(',',  $request['mobil_id']);
-        if(isset($driver)){
+        $cek_mobil =  ($type == 'post') ?   $request['mobil_id'] : (isset( $request['mobil_id'][0]) ? explode(',',  $request['mobil_id']) : null);
+        if(isset($cek_mobil)){
             $mobil = $cek_mobil;
         }else{
             $mobil = Mobil::selectRaw('id')->get();
@@ -38,13 +38,20 @@ class BulananNopolJoController extends Controller
         $cek_bulan = implode(' - ', $cek_bl);
         $cek_bulan_id = implode(',',$cek_bl_id);
         $data = array();
+
+        $i = 0;
         foreach($mobil as $key => $val){
             $id = isset($val['id']) ? $val['id'] : $val;
-            $get_mobil = Mobil::findOrFail($id);
             $tahun = Carbon::parse($request['tahun'])->isoFormat('Y');
-            $data[$key]['mobil'] = $get_mobil['nomor_plat'].','.$cek_bulan;
-            $data[$key]['alldata'] = Joborder::whereRaw('MONTH(tgl_joborder) IN ('. $cek_bulan_id.')')
+            $cek_mobil = Joborder::whereRaw('MONTH(tgl_joborder) IN ('. $cek_bulan_id.')')
             ->whereYear('tgl_joborder', $tahun)->where('mobil_id', $id);
+            if(count($cek_mobil->get()) > 0){
+                $count_key = $i++;
+                $get_mobil = Mobil::findOrFail($id);
+                $data[$count_key]['mobil'] = $get_mobil['nomor_plat'].','.$cek_bulan;
+                $data[$count_key]['alldata'] = $cek_mobil;
+            }
+
         }
         return $data;
     }

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\LogOptions;
+use Illuminate\Support\Facades\DB;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Joborder extends Model
@@ -84,88 +85,38 @@ class Joborder extends Model
                 ->useLogName('Joborder');
     }
 
+    function updateall(){
+        $feild = ['driver', 'mobil'];
+        foreach($feild as $val){
+        $query = DB::statement("UPDATE
+            ".$val."
+            INNER JOIN (SELECT
+            ".$val.".`id` AS id,
+            IF(SUM(IF(status_joborder = '1', 0, 1)) > '0', '1', '0') AS cek_st
+            FROM
+            ".$val."
+            INNER JOIN joborder
+            ON joborder.`".$val."_id` =  ".$val.".`id`
+            GROUP BY  ".$val.".`id`) child
+            ON  ".$val.".id = child.id
+            SET  ".$val.".`status_jalan` = child.cek_st");
+        }
+
+    }
 
     protected static function booted(): void
     {
         static::created(function (Joborder $joborder) {
-            $driver       = $joborder->driver()->first();
-            $mobil       = $joborder->mobil()->first();
-            $st_driver    = Driver::selectRaw('driver.`id` AS id,
-                                               SUM(IF(status_joborder = "1", 0, 1)) AS count_jo')
-                                               ->Join('joborder', 'joborder.driver_id', '=', 'driver.id')
-                                               ->where('driver.id', $driver->id)
-                                               ->groupBy('driver.id')->first();
-
-            $st_mobil    = Mobil::selectRaw('mobil.`id` AS id,
-                                               SUM(IF(status_joborder = "1", 0, 1)) AS count_jo')
-                                               ->Join('joborder', 'joborder.mobil_id', '=', 'mobil.id')
-                                               ->where('mobil.id', $mobil->id)
-                                               ->groupBy('mobil.id')->first();
-
-            $sj_driver    = Driver::where('id', $driver->id)->first();
-            $balance_driver =  $st_driver['count_jo'] > 0 ? 1 : 0;
-            $sj_driver->status_jalan  = $balance_driver;
-            $sj_driver->save();
-
-            $sj_mobil    = Mobil::where('id', $mobil->id)->first();
-            $balance_mobil =  $st_mobil['count_jo'] > 0 ? 1 : 0;
-            $sj_mobil->status_jalan  = $balance_mobil;
-            $sj_mobil->save();
+            $joborder->updateall();
         });
 
         static::updated(function (Joborder $joborder) {
-            $driver       = $joborder->driver()->first();
-            $mobil       = $joborder->mobil()->first();
-            $st_driver    = Driver::selectRaw('driver.`id` AS id,
-                                               SUM(IF(status_joborder = "1", 0, 1)) AS count_jo')
-                                               ->Join('joborder', 'joborder.driver_id', '=', 'driver.id')
-                                               ->where('driver.id', $driver->id)
-                                               ->groupBy('driver.id')->first();
-
-            $st_mobil    = Mobil::selectRaw('mobil.`id` AS id,
-                                               SUM(IF(status_joborder = "1", 0, 1)) AS count_jo')
-                                               ->Join('joborder', 'joborder.mobil_id', '=', 'mobil.id')
-                                               ->where('mobil.id', $mobil->id)
-                                               ->groupBy('mobil.id')->first();
-
-            $sj_driver    = Driver::where('id', $driver->id)->first();
-            $balance_driver =  $st_driver['count_jo'] > 0 ? 1 : 0;
-            // dd( $balance_driver);
-            $sj_driver->status_jalan  = $balance_driver;
-            $sj_driver->save();
-
-            $sj_mobil    = Mobil::where('id', $mobil->id)->first();
-            $balance_mobil =  $st_mobil['count_jo'] > 0 ? 1 : 0;
-            $sj_mobil->status_jalan  = $balance_mobil;
-            $sj_mobil->save();
+            $joborder->updateall();
         });
 
         static::deleted(function (Joborder $joborder) {
-            $driver       = $joborder->driver()->first();
-            $mobil       = $joborder->mobil()->first();
-            $st_driver    = Driver::selectRaw('driver.`id` AS id,
-                                               SUM(IF(status_joborder = "1", 0, 1)) AS count_jo')
-                                               ->Join('joborder', 'joborder.driver_id', '=', 'driver.id')
-                                               ->where('driver.id', $driver->id)
-                                               ->groupBy('driver.id')->first();
-
-            $st_mobil    = Mobil::selectRaw('mobil.`id` AS id,
-                                               SUM(IF(status_joborder = "1", 0, 1)) AS count_jo')
-                                               ->Join('joborder', 'joborder.mobil_id', '=', 'mobil.id')
-                                               ->where('mobil.id', $mobil->id)
-                                               ->groupBy('mobil.id')->first();
-
-            $sj_driver    = Driver::where('id', $driver->id)->first();
-            $balance_driver =  $st_driver['count_jo'] > 0 ? 1 : 0;
-            $sj_driver->status_jalan  = $balance_driver;
-            $sj_driver->save();
-
-            $sj_mobil    = Mobil::where('id', $mobil->id)->first();
-            $balance_mobil =  $st_mobil['count_jo'] > 0 ? 1 : 0;
-            $sj_mobil->status_jalan  = $balance_mobil;
-            $sj_mobil->save();
+            $joborder->updateall();
         });
-
     }
 
 

@@ -92,14 +92,14 @@
         </thead>
         <thead style="background-color: #fff !important; color:black; " >
            <tr>
-               <th class="text-center">Kode Invoice</th>
-               <th>Tanggal Invoice</th>
-               <th>Customer</th>
-               <th>Total Tagihan</th>
-               <th>Sisa Tagihan</th>
-               <th>Batas Pembayaran</th>
-               <th>Status Pembayaran</th>
-               <th>Operator (Waktu)</th>
+               <th width="5%" class="text-center">Kode Invoice</th>
+               <th width="8%">Tanggal Invoice</th>
+               <th width="26%">Customer</th>
+               <th width="12%">Total Tagihan</th>
+               <th width="12%">Sisa Tagihan</th>
+               <th width="10%">Batas Pembayaran</th>
+               <th width="10%">Status Pembayaran</th>
+               <th width="17%">Operator (Waktu)</th>
            </tr>
        </thead>
        <tbody>
@@ -111,7 +111,7 @@
             <tr>
                 <td>{{$val->kode_invoice}}</a></td>
                 <td>{{$val->tgl_invoice}}</td>
-                <td>{{$val->customer['name']}}</td>
+                <td>{{$val->customer['name'] ?? ''}}</td>
                 <td class="text-end">Rp. {{ number_format($val->total_harga,0,',','.')}}</td>
                 <td class="text-end">Rp. {{ number_format($val->sisa_tagihan,0,',','.')}}</td>
                 <td>{{$val->tgl_jatuh_tempo ?? '-'}}</td>

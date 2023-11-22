@@ -23,8 +23,10 @@ class BulananNopolGajiController extends Controller
 {
     function data(Request $request, $type){
         $bulan = ($type == 'post') ?   $request['bulan'] :  explode(',',  $request['bulan']);
-        $cek_mobil =  ($type == 'post') ?   $request['mobil_id'] :  explode(',',  $request['mobil_id']);
-        if(isset($driver)){
+        //$cek_mobil =  ($type == 'post') ?   $request['mobil_id'] :  explode(',',  $request['mobil_id']);
+        $cek_mobil =  ($type == 'post') ?   $request['mobil_id'] : (isset( $request['mobil_id'][0]) ? explode(',',  $request['mobil_id']) : null);
+
+        if(isset($cek_mobil)){
             $mobil = $cek_mobil;
         }else{
             $mobil = Mobil::selectRaw('id')->get();
@@ -36,13 +38,19 @@ class BulananNopolGajiController extends Controller
         $cek_bulan = implode(' - ', $cek_bl);
         $cek_bulan_id = implode(',',$cek_bl_id);
         $data = array();
+        $i = 0;
         foreach($mobil as $key => $val){
             $id = isset($val['id']) ? $val['id'] : $val;
-            $get_mobil = Mobil::findOrFail($id);
+
             $tahun = Carbon::parse($request['tahun'])->isoFormat('Y');
-            $data[$key]['mobil'] = $get_mobil['nomor_plat'].','.$cek_bulan;
-            $data[$key]['alldata'] = Penggajian::whereRaw('MONTH(tgl_gaji) IN ('. $cek_bulan_id.')')
+            $cek_mobil = Penggajian::whereRaw('MONTH(tgl_gaji) IN ('. $cek_bulan_id.')')
             ->whereYear('tgl_gaji', $tahun)->where('mobil_id', $id);
+            if(count($cek_mobil->get()) > 0){
+                $count_key = $i++;
+                $get_mobil = Mobil::findOrFail($id);
+                $data[$count_key]['mobil'] = $get_mobil['nomor_plat'].','.$cek_bulan;
+                $data[$count_key]['alldata'] =  $cek_mobil;
+            }
         }
         return $data;
     }
@@ -71,10 +79,10 @@ class BulananNopolGajiController extends Controller
         $pdf =  PDF::loadView('backend.bulanannopolgaji.pdf',  compact('data'));
         $fileName = 'Laporan-Nopol-Gaji : ';
         $PAPER_F4 = array(0,0,609.4488,935.433);
-        $pdf->setPaper( $PAPER_F4, 'potrait');
+        $pdf->setPaper( $PAPER_F4, 'landscape');
         $pdf->render();
         $font       = $pdf->getFontMetrics()->get_font('Helvetica', 'normal');
-        $pdf->get_canvas()->page_text(33, 900, "Page: {PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(0,0,0));
+        $pdf->get_canvas()->page_text(33, 910, "Page: {PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(0,0,0));
         return $pdf->stream("${fileName}.pdf");
     }
 
@@ -136,54 +144,60 @@ class BulananNopolGajiController extends Controller
 
 
     public function numrowsdata($data, $sheet, $spreadsheet){
-
-
-
-        foreach($data as $key => $item){
+        // dd($data);
+           foreach($data as $key => $item){
             $sheet->setCellValue('A'. $item['header_row_first'], $item['mobil']);
-            $sheet->setCellValue('A'. $item['header_row'], 'Kode Invoice');
+            $sheet->setCellValue('A'. $item['header_row'], 'Kode Gaji');
             $sheet->setCellValue('B'. $item['header_row'], 'Tanggal Gaji');
             $sheet->setCellValue('C'. $item['header_row'], 'Driver');
             $sheet->setCellValue('D'. $item['header_row'], 'No Polisi');
             $sheet->setCellValue('E'. $item['header_row'], 'Bulan Kerja');
-            $sheet->setCellValue('F'. $item['header_row'], 'Total Gaji');
-            $sheet->setCellValue('G'. $item['header_row'], 'Sisa Gaji');
-            $sheet->setCellValue('H'. $item['header_row'], 'Status');
-            $sheet->setCellValue('I'. $item['header_row'], 'Operator (Waktu)');
+            $sheet->setCellValue('F'. $item['header_row'], 'Bonus');
+            $sheet->setCellValue('G'. $item['header_row'], 'Gaji Pokok');
+            $sheet->setCellValue('H'. $item['header_row'], 'Potong Kasbon');
+            $sheet->setCellValue('I'. $item['header_row'], 'Total Gaji');
+            $sheet->setCellValue('J'. $item['header_row'], 'Payment Gaji');
+            $sheet->setCellValue('K'. $item['header_row'], 'Status');
+            $sheet->setCellValue('L'. $item['header_row'], 'Operator (Waktu)');
 
-        for($col = 'A'; $col !== 'J'; $col++){$sheet->getColumnDimension($col)->setAutoSize(true);}
-            $x = $item['body_row_start'];
-            foreach($item['alldata']->get() as $val){
-
-                $user = isset($val['createdby']->name) ? $val['createdby']->name : '-' ;
+           for($col = 'A'; $col !== 'M'; $col++){$sheet->getColumnDimension($col)->setAutoSize(true);}
+               $x = $item['body_row_start'];
+               foreach($item['alldata']->get() as $val){
+                    $user = isset($val['createdby']->name) ? $val['createdby']->name : '-' ;
                     $status_payment = $val['status_payment'] == '0' ? 'Belum Bayar' : ($val['status_payment'] == '1' ? 'Progress Payment' : 'Lunas');
                     $sheet->setCellValue('A' . $x, $val['kode_gaji']);
                     $sheet->setCellValue('B' . $x, $val['tgl_gaji']);
                     $sheet->setCellValue('C' . $x, $val['driver']['name'] ?? '');
                     $sheet->setCellValue('D' . $x, $val['mobil']['nomor_plat'] ?? '');
                     $sheet->setCellValue('E' . $x, $val['bulan_kerja'] ?? '');
-                    $sheet->setCellValue('F' . $x, $val['total_gaji'] ?? '');
-                    $sheet->setCellValue('G' . $x, $val['sisa_gaji'] ?? '');
-                    $sheet->setCellValue('H' . $x, $status_payment);
-                    $sheet->setCellValue('I' . $x, $user . ' ( ' .date('d-m-Y', strtotime($val['created_at'])) .' )');
+                    $sheet->setCellValue('F' . $x, $val['sub_total'] ?? '');
+                    $sheet->setCellValue('G' . $x, $val['bonus'] ?? '');
+                    $sheet->setCellValue('H' . $x, $val['nominal_kasbon'] ?? '');
+                    $sheet->setCellValue('I' . $x, $val['total_gaji'] ?? '');
+                    $sheet->setCellValue('J' . $x, $val['payment'][0]->tgl_payment ?? '');
+                    $sheet->setCellValue('K' . $x, $status_payment);
+                    $sheet->setCellValue('L' . $x, $user . ' ( ' .date('d-m-Y', strtotime($val['created_at'])) .' )');
                     $x ++;
-            }
-            $cell   = $item['footer_row'];
-            $bs = $item['body_row_start'];
-            $spreadsheet->setActiveSheetIndex(0)->setCellValue('A'.$cell, 'Total :');
-            $spreadsheet->getActiveSheet()->mergeCells( 'A' . $cell . ':E' . $cell . '');
-            $spreadsheet->getActiveSheet()->getStyle('A'.$cell)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
+               }
+               $cell   = $item['footer_row'];
+               $bs = $item['body_row_start'];
+               $spreadsheet->setActiveSheetIndex(0)->setCellValue('A'.$cell, 'Total :');
+               $spreadsheet->getActiveSheet()->mergeCells( 'A' . $cell . ':E' . $cell . '');
+               $spreadsheet->getActiveSheet()->getStyle('A'.$cell)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
 
-            $spreadsheet->getActiveSheet()->getStyle('F'. $bs.':F'.$cell)->getNumberFormat()->setFormatCode('#,##0');
-            $spreadsheet->getActiveSheet()->getStyle('G'. $bs.':G'.$cell)->getNumberFormat()->setFormatCode('#,##0');
+               $spreadsheet->getActiveSheet()->getStyle('F'. $bs.':F'.$cell)->getNumberFormat()->setFormatCode('#,##0');
+               $spreadsheet->getActiveSheet()->getStyle('G'. $bs.':G'.$cell)->getNumberFormat()->setFormatCode('#,##0');
+               $spreadsheet->getActiveSheet()->getStyle('H'. $bs.':H'.$cell)->getNumberFormat()->setFormatCode('#,##0');
+               $spreadsheet->getActiveSheet()->getStyle('I'. $bs.':I'.$cell)->getNumberFormat()->setFormatCode('#,##0');
 
-            $spreadsheet->setActiveSheetIndex(0)->setCellValue('F'.$cell, '=SUM(F'.  $bs .':F' . $cell . ')');
-            $spreadsheet->setActiveSheetIndex(0)->setCellValue('G'.$cell, '=SUM(G'.  $bs .':G' . $cell . ')');
-                  $sheet->setCellValue('O' . $x, $user . ' ( ' .date('d-m-Y', strtotime($val['created_at'])) .' )');
-        }
+               $spreadsheet->setActiveSheetIndex(0)->setCellValue('F'.$cell, '=SUM(F'.  $bs .':F' . $cell . ')');
+               $spreadsheet->setActiveSheetIndex(0)->setCellValue('G'.$cell, '=SUM(G'.  $bs .':G' . $cell . ')');
+               $spreadsheet->setActiveSheetIndex(0)->setCellValue('H'.$cell, '=SUM(H'.  $bs .':H' . $cell . ')');
+               $spreadsheet->setActiveSheetIndex(0)->setCellValue('I'.$cell, '=SUM(I'.  $bs .':I' . $cell . ')');
+           }
 
 
-    }
+       }
 
 
 

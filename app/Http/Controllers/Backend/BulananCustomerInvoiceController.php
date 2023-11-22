@@ -24,9 +24,9 @@ class BulananCustomerInvoiceController extends Controller
 {
     function data(Request $request, $type){
         $bulan = ($type == 'post') ?   $request['bulan'] :  explode(',',  $request['bulan']);
-        $cek_customer =  ($type == 'post') ?   $request['customer_id'] :  explode(',',  $request['customer_id']);
-
-        if(isset($driver)){
+        //$cek_customer =  ($type == 'post') ?   $request['customer_id'] :  explode(',',  $request['customer_id']);
+        $cek_customer =  ($type == 'post') ?   $request['customer_id'] : (isset( $request['customer_id'][0]) ? explode(',',  $request['customer_id']) : null);
+        if(isset($cek_customer)){
             $customer = $cek_customer;
         }else{
             $customer = Customer::selectRaw('id')->get();
@@ -39,13 +39,19 @@ class BulananCustomerInvoiceController extends Controller
         $cek_bulan = implode(' - ', $cek_bl);
         $cek_bulan_id = implode(',',$cek_bl_id);
         $data = array();
+        $i = 0;
         foreach($customer as $key => $val){
             $id = isset($val['id']) ? $val['id'] : $val;
-            $get_customer = Customer::findOrFail($id);
             $tahun = Carbon::parse($request['tahun'])->isoFormat('Y');
-            $data[$key]['customer'] = $get_customer['name'].','.$cek_bulan;
-            $data[$key]['alldata'] = Invoice::whereRaw('MONTH(tgl_invoice) IN ('. $cek_bulan_id.')')
+            $cek_customer = Invoice::whereRaw('MONTH(tgl_invoice) IN ('. $cek_bulan_id.')')
             ->whereYear('tgl_invoice', $tahun)->where('customer_id', $id);
+            if(count($cek_customer->get()) > 0){
+                $count_key = $i++;
+                $get_customer = Customer::findOrFail($id);
+                $data[$count_key]['customer'] = $get_customer['name'].','.$cek_bulan;
+                $data[$count_key]['alldata'] = $cek_customer;
+            }
+
         }
         return $data;
     }
@@ -149,11 +155,13 @@ class BulananCustomerInvoiceController extends Controller
            $sheet->setCellValue('E'. $item['header_row'], 'Sisa Tagihan');
            $sheet->setCellValue('F'. $item['header_row'], 'Batas Pembayaran');
            $sheet->setCellValue('G'. $item['header_row'], 'Status Pembayaran');
+           $sheet->setCellValue('H'. $item['header_row'], 'Operator (Waktu)');
 
 
-       for($col = 'A'; $col !== 'H'; $col++){$sheet->getColumnDimension($col)->setAutoSize(true);}
+       for($col = 'A'; $col !== 'I'; $col++){$sheet->getColumnDimension($col)->setAutoSize(true);}
            $x = $item['body_row_start'];
            foreach($item['alldata']->get() as $val){
+                   $user = isset($val['createdby']->name) ? $val['createdby']->name : '-' ;
                    $status_payment = $val['status_payment'] == '0' ? 'Belum Bayar' : ($val['status_payment'] == '1' ? 'Progress Payment' : 'Lunas');
                    $sheet->setCellValue('A' . $x, $val['kode_invoice']);
                    $sheet->setCellValue('B' . $x, $val['tgl_invoice']);
@@ -162,6 +170,7 @@ class BulananCustomerInvoiceController extends Controller
                    $sheet->setCellValue('E' . $x, $val['sisa_tagihan'] ?? '');
                    $sheet->setCellValue('F' . $x, $val['tgl_jatuh_tempo'] ?? '');
                    $sheet->setCellValue('G' . $x, $status_payment);
+                   $sheet->setCellValue('H' . $x, $user . ' ( ' .date('d-m-Y', strtotime($val['created_at'])) .' )');
                    $x ++;
            }
            $cell   = $item['footer_row'];

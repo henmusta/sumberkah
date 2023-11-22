@@ -22,15 +22,12 @@ class BulananDriverGajiController extends Controller
 {
     function data(Request $request, $type){
         $bulan = ($type == 'post') ?   $request['bulan'] :  explode(',',  $request['bulan']);
-        $cek_driver =  ($type == 'post') ?   $request['driver_id'] :  explode(',',  $request['driver_id']);
-
-
-        if(isset($driver)){
+        $cek_driver =  ($type == 'post') ?   $request['driver_id'] : (isset( $request['driver_id'][0]) ? explode(',',  $request['driver_id']) : null);
+        if(isset($cek_driver)){
             $driver = $cek_driver;
         }else{
             $driver = Driver::selectRaw('id')->get();
         }
-
         foreach($bulan as $i => $item){
            $cek_bl[] =  Carbon::parse($item)->isoFormat('MMMM');
            $cek_bl_id[] =  Carbon::parse($item)->format('m');
@@ -38,30 +35,32 @@ class BulananDriverGajiController extends Controller
         $cek_bulan = implode(' - ', $cek_bl);
         $cek_bulan_id = implode(',',$cek_bl_id);
         $data = array();
+        $i = 0;
         foreach($driver as $key => $val){
-            // dd($val['id']);
+
             $id = isset($val['id']) ? $val['id'] : $val;
-            // dd($id);
 
             $tahun = Carbon::parse($request['tahun'])->isoFormat('Y');
 
             $cek_driver = Penggajian::whereRaw('MONTH(tgl_gaji) IN ('. $cek_bulan_id.')')
             ->whereYear('tgl_gaji', $tahun)->where('driver_id', $id);
             if(count($cek_driver->get()) > 0){
+                $count_key = $i++;
                 $get_driver = Driver::findOrFail($id);
-                $data[$key]['driver'] = $get_driver['name'].','.$cek_bulan;
-                $data[$key]['alldata'] =  $cek_driver;
+                $data[$count_key]['driver'] = $get_driver['name'].','.$cek_bulan;
+                $data[$count_key]['alldata'] =  $cek_driver;
             }
 
         }
+
         return $data;
     }
 
     public function index(Request $request)
     {
-        $config['page_title'] = "Laporan Gaji Driver";
+        $config['page_title'] = "Laporan Bulanan Driver Gaji";
         $page_breadcrumbs = [
-          ['url' => '#', 'title' => "Laporan Gaji Driver"],
+          ['url' => '#', 'title' => "Laporan Bulanan Driver Gaji"],
         ];
         return view('backend.bulanandrivergaji.index', compact('config', 'page_breadcrumbs'));
     }
@@ -80,7 +79,6 @@ class BulananDriverGajiController extends Controller
               'data' =>$getdata ,
           ];
           return view('backend.bulanandrivergaji.report', compact('data'));
-
     }
 
 
@@ -100,10 +98,10 @@ class BulananDriverGajiController extends Controller
         $pdf =  PDF::loadView('backend.bulanandrivergaji.pdf',  compact('data'));
         $fileName = 'Laporan-Bulanan-Kasbon : ';
         $PAPER_F4 = array(0,0,609.4488,935.433);
-        $pdf->setPaper( $PAPER_F4, 'potrait');
+        $pdf->setPaper( $PAPER_F4, 'landscape');
         $pdf->render();
         $font       = $pdf->getFontMetrics()->get_font('Helvetica', 'normal');
-        $pdf->get_canvas()->page_text(33, 900, "Page: {PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(0,0,0));
+        $pdf->get_canvas()->page_text(33, 910, "Page: {PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(0,0,0));
         return $pdf->stream("${fileName}.pdf");
     }
 
@@ -112,6 +110,7 @@ class BulananDriverGajiController extends Controller
     public function numrows($data, $sheet, $request, $spreadsheet){
         $getdata = $data['data'];
         $sum_hrf = array(2);
+
         foreach($getdata as $key => $item){
            foreach($sum_hrf as $obj => $val){
              if($key == $obj){
@@ -123,17 +122,19 @@ class BulananDriverGajiController extends Controller
                 $sum_body_end = count($databody) +  $count_sum  + 1;
                 $getdata[$key]['body_row_start'] = $count_sum  + 2;
                 $getdata[$key]['body_row_end'] = $sum_body_end;
-                $getdata[$key]['footer_row'] =  $getdata[$key]['body_row_end'] + 1;
+                $getdata[$key]['footer_row'] =  $getdata[$key]['body_row_end'] + 1 ;
              }
+
            }
-           array_push($sum_hrf,$getdata[$key]['footer_row']);
+        //    dd($getdata[$key]['footer_row']);
+        array_push($sum_hrf,$getdata[$key]['footer_row']);
+
         }
         $loopdata = $getdata;
         for($key=1; $key < count($loopdata);$key++){
             foreach($sum_hrf as $i => $num){
                 if($i == $key){
                     $db_loop = $item['alldata']->get();
-
 
                     $loopdata[$key]['header_row_first'] = $num + 1;
                     $loopdata[$key]['header_row'] =  $num + 2;
@@ -149,7 +150,7 @@ class BulananDriverGajiController extends Controller
     }
 
    public function numrowsdata($data, $sheet, $spreadsheet){
-
+    // dd($data);
        foreach($data as $key => $item){
         $sheet->setCellValue('A'. $item['header_row_first'], $item['driver']);
         $sheet->setCellValue('A'. $item['header_row'], 'Kode Gaji');
@@ -157,12 +158,15 @@ class BulananDriverGajiController extends Controller
         $sheet->setCellValue('C'. $item['header_row'], 'Driver');
         $sheet->setCellValue('D'. $item['header_row'], 'No Polisi');
         $sheet->setCellValue('E'. $item['header_row'], 'Bulan Kerja');
-        $sheet->setCellValue('F'. $item['header_row'], 'Total Gaji');
-        $sheet->setCellValue('G'. $item['header_row'], 'Sisa Gaji');
-        $sheet->setCellValue('H'. $item['header_row'], 'Status');
-        $sheet->setCellValue('I'. $item['header_row'], 'Operator (Waktu)');
+        $sheet->setCellValue('F'. $item['header_row'], 'Bonus');
+        $sheet->setCellValue('G'. $item['header_row'], 'Gaji Pokok');
+        $sheet->setCellValue('H'. $item['header_row'], 'Potong Kasbon');
+        $sheet->setCellValue('I'. $item['header_row'], 'Total Gaji');
+        $sheet->setCellValue('J'. $item['header_row'], 'Payment Gaji');
+        $sheet->setCellValue('K'. $item['header_row'], 'Status');
+        $sheet->setCellValue('L'. $item['header_row'], 'Operator (Waktu)');
 
-       for($col = 'A'; $col !== 'J'; $col++){$sheet->getColumnDimension($col)->setAutoSize(true);}
+       for($col = 'A'; $col !== 'M'; $col++){$sheet->getColumnDimension($col)->setAutoSize(true);}
            $x = $item['body_row_start'];
            foreach($item['alldata']->get() as $val){
                 $user = isset($val['createdby']->name) ? $val['createdby']->name : '-' ;
@@ -172,10 +176,13 @@ class BulananDriverGajiController extends Controller
                 $sheet->setCellValue('C' . $x, $val['driver']['name'] ?? '');
                 $sheet->setCellValue('D' . $x, $val['mobil']['nomor_plat'] ?? '');
                 $sheet->setCellValue('E' . $x, $val['bulan_kerja'] ?? '');
-                $sheet->setCellValue('F' . $x, $val['total_gaji'] ?? '');
-                $sheet->setCellValue('G' . $x, $val['sisa_gaji'] ?? '');
-                $sheet->setCellValue('H' . $x, $status_payment);
-                $sheet->setCellValue('I' . $x, $user . ' ( ' .date('d-m-Y', strtotime($val['created_at'])) .' )');
+                $sheet->setCellValue('F' . $x, $val['sub_total'] ?? '');
+                $sheet->setCellValue('G' . $x, $val['bonus'] ?? '');
+                $sheet->setCellValue('H' . $x, $val['nominal_kasbon'] ?? '');
+                $sheet->setCellValue('I' . $x, $val['total_gaji'] ?? '');
+                $sheet->setCellValue('J' . $x, $val['payment'][0]->tgl_payment ?? '');
+                $sheet->setCellValue('K' . $x, $status_payment);
+                $sheet->setCellValue('L' . $x, $user . ' ( ' .date('d-m-Y', strtotime($val['created_at'])) .' )');
                 $x ++;
            }
            $cell   = $item['footer_row'];
@@ -186,9 +193,13 @@ class BulananDriverGajiController extends Controller
 
            $spreadsheet->getActiveSheet()->getStyle('F'. $bs.':F'.$cell)->getNumberFormat()->setFormatCode('#,##0');
            $spreadsheet->getActiveSheet()->getStyle('G'. $bs.':G'.$cell)->getNumberFormat()->setFormatCode('#,##0');
+           $spreadsheet->getActiveSheet()->getStyle('H'. $bs.':H'.$cell)->getNumberFormat()->setFormatCode('#,##0');
+           $spreadsheet->getActiveSheet()->getStyle('I'. $bs.':I'.$cell)->getNumberFormat()->setFormatCode('#,##0');
 
            $spreadsheet->setActiveSheetIndex(0)->setCellValue('F'.$cell, '=SUM(F'.  $bs .':F' . $cell . ')');
            $spreadsheet->setActiveSheetIndex(0)->setCellValue('G'.$cell, '=SUM(G'.  $bs .':G' . $cell . ')');
+           $spreadsheet->setActiveSheetIndex(0)->setCellValue('H'.$cell, '=SUM(H'.  $bs .':H' . $cell . ')');
+           $spreadsheet->setActiveSheetIndex(0)->setCellValue('I'.$cell, '=SUM(I'.  $bs .':I' . $cell . ')');
        }
 
 

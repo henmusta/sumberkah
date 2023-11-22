@@ -4,10 +4,14 @@
 
 @section('content')
 <div class="page-content">
-    <div class="container-fluid">
+    <div id="fluid" class="container-fluid full">
         <div class="card">
             <div class="card-header mb-3">
-                <h5 class="card-title mb-3">{{ $config['page_title'] }}</h5>
+                <div class="card-header text-left">
+                    <h5 class="">{{ $config['page_title'] }}</h5>
+                </div>
+                <button id="fullscreen-button" hidden="true"><i class="fas fa-expand"></i></button>
+                <button id="compress-button"><i class="fas fa-compress"></i></button>
                 <div class="col-md-xl-12">
                     <div class="mt-xl-0 mt-4">
 
@@ -175,7 +179,10 @@
 
         $("#terapkan_filter").click(function() {
             var url = document.getElementById("report-url").value;
-            var data = {
+            if( $('#select2Bulan').val() == null){
+                toastr.error('Pilihan Bulan Wajib Diisi', 'Notif !');
+            }else{
+                var data = {
                 tahun : $('#select2Tahun').val() || '',
                 bulan : $('#select2Bulan').val() || '',
                 mobil_id : $('#select2Mobil').val() || '',
@@ -203,6 +210,8 @@
                     $("#cetak").prop('hidden', false);
                 }
             });
+            }
+
         });
 
                        $("#pdf").click(function() {

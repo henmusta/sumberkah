@@ -22,7 +22,6 @@ class BulananGajiController extends Controller
 {
     function data(Request $request, $type){
         $array =  ($type == 'post') ?   $request['bulan'] :  explode(',',  $request['bulan']);
-        // $array = explode(",", $get_bulan);
         $data = array();
         foreach($array as $key => $val){
             $bulan = Carbon::parse($val)->isoFormat('M');
@@ -31,9 +30,7 @@ class BulananGajiController extends Controller
             $data[$key]['alldata'] = Penggajian::whereMonth('tgl_gaji', $bulan)
                                     ->whereYear('tgl_gaji', $tahun);
         }
-
         return $data;
-
     }
 
     public function index(Request $request)
@@ -82,7 +79,7 @@ class BulananGajiController extends Controller
         $pdf->setPaper( $PAPER_F4, 'landscape');
         $pdf->render();
         $font       = $pdf->getFontMetrics()->get_font('Helvetica', 'normal');
-        $pdf->get_canvas()->page_text(33, 900, "Page: {PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(0,0,0));
+        $pdf->get_canvas()->page_text(33, 910, "Page: {PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(0,0,0));
         return $pdf->stream("${fileName}.pdf");
     }
 
@@ -127,53 +124,61 @@ class BulananGajiController extends Controller
     }
 
 
-   public function numrowsdata($data, $sheet, $spreadsheet){
+    public function numrowsdata($data, $sheet, $spreadsheet){
+        // dd($data);
+           foreach($data as $key => $item){
+            $sheet->setCellValue('A'. $item['header_row_first'], $item['bulan']);
+            $sheet->setCellValue('A'. $item['header_row'], 'Kode Gaji');
+            $sheet->setCellValue('B'. $item['header_row'], 'Tanggal Gaji');
+            $sheet->setCellValue('C'. $item['header_row'], 'Driver');
+            $sheet->setCellValue('D'. $item['header_row'], 'No Polisi');
+            $sheet->setCellValue('E'. $item['header_row'], 'Bulan Kerja');
+            $sheet->setCellValue('F'. $item['header_row'], 'Bonus');
+            $sheet->setCellValue('G'. $item['header_row'], 'Gaji Pokok');
+            $sheet->setCellValue('H'. $item['header_row'], 'Potong Kasbon');
+            $sheet->setCellValue('I'. $item['header_row'], 'Total Gaji');
+            $sheet->setCellValue('J'. $item['header_row'], 'Payment Gaji');
+            $sheet->setCellValue('K'. $item['header_row'], 'Status');
+            $sheet->setCellValue('L'. $item['header_row'], 'Operator (Waktu)');
 
-       foreach($data as $key => $item){
-           $sheet->setCellValue('A'. $item['header_row_first'], $item['bulan']);
-           $sheet->setCellValue('A'. $item['header_row'], 'Kode Gaji');
-           $sheet->setCellValue('B'. $item['header_row'], 'Tanggal Gaji');
-           $sheet->setCellValue('C'. $item['header_row'], 'Driver');
-           $sheet->setCellValue('D'. $item['header_row'], 'No Polisi');
-           $sheet->setCellValue('E'. $item['header_row'], 'Bulan Kerja');
-           $sheet->setCellValue('F'. $item['header_row'], 'Total Gaji');
-           $sheet->setCellValue('G'. $item['header_row'], 'Sisa Gaji');
-           $sheet->setCellValue('H'. $item['header_row'], 'Status');
-           $sheet->setCellValue('I'. $item['header_row'], 'Operator (Waktu)');
+           for($col = 'A'; $col !== 'M'; $col++){$sheet->getColumnDimension($col)->setAutoSize(true);}
+               $x = $item['body_row_start'];
+               foreach($item['alldata']->get() as $val){
+                    $user = isset($val['createdby']->name) ? $val['createdby']->name : '-' ;
+                    $status_payment = $val['status_payment'] == '0' ? 'Belum Bayar' : ($val['status_payment'] == '1' ? 'Progress Payment' : 'Lunas');
+                    $sheet->setCellValue('A' . $x, $val['kode_gaji']);
+                    $sheet->setCellValue('B' . $x, $val['tgl_gaji']);
+                    $sheet->setCellValue('C' . $x, $val['driver']['name'] ?? '');
+                    $sheet->setCellValue('D' . $x, $val['mobil']['nomor_plat'] ?? '');
+                    $sheet->setCellValue('E' . $x, $val['bulan_kerja'] ?? '');
+                    $sheet->setCellValue('F' . $x, $val['sub_total'] ?? '');
+                    $sheet->setCellValue('G' . $x, $val['bonus'] ?? '');
+                    $sheet->setCellValue('H' . $x, $val['nominal_kasbon'] ?? '');
+                    $sheet->setCellValue('I' . $x, $val['total_gaji'] ?? '');
+                    $sheet->setCellValue('J' . $x, $val['payment'][0]->tgl_payment ?? '');
+                    $sheet->setCellValue('K' . $x, $status_payment);
+                    $sheet->setCellValue('L' . $x, $user . ' ( ' .date('d-m-Y', strtotime($val['created_at'])) .' )');
+                    $x ++;
+               }
+               $cell   = $item['footer_row'];
+               $bs = $item['body_row_start'];
+               $spreadsheet->setActiveSheetIndex(0)->setCellValue('A'.$cell, 'Total :');
+               $spreadsheet->getActiveSheet()->mergeCells( 'A' . $cell . ':E' . $cell . '');
+               $spreadsheet->getActiveSheet()->getStyle('A'.$cell)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
 
+               $spreadsheet->getActiveSheet()->getStyle('F'. $bs.':F'.$cell)->getNumberFormat()->setFormatCode('#,##0');
+               $spreadsheet->getActiveSheet()->getStyle('G'. $bs.':G'.$cell)->getNumberFormat()->setFormatCode('#,##0');
+               $spreadsheet->getActiveSheet()->getStyle('H'. $bs.':H'.$cell)->getNumberFormat()->setFormatCode('#,##0');
+               $spreadsheet->getActiveSheet()->getStyle('I'. $bs.':I'.$cell)->getNumberFormat()->setFormatCode('#,##0');
 
-       for($col = 'A'; $col !== 'J'; $col++){$sheet->getColumnDimension($col)->setAutoSize(true);}
-           $x = $item['body_row_start'];
-           foreach($item['alldata']->get() as $val){
-                   $user = isset($val['createdby']->name) ? $val['createdby']->name : '-' ;
-                   $status_payment = $val['status_payment'] == '0' ? 'Belum Bayar' : ($val['status_payment'] == '1' ? 'Progress Payment' : 'Lunas');
-                   $sheet->setCellValue('A' . $x, $val['kode_gaji']);
-                   $sheet->setCellValue('B' . $x, $val['tgl_gaji']);
-                   $sheet->setCellValue('C' . $x, $val['driver']['name'] ?? '');
-                   $sheet->setCellValue('D' . $x, $val['mobil']['nomor_plat'] ?? '');
-                   $sheet->setCellValue('E' . $x, $val['bulan_kerja'] ?? '');
-                   $sheet->setCellValue('F' . $x, $val['total_gaji'] ?? '');
-                   $sheet->setCellValue('G' . $x, $val['sisa_gaji'] ?? '');
-                   $sheet->setCellValue('H' . $x, $status_payment);
-                   $sheet->setCellValue('I' . $x, $user . ' ( ' .date('d-m-Y', strtotime($val['created_at'])) .' )');
-                   $x ++;
+               $spreadsheet->setActiveSheetIndex(0)->setCellValue('F'.$cell, '=SUM(F'.  $bs .':F' . $cell . ')');
+               $spreadsheet->setActiveSheetIndex(0)->setCellValue('G'.$cell, '=SUM(G'.  $bs .':G' . $cell . ')');
+               $spreadsheet->setActiveSheetIndex(0)->setCellValue('H'.$cell, '=SUM(H'.  $bs .':H' . $cell . ')');
+               $spreadsheet->setActiveSheetIndex(0)->setCellValue('I'.$cell, '=SUM(I'.  $bs .':I' . $cell . ')');
            }
-           $cell   = $item['footer_row'];
-           $bs = $item['body_row_start'];
-           $spreadsheet->setActiveSheetIndex(0)->setCellValue('A'.$cell, 'Total :');
-           $spreadsheet->getActiveSheet()->mergeCells( 'A' . $cell . ':E' . $cell . '');
-           $spreadsheet->getActiveSheet()->getStyle('A'.$cell)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
 
-           $spreadsheet->getActiveSheet()->getStyle('F'. $bs.':F'.$cell)->getNumberFormat()->setFormatCode('#,##0');
-           $spreadsheet->getActiveSheet()->getStyle('G'. $bs.':G'.$cell)->getNumberFormat()->setFormatCode('#,##0');
 
-           $spreadsheet->setActiveSheetIndex(0)->setCellValue('F'.$cell, '=SUM(F'.  $bs .':F' . $cell . ')');
-           $spreadsheet->setActiveSheetIndex(0)->setCellValue('G'.$cell, '=SUM(G'.  $bs .':G' . $cell . ')');
        }
-
-
-   }
-
 
 
 

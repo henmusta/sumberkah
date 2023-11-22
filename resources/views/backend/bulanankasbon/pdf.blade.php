@@ -81,51 +81,55 @@
     </div>
 
 
+
     @foreach ($data['data'] as $key => $item)
     @php($count = count($data['data']) - 1)
     @php($cek = count($item['alldata']->get()) > 5 && $key != $count  ?  'page-break-after: always !important;' : '')
     <table id="pakettable" width="100%" style="{{$cek}}">
         <thead  style="background-color: #fff !important; color:black;" width="100%">
             <tr>
-                <th colspan="6" class="text-left">{{$item['bulan']}}</th>
+                <th colspan="8" class="text-left">{{$item['bulan']}}</th>
             </tr>
         </thead>
         <thead style="background-color: #fff !important; color:black; " >
-           <tr>
-            <th class="text-center">Tanggal Transaksi</th>
-            <th>Kode Kasbon</th>
-            <th>Driver</th>
-            <th>JenisTransaksi</th>
-            <th>Nominal</th>
-            <th>Operator (Waktu)</th>
-           </tr>
+            <tr>
+                <th width="10%" class="text-center">Tanggal Transaksi</th>
+                <th width="5%">Kode Kasbon</th>
+                <th width="20%">Driver</th>
+                <th width="5%">Kode Joborder</th>
+                <th width="5%">Kode Gaji</th>
+                <th width="10%">Transaksi</th>
+                <th width="20%">Nominal</th>
+                <th width="25%">Operator (Waktu)</th>
+            </tr>
        </thead>
 
        <tbody>
-           @php($total  = 0)
-            @foreach ($item['alldata']->get() as $val)
-            @php($status_payment = $val['status_payment'] == '0' ? 'Belum Bayar' : ($val['status_payment'] == '1' ? 'Progress Payment' : 'Lunas'))
-            @php($total += $val->nominal)
-            <tr>
-                <td>{{$val->tgl_kasbon ?? ''}}</a></td>
-                <td><a href="{{ route('backend.kasbon.index') }}?kasbon_id={{$val->id}}" target="_blank">{{$val->kode_kasbon}}</a></td>
-                <td>{{$val->driver['name'] ?? ''}}</td>
-                <td>{{$val->jenis ?? ''}}</td>
-                <td class="text-end">Rp. {{ number_format($val->nominal,0,',','.')}}</td>
-                <td>{{ $val['createdby']->name ?? '' }} ( {{  \Carbon\Carbon::parse($val['created_at'])->format('d-m-Y H:i:s')  }} )</td>
-            </tr>
-            @endforeach
-       </tbody>
-        <tfoot>
-            <tr>
-                <th colspan="4"style="text-align:right">Total: </th>
-                <th class="text-end" id="">Rp. {{ number_format($total,0,',','.')}}</th>
-                <th></th>
-            </tr>
-        </tfoot>
+        @php($total = 0)
+        @foreach ($item['alldata']->get() as $val)
+        @php($status_payment = $val['status_payment'] == '0' ? 'Belum Bayar' : ($val['status_payment'] == '1' ? 'Progress Payment' : 'Lunas'))
+        @php($total += $val->nominal)
+        <tr>
+            <td>{{$val->tgl_kasbon ?? ''}}</a></td>
+            <td><a href="{{ route('backend.kasbon.index') }}?kasbon_id={{$val->id}}" target="_blank">{{$val->kode_kasbon}}</a></td>
+            <td>{{$val->driver['name'] ?? ''}}</td>
+            <td>{{$val->joborder['kode_joborder'] ?? ''}}</td>
+            <td>{{$val->penggajian['kode_gaji'] ?? ''}}</td>
+            <td>{{$val->jenis ?? ''}}</td>
+            <td class="text-end">Rp. {{ number_format($val->nominal,0,',','.')}}</td>
+            <td>{{ $val['createdby']->name ?? '' }} ( {{  \Carbon\Carbon::parse($val['created_at'])->format('d-m-Y H:i:s')  }} )</td>
+        </tr>
+        @endforeach
+    </tbody>
+
+        <tr>
+            <th colspan="6"style="text-align:right">Total: </th>
+            <th class="text-end" id="">Rp. {{ number_format($total,0,',','.')}}</th>
+            <th></th>
+        </tr>
+
     </table><br>
     @endforeach
-
 
 </body>
 </html>

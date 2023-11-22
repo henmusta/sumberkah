@@ -24,12 +24,15 @@ class BulananDriverJoController extends Controller
 {
     function data(Request $request, $type){
         $bulan = ($type == 'post') ?   $request['bulan'] :  explode(',',  $request['bulan']);
-        $driver =  ($type == 'post') ?   $request['driver_id'] :  explode(',',  $request['driver_id']);
-        if(isset($driver)){
+        $cek_driver =  ($type == 'post') ?   $request['driver_id'] : (isset( $request['driver_id'][0]) ? explode(',',  $request['driver_id']) : null);
+
+        if(isset($cek_driver)){
             $driver = $cek_driver;
         }else{
             $driver = Driver::selectRaw('id')->get();
         }
+
+        // dd($driver);
         foreach($bulan as $i => $item){
            $cek_bl[] =  Carbon::parse($item)->isoFormat('MMMM');
            $cek_bl_id[] =  Carbon::parse($item)->format('m');
@@ -37,13 +40,19 @@ class BulananDriverJoController extends Controller
         $cek_bulan = implode(' - ', $cek_bl);
         $cek_bulan_id = implode(',',$cek_bl_id);
         $data = array();
+        $i = 0;
         foreach($driver as $key => $val){
             $id = isset($val['id']) ? $val['id'] : $val;
-            $get_driver = Driver::findOrFail($id);
             $tahun = Carbon::parse($request['tahun'])->isoFormat('Y');
-            $data[$key]['driver'] = $get_driver['name'].','.$cek_bulan;
-            $data[$key]['alldata'] = Joborder::whereRaw('MONTH(tgl_joborder) IN ('. $cek_bulan_id.')')
+            $cek_driver =  Joborder::whereRaw('MONTH(tgl_joborder) IN ('. $cek_bulan_id.')')
             ->whereYear('tgl_joborder', $tahun)->where('driver_id', $id);
+            if(count($cek_driver->get()) > 0){
+                $count_key = $i++;
+                $get_driver = Driver::findOrFail($id);
+                $data[$count_key]['driver'] = $get_driver['name'].','.$cek_bulan;
+                $data[$count_key]['alldata'] =  $cek_driver;
+            }
+
         }
         return $data;
     }

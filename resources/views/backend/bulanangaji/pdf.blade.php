@@ -80,57 +80,67 @@
         <p style=" text-align: center; margin-bottom: 0; font-size:8px;"> Print By : {{ Auth::user()->name ?? '' }} ( {{  \Carbon\Carbon::now()->format('d-m-Y H:i:s')  }} )</p>
     </div>
 
-
-    @foreach ($data['data'] as $key => $item)
-    @php($count = count($data['data']) - 1)
+    @foreach ($data['data'] as $item)
     @php($cek = count($item['alldata']->get()) > 5 && $key != $count  ?  'page-break-after: always !important;' : '')
     <table id="pakettable" width="100%" style="{{$cek}}">
         <thead  style="background-color: #fff !important; color:black;" width="100%">
             <tr>
-                <th colspan="9" class="text-left">{{$item['bulan']}}</th>
+                <th colspan="12" class="text-left">{{$item['bulan']}}</th>
             </tr>
         </thead>
         <thead style="background-color: #fff !important; color:black; " >
            <tr>
-                <th class="text-center">Kode Gaji</th>
-                <th>Tanggal Gaji</th>
-                <th>Driver</th>
-                <th>No Polisi</th>
-                <th>Bulan Kerja</th>
-                <th>Total Gaji</th>
-                <th>Sisa Gaji</th>
-                <th>Status</th>
-                <th>Operator (Waktu)</th>
+                <th width="6%" class="text-center">Kode Gaji</th>
+                <th width="8%" class="text-center">Tanggal Gaji</th>
+                <th width="10%">Driver</th>
+                <th width="10%">No Polisi</th>
+                <th width="8%">Bulan Kerja</th>
+                <th width="8%">Gaji Pokok</th>
+                <th width="10%">Bonus</th>
+                <th width="10%">Potong Kasbon</th>
+                <th width="10%">Total Gaji</th>
+                <th width="10%">Payment Gaji</th>
+                <th width="10%">Status</th>
+                <th width="10%">Operator Waktu</th>
            </tr>
        </thead>
 
        <tbody>
-            @php($total = $sisa = 0)
+           @php($total = $sub_total = $bonus = $kasbon  = 0)
             @foreach ($item['alldata']->get() as $val)
-            @php($status_payment = $val['status_payment'] == '0' ? 'Belum Bayar' : ($val['status_payment'] == '1' ? 'Progress Payment' : 'Lunas'))
             @php($total += $val->total_gaji)
-            @php($sisa += $val->sisa_gaji)
+            @php($sub_total += $val->sub_total)
+            @php($bonus += $val->bonus)
+            @php($kasbon += $val->nominal_kasbon)
+            @php($status_payment = $val['status_payment'] == '0' ? 'Belum Bayar' : ($val['status_payment'] == '1' ? 'Progress Payment' : 'Lunas'))
             <tr>
-                <td>{{$val->kode_gaji ?? ''}}</a></td>
+                <td><a href="{{ route('backend.penggajian.index') }}?penggajian_id={{$val->id}}" target="_blank">{{$val->kode_gaji}}</a></td>
                 <td>{{$val->tgl_gaji ?? ''}}</td>
                 <td>{{$val->driver['name'] ?? ''}}</td>
                 <td>{{$val->mobil['nomor_plat'] ?? ''}}</td>
                 <td>{{$val->bulan_kerja ?? ''}}</td>
+                <td class="text-end">Rp. {{ number_format($val->sub_total,0,',','.')}}</td>
+                <td class="text-end">Rp. {{ number_format($val->bonus,0,',','.')}}</td>
+                <td class="text-end">Rp. {{ number_format($val->nominal_kasbon,0,',','.')}}</td>
                 <td class="text-end">Rp. {{ number_format($val->total_gaji,0,',','.')}}</td>
-                <td class="text-end">Rp. {{ number_format($val->sisa_gaji,0,',','.')}}</td>
+                <td>{{$val['payment'][0]->tgl_payment ?? ''}}</td>
                 <td>{{$status_payment ?? '-'}}</td>
                 <td>{{ $val['createdby']->name ?? '' }} ( {{  \Carbon\Carbon::parse($val['created_at'])->format('d-m-Y H:i:s')  }} )</td>
             </tr>
             @endforeach
        </tbody>
-    <tr>
+       <tr>
         <th colspan="5"style="text-align:right">Total: </th>
+        <th class="text-end" id="">Rp. {{ number_format($sub_total,0,',','.')}}</th>
+        <th class="text-end" id="">Rp. {{ number_format($bonus,0,',','.')}}</th>
+        <th class="text-end" id="">Rp. {{ number_format($kasbon,0,',','.')}}</th>
         <th class="text-end" id="">Rp. {{ number_format($total,0,',','.')}}</th>
-        <th class="text-end" id="">Rp. {{ number_format($sisa,0,',','.')}}</th>
+        <th></th>
         <th></th>
         <th></th>
      </tr>
-    </table><br>
+    </table><br><br>
     @endforeach
+
 </body>
 </html>

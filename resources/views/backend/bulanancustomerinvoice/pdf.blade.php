@@ -87,18 +87,19 @@
     <table id="pakettable" width="100%" style="{{$cek}}">
         <thead style="background-color: #fff !important; color:black;" width="100%">
             <tr>
-                <th colspan="7" class="text-left">{{$item['customer']}}</th>
+                <th colspan="8" class="text-left">{{$item['customer']}}</th>
             </tr>
         </thead>
         <thead style="background-color: #fff !important; color:black; " >
            <tr>
-               <th class="text-center">Kode Invoice</th>
-               <th>Tanggal Invoice</th>
-               <th>Customer</th>
-               <th>Total Tagihan</th>
-               <th>Sisa Tagihan</th>
-               <th>Batas Pembayaran</th>
-               <th>Status Pembayaran</th>
+               <th width="5%" class="text-center">Kode Invoice</th>
+               <th width="8%">Tanggal Invoice</th>
+               <th width="26%">Customer</th>
+               <th width="12%">Total Tagihan</th>
+               <th width="12%">Sisa Tagihan</th>
+               <th width="10%">Batas Pembayaran</th>
+               <th width="10%">Status Pembayaran</th>
+               <th width="17%">Operator (Waktu)</th>
            </tr>
        </thead>
        <tbody>
@@ -110,11 +111,12 @@
             <tr>
                 <td>{{$val->kode_invoice}}</a></td>
                 <td>{{$val->tgl_invoice}}</td>
-                <td>{{$val->customer['name']}}</td>
+                <td>{{$val->customer['name'] ?? ''}}</td>
                 <td class="text-end">Rp. {{ number_format($val->total_harga,0,',','.')}}</td>
                 <td class="text-end">Rp. {{ number_format($val->sisa_tagihan,0,',','.')}}</td>
                 <td>{{$val->tgl_jatuh_tempo ?? '-'}}</td>
                 <td>{{$status_payment ?? '-'}}</td>
+                <td>{{ $val['createdby']->name ?? '' }} ( {{  \Carbon\Carbon::parse($val['created_at'])->format('d-m-Y H:i:s')  }} )</td>
             </tr>
             @endforeach
        </tbody>
@@ -125,9 +127,10 @@
             <th class="text-end" id="">Rp. {{ number_format($sisa,0,',','.')}}</th>
             <th></th>
             <th></th>
+            <th></th>
          </tr>
     </tfoot>
-    </table>
+    </table><br>
     @endforeach
 </body>
 </html>

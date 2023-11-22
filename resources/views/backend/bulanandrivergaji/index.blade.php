@@ -178,7 +178,11 @@
 
         $("#terapkan_filter").click(function() {
             var url = document.getElementById("report-url").value;
-            var data = {
+            console.log($('#select2Bulan').val());
+            if( $('#select2Bulan').val() == null){
+                toastr.error('Pilihan Bulan Wajib Diisi', 'Notif !');
+            }else{
+                var data = {
                 tahun : $('#select2Tahun').val() || '',
                 bulan : $('#select2Bulan').val() || '',
                 driver_id : $('#select2Driver').val() || '',
@@ -206,6 +210,8 @@
                     $("#cetak").prop('hidden', false);
                 }
             });
+            }
+
         });
 
                        $("#pdf").click(function() {
