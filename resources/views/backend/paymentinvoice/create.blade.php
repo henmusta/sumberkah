@@ -283,7 +283,7 @@ if(cek_invoice_id != ''){
      }
 
             var dummy = [
-            // {  jenis_pembayaran: '', keterangan : '', nominal : 0 }
+            {  jenis_pembayaran: '', keterangan : '', nominal : 0 }
         ]
 
 
