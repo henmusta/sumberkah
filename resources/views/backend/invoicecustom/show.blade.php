@@ -44,7 +44,7 @@
                                 <td style="width: 2px; padding-right: 10px">:</td>
                                 <td  style="font-weight:bold">    {{ \Carbon\Carbon::parse($data['invoice']['tgl_invoice'])->format('d-m-Y')}}</td>
                             </tr>
-                            @if(isset($data['invoice']['payment']))
+                            @if(isset($data['invoice']['payment'][0]['tgl_payment']))
                             <tr>
                                 <td style="width: 300px; ">Tanggal Payment</td>
                                 <td style="width: 2px; padding-right: 10px">:</td>
