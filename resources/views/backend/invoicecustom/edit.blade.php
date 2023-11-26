@@ -22,21 +22,27 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                              <div class="col-md-4">
+                              <div class="col-md-3">
                                    <div class="mb-3">
                                       <label>Tanggal Invoice<span class="text-danger">*</span></label>
                                       <input type="text" id="tgl_invoice" value="{{ $data['invoice']['tgl_invoice'] }}" name="tgl_invoice"  class="form-control"/>
                                     </div>
                               </div>
-                              <div class="col-md-4">
+                              <div class="col-md-3">
                                 <div class="mb-3">
                                     <label>Customer<span class="text-danger">*</span></label>
                                     <select id="select2Customer" style="width: 100% !important;" name="customer_id">
                                         <option value="{{ $data['invoice']['customer']['id'] }}"> {{$data['invoice']['customer']['name'] }}</option>
                                     </select>
-                                  </div>
+                                </div>
                             </div>
-                              <div class="col-md-4">
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label>Payment (Hari)<span class="text-danger">*</span></label>
+                                    <input type="text" id="payment_hari" value="{{ $data['invoice']['payment_hari'] }}" name="payment_hari"  class="form-control"/>
+                                  </div>
+                           </div>
+                              <div class="col-md-3">
                                   <div class="mb-3">
                                       <label>Keterangan Invoice<span class="text-danger"></span></label>
                                       <textarea type="text" id="keterangan_invoice" value="" name="keterangan_invoice"  class="form-control">{{ $data['invoice']['keterangan_invoice'] }}</textarea>

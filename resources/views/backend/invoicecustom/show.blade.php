@@ -30,6 +30,11 @@
                     <div class="col-12">
                         <table>
                             <tr>
+                                <td style="width: 300px; ">Kode Invoice</td>
+                                <td style="width: 2px; padding-right: 10px">:</td>
+                                <td  style="font-weight:bold">{{$data['invoice']['kode_invoice'] ?? ''}}</td>
+                            </tr>
+                            <tr>
                                 <td style="width: 300px; ">Customer</td>
                                 <td style="width: 2px; padding-right: 10px">:</td>
                                 <td  style="font-weight:bold">{{$data['invoice']['customer']['name'] ?? ''}}</td>
@@ -39,7 +44,13 @@
                                 <td style="width: 2px; padding-right: 10px">:</td>
                                 <td  style="font-weight:bold">    {{ \Carbon\Carbon::parse($data['invoice']['tgl_invoice'])->format('d-m-Y')}}</td>
                             </tr>
-
+                            @if(isset($data['invoice']['payment']))
+                            <tr>
+                                <td style="width: 300px; ">Tanggal Payment</td>
+                                <td style="width: 2px; padding-right: 10px">:</td>
+                                <td  style="font-weight:bold">    {{ \Carbon\Carbon::parse($data['invoice']['payment'][0]['tgl_payment'])->format('d-m-Y')}}</td>
+                            </tr>
+                            @endif
                             <tr>
                                 <td style="width: 300px; ">Keterangan Invoice</td>
                                 <td style="width: 2px; padding-right: 10px">:</td>

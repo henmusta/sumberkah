@@ -21,6 +21,7 @@ use App\Models\Alamatrute;
 use Carbon\Carbon;
 use App\Traits\ResponseStatus;
 use App\Traits\NoUrutTrait;
+use App\Traits\UpdateSJ;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -31,7 +32,7 @@ use Throwable;
 
 class JoborderController extends Controller
 {
-    use ResponseStatus,NoUrutTrait;
+    use ResponseStatus,NoUrutTrait, UpdateSJ;
 
     function __construct()
     {
@@ -222,6 +223,7 @@ class JoborderController extends Controller
 
 
                   if(isset($data['id'])){
+                    $this->update_sj();
                     // $driver = Driver::findOrFail($request['driver_id']);
                     // $driver->update([
                     //     'status_jalan'  => '1',
@@ -306,16 +308,7 @@ class JoborderController extends Controller
         DB::beginTransaction();
         try {
             $data = Joborder::find($id);
-            if(isset($data['id'])){
-                // $driver = Driver::findOrFail($data['driver_id']);
-                // $driver->update([
-                //     'status_jalan'  => '0',
-                // ]);
-                // $mobil = Mobil::findOrFail($data['mobil_id']);
-                // $mobil->update([
-                //     'status_jalan'  => '0',
-                // ]);
-            }
+
             // $kode =  $this->KodeJoborder(Carbon::now()->format('d M Y'));
             // $kode =  $data['tgl_joborder'] != $request['tgl_joborder'] ?
 
@@ -344,6 +337,9 @@ class JoborderController extends Controller
                 'updated_by' => Auth::user()->id,
             ]);
 
+            if(isset($data['id'])){
+                $this->update_sj();
+            }
             // $driver = Driver::findOrFail($request['driver_id']);
             // $driver->update([
             //     'status_jalan'  => '1',
@@ -400,6 +396,7 @@ class JoborderController extends Controller
                         'status_joborder' => '0',
                       ]);
                     $konfirmasi->delete();
+                    $this->update_sj();
                     $response = response()->json($this->responseStore(true));
                 }
                 DB::commit();
@@ -422,14 +419,7 @@ class JoborderController extends Controller
         try {
          $data = Joborder::findOrFail($id);
             if ($data->delete()) {
-                $mobil = Mobil::findOrFail( $data['mobil_id']);
-                $driver = Driver::findOrFail( $data['driver_id']);
-                $mobil->update([
-                    'status_jalan'  => '0',
-                ]);
-                $driver->update([
-                    'status_jalan'  => '0',
-                ]);
+                $this->update_sj();
             }
         DB::commit();
         $response = response()->json($this->responseDelete(true));

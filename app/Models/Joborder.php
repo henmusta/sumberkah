@@ -85,39 +85,39 @@ class Joborder extends Model
                 ->useLogName('Joborder');
     }
 
-    function updateall(){
-        $feild = ['driver', 'mobil'];
-        foreach($feild as $val){
-        $query = DB::statement("UPDATE
-            ".$val."
-            INNER JOIN (SELECT
-            ".$val.".`id` AS id,
-            IF(SUM(IF(status_joborder = '1', 0, 1)) > '0', '1', '0') AS cek_st
-            FROM
-            ".$val."
-            INNER JOIN joborder
-            ON joborder.`".$val."_id` =  ".$val.".`id`
-            GROUP BY  ".$val.".`id`) child
-            ON  ".$val.".id = child.id
-            SET  ".$val.".`status_jalan` = child.cek_st");
-        }
+    // function updateall(){
+    //     $feild = ['driver', 'mobil'];
+    //     foreach($feild as $val){
+    //     $query = DB::statement("UPDATE
+    //         ".$val."
+    //         INNER JOIN (SELECT
+    //         ".$val.".`id` AS id,
+    //         IF(SUM(IF(status_joborder = '1', 0, 1)) > '0', '1', '0') AS cek_st
+    //         FROM
+    //         ".$val."
+    //         INNER JOIN joborder
+    //         ON joborder.`".$val."_id` =  ".$val.".`id`
+    //         GROUP BY  ".$val.".`id`) child
+    //         ON  ".$val.".id = child.id
+    //         SET  ".$val.".`status_jalan` = child.cek_st");
+    //     }
 
-    }
+    // }
 
-    protected static function booted(): void
-    {
-        static::created(function (Joborder $joborder) {
-            $joborder->updateall();
-        });
+    // protected static function booted(): void
+    // {
+    //     static::created(function (Joborder $joborder) {
+    //         $joborder->updateall();
+    //     });
 
-        static::updated(function (Joborder $joborder) {
-            $joborder->updateall();
-        });
+    //     static::updated(function (Joborder $joborder) {
+    //         $joborder->updateall();
+    //     });
 
-        static::deleted(function (Joborder $joborder) {
-            $joborder->updateall();
-        });
-    }
+    //     static::deleted(function (Joborder $joborder) {
+    //         $joborder->updateall();
+    //     });
+    // }
 
 
     public function customer()

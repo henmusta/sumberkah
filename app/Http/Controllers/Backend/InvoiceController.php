@@ -81,12 +81,7 @@ class InvoiceController extends Controller
                 $tgl_invoice = Carbon::parse($row->tgl_invoice);
                 $tgl_jatuh_tempo =Carbon::parse($row->tgl_jatuh_tempo);
                 $diff = $tgl_invoice->diffInDays($tgl_jatuh_tempo);
-                if($row->jenis == 'default'){
-                    return $diff.' Hari ('.Carbon::parse($row->tgl_jatuh_tempo)->format('Y-m-d').')';
-                }else{
-                    return '-';
-                }
-
+                return $diff.' Hari ('.Carbon::parse($row->tgl_jatuh_tempo)->format('Y-m-d').')';
              })
             ->addColumn('action', function ($row) {
 
@@ -107,7 +102,7 @@ class InvoiceController extends Controller
                 $payment = '<a href="' . route('backend.paymentinvoice.create',  ['invoice_id'=> $row->id]) . '" class="dropdown-item">Pembayaran</a>';
                 $cicilan = '<a class="dropdown-item" href="paymentinvoice/' . $row->id . '/edit">Pelunasan</a>';
 
-                $cek_payment = $row->status_payment == '0' && $row->jenis == 'default' ? $payment : ($row->status_payment == '1'  ? $cicilan : '');
+                $cek_payment = $row->status_payment == '0' ? $payment : ($row->status_payment == '1'  ? $cicilan : '');
                 $cek_edit =  $row->status_payment == '0' ? $edit : '';
                 $cek_delete =  $row->status_payment == '0' ? $delete : '';
                 $cek_list_payment = $row->status_payment > '0'  && $row->jenis == 'default' ? $list_payment : '';

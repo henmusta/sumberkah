@@ -77,6 +77,10 @@ class Invoice extends Model
         return $this->hasMany(Joborder::class, 'invoice_id');
     }
 
+    public function payment()
+    {
+      return $this->hasMany(PaymentInvoice::class, 'invoice_id');
+    }
 
     public function createdby()
     {

@@ -43,6 +43,7 @@ class InvoiceCustomController extends Controller
           $validator = Validator::make($request->all(), [
             'tgl_invoice'  => "required",
             'ppn'  =>  "required_if:ppn,!=,Tidak",
+            'payment_hari'  => "required",
             'nominal_ppn'  => "required",
             'sub_total'  => "required",
             'total_harga'  => "required",
@@ -54,16 +55,19 @@ class InvoiceCustomController extends Controller
             DB::beginTransaction();
             try {
                 //   $tgl_jatuh_tempo = Carbon::createFromFormat('Y-m-d',  $request['tgl_invoice'])->addDays($request['payment_hari'])->format('Y-m-d');
-
+                  $tgl_jatuh_tempo = Carbon::createFromFormat('Y-m-d',  $request['tgl_invoice'])->addDays($request['payment_hari'])->format('Y-m-d');
                   $kode =  $this->KodeInvoice(Carbon::parse($request['tgl_invoice'])->format('d M Y'));
                   $data = Invoice::create([
                     'tgl_invoice'  => $request['tgl_invoice'],
+                    'tgl_jatuh_tempo' =>  $tgl_jatuh_tempo,
                     'kode_invoice' =>  $kode,
                     'customer_id' =>  $request['customer_id'],
                     'ppn'  => $request['ppn'],
+                    'payment_hari'  => $request['payment_hari'],
                     'nominal_ppn'  => $request['nominal_ppn'],
                     'sub_total'  => $request['sub_total'],
                     'total_harga'  => $request['total_harga'],
+                    'sisa_tagihan'  => $request['total_harga'],
                     'keterangan_invoice'  => $request['keterangan_invoice'],
                     'created_by' => Auth::user()->id,
                     'jenis' => 'custom',
@@ -159,15 +163,18 @@ class InvoiceCustomController extends Controller
                   }
                   $kode =  $this->KodeInvoice(Carbon::parse($request['tgl_invoice'])->format('d M Y'));
                   $cek_kode = $request['tgl_invoice'] != $invoice['tgl_invoice'] ? $kode : $invoice['tgl_invoice'];
-
+                  $tgl_jatuh_tempo = Carbon::createFromFormat('Y-m-d',  $request['tgl_invoice'])->addDays($request['payment_hari'])->format('Y-m-d');
                   $invoice->update([
                     'tgl_invoice'  => $request['tgl_invoice'],
+                    'tgl_jatuh_tempo' =>  $tgl_jatuh_tempo,
                     'kode_invoice' => $cek_kode,
                     'customer_id' =>  $request['customer_id'],
                     'ppn'  => $request['ppn'],
                     'nominal_ppn'  => $request['nominal_ppn'],
+                    'payment_hari'  => $request['payment_hari'],
                     'sub_total'  => $request['sub_total'],
                     'total_harga'  => $request['total_harga'],
+                    'sisa_tagihan'  => $request['total_harga'],
                     'keterangan_invoice'  => $request['keterangan_invoice'],
                     'updated_by' => Auth::user()->id,
                   ]);
@@ -198,7 +205,7 @@ class InvoiceCustomController extends Controller
           ['url' => route('backend.invoice.index'), 'title' => "Detail Invoice"],
           ['url' => '#', 'title' => "Detail Invoice"],
         ];
-        $invoice = Invoice::with('customer')->findOrFail($id);
+        $invoice = Invoice::with('customer','payment')->findOrFail($id);
         $invoicedetail = InvoiceDetail::with('invoice')->where('invoice_id', $id)->get();
         $data = [
           'invoice' => $invoice,
