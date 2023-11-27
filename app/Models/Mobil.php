@@ -74,7 +74,7 @@ class Mobil extends Model
                     'validasi',
                     'status_jalan'
                 ])
-                ->useLogName('Kasbon');
+                ->useLogName('Mobil');
     }
 
     public function jenismobil()
