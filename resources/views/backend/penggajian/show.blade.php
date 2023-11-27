@@ -82,7 +82,7 @@
                             <tr>
                                 <td style="width: 300px; ">Keterangan Kasbon</td>
                                 <td style="width: 2px; padding-right: 10px">:</td>
-                                <td  style="font-weight:bold">{{$data['penggajian']['kasbon']['keterangan'] ?? ''}}</td>
+                                <td  style="font-weight:bold">{{$data['penggajian']['kasbon']['keterangan'] ?? ''}}    <a href="{{ route('backend.kasbon.index') }}?kasbon_id={{$data['penggajian']['kasbon']['id'] ?? ''}}" target="_blank">{{$data['penggajian']['kasbon']['kode_kasbon'] ?? ''}}</a></td>
                             </tr>
                             @endif
                             <tr>
