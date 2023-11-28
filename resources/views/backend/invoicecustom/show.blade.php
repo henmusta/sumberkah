@@ -52,6 +52,11 @@
                             </tr>
                             @endif
                             <tr>
+                                <td style="width: 300px; ">Batas Pembayaran</td>
+                                <td style="width: 2px; padding-right: 10px">:</td>
+                                <td  style="font-weight:bold">{{$data['invoice']['payment_hari'] ?? ''}} Hari ({{\Carbon\Carbon::parse($data['invoice']['tgl_jatuh_tempo'])->format('d-m-Y')}})</td>
+                            </tr>
+                            <tr>
                                 <td style="width: 300px; ">Keterangan Invoice</td>
                                 <td style="width: 2px; padding-right: 10px">:</td>
                                 <td  style="font-weight:bold">{{$data['invoice']['keterangan_invoice'] ?? ''}}</td>
