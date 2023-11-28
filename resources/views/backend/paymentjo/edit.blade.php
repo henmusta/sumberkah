@@ -321,7 +321,7 @@ if(cek_joborder_id != ''){
                     $('#customer_id').val(data.customer.name);
                     $('#muatan_id').val(data.muatan.name);
                     $('#first_rute_id').val(data.firstrute.name);
-                    $('#last_rute_id').val(data.firstrute.name);
+                    $('#last_rute_id').val(data.lastrute.name);
                     total_uang_jalan.set(data.joborder.total_uang_jalan);
                     sisa_uang_jalan.set(data.joborder.sisa_uang_jalan);
                     total_sisa_uang_jalan.set(data.joborder.sisa_uang_jalan);

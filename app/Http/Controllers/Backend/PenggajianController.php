@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Helpers\FileUpload;
+use App\Traits\UpdateSJ;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Penggajian;
@@ -26,7 +27,7 @@ use PDF;
 use Throwable;
 class PenggajianController extends Controller
 {
-    use ResponseStatus,NoUrutTrait;
+    use ResponseStatus,NoUrutTrait, UpdateSJ;
 
     function __construct()
     {
@@ -228,12 +229,7 @@ class PenggajianController extends Controller
                                 // $cek_kasbon_id
                                 // $cek_kasbon_id;
                                 if($driver['kasbon'] >= $request['nominal_kasbon']){
-                                    $driver_total_kasbon = $driver['kasbon'] - $request['nominal_kasbon'];
-                                    // dd( $driver_total_kasbon);
-                                    $driver->update([
-                                        'kasbon'=> $driver_total_kasbon,
-                                    ]);
-
+                                    $this->update_kasbon();
                                 }else{
                                     $response = response()->json([
                                         'error' => true,
@@ -479,11 +475,11 @@ class PenggajianController extends Controller
                         $driver_total_kasbon = 0;
                         $count_total_kasbon = $driverlogkasbon['nominal'] + $driver['kasbon'];
                         if( $count_total_kasbon > $request['nominal_kasbon']){
-                            $driver_total_kasbon = $count_total_kasbon - $request['nominal_kasbon'];
-                            $driver->update([
-                                'kasbon'=> $driver_total_kasbon,
-                            ]);
-
+                            // $driver_total_kasbon = $count_total_kasbon - $request['nominal_kasbon'];
+                            // $driver->update([
+                            //     'kasbon'=> $driver_total_kasbon,
+                            // ]);
+                            $this->update_kasbon();
                             $driverlogkasbon->update([
                                 'nominal'=> $request['nominal_kasbon']
                             ]);

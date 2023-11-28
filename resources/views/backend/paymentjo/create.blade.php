@@ -71,13 +71,13 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                    <label>Alamat Dari (Awal)<span class="text-danger">*</span></label>
-                                   <input type="text" id="first_rute_id" value="" name="tgl_joborder"  class="form-control" disabled/>
+                                   <input type="text" id="first_rute_id" value="" name="first_rute_id"  class="form-control" disabled/>
                                  </div>
                            </div>
                            <div class="col-md-6">
                             <div class="mb-3">
                                <label>Alamat Akhir (Ke)<span class="text-danger">*</span></label>
-                               <input type="text" id="last_rute_id" value="" name="joborder_id"  class="form-control"  disabled/>
+                               <input type="text" id="last_rute_id" value="" name="last_rute_id"  class="form-control"  disabled/>
                              </div>
                            </div>
 
@@ -538,7 +538,7 @@ if(cek_joborder_id != ''){
                     $('#customer_id').val(data.customer.name);
                     $('#muatan_id').val(data.muatan.name);
                     $('#first_rute_id').val(data.firstrute.name);
-                    $('#last_rute_id').val(data.firstrute.name);
+                    $('#last_rute_id').val(data.lastrute.name);
                     total_uang_jalan.set(data.joborder.total_uang_jalan);
                     sisa_uang_jalan.set(data.joborder.sisa_uang_jalan);
                     total_sisa_uang_jalan.set(data.joborder.sisa_uang_jalan);

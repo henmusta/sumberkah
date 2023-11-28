@@ -22,4 +22,21 @@ trait UpdateSJ {
             SET  ".$val.".`status_jalan` = child.cek_st");
         }
     }
+
+    public function update_kasbon() {
+        $query = DB::statement("UPDATE driver
+        INNER JOIN
+        (SELECT
+          driver.id,
+          driver.`kasbon`,
+          SUM(kasbon_jurnallog.`kredit`) - SUM(kasbon_jurnallog.`debit`) AS total
+        FROM
+          driver
+          INNER JOIN kasbon_jurnallog
+            ON kasbon_jurnallog.`driver_id` = driver.`id`
+        GROUP BY driver.`id`
+        HAVING total != driver.`kasbon`) AS res
+        ON res.id = driver.`id`
+        SET driver.`kasbon` = res.total");
+    }
 }
