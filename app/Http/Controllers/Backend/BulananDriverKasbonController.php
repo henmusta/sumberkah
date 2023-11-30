@@ -50,8 +50,8 @@ class BulananDriverKasbonController extends Controller
             if(count($cek_driver->get()) > 0){
                 $count_key = $i++;
                 $get_driver = Driver::findOrFail($id) ;
-                $data[$key]['driver'] = $get_driver['name'].','.$cek_bulan;
-                $data[$key]['alldata'] = $cek_driver;
+                $data[$count_key]['driver'] = $get_driver['name'].','.$cek_bulan;
+                $data[$count_key]['alldata'] = $cek_driver;
             }
 
         }
