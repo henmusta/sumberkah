@@ -385,11 +385,11 @@ class DriverController extends Controller
 
         $pdf =  PDF::loadView('backend.driver.pdf',  compact('data'));
         $PAPER_F4 = array(0,0,609.4488,935.433);
-        $pdf->setPaper( $PAPER_F4, 'potrait');
+        $pdf->setPaper( $PAPER_F4, 'landscape');
         $pdf->render();
         $font       = $pdf->getFontMetrics()->get_font('Helvetica', 'normal');
         $fileName = 'Driver';
-        $pdf->get_canvas()->page_text(33, 900, "Page: {PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(0,0,0));
+        $pdf->get_canvas()->page_text(33, 590, "Page: {PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(0,0,0));
         return $pdf->stream("${fileName}.pdf");
     }
 
@@ -407,23 +407,40 @@ class DriverController extends Controller
 
 
          $rows3 = 3;
+
          $sheet->setCellValue('A'.$rows3, 'Nama Lengkap');
          $sheet->setCellValue('B'.$rows3, 'Nama Panggilan');
-         $sheet->setCellValue('C'.$rows3, 'No Hp');
-         $sheet->setCellValue('D'.$rows3, 'Tgl Registrasi');
-         $sheet->setCellValue('E'.$rows3, 'Tgl Perubahan Status');
-         $sheet->setCellValue('F'.$rows3, 'Status aktif');
+         $sheet->setCellValue('C'.$rows3, 'Tempat/Tanggal Lahir');
+         $sheet->setCellValue('D'.$rows3, 'Alamat');
+         $sheet->setCellValue('E'.$rows3, 'Hp/Telp');
+         $sheet->setCellValue('F'.$rows3, 'Ktp');
+         $sheet->setCellValue('G'.$rows3, 'Sim');
+         $sheet->setCellValue('H'.$rows3, 'Tanggal Berlaku Sim');
+         $sheet->setCellValue('I'.$rows3, 'Tgl Registrasi');
+         $sheet->setCellValue('J'.$rows3, 'Tgl Perubahan');
+         $sheet->setCellValue('K'.$rows3, 'Nama Keluarga');
+         $sheet->setCellValue('L'.$rows3, 'Telp/Hp Keluarga');
+         $sheet->setCellValue('M'.$rows3, 'Referensi');
+         $sheet->setCellValue('N'.$rows3, 'Status Aktif');
 
-         for($col = 'A'; $col !== 'G'; $col++){$sheet->getColumnDimension($col)->setAutoSize(true);}
+         for($col = 'A'; $col !== 'O'; $col++){$sheet->getColumnDimension($col)->setAutoSize(true);}
          $x = 4;
          foreach($data->get() as $val){
                  $status_aktif = $val['status_aktif'] == '0' ? 'Tidak Aktif' : 'Aktif';
                  $sheet->setCellValue('A' . $x, $val['name']);
                  $sheet->setCellValue('B' . $x, $val['panggilan']);
                  $sheet->setCellValue('C' . $x, $val['telp']);
-                 $sheet->setCellValue('D' . $x, Carbon::parse($val['created_at'])->format('d-m-Y') ?? '');
-                 $sheet->setCellValue('E' . $x, Carbon::parse($val['tgl_aktif'])->format('d-m-Y') ?? '');
-                 $sheet->setCellValue('F' . $x, $status_aktif ?? '');
+                 $sheet->setCellValue('D' . $x, $val['alamat']);
+                 $sheet->setCellValue('E' . $x, $val['telp']);
+                 $sheet->setCellValue('F' . $x, $val['ktp']);
+                 $sheet->setCellValue('G' . $x, $val['sim']);
+                 $sheet->setCellValue('H' . $x, Carbon::parse($val['tgl_sim'])->format('d-m-Y') ?? '');
+                 $sheet->setCellValue('I' . $x, Carbon::parse($val['created_at'])->format('d-m-Y') ?? '');
+                 $sheet->setCellValue('J' . $x, Carbon::parse($val['tgl_aktif'])->format('d-m-Y') ?? '');
+                 $sheet->setCellValue('K' . $x, $val['darurat_name']);
+                 $sheet->setCellValue('L' . $x, $val['darurat_telp']);
+                 $sheet->setCellValue('M' . $x, $val['darurat_ref']);
+                 $sheet->setCellValue('N' . $x, $status_aktif ?? '');
                  $x++;
          }
       $cell   = count($data->get()) + 4;

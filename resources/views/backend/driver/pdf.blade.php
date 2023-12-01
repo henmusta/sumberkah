@@ -94,23 +94,39 @@
             <tr>
                 <th>Nama Lengkap</th>
                 <th>Nama Panggilan</th>
-                <th>No hp</th>
-                <th class="text-center">Tgl Registrasi</th>
-                <th class="text-center">Tgl Perubahan Status</th>
+                <th>Tempat/Tanggal Lahir</th>
+                <th>Alamat</th>
+                <th>Hp/Telp</th>
+                <th>Ktp</th>
+                <th>Sim</th>
+                <th width="60px">Tanggal Berlaku Sim</th>
+                <th width="60px">Tgl Registrasi</th>
+                <th width="60px">Tgl Perubahan</th>
+                <th>Nama Keluarga</th>
+                <th>Telp/Hp Keluarga</th>
+                <th>Referensi</th>
                 <th>Status aktif</th>
             </tr>
         </thead>
         <tbody>
             @php($no=1)
             @foreach ($data['driver'] as $val)
-            @php($status_jalan = $val['status_jalan'] == '0' ? 'Tidak Jalan' : 'Jalan')
+            {{-- @php($status_jalan = $val['status_jalan'] == '0' ? 'Tidak Jalan' : 'Jalan') --}}
             @php($status_aktif = $val['status_aktif'] == '0' ? 'Tidak Aktif' : 'Aktif')
                 <tr>
                     <td>{{$val->name}}</td>
                     <td>{{$val->panggilan}}</td>
-                    <td>{{$val->telp}}</td>
+                    <td>{{$val->tempat_lahir ?? ''}}/{{$val->tanggal_lahir ?? ''}}</td>
+                    <td>{{$val->alamat ?? ''}}</td>
+                    <td>{{$val->telp ?? ''}}</td>
+                    <td>{{$val->ktp ?? ''}}</td>
+                    <td>{{$val->sim ?? ''}}</td>
+                    <td class="text-center">{{ \Carbon\Carbon::parse($val['tgl_sim'])->format('d-m-Y')}}</td>
                     <td class="text-center">{{ \Carbon\Carbon::parse($val['created_at'])->format('d-m-Y')}}</td>
                     <td class="text-center">{{ \Carbon\Carbon::parse($val['tgl_aktif'])->format('d-m-Y')}}</td>
+                    <td>{{$val->darurat_name ?? ''}}</td>
+                    <td>{{$val->darurat_telp ?? ''}}</td>
+                    <td>{{$val->darurat_ref ?? ''}}</td>
                     <td>{{$status_aktif}}</td>
                 </tr>
             @endforeach
