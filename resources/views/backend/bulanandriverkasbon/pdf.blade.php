@@ -84,7 +84,7 @@
     @foreach ($data['data'] as $key => $item)
     @php($count = count($data['data']) - 1)
     @php($cek = count($item['alldata']->get()) > 5 && $key != $count  ?  'page-break-after: always !important;' : '')
-    <table id="pakettable" width="100%" style="{{$cek}}">
+    <table id="pakettable" width="100%">
         <thead  style="background-color: #fff !important; color:black;" width="100%">
             <tr>
                 <th colspan="8" class="text-left">{{$item['driver']}}</th>
