@@ -14,6 +14,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Carbon\Carbon;
 use App\Traits\ResponseStatus;
 use App\Traits\NoUrutTrait;
+use App\Traits\UpdateSJ;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -24,7 +25,7 @@ use Throwable;
 
 class KasbonController extends Controller
 {
-    use ResponseStatus,NoUrutTrait;
+    use ResponseStatus,NoUrutTrait, UpdateSJ;
     function __construct()
     {
       $this->middleware('can:backend-kasbon-list', ['only' => ['index', 'show']]);
@@ -144,7 +145,9 @@ class KasbonController extends Controller
                     ]);
                     // dd( $test);
                     $this->validasi( $validasi);
+
                     $response = response()->json($this->responseStore(true, route('backend.kasbon.index')));
+
                   }
                 //   if(isset($data['id']) && $request['jenis'] == "Pembayaran" ){
 
@@ -233,11 +236,11 @@ class KasbonController extends Controller
 
                   }else{
 
-                    if($data['jenis'] == 'Pengajuan'){
-                        $total_kasbon = ($driver['kasbon'] - $request['nominal']) ;
-                    }else{
-                        $total_kasbon = ($driver['kasbon'] + $request['nominal']) ;
-                    }
+                    // if($data['jenis'] == 'Pengajuan'){
+                    //     $total_kasbon = ($driver['kasbon'] - $request['nominal']) ;
+                    // }else{
+                    //     $total_kasbon = ($driver['kasbon'] + $request['nominal']) ;
+                    // }
 
                     $kasbonjurnallog = Kasbonjurnallog::where('kasbon_id', $data['id']);
                     $kasbonjurnallog->delete();
@@ -249,10 +252,7 @@ class KasbonController extends Controller
                         'message' => 'Gagal Validasi Kasbon Driver Akan Minus'
                     ]);
                   }else{
-                    $driver->update([
-                        'kasbon'=> $total_kasbon,
-                      ]);
-
+                      $this->update_sj();
                       $data->update([
                         'validasi' => $request['validasi'],
                       ]);
@@ -307,15 +307,7 @@ class KasbonController extends Controller
             $status = $request['jenis'] == 'Pembayaran' ? '1' : '0';
             $driver = Driver::findOrFail($request['driver_id']);
             $total_kasbon = 0;
-            if($data['jenis'] == 'Pengajuan'){
-                $total_kasbon = ($driver['kasbon'] + $request['nominal']) ;
-            }else{
-                $total_kasbon = ($driver['kasbon'] - $request['nominal']) ;
-            }
 
-            $driver->update([
-                'kasbon'=> $total_kasbon,
-            ]);
             $datalog->update([
                 'driver_id' => $request['driver_id'],
                 'jenis'=> $request['jenis'],
@@ -325,17 +317,7 @@ class KasbonController extends Controller
             ]);
 
 
-            // if($request['jenis'] == "Pembayaran" ){
-            //     $total_kasbon = $driver['kasbon'] - $request['nominal'];
-
-            // }else{
-            //     $validasi = new Request([
-            //         'id' =>  $data['id'],
-            //         'nominal' =>  $data['nominal'],
-            //         'validasi' =>  $data['validasi'],
-            //     ]);
-            // }
-
+            $this->update_sj();
 
             if( $total_kasbon < 0){
                 DB::rollBack();
