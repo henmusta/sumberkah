@@ -236,11 +236,11 @@ class KasbonController extends Controller
 
                   }else{
 
-                    // if($data['jenis'] == 'Pengajuan'){
-                    //     $total_kasbon = ($driver['kasbon'] - $request['nominal']) ;
-                    // }else{
-                    //     $total_kasbon = ($driver['kasbon'] + $request['nominal']) ;
-                    // }
+                    if($data['jenis'] == 'Pengajuan'){
+                        $total_kasbon = ($driver['kasbon'] - $request['nominal']) ;
+                    }else{
+                        $total_kasbon = ($driver['kasbon'] + $request['nominal']) ;
+                    }
 
                     $kasbonjurnallog = Kasbonjurnallog::where('kasbon_id', $data['id']);
                     $kasbonjurnallog->delete();
