@@ -848,9 +848,11 @@ class PenggajianController extends Controller
         //     "data" =>  $data
         //   );
         // $sisapayment = Penggajian::
-        $data = Penggajian::selectRaw('sum(sisa_gaji) as sisa_payment')->with('driver', 'mobil')
-        ->where('status_payment', '!=', '2')
-        ->when( $status_payment != null, function ($query, $status_payment) {
+
+        // dd($status_payment);
+        $data = Penggajian::selectRaw('sum(sisa_gaji) as sisa_payment')
+         ->with('driver', 'mobil')
+         ->when( $status_payment != null, function ($query, $status_payment) {
             return $query->where('status_payment', $status_payment);
          })->when( $driver_id, function ($query, $driver_id) {
             return $query->where('driver_id', $driver_id);
@@ -866,8 +868,7 @@ class PenggajianController extends Controller
          })
          ->when($tgl_akhir, function ($query, $tgl_akhir) {
             return $query->whereDate('tgl_gaji', '<=', $tgl_akhir);
-         })->first();
-        //   dd(response()->json($results['data']->sortByDesc('urut')));
+         })->where('status_payment', '!=', 2)->first();
 
         return response()->json($data);
 
