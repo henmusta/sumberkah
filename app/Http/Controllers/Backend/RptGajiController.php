@@ -158,7 +158,7 @@ class RptGajiController extends Controller
                     $sheet->setCellValue('A' . $x, $no++);
                     $sheet->setCellValue('B' . $x, $val['tgl_payment']);
                     $sheet->setCellValue('C' . $x, $val['kode_gaji'] ?? '');
-                    $sheet->setCellValue('D' . $x, substr($val['penggajian']->driver['name'], 0, 7));
+                    $sheet->setCellValue('D' . $x, $val['penggajian']->driver['name']);
                     $sheet->setCellValue('E' . $x, $val['penggajian']->mobil['nomor_plat']);
                     $sheet->setCellValue('F' . $x, Carbon::parse($val['penggajian']->bulan_kerja)->isoFormat('MMMM Y'));
                     $sheet->setCellValue('G' . $x, $val['jenis_payment'] ?? '');

@@ -101,19 +101,19 @@
     <table id="pakettable">
         <thead style="background-color: #fff !important; color:black;">
             <tr >
-                <th>No</th>
-                <th>Tanggal Payment</th>
-                <th>Kode Gaji</th>
-                <th>Nama Supir</th>
-                <th width="80px">No polisi</th>
-                <th>Periode Gaji</th>
-                <th>Jenis Pembayaran</th>
-                <th>Gaji</th>
-                <th>Bonus</th>
-                <th>Kasbon</th>
-                <th>Total Gaji</th>
-                <th>Kode Kasbon</th>
-                <th width="150px">Operator (Waktu)</th>
+                <th width="2%" >No</th>
+                <th width="6%" >Tanggal Payment</th>
+                <th width="5%" >Kode Gaji</th>
+                <th width="13%" >Nama Supir</th>
+                <th width="7%">No polisi</th>
+                <th width="8%">Periode Gaji</th>
+                <th width="5%">Jenis Pembayaran</th>
+                <th width="8%">Gaji</th>
+                <th width="8%">Bonus</th>
+                <th width="8%">Kasbon</th>
+                <th width="8%">Total Gaji</th>
+                <th width="5%">Kode Kasbon</th>
+                <th width="14%">Operator (Waktu)</th>
             </tr>
         </thead>
         <tbody>
@@ -125,10 +125,10 @@
                 @php($kasbon += $val['penggajian']->nominal_kasbon)
                 @php($total += $val['penggajian']->total_gaji)
                 <tr>
-                    <td width="2%" class="text-center">{{$no++}}</td>
+                    <td class="text-center">{{$no++}}</td>
                     <td>{{$val->tgl_payment}}</td>
                     <td><a href="{{ route('backend.penggajian.index') }}?penggajian_id={{$val['penggajian']->id}}" target="_blank">{{$val->kode_gaji}}</a></td>
-                    <td>{{ substr($val['penggajian']->driver['name'], 0, 7)}}</td>
+                    <td style="font-size: 8px;">{{$val['penggajian']->driver['name'] ?? ''}}</td>
                     <td>{{$val['penggajian']->mobil['nomor_plat']}}</td>
                     <td>{{ \Carbon\Carbon::parse($val['penggajian']['bulan_kerja'])->isoFormat('MMMM Y')}}</td>
                     <td>{{$val->jenis_payment}}</td>

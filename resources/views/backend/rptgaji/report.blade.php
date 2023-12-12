@@ -109,7 +109,7 @@
                     <td width="2%" class="text-center">{{$no++}}</td>
                     <td>{{$val->tgl_payment}}</td>
                     <td><a href="{{ route('backend.penggajian.index') }}?penggajian_id={{$val['penggajian']->id}}" target="_blank">{{$val->kode_gaji}}</a></td>
-                    <td>{{ substr($val['penggajian']->driver['name'], 0, 7)}}</td>
+                    <td>{{$val['penggajian']->driver['name'] ?? ''}}</td>
                     <td>{{$val['penggajian']->mobil['nomor_plat']}}</td>
                     <td>{{ \Carbon\Carbon::parse($val['penggajian']['bulan_kerja'])->isoFormat('MMMM Y')}}</td>
                     <td>{{$val->jenis_payment}}</td>

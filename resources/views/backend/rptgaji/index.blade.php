@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="page-content">
-    <div class="container-fluid">
+    <div id="fluid" class="container-fluid full">
         <div class="card">
             <div class="card-header mb-3">
                 <h5 class="card-title mb-3">{{ $config['page_title'] }}</h5>
