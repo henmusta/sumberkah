@@ -81,8 +81,7 @@
     </div>
 
     @foreach ($data['data'] as $item)
-    @php($cek = count($item['alldata']->get()) > 5 && $key != $count  ?  'page-break-after: always !important;' : '')
-    <table id="pakettable" width="100%" style="{{$cek}}">
+    <table id="pakettable" width="100%">
         <thead  style="background-color: #fff !important; color:black;" width="100%">
             <tr>
                 <th colspan="12" class="text-left">{{$item['bulan']}}</th>
