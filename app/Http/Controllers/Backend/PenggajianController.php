@@ -463,7 +463,7 @@ class PenggajianController extends Controller
                             'driver_id' => $request['driver_id'],
                             'tgl_kasbon'=>  $kasbon['tgl_kasbon'] ?? $request['tgl_gaji'],
                             'jenis'=> 'Potong Gaji',
-                            'keterangan'=> $kasbon['keterangan'] ?? 'Pembayaran Bon Kode Slip Gaji '.$data['kode_gaji'],
+                            'keterangan'=> $kasbon['keterangan'] ?? '',
                             'debit'=> $request['nominal_kasbon'],
                             'validasi' =>  '1'
                         ]);
