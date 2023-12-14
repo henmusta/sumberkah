@@ -252,7 +252,7 @@ class KasbonController extends Controller
                         'message' => 'Gagal Validasi Kasbon Driver Akan Minus'
                     ]);
                   }else{
-                      $this->update_sj();
+                      $this->update_kasbon();
                       $data->update([
                         'validasi' => $request['validasi'],
                       ]);
@@ -317,7 +317,7 @@ class KasbonController extends Controller
             ]);
 
 
-            $this->update_sj();
+            $this->update_kasbon();
 
             if( $total_kasbon < 0){
                 DB::rollBack();
