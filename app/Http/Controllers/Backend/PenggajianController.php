@@ -400,8 +400,10 @@ class PenggajianController extends Controller
           ['url' => '#', 'title' => "Update Gaji"],
         ];
         $gaji = Penggajian::with('driver', 'mobil')->findOrFail($id);
+        $driver = Driver::findOrFail($gaji['driver_id']);
         $data = [
           'gaji' => $gaji,
+          'driver' => $driver
         ];
 
         return view('backend.penggajian.edit', compact('page_breadcrumbs', 'config', 'data'));
@@ -434,8 +436,10 @@ class PenggajianController extends Controller
                 $driverlogkasbon = Driverlogkasbon::where('penggajian_id', $data['id'])->first();
                 $driver = Driver::findOrFail($request['driver_id']);
 
-                if($request['nominal_kasbon'] > 0){
-                    $cek_kasbon_id = $kasbon->first();
+
+
+                if($request['nominal_kasbon'] > 0 && $data['kasbon'] != $kasbon['nominal']){
+                    $cek_kasbon_id = $kasbon;
                     $kode_gaji =  $this->KodeKasbon(Carbon::parse($request['tgl_gaji'])->format('d M Y'));
                     $kasbon = Kasbon::updateOrCreate([
                         'id' => $cek_kasbon_id['id'] ?? null

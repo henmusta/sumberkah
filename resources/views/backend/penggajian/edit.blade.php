@@ -57,7 +57,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label>Kasbon Tersedia<span class="text-danger"></span></label>
-                                    <input type="text" id="total_kasbon" value="0" name="total_kasbon"  class="form-control" disabled/>
+                                    <input type="text" id="total_kasbon" value="{{$data['driver']['kasbon'] ?? '0' }}" name="total_kasbon"  class="form-control" disabled/>
                                 </div>
                                 <div class="mb-3">
                                     <label>Bayar Kasbon<span class="text-danger"></span></label>
