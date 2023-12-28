@@ -499,7 +499,7 @@ class InvoiceController extends Controller
                 return $query->whereDate('tgl_invoice', '>=', $tgl_awal);
          })->when($tgl_akhir, function ($query, $tgl_akhir) {
             return $query->whereDate('tgl_invoice', '<=', $tgl_akhir);
-         })->orderBy('kode_invoice', 'desc')->get();
+         })->orderBy('kode_invoice', 'asc')->get();
 
 
                 $data = [
@@ -551,7 +551,7 @@ class InvoiceController extends Controller
                  return $query->whereDate('tgl_invoice', '>=', $tgl_awal);
           })->when($tgl_akhir, function ($query, $tgl_akhir) {
              return $query->whereDate('tgl_invoice', '<=', $tgl_akhir);
-          })->get();
+          })->orderBy('kode_invoice', 'asc')->get();
 
          $sheet->setCellValue('A1', 'Laporan Invoice');
          $spreadsheet->getActiveSheet()->mergeCells('A1:N1');

@@ -54,7 +54,7 @@ class MutasiKasbonAllController extends Controller
             })
             ->when($tgl_akhir, function ($query, $tgl_akhir) {
                 return $query->whereDate('tgl_kasbon', '<=', $tgl_akhir);
-            })->groupBy('kasbon_jurnallog.kode_kasbon')->get();
+            })->groupBy('kasbon_jurnallog.kode_kasbon')->orderBy('kode_kasbon', 'ASC')->get();
 
             if(count($get_data) > 0){
                 foreach($get_data as $key => $val){

@@ -66,7 +66,7 @@ class MutasiKasbonController extends Controller
                 })
                 ->when($driver_id, function ($query, $driver_id) {
                     return $query->where('driver_id', $driver_id);
-                })->get();
+                })->orderBy('kode_kasbon', 'ASC')->get();
 
                 if(count($get_data) > 0){
                     foreach($get_data as $key => $val){
